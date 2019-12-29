@@ -3,39 +3,6 @@
 #define __SYMBOID_ASTRO_CALCULO_PLANET_H__
 
 #include "astro/calculo/defs.h"
-#include "astro/calculo/magpoint.h"
-#include "astro/ephe/object.h"
-#include "astro/ephe/jultime.h"
-#include "sdk/basics/memory.h"
-#include "astro/calculo/aspect.h"
-
-namespace As {
-
-class Planet : public ElePoint
-{
-public:
-    Planet(ObjectId objectId, Orbis orbis);
-
-private:
-    Object mObject;
-
-public:
-    ObjectId objectId() const;
-
-public:
-    CalcResult calc(const Time& time);
-
-public:
-    Sy::String name() const override;
-    EclPos eclPos() const override;
-    EclSpeed eclSpeed() const override;
-
-public:
-    Sy::ScopePtr<Aspect> aspect(Aspect::Type aspectType) const;
-};
-
-} // namespace As
-
 #include "astro/eph/object.h"
 
 hor_ns_begin

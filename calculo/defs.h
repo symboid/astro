@@ -2,7 +2,7 @@
 #ifndef __SYMBOID_ASTRO_CALCULO_DEFS_H__
 #define __SYMBOID_ASTRO_CALCULO_DEFS_H__
 
-#include "sdk/basics/defs.h"
+#include "sdk/defs.h"
 
 #ifdef BUILD_ASTRO_CALCULO
     #define ASTRO_CALCULO_API SY_API_EXPORT
