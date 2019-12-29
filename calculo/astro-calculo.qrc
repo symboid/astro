@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/tr">
+        <file>astro-calculo_hu.qm</file>
+    </qresource>
+    <qresource prefix="/qt-project.org/imports"/>
+    <qresource prefix="/Symboid/Astro/Calculo">
+        <file>HoraPage.qml</file>
+        <file>InputGroupHora.qml</file>
+        <file>qmldir</file>
+        <file>SolarInputView.qml</file>
+        <file>RadixInputView.qml</file>
+        <file>LunarInputView.qml</file>
+        <file>HoraConfigView.qml</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file>symboid.ttf</file>
+    </qresource>
+</RCC>

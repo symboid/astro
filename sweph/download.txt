@@ -1,0 +1,17 @@
+
+URL:
+https://www.astro.com/ftp/swisseph/swe_unix_src_2.07.01.tar.gz
+
+VERSION:
+2.07
+
+HOME:
+https://www.astro.com/swisseph/swephinfo_e.htm
+
+DOWNLOAD:
+ftp://ftp.astro.com/pub/swisseph
+https://www.astro.com/ftp/swisseph
+
+FOLDERS:
+src
+doc

@@ -1,0 +1,7 @@
+module Symboid.Astro.Calculo
+InputGroupHora 1.0 InputGroupHora.qml
+HoraPage 1.0 HoraPage.qml
+HoraConfigView 1.0 HoraConfigView.qml
+RadixInputView 1.0 RadixInputView.qml
+SolarInputView 1.0 SolarInputView.qml
+LunarInputView 1.0 LunarInputView.qml
