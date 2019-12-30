@@ -11,11 +11,11 @@
 
 swe_ns_begin
 
-struct proxy
+struct ASTRO_SWEPH_API proxy
 {
     static void set_eph_dir_path(const std::string& _eph_dir_path);
 
-    struct clock
+    struct ASTRO_SWEPH_API clock
     {
         typedef std::chrono::duration<double, std::ratio<86400>> duration;
         typedef typename duration::rep rep;
@@ -24,7 +24,7 @@ struct proxy
         static time_point time(const eph::calendar_coords& _calendar_coords);
     };
 
-    struct object
+    struct ASTRO_SWEPH_API object
     {
         enum class calc_type
         {
@@ -56,7 +56,7 @@ struct proxy
                 eph::ecl_pos& _ecl_pos, eph::ecl_speed& _ecl_speed);
     };
 
-    struct houses
+    struct ASTRO_SWEPH_API houses
     {
         enum class type : int
         {
