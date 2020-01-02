@@ -1,0 +1,7 @@
+
+.revision.stamp
+*/module.h
+*.pro.user
+component.h
+component.json
+*.qm
