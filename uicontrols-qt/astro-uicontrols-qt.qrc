@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/Symboid/Astro/Controls">
+        <file>ArcCoordBox.qml</file>
+        <file>qmldir</file>
+        <file>GeoCoordBox.qml</file>
+    </qresource>
+    <qresource prefix="/font">
+        <file>symboid.ttf</file>
+    </qresource>
+</RCC>
