@@ -52,6 +52,42 @@ struct house_system_placidus : house_system_horizon
     }
 };
 
+struct house_system_koch : house_system_horizon
+{
+    template <class _EphProxy>
+    static calc_result calc(const basic_time_point<_EphProxy>& _time, arc_degree _geo_lont, arc_degree _geo_latt, ecl_lont _lonts[house_count])
+    {
+        return _EphProxy::houses::calc(_time, _EphProxy::houses::type::koch, _geo_lont, _geo_latt, _lonts);
+    }
+};
+
+struct house_system_regiomontanus : house_system_horizon
+{
+    template <class _EphProxy>
+    static calc_result calc(const basic_time_point<_EphProxy>& _time, arc_degree _geo_lont, arc_degree _geo_latt, ecl_lont _lonts[house_count])
+    {
+        return _EphProxy::houses::calc(_time, _EphProxy::houses::type::regiomontanus, _geo_lont, _geo_latt, _lonts);
+    }
+};
+
+struct house_system_campanus : house_system_horizon
+{
+    template <class _EphProxy>
+    static calc_result calc(const basic_time_point<_EphProxy>& _time, arc_degree _geo_lont, arc_degree _geo_latt, ecl_lont _lonts[house_count])
+    {
+        return _EphProxy::houses::calc(_time, _EphProxy::houses::type::campanus, _geo_lont, _geo_latt, _lonts);
+    }
+};
+
+struct house_system_equal : house_system_horizon
+{
+    template <class _EphProxy>
+    static calc_result calc(const basic_time_point<_EphProxy>& _time, arc_degree _geo_lont, arc_degree _geo_latt, ecl_lont _lonts[house_count])
+    {
+        return _EphProxy::houses::calc(_time, _EphProxy::houses::type::equal, _geo_lont, _geo_latt, _lonts);
+    }
+};
+
 class zod_sign_cusp : public house_cusp
 {
 public:

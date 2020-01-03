@@ -38,6 +38,8 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(geoLattChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(geoLontChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
+    connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
+    connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
 }
 
 void QHoraViewItem::calcMandalaGeometry()
@@ -270,6 +272,24 @@ void QHoraViewItem::setTzDiff(qreal tzDiff)
     }
 }
 
+void QHoraViewItem::setHousesType(const QString& housesType)
+{
+    if (mHousesType != housesType)
+    {
+        mHousesType = housesType;
+        emit housesTypeChanged();
+    }
+}
+
+void QHoraViewItem::setCalendarIsJulian(bool calendarIsJulian)
+{
+    if (mCalendarIsJulian != calendarIsJulian)
+    {
+        mCalendarIsJulian = calendarIsJulian;
+        emit withJulianCalendarChanged();
+    }
+}
+
 void QHoraViewItem::recalc()
 {
     hor::hora_coords horaCoords;
@@ -279,10 +299,29 @@ void QHoraViewItem::recalc()
     horaCoords._M_calendar_coords._M_hour = mHour;
     horaCoords._M_calendar_coords._M_minute = mMinute;
     horaCoords._M_calendar_coords._M_second = mSecond;
-    horaCoords._M_calendar_coords._M_calendar_type = eph::calendar_type::GREGORIAN;
+    horaCoords._M_calendar_coords._M_calendar_type = mCalendarIsJulian ? eph::calendar_type::JULIAN : eph::calendar_type::GREGORIAN;
     horaCoords._M_time_zone_diff = std::chrono::minutes(int(60.0 * mTzDiff));
     horaCoords._M_geo_latt = mGeoLatt;
     horaCoords._M_geo_lont = mGeoLont;
-    mHora.calc<eph::house_system_placidus>(horaCoords);
+    if (mHousesType == "koch")
+    {
+        mHora.calc<eph::house_system_koch>(horaCoords);
+    }
+    else if (mHousesType == "regiomontanus")
+    {
+        mHora.calc<eph::house_system_regiomontanus>(horaCoords);
+    }
+    else if (mHousesType == "campanus")
+    {
+        mHora.calc<eph::house_system_campanus>(horaCoords);
+    }
+    else if (mHousesType == "equal")
+    {
+        mHora.calc<eph::house_system_equal>(horaCoords);
+    }
+    else
+    {
+        mHora.calc<eph::house_system_placidus>(horaCoords);
+    }
     update();
 }

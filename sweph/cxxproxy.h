@@ -61,6 +61,10 @@ struct ASTRO_SWEPH_API proxy
         enum class type : int
         {
             placidus = 'P',
+            koch = 'K',
+            regiomontanus = 'R',
+            campanus = 'C',
+            equal = 'E',
         };
         static eph::calc_result calc(clock::time_point _time, type _houses_type,
                 eph::arc_degree _geo_lont, eph::arc_degree _geo_latt, eph::ecl_lont* _ecl_lont_buffer);

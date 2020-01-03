@@ -52,6 +52,8 @@ public:
     Q_PROPERTY(qreal geoLont MEMBER mGeoLont WRITE setGeoLont NOTIFY geoLontChanged)
     Q_PROPERTY(qreal geoLatt MEMBER mGeoLatt WRITE setGeoLatt NOTIFY geoLattChanged)
     Q_PROPERTY(qreal tzDiff MEMBER mTzDiff WRITE setTzDiff NOTIFY tzDiffChanged)
+    Q_PROPERTY(QString housesType MEMBER mHousesType WRITE setHousesType NOTIFY housesTypeChanged)
+    Q_PROPERTY(bool withJulianCalendar MEMBER mCalendarIsJulian WRITE setCalendarIsJulian NOTIFY withJulianCalendarChanged)
 public:
     void setYear(int year);
     void setMonth(int month);
@@ -62,6 +64,8 @@ public:
     void setGeoLont(qreal geoLont);
     void setGeoLatt(qreal geoLatt);
     void setTzDiff(qreal tzDiff);
+    void setHousesType(const QString& housesType);
+    void setCalendarIsJulian(bool calendarIsJulian);
 private:
     int mYear;
     int mMonth;
@@ -72,6 +76,8 @@ private:
     eph::arc_degree mGeoLont;
     eph::arc_degree mGeoLatt;
     qreal mTzDiff;
+    QString mHousesType;
+    bool mCalendarIsJulian;
 signals:
     void yearChanged();
     void monthChanged();
@@ -82,6 +88,8 @@ signals:
     void geoLontChanged();
     void geoLattChanged();
     void tzDiffChanged();
+    void housesTypeChanged();
+    void withJulianCalendarChanged();
 
 private slots:
     void recalc();
