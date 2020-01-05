@@ -9,8 +9,20 @@ MultiNumberBox {
     ArcCoord {
         id: arcCoord
         degree: numberBox(0).value
+        onDegreeChanged: {
+            numberBox(0).value = Qt.binding(function(){return arcCoord.degree})
+        }
+
         minute: numberBox(1).value
+        onMinuteChanged: {
+            numberBox(1).value = Qt.binding(function(){return arcCoord.minute})
+        }
+
         second: numberBox(2).value
+        onSecondChanged: {
+            numberBox(2).value = Qt.binding(function(){return arcCoord.second})
+        }
+
     }
     property alias arcDegree: arcCoord.arcDegree
 
@@ -38,8 +50,5 @@ MultiNumberBox {
     Component.onCompleted: {
         numberBox(0).from =  Qt.binding(function(){return arcCoordBox.from})
         numberBox(0).to =    Qt.binding(function(){return arcCoordBox.to})
-        numberBox(0).value = Qt.binding(function(){return arcCoord.degree})
-        numberBox(1).value = Qt.binding(function(){return arcCoord.minute})
-        numberBox(2).value = Qt.binding(function(){return arcCoord.second})
     }
 }
