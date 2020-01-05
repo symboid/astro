@@ -37,7 +37,7 @@ Grid {
     }
     ArcCoordBox {
         id: arcCoordOutput
-        editable: false
+        editable: true
         arcDegree: Number(arcDegreeInput.text)
     }
 
@@ -56,7 +56,7 @@ Grid {
         validator: RegExpValidator {
             regExp: new RegExp("\-?[0-9]+\.[0-9]+")
         }
-        onTextChanged: geoLontOutput.setArcCoord(Number(text))
+        onTextChanged: geoLontOutput.setArcDegree(Number(text))
     }
     GeoCoordBox {
         id: geoLontOutput
