@@ -19,6 +19,9 @@ ListView {
                    "&maxRows="+maxRows+
                    "&username="+apiUser
         columnNames: ["name", "countryName", "adminName1", "population", "lng", "lat"]
+
+        onModelAboutToBeReset: busyPopup.open()
+        onModelReset: busyPopup.close()
     }
 
     delegate: Flow {
@@ -46,6 +49,17 @@ ListView {
                 isLattitude: true
                 value: lat
             }
+        }
+    }
+
+    Dialog {
+        id: busyPopup
+        width: 100
+        height: width
+        anchors.centerIn: parent
+        BusyIndicator {
+            anchors.centerIn: parent
+            running: true
         }
     }
 }
