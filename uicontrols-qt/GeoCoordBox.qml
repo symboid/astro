@@ -6,13 +6,15 @@ import Symboid.Astro.Controls 1.0
 Row {
 
     property bool isLattitude: false
-    readonly property real signValue: 2 * signBox.value - 1
-    readonly property real arcDegree: signValue * coordBox.arcDegree
+    readonly property int signValue: 2 * signBox.value - 1
+    readonly property double arcDegree: signValue * coordBox.arcDegree
 
     function setArcDegree(signedArcDegree) {
         signBox.value = signedArcDegree < 0.0 ? 0 : 1
         coordBox.arcDegree = Math.abs(signedArcDegree)
     }
+
+    property alias value: coordBox.arcDegree
 
     property bool editable: false
 

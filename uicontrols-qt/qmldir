@@ -1,3 +1,4 @@
 module Symboid.Astro.Controls
 ArcCoordBox 1.0 ArcCoordBox.qml
 GeoCoordBox 1.0 GeoCoordBox.qml
+GeoNamesSearchView 1.0 GeoNamesSearchView.qml

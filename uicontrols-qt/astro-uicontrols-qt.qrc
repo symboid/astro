@@ -3,6 +3,7 @@
         <file>ArcCoordBox.qml</file>
         <file>qmldir</file>
         <file>GeoCoordBox.qml</file>
+        <file>GeoNamesSearchView.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>

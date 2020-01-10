@@ -32,32 +32,30 @@ Column {
         id: restTableModel
         restClient: GeoNamesRestClient
 //        operation: "countrySubdivisionJSON?lat=47.5&lng=19.2&username=symboid"
-        operation: "postalCodeSearchJSON?postalcode=9011&maxRows=10&username=symboid"
-
-        columnNames: ["countryCode", "placeName", "lng", "lat"]
+//        operation: "postalCodeSearchJSON?postalcode=9011&maxRows=10&username=symboid"
+        operation: "searchJSON?q=szolnok&lang=hu&maxRows=10&username=symboid"
+        columnNames: ["name", "countryName", "adminName1", "population", "lng", "lat"]
 
     }
 
+    TextField {
+        id: geoNameInput
+        width: 300
+    }
+
+    Button {
+        text: qsTr("Search...")
+        onClicked: geoNamesSearchView.geoName = geoNameInput.text
+    }
+
     Rectangle {
-        width: 200
+        width: 600
         height: 400
         border.width: 1
-        ListView {
+        GeoNamesSearchView {
+            id: geoNamesSearchView
             anchors.fill: parent
-            model: restObjectModel
-            delegate: Row {
-                property int rowIndex: index
-                Text {
-                    text: field
-                }
-                Text {
-                    text: ":"
-                }
-
-                Text {
-                    text: field === "codes" ? "[]" : display
-                }
-            }
+//            geoName: geoNameInput.text
         }
     }
 }
