@@ -34,6 +34,12 @@ ListView {
         height: itemFlow.height
         color: index == currentIndex ? "lightgray" : "white"
 
+        Rectangle {
+            height: 1
+            width: parent.width
+            color: "black"
+            visible: index > 0
+        }
         Flow {
             id: itemFlow
             width: parent.width
@@ -41,13 +47,13 @@ ListView {
             padding: 10
 
             Label {
-                height: coordsBox.height
-                verticalAlignment: Label.AlignVCenter
                 text: name
+                font {
+                    italic: true
+                    bold: true
+                }
             }
             Label {
-                height: coordsBox.height
-                verticalAlignment: Label.AlignVCenter
                 text: "("+countryName+"/"+adminName1+")"
             }
             Row {

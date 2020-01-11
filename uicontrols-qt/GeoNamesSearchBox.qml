@@ -7,7 +7,11 @@ Column {
     spacing: padding
     Row {
         id: searchRow
-        width: parent.width
+        anchors {
+            left: parent.left
+            right: parent.right
+        }
+
         spacing: parent.spacing
         TextField {
             id: geoName
@@ -24,13 +28,14 @@ Column {
         }
     }
     Rectangle {
-        width: parent.width
-        height: parent.height - searchRow.height - parent.spacing
-        border.width: 1
+        anchors {
+            left: parent.left
+            right: parent.right
+        }
+        height: parent.height - searchRow.height - parent.spacing - 2 * parent.padding
         GeoNamesSearchView {
             id: searchView
             anchors.fill: parent
-            anchors.margins: 1
         }
     }
 }
