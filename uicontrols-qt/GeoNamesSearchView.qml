@@ -24,6 +24,10 @@ ListView {
         onModelAboutToBeReset: busyPopup.open()
         onModelReset: busyPopup.close()
     }
+    function update()
+    {
+        restTableModel.runOperation()
+    }
 
     delegate: Rectangle {
         width: parent.width

@@ -17,7 +17,10 @@ Column {
         Button {
             id: searchButton
             text: qsTr("Search")
-            onClicked: searchView.geoName = geoName.text
+            onClicked: {
+                searchView.geoName = geoName.text
+                searchView.update()
+            }
         }
     }
     Rectangle {
