@@ -1,7 +1,7 @@
 
 .revision.stamp
 */module.h
-*.pro.user
+*.pro.user*
 component.h
 component.json
 *.qm
