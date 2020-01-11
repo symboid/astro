@@ -38,24 +38,8 @@ Column {
 
     }
 
-    TextField {
-        id: geoNameInput
-        width: 300
-    }
-
-    Button {
-        text: qsTr("Search...")
-        onClicked: geoNamesSearchView.geoName = geoNameInput.text
-    }
-
-    Rectangle {
-        width: 600
+    GeoNamesSearchBox {
+        width: 450
         height: 400
-        border.width: 1
-        GeoNamesSearchView {
-            id: geoNamesSearchView
-            anchors.fill: parent
-//            geoName: geoNameInput.text
-        }
     }
 }

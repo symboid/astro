@@ -4,6 +4,7 @@
         <file>qmldir</file>
         <file>GeoCoordBox.qml</file>
         <file>GeoNamesSearchView.qml</file>
+        <file>GeoNamesSearchBox.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>
