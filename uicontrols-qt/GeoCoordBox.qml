@@ -32,5 +32,6 @@ Row {
         to: isLattitude ? 89 : 179
         editable: parent.editable
         circular: true
+        sectionCalc: NoneSectionCalc {}
     }
 }

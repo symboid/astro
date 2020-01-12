@@ -29,6 +29,7 @@ struct ASTRO_UICONTROLS_QT_API mod_astro_uicontrols_qt : arh::mod_qt<mod_astro_u
     qml_singleton_init<QGeoNameModel> _M_geo_name_model;
     qml_singleton_init<QGeoNamesRestClient> _M_geo_names_rest_client;
     qml_type_register<QArcCoord> _reg_arc_coord;
+    qml_type_register<QNoneSectionCalc> _none_section_calc;
     arh::main_object_init<QAstroFontRepo> _M_astro_font_repo;
     qml_type_register<QHoraViewItem> _M_reg_hora_view;
 };

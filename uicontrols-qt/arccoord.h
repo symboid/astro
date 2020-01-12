@@ -5,6 +5,17 @@
 #include "astro/uicontrols-qt/defs.h"
 #include <QObject>
 #include "astro/eph/ecliptic.h"
+#include <QSharedPointer>
+
+class ASTRO_UICONTROLS_QT_API QSectionCalc : public QObject
+{
+    Q_OBJECT
+
+public:
+    virtual eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const = 0;
+    virtual eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const = 0;
+    virtual int index(eph::arc_coord::degree rawDegree) const = 0;
+};
 
 class ASTRO_UICONTROLS_QT_API QArcCoord : public QObject
 {
@@ -23,6 +34,8 @@ public:
     typedef eph::arc_degree ArcDegree;
 
 public:
+    Q_PROPERTY(QSectionCalc* sectionCalc READ sectionCalc WRITE setSectionCalc NOTIFY sectionCalcChanged)
+    Q_PROPERTY(int section READ section WRITE setSection NOTIFY sectionChanged)
     Q_PROPERTY(Degree degree READ degree WRITE setDegree NOTIFY degreeChanged)
     Q_PROPERTY(Minute minute READ minute WRITE setMinute NOTIFY minuteChanged)
     Q_PROPERTY(Second second READ second WRITE setSecond NOTIFY secondChanged)
@@ -30,27 +43,44 @@ public:
     Q_PROPERTY(ArcDegree arcDegree READ arcDegree WRITE setArcDegree NOTIFY arcDegreeChanged)
 
 private:
+    QSharedPointer<QSectionCalc> mSectionCalc;
+    int mSection;
     Degree mDegree;
     Minute mMinute;
     Second mSecond;
     ArcDegree mFracSecond;
 
 public:
+    QSectionCalc* sectionCalc() const;
+    int section() const;
     Degree degree() const;
     Minute minute() const;
     Second second() const;
     FracSecond fracSecond() const;
     ArcDegree arcDegree() const;
-    void setDegree(Degree degree);
+    void setSectionCalc(QSectionCalc* sectionCalc);
+    void setSection(int section);
+    void setDegree(Degree rawDegree);
     void setMinute(Minute minute);
     void setSecond(Second second);
     void setArcDegree(ArcDegree arcDegree);
 
 signals:
+    void sectionCalcChanged();
+    void sectionChanged();
     void degreeChanged();
     void minuteChanged();
     void secondChanged();
     void arcDegreeChanged();
+};
+
+struct ASTRO_UICONTROLS_QT_API QNoneSectionCalc : QSectionCalc
+{
+    static constexpr const char* qml_name = "NoneSectionCalc";
+
+    eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
+    int index(eph::arc_coord::degree plainDegree) const override;
 };
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_ARCCOORD_H__

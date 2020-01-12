@@ -4,11 +4,23 @@
 
 QArcCoord::QArcCoord(QObject* parent)
     : QObject(parent)
+    , mSectionCalc(new QNoneSectionCalc)
+    , mSection(0)
     , mDegree(0)
     , mMinute(0)
     , mSecond(0)
     , mFracSecond(0.0)
 {
+}
+
+QSectionCalc* QArcCoord::sectionCalc() const
+{
+    return mSectionCalc.get();
+}
+
+int QArcCoord::section() const
+{
+    return mSection;
 }
 
 QArcCoord::Degree QArcCoord::degree() const
@@ -33,15 +45,45 @@ QArcCoord::FracSecond QArcCoord::fracSecond() const
 
 QArcCoord::ArcDegree QArcCoord::arcDegree() const
 {
-    return eph::arc_coord::calc_arc_pos(mDegree, mMinute, mSecond + mFracSecond);
+    Degree rawDegree = mSectionCalc->raw(mSection, mDegree);
+    return eph::arc_coord::calc_arc_pos(rawDegree, mMinute, mSecond + mFracSecond);
 }
 
-void QArcCoord::setDegree(Degree degree)
+void QArcCoord::setSectionCalc(QSectionCalc* sectionCalc)
 {
-    if (mDegree != degree)
+    if (sectionCalc)
     {
-        mDegree = degree;
-        emit degreeChanged();
+        ArcDegree rawArcDegree = arcDegree();
+        mSectionCalc.reset(sectionCalc);
+        emit sectionCalcChanged();
+        setArcDegree(rawArcDegree);
+    }
+}
+
+void QArcCoord::setSection(int section)
+{
+    if (mSection != section)
+    {
+        mSection = section;
+        emit sectionChanged();
+        emit arcDegreeChanged();
+    }
+}
+
+void QArcCoord::setDegree(Degree rawDegree)
+{
+    if (mSectionCalc->raw(mSection, mDegree) != rawDegree)
+    {
+        if (mSection != mSectionCalc->index(rawDegree))
+        {
+            mSection = mSectionCalc->index(rawDegree);
+            emit sectionChanged();
+        }
+        if (mDegree != mSectionCalc->degree(rawDegree))
+        {
+            mDegree = mSectionCalc->degree(rawDegree);
+            emit degreeChanged();
+        }
         emit arcDegreeChanged();
     }
 }
@@ -79,9 +121,14 @@ void QArcCoord::setArcDegree(ArcDegree arcDegree)
     if (!eph::arc_degree_equals(QArcCoord::arcDegree(),arcDegree))
     {
         eph::arc_coord arcCoord(arcDegree);
-        if (arcCoord._M_degree != mDegree)
+        if (mSectionCalc->index(arcCoord._M_degree) != mSection)
         {
-            mDegree = arcCoord._M_degree;
+            mSection = mSectionCalc->index(arcCoord._M_degree);
+            emit sectionChanged();
+        }
+        if (mSectionCalc->degree(arcCoord._M_degree) != mDegree)
+        {
+            mDegree = mSectionCalc->degree(arcCoord._M_degree);
             emit degreeChanged();
         }
         if (arcCoord._M_minute != mMinute)
@@ -98,4 +145,21 @@ void QArcCoord::setArcDegree(ArcDegree arcDegree)
         mFracSecond = arcCoord._M_second - intSecond;
         emit arcDegreeChanged();
     }
+}
+
+eph::arc_coord::degree QNoneSectionCalc::raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const
+{
+    Q_UNUSED(sectionIndex);
+    return sectionDegree;
+}
+
+eph::arc_coord::degree QNoneSectionCalc::degree(eph::arc_coord::degree plainDegree) const
+{
+    return plainDegree;
+}
+
+int QNoneSectionCalc::index(eph::arc_coord::degree plainDegree) const
+{
+    Q_UNUSED(plainDegree);
+    return 0;
 }

@@ -6,6 +6,8 @@ import Symboid.Sdk.Controls 1.0
 MultiNumberBox {
     id: arcCoordBox
 
+    property alias sectionCalc: arcCoord.sectionCalc
+
     ArcCoord {
         id: arcCoord
         degree: numberBox(0).value
