@@ -105,7 +105,9 @@ void QHoraViewItem::paint(QPainter* painter)
         painter->drawEllipse(mMandalaCenter, earthRadius, earthRadius);
 
         // zodiac sign domains
+        mAstroFont->setPointSize(mFontPointSize);
         painter->setFont(*mAstroFont);
+        QFontMetrics fontMetrics(*mAstroFont);
         for (std::size_t z = 1; z <= eph::house_system_mundan::house_count; ++z)
         {
             const eph::zod_sign_cusp zodSignCusp(z, eph::house_system_mundan::house_names[z]);
@@ -113,8 +115,9 @@ void QHoraViewItem::paint(QPainter* painter)
             painter->drawLine(horaPoint(zodSignLont, 1.0), horaPoint(zodSignLont, 1.2));
 
             QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.1));
-            static const qreal zodRad = 10.0;
-            QRectF zodSignRect(zodSignPoint - QPointF(zodRad,zodRad), zodSignPoint + QPointF(zodRad,zodRad));
+            QSize textSize = fontMetrics.size(0, mAstroFont->zodLetter(eph::zod(z)));
+            QRectF zodSignRect(zodSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
+                               zodSignPoint + QPointF(textSize.width() / 2, textSize.height() / 2));
             painter->drawText(zodSignRect, Qt::AlignHCenter | Qt::AlignVCenter, mAstroFont->zodLetter(eph::zod(z)));
         }
 
@@ -324,4 +327,13 @@ void QHoraViewItem::recalc()
         mHora.calc<eph::house_system_placidus>(horaCoords);
     }
     update();
+}
+
+void QHoraViewItem::setFontPointSize(int fontPointSize)
+{
+    if (mFontPointSize != fontPointSize)
+    {
+        mFontPointSize = fontPointSize;
+        emit fontPointSizeChanged();
+    }
 }
