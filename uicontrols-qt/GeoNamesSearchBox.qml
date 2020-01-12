@@ -3,6 +3,8 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 
 Column {
+    property alias selectedItem: searchView.selectedItem
+
     padding: 20
     spacing: padding
     Row {
@@ -20,6 +22,7 @@ Column {
         }
         Button {
             id: searchButton
+            enabled: geoName.text.length
             text: qsTr("Search")
             onClicked: {
                 searchView.geoName = geoName.text

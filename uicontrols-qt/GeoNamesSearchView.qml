@@ -9,6 +9,7 @@ ListView {
     property string geoName: ""
     property int maxRows: 10
     readonly property string apiUser: "symboid"
+    readonly property GeoNamesSearchItem selectedItem: currentIndex !== -1 ? currentItem.geoItem : null
 
     model: restTableModel
 
@@ -31,8 +32,9 @@ ListView {
 
     delegate: Rectangle {
         width: parent.width
-        height: itemFlow.height
+        height: searchItem.height
         color: index == currentIndex ? "lightgray" : "white"
+        property GeoNamesSearchItem geoItem: searchItem
 
         Rectangle {
             height: 1
@@ -40,33 +42,15 @@ ListView {
             color: "black"
             visible: index > 0
         }
-        Flow {
-            id: itemFlow
+        GeoNamesSearchItem {
+            id: searchItem
             width: parent.width
-            spacing: 10
-            padding: 10
 
-            Label {
-                text: name
-                font {
-                    italic: true
-                    bold: true
-                }
-            }
-            Label {
-                text: "("+countryName+"/"+adminName1+")"
-            }
-            Row {
-                id: coordsBox
-                spacing: 10
-                GeoCoordBox {
-                    value: lng
-                }
-                GeoCoordBox {
-                    isLattitude: true
-                    value: lat
-                }
-            }
+//            lattArcDegree: lat
+//            lontArcDegree: lng
+            geoName: name
+            adminName: adminName1
+            country: countryName
         }
         MouseArea {
             anchors.fill: parent
