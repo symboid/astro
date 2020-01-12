@@ -36,7 +36,7 @@ MultiNumberBox {
     boxes: ListModel {
         ListElement {
             number_from: 0
-            number_to: 0
+            number_to: 11
             number_suffix: ""
         }
         ListElement {

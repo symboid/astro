@@ -17,7 +17,7 @@ ListView {
         id: restTableModel
         restClient: GeoNamesRestClient
         operation: "searchJSON?q="+geoName+
-                   "&lang="+Qt.locale()+
+                   "&lang="+Qt.locale().name.substring(0,2)+
                    "&maxRows="+maxRows+
                    "&username="+apiUser
         columnNames: ["name", "countryName", "adminName1", "population", "lng", "lat"]
@@ -27,6 +27,7 @@ ListView {
     }
     function update()
     {
+        currentIndex = -1
         restTableModel.runOperation()
     }
 
