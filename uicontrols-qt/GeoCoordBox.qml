@@ -6,32 +6,21 @@ import Symboid.Astro.Controls 1.0
 Row {
 
     property bool isLattitude: false
-    readonly property int signValue: 2 * signBox.value - 1
-    readonly property double arcDegree: signValue * coordBox.arcDegree
-
-    function setArcDegree(signedArcDegree) {
-        signBox.value = signedArcDegree < 0.0 ? 0 : 1
-        coordBox.arcDegree = Math.abs(signedArcDegree)
-    }
-
-    property alias value: coordBox.arcDegree
-
     property bool editable: false
-
-    EnumBox {
-        id: signBox
-        from: 0
-        to: 1
-        valueTexts: isLattitude ? [ "D", "É" ] : [ "Ny", "K" ]
-        editable: parent.editable
-    }
+    property alias arcDegree: coordBox.arcDegree
 
     ArcCoordBox {
         id: coordBox
-        from: 0
-        to: isLattitude ? 89 : 179
         editable: parent.editable
         circular: true
-        sectionCalc: NoneSectionCalc {}
+        sectionCalc: isLattitude ? geoLattSectionCalc : geoLontSectionCalc
+
+        GeoLontSectionCalc {
+            id: geoLontSectionCalc
+        }
+
+        GeoLattSectionCalc {
+            id: geoLattSectionCalc
+        }
     }
 }

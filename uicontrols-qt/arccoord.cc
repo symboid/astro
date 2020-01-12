@@ -70,20 +70,12 @@ void QArcCoord::setSection(int section)
     }
 }
 
-void QArcCoord::setDegree(Degree rawDegree)
+void QArcCoord::setDegree(Degree degree)
 {
-    if (mSectionCalc->raw(mSection, mDegree) != rawDegree)
+    if (mDegree != degree)
     {
-        if (mSection != mSectionCalc->index(rawDegree))
-        {
-            mSection = mSectionCalc->index(rawDegree);
-            emit sectionChanged();
-        }
-        if (mDegree != mSectionCalc->degree(rawDegree))
-        {
-            mDegree = mSectionCalc->degree(rawDegree);
-            emit degreeChanged();
-        }
+        mDegree = degree;
+        emit degreeChanged();
         emit arcDegreeChanged();
     }
 }
@@ -162,4 +154,48 @@ int QNoneSectionCalc::index(eph::arc_coord::degree plainDegree) const
 {
     Q_UNUSED(plainDegree);
     return 0;
+}
+
+eph::arc_coord::degree QGeoLattSectionCalc::raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const
+{
+    return (sectionIndex == north_index) ? sectionDegree : -sectionDegree;
+}
+
+eph::arc_coord::degree QGeoLattSectionCalc::degree(eph::arc_coord::degree rawDegree) const
+{
+    if (rawDegree < -sectionMax() || rawDegree > sectionMax())
+    {
+        return sectionMax();
+    }
+    else
+    {
+        return qAbs(rawDegree);
+    }
+}
+
+int QGeoLattSectionCalc::index(eph::arc_coord::degree rawDegree) const
+{
+    return rawDegree >= 0 ? north_index : south_index;
+}
+
+eph::arc_coord::degree QGeoLontSectionCalc::raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const
+{
+    return (sectionIndex == east_index) ? sectionDegree : -sectionDegree;
+}
+
+eph::arc_coord::degree QGeoLontSectionCalc::normalizeDegree(eph::arc_coord::degree rawDegree)
+{
+    while (rawDegree > 180) rawDegree -= 360;
+    while (rawDegree <= -180) rawDegree += 360;
+    return rawDegree;
+}
+
+eph::arc_coord::degree QGeoLontSectionCalc::degree(eph::arc_coord::degree rawDegree) const
+{
+    return qAbs(normalizeDegree(rawDegree));
+}
+
+int QGeoLontSectionCalc::index(eph::arc_coord::degree rawDegree) const
+{
+    return normalizeDegree(rawDegree) >= 0 ? east_index : west_index;
 }

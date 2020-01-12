@@ -6,8 +6,8 @@ Flow {
     property string geoName: ""
     property string country: ""
     property string adminName: ""
-//    property alias lattArcDegree: latt.value
-//    property alias lontArcDegree: lont.value
+    property alias lattArcDegree: latt.arcDegree
+    property alias lontArcDegree: lont.arcDegree
 
     spacing: 10
     padding: 10
@@ -26,12 +26,10 @@ Flow {
         spacing: 10
         GeoCoordBox {
             id: lont
-//            value: lontArcDegree
         }
         GeoCoordBox {
             id: latt
             isLattitude: true
-//            value: lattArcDegree
         }
     }
 }

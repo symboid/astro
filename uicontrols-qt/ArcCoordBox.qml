@@ -10,28 +10,35 @@ MultiNumberBox {
 
     ArcCoord {
         id: arcCoord
-        degree: numberBox(0).value
+        section: numberBox(0).value
+        onSectionChanged: {
+            numberBox(0).value = Qt.binding(function(){return arcCoord.section})
+        }
+
+        degree: numberBox(1).value
         onDegreeChanged: {
-            numberBox(0).value = Qt.binding(function(){return arcCoord.degree})
+            numberBox(1).value = Qt.binding(function(){return arcCoord.degree})
         }
 
-        minute: numberBox(1).value
+        minute: numberBox(2).value
         onMinuteChanged: {
-            numberBox(1).value = Qt.binding(function(){return arcCoord.minute})
+            numberBox(2).value = Qt.binding(function(){return arcCoord.minute})
         }
 
-        second: numberBox(2).value
+        second: numberBox(3).value
         onSecondChanged: {
-            numberBox(2).value = Qt.binding(function(){return arcCoord.second})
+            numberBox(3).value = Qt.binding(function(){return arcCoord.second})
         }
 
     }
     property alias arcDegree: arcCoord.arcDegree
 
-    property int from: 0
-    property int to: 359
-
     boxes: ListModel {
+        ListElement {
+            number_from: 0
+            number_to: 0
+            number_suffix: ""
+        }
         ListElement {
             number_from: 0
             number_to: 359
@@ -50,7 +57,7 @@ MultiNumberBox {
     }
 
     Component.onCompleted: {
-        numberBox(0).from =  Qt.binding(function(){return arcCoordBox.from})
-        numberBox(0).to =    Qt.binding(function(){return arcCoordBox.to})
+        numberBox(0).to   = Qt.binding(function(){return sectionCalc.sectionCount() - 1})
+        numberBox(1).to   = Qt.binding(function(){return sectionCalc.sectionMax() - 1})
     }
 }

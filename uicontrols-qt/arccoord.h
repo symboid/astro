@@ -15,6 +15,10 @@ public:
     virtual eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const = 0;
     virtual eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const = 0;
     virtual int index(eph::arc_coord::degree rawDegree) const = 0;
+
+public:
+    Q_INVOKABLE virtual int sectionCount() const { return 1; }
+    Q_INVOKABLE virtual int sectionMax() const { return 360; }
 };
 
 class ASTRO_UICONTROLS_QT_API QArcCoord : public QObject
@@ -81,6 +85,37 @@ struct ASTRO_UICONTROLS_QT_API QNoneSectionCalc : QSectionCalc
     eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
     eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
     int index(eph::arc_coord::degree plainDegree) const override;
+};
+
+struct ASTRO_UICONTROLS_QT_API QGeoLattSectionCalc : QSectionCalc
+{
+    static constexpr const char* qml_name = "GeoLattSectionCalc";
+
+    eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
+    int index(eph::arc_coord::degree plainDegree) const override;
+    Q_INVOKABLE virtual int sectionCount() const override { return 2; }
+    Q_INVOKABLE virtual int sectionMax() const override { return 90; }
+
+    static constexpr int north_index = 0;
+    static constexpr int south_index = 1;
+};
+
+
+struct ASTRO_UICONTROLS_QT_API QGeoLontSectionCalc : QSectionCalc
+{
+    static constexpr const char* qml_name = "GeoLontSectionCalc";
+
+    eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
+    int index(eph::arc_coord::degree plainDegree) const override;
+    Q_INVOKABLE virtual int sectionCount() const override { return 2; }
+    Q_INVOKABLE virtual int sectionMax() const override { return 180; }
+
+    static constexpr int east_index = 0;
+    static constexpr int west_index = 1;
+
+    static eph::arc_coord::degree normalizeDegree(eph::arc_coord::degree rawDegree);
 };
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_ARCCOORD_H__

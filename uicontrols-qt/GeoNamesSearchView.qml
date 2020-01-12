@@ -46,11 +46,13 @@ ListView {
             id: searchItem
             width: parent.width
 
-//            lattArcDegree: lat
-//            lontArcDegree: lng
             geoName: name
             adminName: adminName1
             country: countryName
+            Component.onCompleted: {
+                lattArcDegree = lat
+                lontArcDegree = lng
+            }
         }
         MouseArea {
             anchors.fill: parent

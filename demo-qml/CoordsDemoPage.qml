@@ -54,9 +54,9 @@ Grid {
         id: geoLontInput
         text: "0.0"
         validator: RegExpValidator {
-            regExp: new RegExp("\-?[0-9]+\.[0-9]+")
+            regExp: new RegExp("\-?[0-9]*\.[0-9]+")
         }
-        onTextChanged: geoLontOutput.setArcDegree(Number(text))
+        onTextChanged: geoLontOutput.arcDegree = Number(text)
     }
     GeoCoordBox {
         id: geoLontOutput
@@ -72,13 +72,21 @@ Grid {
     Text {
         text: "GeoCoords - Lattitude"
     }
-    GeoCoordBox {
+    TextField {
         id: geoLattInput
+        text: "0.0"
+        validator: RegExpValidator {
+            regExp: new RegExp("\-?[0-9]*\.[0-9]+")
+        }
+        onTextChanged: geoLattOutput.arcDegree = Number(text)
+    }
+    GeoCoordBox {
+        id: geoLattOutput
         isLattitude: true
         editable: true
     }
     Text {
-        text: geoLattInput.arcDegree
+        text: geoLattOutput.arcDegree
     }
     Item { width:1;height:1 }
 }
