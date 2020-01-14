@@ -35,21 +35,24 @@ MultiNumberBox {
 
     boxes: ListModel {
         ListElement {
+            is_enum: true
             number_from: 0
             number_to: 11
-            number_suffix: ""
         }
         ListElement {
+            is_enum: false
             number_from: 0
             number_to: 359
             number_suffix: "°"
         }
         ListElement {
+            is_enum: false
             number_from: 0
             number_to: 59
             number_suffix: "'"
         }
         ListElement {
+            is_enum: false
             number_from: 0
             number_to: 59
             number_suffix: "\""
@@ -57,6 +60,7 @@ MultiNumberBox {
     }
 
     Component.onCompleted: {
+        numberBox(0).valueTexts = [ "K", "Ny" ]
         numberBox(0).to   = Qt.binding(function(){return sectionCalc.sectionCount() - 1})
         numberBox(1).to   = Qt.binding(function(){return sectionCalc.sectionMax() - 1})
     }
