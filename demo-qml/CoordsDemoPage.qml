@@ -80,9 +80,9 @@ Grid {
         }
         onTextChanged: geoLattOutput.arcDegree = Number(text)
     }
-    GeoCoordBox {
+    GeoLattBox {
         id: geoLattOutput
-        isLattitude: true
+        //isLattitude: true
         editable: true
     }
     Text {
