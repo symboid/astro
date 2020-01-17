@@ -199,3 +199,26 @@ int QGeoLontSectionCalc::index(eph::arc_coord::degree rawDegree) const
 {
     return normalizeDegree(rawDegree) >= 0 ? east_index : west_index;
 }
+
+eph::arc_coord::degree QZodiacSectionCalc::raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const
+{
+    return sectionIndex * 30 + sectionDegree;
+}
+
+eph::arc_coord::degree QZodiacSectionCalc::degree(eph::arc_coord::degree rawDegree) const
+{
+    while (rawDegree < 0.0)
+    {
+        rawDegree += 360;
+    }
+    return rawDegree % 30;
+}
+
+int QZodiacSectionCalc::index(eph::arc_coord::degree rawDegree) const
+{
+    while (rawDegree < 0.0)
+    {
+        rawDegree += 360;
+    }
+    return rawDegree / 30;
+}

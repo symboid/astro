@@ -6,6 +6,7 @@
 #include <QObject>
 #include "astro/eph/ecliptic.h"
 #include <QSharedPointer>
+#include "astro/uicontrols-qt/qastrofont.h"
 
 class ASTRO_UICONTROLS_QT_API QSectionCalc : public QObject
 {
@@ -18,7 +19,10 @@ public:
 
 public:
     Q_INVOKABLE virtual int sectionCount() const { return 1; }
+    Q_INVOKABLE virtual int sectionMin() const { return -360; }
     Q_INVOKABLE virtual int sectionMax() const { return 360; }
+    Q_INVOKABLE virtual QFont sectionFont() const { return QFont(); }
+    Q_INVOKABLE virtual QStringList values() const { return QStringList(""); }
 };
 
 class ASTRO_UICONTROLS_QT_API QArcCoord : public QObject
@@ -95,12 +99,13 @@ struct ASTRO_UICONTROLS_QT_API QGeoLattSectionCalc : QSectionCalc
     eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
     int index(eph::arc_coord::degree plainDegree) const override;
     Q_INVOKABLE virtual int sectionCount() const override { return 2; }
+    Q_INVOKABLE virtual int sectionMin() const override { return 0; }
     Q_INVOKABLE virtual int sectionMax() const override { return 90; }
+    Q_INVOKABLE virtual QStringList values() const override { return { tr("N"), tr("S") }; }
 
     static constexpr int north_index = 0;
     static constexpr int south_index = 1;
 };
-
 
 struct ASTRO_UICONTROLS_QT_API QGeoLontSectionCalc : QSectionCalc
 {
@@ -110,12 +115,29 @@ struct ASTRO_UICONTROLS_QT_API QGeoLontSectionCalc : QSectionCalc
     eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
     int index(eph::arc_coord::degree plainDegree) const override;
     Q_INVOKABLE virtual int sectionCount() const override { return 2; }
+    Q_INVOKABLE virtual int sectionMin() const override { return 0; }
     Q_INVOKABLE virtual int sectionMax() const override { return 180; }
+    Q_INVOKABLE virtual QStringList values() const override { return { tr("E"), tr("W") }; }
 
     static constexpr int east_index = 0;
     static constexpr int west_index = 1;
 
     static eph::arc_coord::degree normalizeDegree(eph::arc_coord::degree rawDegree);
+};
+
+struct ASTRO_UICONTROLS_QT_API QZodiacSectionCalc : QSectionCalc
+{
+    static constexpr const char* qml_name = "ZodiacSectionCalc";
+
+    eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
+    int index(eph::arc_coord::degree rawDegree) const override;
+
+    Q_INVOKABLE virtual int sectionCount() const override { return 12; }
+    Q_INVOKABLE virtual int sectionMin() const override { return 0; }
+    Q_INVOKABLE virtual int sectionMax() const override { return 30; }
+    Q_INVOKABLE virtual QFont sectionFont() const override { return QFont("Symboid"); }
+    Q_INVOKABLE virtual QStringList values() const override { return {  "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l" }; }
 };
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_ARCCOORD_H__

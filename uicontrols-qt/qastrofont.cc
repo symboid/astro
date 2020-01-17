@@ -55,11 +55,11 @@ QString QSymboidFont::objectLetter(hor::planet::index planetIndex)
     }
     else if (planetIndex == hor::planet::lilith)
     {
-        return QChar(55);
+        return QChar('A');
     }
     else if (planetIndex == hor::planet::dragon_head)
     {
-        return QChar(53);
+        return QChar('w');
     }
     else
     {

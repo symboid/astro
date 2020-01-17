@@ -14,7 +14,6 @@ Row {
         editable: parent.editable
         circular: true
         sectionCalc: isLattitude ? geoLattSectionCalc : geoLontSectionCalc
-        sectionValues: isLattitude ? [ qsTr("N"), qsTr("S") ] : [ qsTr("E"), qsTr("W") ]
         GeoLontSectionCalc {
             id: geoLontSectionCalc
         }

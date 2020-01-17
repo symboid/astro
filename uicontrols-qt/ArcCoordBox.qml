@@ -7,7 +7,6 @@ MultiNumberBox {
     id: arcCoordBox
 
     property alias sectionCalc: arcCoord.sectionCalc
-    property var sectionValues: null
 
     ArcCoord {
         id: arcCoord
@@ -30,12 +29,14 @@ MultiNumberBox {
             id: sectionBox
             from: 0
             to: sectionCalc.sectionCount() - 1
-            valueTexts: sectionValues
+            valueTexts: sectionCalc.values()
             circular: true
+            visible: sectionCalc.sectionCount() > 1
+            font: sectionCalc.sectionFont()
         }
         NumberBox {
             id: degreeBox
-            from: 0
+            from: sectionCalc.sectionMin()
             to: sectionCalc.sectionMax() - 1
             displaySuffix: "°"
         }
