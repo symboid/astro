@@ -47,6 +47,26 @@ QString QSymboidFont::zodLetter(eph::zod zodSign)
     return QString('a' + char(zodSign) - char(eph::zod::ARI));
 }
 
+QString QSymboidFont::objectLetter(hor::planet::index planetIndex)
+{
+    if (hor::planet::sun <= planetIndex && planetIndex <= hor::planet::pluto)
+    {
+        return QChar('m' + int(planetIndex));
+    }
+    else if (planetIndex == hor::planet::lilith)
+    {
+        return QChar(55);
+    }
+    else if (planetIndex == hor::planet::dragon_head)
+    {
+        return QChar(53);
+    }
+    else
+    {
+        return QChar('Z');
+    }
+}
+
 QString QSymboidFont::retrogradLetter()
 {
     return QString('~');
