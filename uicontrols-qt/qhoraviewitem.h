@@ -7,11 +7,37 @@
 #include "astro/eph/ecliptic.h"
 #include "astro/calculo/hora.h"
 #include "astro/uicontrols-qt/qastrofont.h"
+#include <QAbstractListModel>
 
 hor_ns_begin
 typedef basic_hora<eph_proxy> hora;
 typedef basic_planet<eph_proxy> planet;
 hor_ns_end
+
+class ASTRO_UICONTROLS_QT_API QHoraPlanetsModel : public QAbstractListModel
+{
+    Q_OBJECT
+
+public:
+    QHoraPlanetsModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
+
+private:
+    enum {
+        ObjectName = Qt::UserRole,
+        EclLontRole,
+        EclLattRole,
+    };
+public:
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
+private:
+    const hor::hora* mHora;
+    QSharedPointer<QAstroFont> mAstroFont;
+public:
+    using QAbstractItemModel::beginResetModel;
+    using QAbstractItemModel::endResetModel;
+};
 
 class ASTRO_UICONTROLS_QT_API QHoraViewItem : public QQuickPaintedItem
 {
@@ -97,6 +123,14 @@ signals:
 
 private slots:
     void recalc();
+
+public:
+    Q_PROPERTY(QAbstractListModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
+private:
+    QHoraPlanetsModel* mPlanetsModel;
+    QAbstractListModel* planetsModel() const { return mPlanetsModel; }
+signals:
+    void planetsModelChanged();
 };
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_QHORAVIEWITEM_H__

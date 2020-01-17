@@ -5,3 +5,4 @@ GeoCoordBox 1.0 GeoCoordBox.qml
 GeoNamesSearchItem 1.0 GeoNamesSearchItem.qml
 GeoNamesSearchView 1.0 GeoNamesSearchView.qml
 GeoNamesSearchBox 1.0 GeoNamesSearchBox.qml
+HoraTableView 1.0 HoraTableView.qml

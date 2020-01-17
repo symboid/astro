@@ -7,6 +7,7 @@
         <file>GeoNamesSearchBox.qml</file>
         <file>GeoNamesSearchItem.qml</file>
         <file>GeoLattBox.qml</file>
+        <file>HoraTableView.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>

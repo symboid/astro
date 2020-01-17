@@ -3,11 +3,51 @@
 #include "astro/uicontrols-qt/qhoraviewitem.h"
 #include <QPainter>
 
+
+QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
+    : QAbstractListModel(parent)
+    , mHora(hora)
+    , mAstroFont(QAstroFontRepo::mo()->defaultFont())
+{
+}
+
+int QHoraPlanetsModel::rowCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+    return mHora ? int(mHora->planet_count()) : 0;
+}
+
+QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
+{
+    QVariant planetData;
+    if (mHora != Q_NULLPTR)
+    {
+        size_t planetIndex = index.row();
+        const hor::planet& planet = mHora->planet(planetIndex);
+        switch (role) {
+        case ObjectName: planetData = mAstroFont->objectLetter(planet.get_index()); break;
+        case EclLontRole: planetData = planet.pos().lont_coord().arc_pos(); break;
+        case EclLattRole: planetData = planet.pos().latt_coord().arc_pos(); break;
+        }
+    }
+    return planetData;
+}
+
+QHash<int, QByteArray> QHoraPlanetsModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[ObjectName] = "object_name";
+    roles[EclLontRole] = "ecl_lont";
+    roles[EclLattRole] = "ecl_latt";
+    return roles;
+}
+
 static const qreal PI = 3.14159265;
 
 QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     : QQuickPaintedItem(parent)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
+    , mPlanetsModel(new QHoraPlanetsModel(& mHora, this))
 {
     setFlag(QQuickItem::ItemHasContents);
     setRenderTarget(QQuickPaintedItem::Image);
@@ -306,6 +346,7 @@ void QHoraViewItem::recalc()
     horaCoords._M_time_zone_diff = std::chrono::minutes(int(60.0 * mTzDiff));
     horaCoords._M_geo_latt = mGeoLatt;
     horaCoords._M_geo_lont = mGeoLont;
+    mPlanetsModel->beginResetModel();
     if (mHousesType == "koch")
     {
         mHora.calc<eph::house_system_koch>(horaCoords);
@@ -326,6 +367,7 @@ void QHoraViewItem::recalc()
     {
         mHora.calc<eph::house_system_placidus>(horaCoords);
     }
+    mPlanetsModel->endResetModel();
     update();
 }
 

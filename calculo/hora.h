@@ -48,7 +48,7 @@ public:
     }
 
 public:
-    typedef std::list<basic_planet<_EphProxy>> planet_list;
+    typedef std::vector<basic_planet<_EphProxy>> planet_list;
     typedef typename planet_list::iterator planet_it;
     typedef typename planet_list::const_iterator planet_it_const;
 private:
@@ -75,6 +75,8 @@ public:
     {
         return _M_planets.end();
     }
+    size_t planet_count() const { return _M_planets.size(); }
+    const basic_planet<_EphProxy>& planet(size_t _planet_index) const { return _M_planets.at(_planet_index); }
 };
 
 }
