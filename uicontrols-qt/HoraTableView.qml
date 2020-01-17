@@ -28,23 +28,39 @@ Item {
         anchors.right: parent.right
         currentIndex: tabBar.currentIndex
         ListView {
-            model: horaModel.planetsModel
+            model: horaModel !== null ? horaModel.planetsModel : null
+            flickableDirection: Flickable.VerticalFlick | Flickable.HorizontalFlick
+            contentWidth: 400
             delegate: Row {
                 spacing: 10
                 Text {
-                    text: object_name
+                    text: symbol
+                    font.family: "Symboid"
+                    anchors.verticalCenter: parent.verticalCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    width: 40
                 }
-                GeoCoordBox {
+                ArcCoordBox {
                     editable: false
                     Component.onCompleted: {
                         arcDegree = Qt.binding(function(){return ecl_lont})
                     }
+                    width: 180
+                    sectionCalc: ZodiacSectionCalc {
+                    }
                 }
-                GeoCoordBox {
+                ArcCoordBox {
                     editable: false
-                    isLattitude: true
+                    width: 180
                     Component.onCompleted: {
                         arcDegree = Qt.binding(function(){return ecl_latt})
+                    }
+                }
+                ArcCoordBox {
+                    editable: false
+                    width: 180
+                    Component.onCompleted: {
+                        arcDegree = Qt.binding(function(){return ecl_speed})
                     }
                 }
             }

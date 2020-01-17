@@ -23,9 +23,10 @@ public:
 
 private:
     enum {
-        ObjectName = Qt::UserRole,
+        SymbolRole = Qt::UserRole,
         EclLontRole,
         EclLattRole,
+        EclSpeedRole,
     };
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
