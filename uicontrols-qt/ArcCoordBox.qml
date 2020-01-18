@@ -44,6 +44,7 @@ MultiNumberBox {
             id: minuteBox
             from: 0
             to: 59
+            digitCount: 2
             displaySuffix: "'"
             circularLink: degreeBox
         }
@@ -51,6 +52,7 @@ MultiNumberBox {
             id: secondBox
             from: 0
             to: 59
+            digitCount: 2
             displaySuffix: "\""
             circularLink: minuteBox
         }

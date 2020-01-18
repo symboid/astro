@@ -30,7 +30,6 @@ Item {
         ListView {
             model: horaModel !== null ? horaModel.planetsModel : null
             flickableDirection: Flickable.VerticalFlick | Flickable.HorizontalFlick
-            contentWidth: 400
             delegate: Row {
                 spacing: 10
                 Text {
@@ -38,27 +37,20 @@ Item {
                     font.family: "Symboid"
                     anchors.verticalCenter: parent.verticalCenter
                     horizontalAlignment: Text.AlignHCenter
-                    width: 40
                 }
                 ArcCoordBox {
-                    editable: false
                     Component.onCompleted: {
                         arcDegree = Qt.binding(function(){return ecl_lont})
                     }
-                    width: 180
                     sectionCalc: ZodiacSectionCalc {
                     }
                 }
                 ArcCoordBox {
-                    editable: false
-                    width: 180
                     Component.onCompleted: {
                         arcDegree = Qt.binding(function(){return ecl_latt})
                     }
                 }
                 ArcCoordBox {
-                    editable: false
-                    width: 180
                     Component.onCompleted: {
                         arcDegree = Qt.binding(function(){return ecl_speed})
                     }
