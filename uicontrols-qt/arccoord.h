@@ -14,8 +14,9 @@ class ASTRO_UICONTROLS_QT_API QSectionCalc : public QObject
 
 public:
     virtual eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const = 0;
-    virtual eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const = 0;
-    virtual int index(eph::arc_coord::degree rawDegree) const = 0;
+    virtual eph::arc_coord::signum signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const = 0;
+    virtual eph::arc_coord::degree degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const = 0;
+    virtual int index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const = 0;
 
 public:
     Q_INVOKABLE virtual int sectionCount() const { return 1; }
@@ -87,8 +88,27 @@ struct ASTRO_UICONTROLS_QT_API QNoneSectionCalc : QSectionCalc
     static constexpr const char* qml_name = "NoneSectionCalc";
 
     eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
-    eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
-    int index(eph::arc_coord::degree plainDegree) const override;
+    eph::arc_coord::signum signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    eph::arc_coord::degree degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
+    int index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
+};
+
+struct ASTRO_UICONTROLS_QT_API QSignumSectionCalc : QSectionCalc
+{
+    static constexpr const char* qml_name = "SignumSectionCalc";
+
+    eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    virtual eph::arc_coord::signum signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    eph::arc_coord::degree degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
+    int index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
+
+    Q_INVOKABLE virtual int sectionCount() const { return 2; }
+    Q_INVOKABLE virtual int sectionMin() const { return 0; }
+    Q_INVOKABLE virtual int sectionMax() const { return 180; }
+    Q_INVOKABLE virtual QStringList values() const { return { "", "-" }; }
+
+    static constexpr int positive_index = 0;
+    static constexpr int negative_index = 1;
 };
 
 struct ASTRO_UICONTROLS_QT_API QGeoLattSectionCalc : QSectionCalc
@@ -96,8 +116,9 @@ struct ASTRO_UICONTROLS_QT_API QGeoLattSectionCalc : QSectionCalc
     static constexpr const char* qml_name = "GeoLattSectionCalc";
 
     eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
-    eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
-    int index(eph::arc_coord::degree plainDegree) const override;
+    virtual eph::arc_coord::signum signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    eph::arc_coord::degree degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
+    int index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
     Q_INVOKABLE virtual int sectionCount() const override { return 2; }
     Q_INVOKABLE virtual int sectionMin() const override { return 0; }
     Q_INVOKABLE virtual int sectionMax() const override { return 90; }
@@ -112,8 +133,9 @@ struct ASTRO_UICONTROLS_QT_API QGeoLontSectionCalc : QSectionCalc
     static constexpr const char* qml_name = "GeoLontSectionCalc";
 
     eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
-    eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
-    int index(eph::arc_coord::degree plainDegree) const override;
+    virtual eph::arc_coord::signum signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    eph::arc_coord::degree degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
+    int index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
     Q_INVOKABLE virtual int sectionCount() const override { return 2; }
     Q_INVOKABLE virtual int sectionMin() const override { return 0; }
     Q_INVOKABLE virtual int sectionMax() const override { return 180; }
@@ -130,8 +152,9 @@ struct ASTRO_UICONTROLS_QT_API QZodiacSectionCalc : QSectionCalc
     static constexpr const char* qml_name = "ZodiacSectionCalc";
 
     eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
-    eph::arc_coord::degree degree(eph::arc_coord::degree rawDegree) const override;
-    int index(eph::arc_coord::degree rawDegree) const override;
+    virtual eph::arc_coord::signum signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
+    eph::arc_coord::degree degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
+    int index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
 
     Q_INVOKABLE virtual int sectionCount() const override { return 12; }
     Q_INVOKABLE virtual int sectionMin() const override { return 0; }

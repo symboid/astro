@@ -32,7 +32,7 @@ Grid {
         id: arcDegreeInput
         text: "0.0"
         validator: RegExpValidator {
-            regExp: new RegExp("[0-9]+\.[0-9]+")
+            regExp: new RegExp("\-?[0-9]+\.[0-9]+")
         }
     }
     ArcCoordBox {

@@ -49,10 +49,14 @@ Item {
                     Component.onCompleted: {
                         arcDegree = Qt.binding(function(){return ecl_latt})
                     }
+                    sectionCalc: SignumSectionCalc {
+                    }
                 }
                 ArcCoordBox {
                     Component.onCompleted: {
                         arcDegree = Qt.binding(function(){return ecl_speed})
+                    }
+                    sectionCalc: SignumSectionCalc {
                     }
                 }
             }

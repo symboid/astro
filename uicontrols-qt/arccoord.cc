@@ -46,7 +46,8 @@ QArcCoord::FracSecond QArcCoord::fracSecond() const
 QArcCoord::ArcDegree QArcCoord::arcDegree() const
 {
     Degree rawDegree = mSectionCalc->raw(mSection, mDegree);
-    return eph::arc_coord::calc_arc_pos(rawDegree < 0.0 ? -1 : 1, rawDegree, mMinute, mSecond + mFracSecond);
+    eph::arc_coord::signum signum = mSectionCalc->signum(mSection, mDegree);
+    return eph::arc_coord::calc_arc_pos(signum, rawDegree, mMinute, mSecond + mFracSecond);
 }
 
 void QArcCoord::setSectionCalc(QSectionCalc* sectionCalc)
@@ -113,15 +114,14 @@ void QArcCoord::setArcDegree(ArcDegree arcDegree)
     if (!eph::arc_degree_equals(QArcCoord::arcDegree(),arcDegree))
     {
         eph::arc_coord arcCoord(arcDegree);
-        eph::arc_coord::degree signedDegree = arcCoord._M_signum * arcCoord._M_degree;
-        if (mSectionCalc->index(signedDegree) != mSection)
+        if (mSectionCalc->index(arcCoord._M_signum, arcCoord._M_degree) != mSection)
         {
-            mSection = mSectionCalc->index(signedDegree);
+            mSection = mSectionCalc->index(arcCoord._M_signum, arcCoord._M_degree);
             emit sectionChanged();
         }
-        if (mSectionCalc->degree(arcCoord._M_degree) != mDegree)
+        if (mSectionCalc->degree(arcCoord._M_signum, arcCoord._M_degree) != mDegree)
         {
-            mDegree = mSectionCalc->degree(signedDegree);
+            mDegree = mSectionCalc->degree(arcCoord._M_signum, arcCoord._M_degree);
             emit degreeChanged();
         }
         if (arcCoord._M_minute != mMinute)
@@ -146,15 +146,55 @@ eph::arc_coord::degree QNoneSectionCalc::raw(int sectionIndex, eph::arc_coord::d
     return sectionDegree;
 }
 
-eph::arc_coord::degree QNoneSectionCalc::degree(eph::arc_coord::degree plainDegree) const
+eph::arc_coord::signum QNoneSectionCalc::signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const
 {
-    return plainDegree;
+    Q_UNUSED(sectionIndex);
+    Q_UNUSED(sectionDegree);
+    return 1;
 }
 
-int QNoneSectionCalc::index(eph::arc_coord::degree plainDegree) const
+eph::arc_coord::degree QNoneSectionCalc::degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
 {
-    Q_UNUSED(plainDegree);
+    Q_UNUSED(signum);
+    return rawDegree;
+}
+
+int QNoneSectionCalc::index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
+{
+    Q_UNUSED(signum);
+    Q_UNUSED(rawDegree);
     return 0;
+}
+
+eph::arc_coord::degree QSignumSectionCalc::raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const
+{
+    return sectionIndex == negative_index ? -sectionDegree : sectionDegree;
+}
+
+eph::arc_coord::signum QSignumSectionCalc::signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const
+{
+    Q_UNUSED(sectionDegree);
+    return sectionIndex == 1 ? -1 : 1;
+}
+
+eph::arc_coord::degree QSignumSectionCalc::degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
+{
+    rawDegree *= signum;
+    while (rawDegree >= 180)
+    {
+        rawDegree -= 360;
+    }
+    while (rawDegree < -180)
+    {
+        rawDegree += 360;
+    }
+    return rawDegree < 0 ? -rawDegree : rawDegree;
+}
+
+int QSignumSectionCalc::index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
+{
+    Q_UNUSED(rawDegree);
+    return signum == -1 ? negative_index : positive_index;
 }
 
 eph::arc_coord::degree QGeoLattSectionCalc::raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const
@@ -162,8 +202,15 @@ eph::arc_coord::degree QGeoLattSectionCalc::raw(int sectionIndex, eph::arc_coord
     return (sectionIndex == north_index) ? sectionDegree : -sectionDegree;
 }
 
-eph::arc_coord::degree QGeoLattSectionCalc::degree(eph::arc_coord::degree rawDegree) const
+eph::arc_coord::signum QGeoLattSectionCalc::signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const
 {
+    Q_UNUSED(sectionDegree);
+    return sectionIndex == 1 ? -1 : 1;
+}
+
+eph::arc_coord::degree QGeoLattSectionCalc::degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
+{
+    rawDegree *= signum;
     if (rawDegree < -sectionMax() || rawDegree > sectionMax())
     {
         return sectionMax();
@@ -174,9 +221,9 @@ eph::arc_coord::degree QGeoLattSectionCalc::degree(eph::arc_coord::degree rawDeg
     }
 }
 
-int QGeoLattSectionCalc::index(eph::arc_coord::degree rawDegree) const
+int QGeoLattSectionCalc::index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
 {
-    return rawDegree >= 0 ? north_index : south_index;
+    return signum != -1 ? north_index : south_index;
 }
 
 eph::arc_coord::degree QGeoLontSectionCalc::raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const
@@ -184,21 +231,27 @@ eph::arc_coord::degree QGeoLontSectionCalc::raw(int sectionIndex, eph::arc_coord
     return (sectionIndex == east_index) ? sectionDegree : -sectionDegree;
 }
 
+eph::arc_coord::signum QGeoLontSectionCalc::signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const
+{
+    Q_UNUSED(sectionDegree);
+    return sectionIndex == 1 ? -1 : 1;
+}
+
 eph::arc_coord::degree QGeoLontSectionCalc::normalizeDegree(eph::arc_coord::degree rawDegree)
 {
-    while (rawDegree > 180) rawDegree -= 360;
-    while (rawDegree <= -180) rawDegree += 360;
+    while (rawDegree >= 180) rawDegree -= 360;
+    while (rawDegree < -180) rawDegree += 360;
     return rawDegree;
 }
 
-eph::arc_coord::degree QGeoLontSectionCalc::degree(eph::arc_coord::degree rawDegree) const
+eph::arc_coord::degree QGeoLontSectionCalc::degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
 {
-    return qAbs(normalizeDegree(rawDegree));
+    return qAbs(normalizeDegree(signum * rawDegree));
 }
 
-int QGeoLontSectionCalc::index(eph::arc_coord::degree rawDegree) const
+int QGeoLontSectionCalc::index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
 {
-    return normalizeDegree(rawDegree) >= 0 ? east_index : west_index;
+    return signum != -1 ? east_index : west_index;
 }
 
 eph::arc_coord::degree QZodiacSectionCalc::raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const
@@ -206,8 +259,16 @@ eph::arc_coord::degree QZodiacSectionCalc::raw(int sectionIndex, eph::arc_coord:
     return sectionIndex * 30 + sectionDegree;
 }
 
-eph::arc_coord::degree QZodiacSectionCalc::degree(eph::arc_coord::degree rawDegree) const
+eph::arc_coord::signum QZodiacSectionCalc::signum(int sectionIndex, eph::arc_coord::degree sectionDegree) const
 {
+    Q_UNUSED(sectionIndex);
+    Q_UNUSED(sectionDegree);
+    return 1;
+}
+
+eph::arc_coord::degree QZodiacSectionCalc::degree(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
+{
+    rawDegree *= signum;
     while (rawDegree < 0.0)
     {
         rawDegree += 360;
@@ -215,8 +276,9 @@ eph::arc_coord::degree QZodiacSectionCalc::degree(eph::arc_coord::degree rawDegr
     return rawDegree % 30;
 }
 
-int QZodiacSectionCalc::index(eph::arc_coord::degree rawDegree) const
+int QZodiacSectionCalc::index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
 {
+    rawDegree *= signum;
     while (rawDegree < 0.0)
     {
         rawDegree += 360;
