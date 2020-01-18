@@ -2,11 +2,9 @@
     <qresource prefix="/Symboid/Astro/Controls">
         <file>ArcCoordBox.qml</file>
         <file>qmldir</file>
-        <file>GeoCoordBox.qml</file>
         <file>GeoNamesSearchView.qml</file>
         <file>GeoNamesSearchBox.qml</file>
         <file>GeoNamesSearchItem.qml</file>
-        <file>GeoLattBox.qml</file>
         <file>HoraTableView.qml</file>
     </qresource>
     <qresource prefix="/font">

@@ -1,6 +1,7 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import Symboid.Astro.Controls 1.0
 
 Flow {
     property string geoName: ""
@@ -24,12 +25,13 @@ Flow {
     }
     Row {
         spacing: 10
-        GeoCoordBox {
+        ArcCoordBox {
             id: lont
+            sectionCalc: GeoLontSectionCalc {}
         }
-        GeoCoordBox {
+        ArcCoordBox {
             id: latt
-            isLattitude: true
+            sectionCalc: GeoLattSectionCalc {}
         }
     }
 }
