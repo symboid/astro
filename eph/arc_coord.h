@@ -18,28 +18,36 @@ inline bool static arc_degree_equals(arc_degree _left, arc_degree _right)
 
 struct arc_coord
 {
+    typedef int signum;
     typedef int degree;
     typedef int minute;
     typedef arc_degree second;
 
     arc_coord(arc_degree _arc_pos)
-        : _M_degree(int(std::floor(_arc_pos)) % 360)
+        : _M_signum(_arc_pos < 0.0 ? -1 : 1)
+        , _M_degree(int(std::floor(_arc_pos *= _M_signum)) % 360)
         , _M_minute(int(std::floor((_arc_pos - _M_degree) * 60.0)))
         , _M_second((_arc_pos - _M_degree) * 3600.0 - _M_minute * 60.0)
     {
     }
 
+    const signum _M_signum;
     const degree _M_degree;
     const minute _M_minute;
     const second _M_second;
 
-    inline static arc_degree calc_arc_pos(degree _degree, minute _minute, second _second)
+    inline static arc_degree calc_arc_pos(signum _signum, degree _degree, minute _minute, second _second)
     {
-        return arc_degree(_degree) + arc_degree(_minute) / 60.0 + arc_degree(_second) / 3600.0;
+        if (_degree < 0.0)
+        {
+            _signum = -1;
+            _degree = -_degree;
+        }
+        return _signum * (arc_degree(_degree) + arc_degree(_minute) / 60.0 + arc_degree(_second) / 3600.0);
     }
     arc_degree arc_pos() const
     {
-        return calc_arc_pos(_M_degree, _M_minute, _M_second);
+        return calc_arc_pos(_M_signum, _M_degree, _M_minute, _M_second);
     }
 
     static constexpr second second_epsilon = 1.0 / 1000.0;

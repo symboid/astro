@@ -46,7 +46,7 @@ QArcCoord::FracSecond QArcCoord::fracSecond() const
 QArcCoord::ArcDegree QArcCoord::arcDegree() const
 {
     Degree rawDegree = mSectionCalc->raw(mSection, mDegree);
-    return eph::arc_coord::calc_arc_pos(rawDegree, mMinute, mSecond + mFracSecond);
+    return eph::arc_coord::calc_arc_pos(rawDegree < 0.0 ? -1 : 1, rawDegree, mMinute, mSecond + mFracSecond);
 }
 
 void QArcCoord::setSectionCalc(QSectionCalc* sectionCalc)
@@ -113,14 +113,15 @@ void QArcCoord::setArcDegree(ArcDegree arcDegree)
     if (!eph::arc_degree_equals(QArcCoord::arcDegree(),arcDegree))
     {
         eph::arc_coord arcCoord(arcDegree);
-        if (mSectionCalc->index(arcCoord._M_degree) != mSection)
+        eph::arc_coord::degree signedDegree = arcCoord._M_signum * arcCoord._M_degree;
+        if (mSectionCalc->index(signedDegree) != mSection)
         {
-            mSection = mSectionCalc->index(arcCoord._M_degree);
+            mSection = mSectionCalc->index(signedDegree);
             emit sectionChanged();
         }
         if (mSectionCalc->degree(arcCoord._M_degree) != mDegree)
         {
-            mDegree = mSectionCalc->degree(arcCoord._M_degree);
+            mDegree = mSectionCalc->degree(signedDegree);
             emit degreeChanged();
         }
         if (arcCoord._M_minute != mMinute)
