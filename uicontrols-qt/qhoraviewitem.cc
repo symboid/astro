@@ -22,13 +22,12 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
     QVariant planetData;
     if (mHora != Q_NULLPTR)
     {
-        size_t planetIndex = index.row();
-        const hor::planet& planet = mHora->planet(planetIndex);
+        const hor::planet& planet = mHora->planet(index.row());
         switch (role) {
         case SymbolRole: planetData = mAstroFont->objectLetter(planet.get_index()); break;
-        case EclLontRole: planetData = planet.pos().lont_coord().arc_pos(); break;
-        case EclLattRole: planetData = planet.pos().latt_coord().arc_pos(); break;
-        case EclSpeedRole: planetData = planet.speed().lont_coord().arc_pos(); break;
+        case EclLontRole: planetData = planet.pos()._M_lont.to_arc_degree(); break;
+        case EclLattRole: planetData = planet.pos()._M_latt; break;
+        case EclSpeedRole: planetData = planet.speed()._M_lont; break;
         }
     }
     return planetData;

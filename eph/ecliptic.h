@@ -32,6 +32,11 @@ public:
     {
         return _M_value_360;
     }
+    arc_degree to_arc_degree() const
+    {
+        return _M_value_360;
+    }
+
     ecl_lont operator+(const arc_degree& _arc_degree)
     {
         return ecl_lont(_M_value_360 + _arc_degree, _M_is_signed);
@@ -165,7 +170,27 @@ struct ecl_pos : ecl_coords
     }
 };
 
-typedef ecl_coords ecl_speed;
+struct ecl_speed
+{
+    typedef arc_degree lont;
+    typedef arc_degree latt;
+
+    ecl_speed()
+        : _M_lont(0.0), _M_latt(0.0)
+    {
+    }
+
+    ecl_speed(lont _lont, latt _latt)
+        : _M_lont(_lont), _M_latt(_latt)
+    {
+    }
+
+    lont _M_lont;
+    latt _M_latt;
+
+    inline arc_coord lont_coord() const { return arc_coord(_M_lont); }
+    inline arc_coord latt_coord() const { return arc_coord(_M_latt); }
+};
 
 eph_ns_end
 

@@ -47,7 +47,7 @@ eph::calc_result proxy::object::calc_pos(index _object_index, proxy::clock::time
     if (ret_flag < 0)
     {
         _ecl_pos = eph::ecl_pos(0,0,0);
-        _ecl_speed = eph::ecl_speed(0,0,0);
+        _ecl_speed = eph::ecl_speed(0,0);
     }
     else
     {
@@ -56,7 +56,7 @@ eph::calc_result proxy::object::calc_pos(index _object_index, proxy::clock::time
 //            WARNING;
         }
         _ecl_pos = eph::ecl_pos(eph_data[0], eph_data[1], eph_data[2]);
-        _ecl_speed = eph::ecl_speed(eph_data[3], eph_data[4], eph_data[5]);
+        _ecl_speed = eph::ecl_speed(eph_data[3], eph_data[4]);
     }
 
     return ret_flag >= 0 ? eph::calc_result::SUCCESS : eph::calc_result::FAILED;
