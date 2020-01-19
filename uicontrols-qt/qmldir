@@ -1,6 +1,9 @@
 module Symboid.Astro.Controls
 ArcCoordBox 1.0 ArcCoordBox.qml
+GeoNameDialog 1.0 GeoNameDialog.qml
 GeoNamesSearchItem 1.0 GeoNamesSearchItem.qml
 GeoNamesSearchView 1.0 GeoNamesSearchView.qml
 GeoNamesSearchBox 1.0 GeoNamesSearchBox.qml
+HoraScreen 1.0 HoraScreen.qml
+HoraScreenParams 1.0 HoraScreenParams.qml
 HoraTableView 1.0 HoraTableView.qml

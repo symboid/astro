@@ -6,8 +6,14 @@
         <file>GeoNamesSearchBox.qml</file>
         <file>GeoNamesSearchItem.qml</file>
         <file>HoraTableView.qml</file>
+        <file>HoraScreen.qml</file>
+        <file>HoraScreenParams.qml</file>
+        <file>GeoNameDialog.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>icons/globe_3_icon&amp;48.png</file>
     </qresource>
 </RCC>
