@@ -1,10 +1,78 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import QtQuick.Layouts 1.12
+import Symboid.Sdk.Controls 1.0
 import Symboid.Astro.Controls 1.0
 import QtPositioning 5.12
 
+Drawer {
+    property TextField geoNameBox: null
+    property ArcCoordBox geoLattBox: null
+    property ArcCoordBox geoLontBox: null
+
+    QtObject {
+        id: temp
+        property GeoNamesSearchItem selectedGeoName: null
+        property GeoNamesSearchItem currentGeoName: null
+    }
+
+    DocItemOpsView {
+        anchors.fill: parent
+        leftAligned: edge === Qt.LeftEdge
+        operations: Container {
+            DocItemOp {
+                title: qsTr("Geographic name lookup:")
+
+                control: GeoNamesSearchBox {
+                    height: 500
+                    onSelectedItemChanged: {
+                        temp.selectedGeoName = selectedItem
+                    }
+                }
+                canExecute: temp.selectedGeoName !== null
+                onExecute: {
+                    geoNameBox.text = temp.selectedGeoName.geoName
+                    geoLattBox.arcDegree = temp.selectedGeoName.lattArcDegree
+                    geoLontBox.arcDegree = temp.selectedGeoName.lontArcDegree
+                    close()
+                }
+            }
+            DocItemOp {
+                title: qsTr("Current location")
+                control: GeoNamesSearchItem {
+                    id: currentLocation
+                    PositionSource {
+                        id: positionSrc
+                        updateInterval: 1000
+                        active: true
+                        onPositionChanged: {
+                            if (valid)
+                            {
+                                if (position.latitudeValid)
+                                {
+                                    currentLocation.lattArcDegree = position.coordinate.latitude
+                                }
+                                if (position.longitudeValid)
+                                {
+                                    currentLocation.lontArcDegree = position.coordinate.longitude
+                                }
+                                temp.currentGeoName = currentLocation
+                            }
+                        }
+                    }
+                }
+                canExecute: temp.currentGeoName !== null
+                onExecute: {
+                    geoNameBox.text = temp.currentGeoName.geoName
+                    geoLattBox.arcDegree = temp.currentGeoName.lattArcDegree
+                    geoLontBox.arcDegree = temp.currentGeoName.lontArcDegree
+                    close()
+                }
+            }
+        }
+    }
+}
+/*/
 Drawer {
     property TextField geoNameBox: null
     property ArcCoordBox geoLattBox: null
@@ -133,3 +201,4 @@ Drawer {
         }
     }
 }
+/*/

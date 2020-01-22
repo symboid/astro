@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
 import Symboid.Astro.Controls 1.0
 import QtPositioning 5.12
+import QtQuick.Controls.Material 2.3
 
 Flickable {
 
@@ -217,5 +218,7 @@ Flickable {
         geoNameBox: geoName
         geoLattBox: geoLatt
         geoLontBox: geoLont
+        Material.background: "#DFEEE5"
+        opacity: 0.875
     }
 }
