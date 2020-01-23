@@ -24,6 +24,10 @@ ListView {
 
         onModelAboutToBeReset: busyIndicator.visible = true
         onModelReset: busyIndicator.visible = false
+        onNetworkError: {
+            networkStatusDialog.message = qsTr("Netwok error!")
+            networkStatusDialog.open()
+        }
     }
     function update()
     {
@@ -69,5 +73,24 @@ ListView {
         visible: false
         anchors.centerIn: parent
         running: true
+    }
+
+    Dialog {
+        id: networkStatusDialog
+        anchors.centerIn: parent
+        width: 150
+        onOpened: networkStatusTimer.start()
+        property alias message: messageLabel.text
+        Label {
+            anchors.centerIn: parent
+            id: messageLabel
+            font.bold: true
+            color: "red"
+        }
+        Timer {
+            id: networkStatusTimer
+            interval: 2000
+            onTriggered: networkStatusDialog.close()
+        }
     }
 }
