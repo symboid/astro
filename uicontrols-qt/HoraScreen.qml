@@ -84,22 +84,6 @@ Flickable {
             housesType: housesType.currentToken()
             withJulianCalendar: calendarType.currentIndex !== 0
 
-            Switch {
-                id: details
-                anchors {
-                    bottom: parent.bottom
-                    right: parent.right
-                }
-                text: qsTr("Details")
-            }
-
-            RoundButton {
-                anchors.left: parent.left
-                anchors.bottom: parent.bottom
-                text: qsTr("Tabular")
-                onClicked: horaTableDialog.open()
-            }
-
             Dialog {
                 id: horaTableDialog
                 title: qsTr("Horoscope items")
@@ -123,19 +107,6 @@ Flickable {
             TextField {
                 id: geoName
                 width: parent.defaultItemWidth
-
-                RoundButton {
-                    height: geoLatt.height * 1.33
-                    width: height
-                    icon.source: "/icons/globe_3_icon&48.png"
-                    icon.width: 48
-                    icon.height: 48
-                    icon.color: "darkblue"
-                    anchors.right: parent.right
-                    anchors.bottom: parent.top
-                    anchors.bottomMargin: -20
-                    onClicked: geoNameDialog.open()
-                }
             }
             ArcCoordBox {
                 id: geoLatt
@@ -205,6 +176,62 @@ Flickable {
                 function currentToken()
                 {
                     return model.data(model.index(currentIndex, 0))
+                }
+            }
+        }
+
+        Pane {
+            id: controlPanel
+            width: parent.paramSectionWidth
+            padding: 20
+            height: 100
+
+            Rectangle {
+                anchors.fill: parent
+                color: "#95B2A0"
+                border.color: "black"
+                border.width: 1
+                radius: 10
+                readonly property int buttonPadding: 5
+                RoundButton {
+                    id: geoNameDialogButton
+                    anchors.margins: parent.buttonPadding
+                    height: parent.height - 2*parent.buttonPadding
+                    width: height
+                    icon.source: "/icons/globe_3_icon&48.png"
+                    icon.width: 48
+                    icon.height: 48
+                    icon.color: "darkblue"
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    onClicked: geoNameDialog.open()
+                }
+                Switch {
+                    id: details
+                    anchors.margins: parent.buttonPadding
+                    anchors {
+                        right: parent.right
+                        verticalCenter: parent.verticalCenter
+                    }
+                    text: qsTr("Details")
+                }
+
+                Rectangle {
+                    anchors.left: geoNameDialogButton.right
+                    anchors.leftMargin: parent.buttonPadding
+                    anchors.right: details.left
+                    anchors.rightMargin: parent.buttonPadding
+                    height: parent.height
+                    color: parent.color
+                    border.color: parent.border.color
+                    border.width: parent.border.width
+                    RoundButton {
+                        anchors.fill: parent
+                        anchors.margins: parent.parent.buttonPadding
+                        radius: 0
+                        text: qsTr("Tabular")
+                        onClicked: horaTableDialog.open()
+                    }
                 }
             }
         }
