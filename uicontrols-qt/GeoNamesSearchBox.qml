@@ -5,8 +5,7 @@ import QtQuick.Controls 2.5
 Column {
     property alias selectedItem: searchView.selectedItem
 
-    padding: 20
-    spacing: padding
+    spacing: 20
     Row {
         id: searchRow
         anchors {
@@ -18,16 +17,19 @@ Column {
         TextField {
             id: geoName
             width: parent.width - searchButton.width - parent.spacing
-            verticalAlignment: TextField.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
+            onEditingFinished: searchRow.search()
         }
         Button {
             id: searchButton
             enabled: geoName.text.length
             text: qsTr("Search")
-            onClicked: {
-                searchView.geoName = geoName.text
-                searchView.update()
-            }
+            onClicked: parent.search()
+        }
+        function search()
+        {
+            searchView.geoName = geoName.text
+            searchView.update()
         }
     }
     Rectangle {

@@ -22,8 +22,8 @@ ListView {
                    "&username="+apiUser
         columnNames: ["name", "countryName", "adminName1", "population", "lng", "lat"]
 
-        onModelAboutToBeReset: busyPopup.open()
-        onModelReset: busyPopup.close()
+        onModelAboutToBeReset: busyIndicator.visible = true
+        onModelReset: busyIndicator.visible = false
     }
     function update()
     {
@@ -64,14 +64,10 @@ ListView {
     focus: true
     clip: true
 
-    Dialog {
-        id: busyPopup
-        width: 100
-        height: width
+    BusyIndicator {
+        id: busyIndicator
+        visible: false
         anchors.centerIn: parent
-        BusyIndicator {
-            anchors.centerIn: parent
-            running: true
-        }
+        running: true
     }
 }
