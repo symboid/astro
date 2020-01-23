@@ -29,8 +29,8 @@ Drawer {
                         temp.selectedGeoName = selectedItem
                     }
                 }
-                canExecute: temp.selectedGeoName !== null
-                onExecute: {
+                canExec: temp.selectedGeoName !== null
+                onExec: {
                     geoNameBox.text = temp.selectedGeoName.geoName
                     geoLattBox.arcDegree = temp.selectedGeoName.lattArcDegree
                     geoLontBox.arcDegree = temp.selectedGeoName.lontArcDegree
@@ -61,8 +61,8 @@ Drawer {
                         }
                     }
                 }
-                canExecute: temp.currentGeoName !== null
-                onExecute: {
+                canExec: temp.currentGeoName !== null
+                onExec: {
                     geoNameBox.text = temp.currentGeoName.geoName
                     geoLattBox.arcDegree = temp.currentGeoName.lattArcDegree
                     geoLontBox.arcDegree = temp.currentGeoName.lontArcDegree

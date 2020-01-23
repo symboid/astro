@@ -18,7 +18,7 @@ Column {
             id: geoName
             width: parent.width - searchButton.width - parent.spacing
             anchors.verticalCenter: parent.verticalCenter
-            onEditingFinished: searchRow.search()
+            onEditingFinished: parent.search()
         }
         Button {
             id: searchButton
