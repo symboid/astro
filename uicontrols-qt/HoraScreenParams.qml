@@ -6,7 +6,7 @@ Grid {
     property string title: ""
 
     width: parent.paramSectionWidth
-    padding: 20
+    padding: parent.paramSectionPadding
     spacing: 5
     columns: 1
     horizontalItemAlignment: Grid.AlignRight

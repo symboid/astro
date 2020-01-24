@@ -30,6 +30,7 @@ Flickable {
         readonly property int paramSectionWidth:
             isLandscape ? ((restSize / 2) < minParamSectionWidth ? minParamSectionWidth : restSize / 2)
                         : ((mandalaSize / 2) < minParamSectionWidth ? mandalaSize : mandalaSize / 2)
+        readonly property int paramSectionPadding: 20
 
         flow: isLandscape ? Flow.TopToBottom : Flow.LeftToRight
 
@@ -180,11 +181,22 @@ Flickable {
             }
         }
 
+        Item {
+            id: referencePanel
+            width: isLandscape ? parent.paramSectionWidth : mandalaSize
+            readonly property int contentHeight: 80
+            height: isLandscape ? contentHeight + 2 * parent.paramSectionPadding : 0
+        }
+
         Pane {
             id: controlPanel
-            width: parent.paramSectionWidth
-            padding: 20
-            height: 100
+            width: referencePanel.width
+            padding: parent.paramSectionPadding
+            topPadding: isLandscape ? mandalaSize - (referencePanel.y + referencePanel.height) - referencePanel.contentHeight
+                                    : parent.paramSectionPadding
+            leftPadding: isLandscape ? parent.paramSectionPadding
+                                     : parent.paramSectionPadding + mandalaSize - parent.paramSectionWidth
+            height: referencePanel.contentHeight + topPadding
 
             Rectangle {
                 anchors.fill: parent
