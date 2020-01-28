@@ -22,7 +22,7 @@ public:
     basic_object(const index& _index) : _M_index(_index) {}
 
 private:
-    const index _M_index;
+    index _M_index;
 public:
     index get_index() const { return _M_index; }
 
@@ -69,7 +69,7 @@ calc_result approx_transit_pos(basic_object<_EphProxy>& object, basic_time_point
         // speed of object at current position (measured in degrees/day):
         ecl_speed::lont speed(object.speed()._M_lont);
         const ecl_pos& approx_pos = speed > 0.0 ? _succ_pos : _prec_pos;
-        days estm_days(approx_pos.dist_to(object.pos()) / speed);
+        days estm_days(object.pos().dist_to(approx_pos) / speed);
 
         // stepping forward in time with estimated amount of time (truncated to one day):
         approx_time += std::clamp(estm_days, -ONE_DAY, ONE_DAY);
@@ -91,7 +91,7 @@ calc_result approx_transit_pos(basic_object<_EphProxy>& object, basic_time_point
     {
         // speed of object at current position is measured in degrees/day:
         // distance to transit position in ecliptic degree:
-        days estm_days(_transit_pos.dist_to(object.pos()) / object.speed()._M_lont);
+        days estm_days(object.pos().dist_to(_transit_pos) / object.speed()._M_lont);
 
         // stepping forward in time with estimated amount of days:
         conj_time += std::clamp(estm_days, -ONE_DAY, ONE_DAY);

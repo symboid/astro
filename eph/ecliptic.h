@@ -148,7 +148,7 @@ struct ecl_pos : ecl_coords
 
     lont dist_to(const ecl_pos& _rhs) const
     {
-        return lont(static_cast<arc_degree>(_M_lont - _rhs._M_lont), true);
+        return lont(static_cast<arc_degree>(_rhs._M_lont - _M_lont), true);
     }
     lont dist_abs(const ecl_pos& _rhs) const
     {

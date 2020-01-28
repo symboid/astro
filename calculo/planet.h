@@ -63,6 +63,7 @@ public:
         switch (_aspect_type) {
         case conjunction: case opposition: return main_orbis();
         case trigon: case sextil: case quadrat: return main_orbis() * 0.75;
+        case none_aspect: return 0.0;
         default: return 1.0;
         }
     }
@@ -81,7 +82,7 @@ public:
             0, 0.0, 180.0, 120.0, 90.0, 72.0, 60.0
         };
 
-        eph::ecl_lont dist = eph::basic_object<_EphProxy>::pos().dist_abs(_mag_point.pos());
+        eph::ecl_lont dist = eph::ecl_lont(eph::basic_object<_EphProxy>::pos().dist_abs(_mag_point.pos()), true);
 
         aspect_type a = none_aspect, aspect_conn = none_aspect;
         while (aspect_conn == none_aspect && ++a < aspect_type_count)
