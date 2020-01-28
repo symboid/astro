@@ -2,7 +2,7 @@
 #include "astro/uicontrols-qt/setup.h"
 #include "astro/uicontrols-qt/qhoraviewitem.h"
 #include <QPainter>
-
+#include "astro/uicontrols-qt/qhorastellium.h"
 
 QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
     : QAbstractListModel(parent)
@@ -139,6 +139,13 @@ void QHoraViewItem::paint(QPainter* painter)
         painter->setPen(QPen(QColor(0,0,0), 1.5));
         painter->drawEllipse(mMandalaCenter, eclipticRadius(), eclipticRadius());
 
+        const qreal PLANET_DIST = 0.875;
+        const qreal ASPECT_DIST = 1.0 - 2.0 * (1.0 - PLANET_DIST);
+        // planet aspects radius
+        painter->setPen(QPen(QColor(0x80,0x80,0x80), 1.0));
+        qreal aspectRadius = eclipticRadius() * ASPECT_DIST;
+        painter->drawEllipse(mMandalaCenter, aspectRadius, aspectRadius);
+
         // earth radius
         static const qreal EARTH_DIST = 0.25;
         painter->setPen(QPen(QColor(0,0,0), 1.5));
@@ -159,7 +166,8 @@ void QHoraViewItem::paint(QPainter* painter)
             QSize textSize = fontMetrics.size(0, mAstroFont->zodLetter(eph::zod(z)));
             QRectF zodSignRect(zodSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
                                zodSignPoint + QPointF(textSize.width() / 2, textSize.height() / 2));
-            painter->drawText(zodSignRect, Qt::AlignHCenter | Qt::AlignVCenter, mAstroFont->zodLetter(eph::zod(z)));
+            painter->drawText(zodSignRect, Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextDontClip,
+                              mAstroFont->zodLetter(eph::zod(z)));
         }
 
         // houses
@@ -175,28 +183,84 @@ void QHoraViewItem::paint(QPainter* painter)
             painter->drawLine(horaPoint(houseCusp.pos()._M_lont, isAxis ? 1.2 : 1.0), horaPoint(houseCusp.pos()._M_lont, EARTH_DIST));
         }
 
-        const qreal PLANET_DIST = 0.875;
         const qreal ONE_DEGREE = eclipticRadius() * PLANET_DIST * 2.0 * PI / 360;
-        const qreal ASPECT_DIST = 1.0 - 2.0 * (1.0 - PLANET_DIST);
 
+        QFont planetFont = *mAstroFont;
+        planetFont.setPixelSize(ONE_DEGREE * 5);
+        painter->setFont(planetFont);
+        QFontMetrics planetFontMetrics(planetFont);
+
+
+        // stelliums
+        QList<QHoraStellium> stelliums;
         hor::hora::planet_it_const planet = mHora.planetsBegin(), pEnd = mHora.planetsEnd();
         while (planet != pEnd)
         {
-            const eph::ecl_pos planetPos = planet->pos();
-            qreal planetSize = planet->main_orbis() * ONE_DEGREE;
-            painter->setBrush(planetBrush(planet->get_index(), 0.5));
-            QPen planetPen;
-            planetPen.setWidthF(1.0);
-            planetPen.setColor(QColor(0x80,0x80,0x80));
-            painter->setPen(planetPen);
-            painter->drawEllipse(horaPoint(planetPos._M_lont, PLANET_DIST), planetSize, planetSize);
+            QHoraStellium newStellium(8.0, *planet);
 
-            painter->setPen(QPen(QBrush(QColor(0xC0,0xC0,0xC0)), 1.0));
-            painter->drawLine(horaPoint(planetPos._M_lont, ASPECT_DIST + 0.01), horaPoint(planetPos._M_lont, ASPECT_DIST + 0.03));
-            painter->drawLine(horaPoint(planetPos._M_lont, 0.97), horaPoint(planetPos._M_lont, 0.99));
+            QList<QHoraStellium>::iterator stellium = stelliums.begin();
+            while (stellium != stelliums.end())
+            {
+                if (newStellium.isMergeable(*stellium))
+                {
+                    newStellium.mergeIn(*stellium);
+                    stelliums.erase(stellium);
+                    stellium = stelliums.begin();
+                }
+                else
+                {
+                    ++stellium;
+                }
+            }
+            stelliums.push_back(newStellium);
+            ++planet;
+        }
+
+        // planets
+        painter->setPen(QPen(QBrush("black"), 2.0));
+        for (QHoraStellium stellium : stelliums)
+        {
+            int p = 0;
+            for (hor::planet planet : stellium)
+            {
+                eph::ecl_pos planetPos = stellium.displayPos(p++);
+                eph::ecl_lont planetSignLont = planetPos._M_lont;
+                QPointF planetSignPoint(horaPoint(planetSignLont, PLANET_DIST));
+
+                // planet sign pen
+                QPen planetPen;
+                planetPen.setWidthF(0.5);
+                planetPen.setColor(Qt::black);
+                painter->setPen(planetPen);
+                // bounding circle
+                qreal planetSize = 4 * ONE_DEGREE;
+                painter->drawEllipse(planetSignPoint, planetSize, planetSize);
+                // planet sign text
+                QString planetText = QString(mAstroFont->objectLetter(planet.get_index()));
+                QSize textSize = planetFontMetrics.size(0, planetText);
+                QRectF planetSignRect(planetSignPoint - QPointF(textSize.width() / 2-2, textSize.height() / 2),
+                                      planetSignPoint + QPointF(textSize.width() / 2,   textSize.height() / 2));
+                if (planet.is_retrograd())
+                {
+                    planetText += mAstroFont->retrogradLetter();
+                }
+                painter->drawText(planetSignRect, Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextDontClip, planetText);
+
+                painter->setPen(QPen(QBrush(QColor(0x80,0x80,0x80)), 1.0));
+                painter->drawLine(horaPoint(planet.pos()._M_lont, ASPECT_DIST), horaPoint(planetPos._M_lont, ASPECT_DIST + 0.05));
+
+                painter->setPen(QPen(QBrush(QColor(0x00,0x00,0x00)), 3.0));
+                painter->drawLine(horaPoint(planet.pos()._M_lont, ASPECT_DIST - 0.004), horaPoint(planet.pos()._M_lont, ASPECT_DIST + 0.004));
+            }
+        }
+
+        // aspect connections
+        planet = mHora.planetsBegin(), pEnd = mHora.planetsEnd();
+        while (planet != pEnd)
+        {
+            const eph::ecl_pos planetPos = planet->pos();
 
             QPen aspectPen;
-            aspectPen.setWidthF(1.0);
             hor::hora::planet_it_const planet2 = planet;
             while (++planet2 != pEnd)
             {
@@ -208,14 +272,22 @@ void QHoraViewItem::paint(QPainter* painter)
                     switch (aspect_conn)
                     {
                     case hor::conjunction:
-                        aspectPen.setColor(Qt::black);break;
+                        aspectPen.setColor(Qt::black);
+                        aspectPen.setWidthF(ONE_DEGREE);
+                        break;
                     case hor::opposition:
                     case hor::quadrat:
-                        aspectPen.setColor(Qt::red);break;
+                        aspectPen.setColor(Qt::red);
+                        aspectPen.setWidthF(1.5);
+                        break;
                     case hor::quintil:
-                        aspectPen.setColor(Qt::blue);break;
+                        aspectPen.setColor(Qt::blue);
+                        aspectPen.setWidthF(1.0);
+                        break;
                     default:
-                        aspectPen.setColor(Qt::green);break;
+                        aspectPen.setColor(Qt::green);
+                        aspectPen.setWidthF(1.5);
+                        break;
                     }
                     painter->setPen(aspectPen);
                     painter->drawLine(leftPoint, rightPoint);

@@ -11,6 +11,7 @@ SOURCES += \
     qgeonamemodel.cc \
     qgeonamesrestclient.cc \
     qgeonamestablemodel.cc \
+    qhorastellium.cc \
     qhoraviewitem.cc
 
 HEADERS += \
@@ -21,6 +22,7 @@ HEADERS += \
     qgeonamemodel.h \
     qgeonamesrestclient.h \
     qgeonamestablemodel.h \
+    qhorastellium.h \
     qhoraviewitem.h \
     setup.h
 
