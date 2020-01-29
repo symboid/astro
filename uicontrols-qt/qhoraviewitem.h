@@ -50,8 +50,22 @@ public:
 public:
     QHoraViewItem(QQuickItem* parent = Q_NULLPTR);
 
-protected:
+private:
+    static constexpr qreal PI = 3.14159265;
+    static constexpr qreal PLANET_DIST = 0.875;
+    static constexpr qreal ASPECT_DIST = 1.0 - 2.0 * (1.0 - PLANET_DIST);
+
     QBrush planetBrush(hor::planet::index planetIndex, qreal alpha);
+    enum class Rank
+    {
+        ELEV, // eroben
+        HOME, // otthon
+        FALL, // esesben
+        EXIL, // szamuzetes
+        PERG, // peregrin
+    };
+    Rank planetRank(const hor::planet& planet) const;
+    void drawPlanetSymbol(QPainter* painter, const hor::planet& planet, const eph::ecl_pos& displayPos);
     void paint(QPainter* painter) override;
 private:
     QPointF horaPoint(eph::ecl_lont horaLont, qreal dist) const;
@@ -63,6 +77,7 @@ private:
 private:
     eph::ecl_lont mandalaLeft() const;
     qreal eclipticRadius() const;
+    qreal oneDegree() const;
 private slots:
     void calcMandalaGeometry();
 
