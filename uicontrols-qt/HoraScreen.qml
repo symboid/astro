@@ -84,21 +84,6 @@ Flickable {
             tzDiff: tzDiff.hour
             housesType: housesType.currentToken()
             withJulianCalendar: calendarType.currentIndex !== 0
-
-            Dialog {
-                id: horaTableDialog
-                title: qsTr("Horoscope items")
-                standardButtons: Dialog.Close
-                anchors.centerIn: parent
-
-                HoraTableView {
-                    anchors.fill: parent
-                    horaModel: horaTableDialog.opened ? horaView : null
-                }
-
-                height: parent.height - 50
-                width: parent.width - 50
-            }
         }
 
         HoraScreenParams {
@@ -259,5 +244,20 @@ Flickable {
         geoLontBox: geoLont
         Material.background: "#DFEEE5"
         opacity: 0.875
+    }
+
+    Dialog {
+        id: horaTableDialog
+        title: qsTr("Horoscope items")
+        standardButtons: Dialog.Close
+        anchors.centerIn: parent
+
+        HoraTableView {
+            anchors.fill: parent
+            horaModel: horaTableDialog.opened ? horaView : null
+        }
+
+        height: parent.height - 50
+        width: Math.min(parent.width - 50, 700)
     }
 }
