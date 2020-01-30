@@ -43,8 +43,6 @@ QHash<int, QByteArray> QHoraPlanetsModel::roleNames() const
     return roles;
 }
 
-static const qreal PI = 3.14159265;
-
 QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     : QQuickPaintedItem(parent)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
@@ -96,6 +94,11 @@ qreal QHoraViewItem::eclipticRadius() const
     return mMandalaRadius * 0.8;
 }
 
+qreal QHoraViewItem::oneDegree() const
+{
+    return eclipticRadius() * PLANET_DIST * 2.0 * PI / 360;
+}
+
 eph::ecl_lont QHoraViewItem::mandalaLeft() const
 {
     return mHora.houses()[1].pos()._M_lont;
@@ -130,6 +133,91 @@ QBrush QHoraViewItem::planetBrush(hor::planet::index planetIndex, qreal alpha)
     return brush;
 }
 
+QHoraViewItem::Rank QHoraViewItem::planetRank(const hor::planet& planet) const
+{
+    int planetIndex = int(planet.get_index() - hor::planet::sun);
+    eph::zod zodSign = planet.pos().zod_coords()._M_sign;
+    int zodIndex = int(zodSign) - int(eph::zod::ARI);
+    static constexpr int PLANET_COUNT = 7;
+    static const enum Rank PLANET_RANK[PLANET_COUNT][12] =
+    {
+        {
+            Rank::ELEV, Rank::PERG, Rank::PERG, Rank::PERG, Rank::HOME, Rank::PERG,
+            Rank::FALL, Rank::PERG, Rank::PERG, Rank::PERG, Rank::EXIL, Rank::PERG,
+        },
+        {
+            Rank::PERG, Rank::ELEV, Rank::PERG, Rank::HOME, Rank::PERG, Rank::PERG,
+            Rank::PERG, Rank::FALL, Rank::PERG, Rank::EXIL, Rank::PERG, Rank::PERG,
+        },
+        {
+            Rank::PERG, Rank::PERG, Rank::HOME, Rank::PERG, Rank::PERG, Rank::HOME,
+            Rank::PERG, Rank::PERG, Rank::EXIL, Rank::PERG, Rank::PERG, Rank::EXIL,
+        },
+        {
+            Rank::EXIL, Rank::HOME, Rank::PERG, Rank::PERG, Rank::PERG, Rank::FALL,
+            Rank::HOME, Rank::EXIL, Rank::PERG, Rank::PERG, Rank::PERG, Rank::ELEV,
+        },
+        {
+            Rank::HOME, Rank::EXIL, Rank::PERG, Rank::EXIL, Rank::PERG, Rank::PERG,
+            Rank::EXIL, Rank::HOME, Rank::PERG, Rank::ELEV, Rank::PERG, Rank::PERG,
+        },
+        {
+            Rank::PERG, Rank::PERG, Rank::EXIL, Rank::ELEV, Rank::PERG, Rank::PERG,
+            Rank::PERG, Rank::PERG, Rank::HOME, Rank::FALL, Rank::PERG, Rank::PERG,
+        },
+        {
+            Rank::FALL, Rank::PERG, Rank::PERG, Rank::EXIL, Rank::EXIL, Rank::PERG,
+            Rank::ELEV, Rank::PERG, Rank::PERG, Rank::HOME, Rank::HOME, Rank::PERG,
+        },
+    };
+    return 0 <= planetIndex && planetIndex < PLANET_COUNT && 0 <= zodIndex && zodIndex < 12 ? PLANET_RANK[planetIndex][zodIndex] : Rank::PERG;
+}
+
+void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& planet, const eph::ecl_pos& displayPos)
+{
+    Rank rank = planetRank(planet);
+
+    QFont planetFont = *mAstroFont;
+    planetFont.setPixelSize(int(oneDegree() * 5));
+    painter->setFont(planetFont);
+    QFontMetrics planetFontMetrics(planetFont);
+
+    eph::ecl_lont planetSignLont = displayPos._M_lont;
+    QPointF planetSignPoint(horaPoint(planetSignLont, PLANET_DIST));
+
+    // planet sign pen
+    QPen planetPen;
+    planetPen.setWidthF(1);
+    switch (rank)
+    {
+    case Rank::ELEV: planetPen.setColor(Qt::red); break;
+    case Rank::FALL: planetPen.setColor(Qt::darkYellow); break;
+    case Rank::EXIL: planetPen.setColor(Qt::lightGray); break;
+    default: planetPen.setColor(Qt::black); break;
+    }
+    painter->setPen(planetPen);
+
+    // bounding circle
+    if (rank == Rank::HOME)
+    {
+        qreal planetSize = 4 * oneDegree();
+        painter->drawEllipse(planetSignPoint, planetSize, planetSize);
+    }
+
+    // planet sign text
+    QString planetText = QString(mAstroFont->objectLetter(planet.get_index()));
+    QSize textSize = planetFontMetrics.size(0, planetText);
+    QRectF planetSignRect(planetSignPoint - QPointF(textSize.width() / 2 - 1, textSize.height() / 2),
+                          planetSignPoint + QPointF(textSize.width() / 2,   textSize.height() / 2));
+    if (planet.is_retrograd())
+    {
+        QString retrogradText = mAstroFont->retrogradLetter();
+        planetText += retrogradText;
+    }
+    painter->drawText(planetSignRect, Qt::AlignLeft | Qt::AlignVCenter | Qt::TextDontClip, planetText);
+
+}
+
 void QHoraViewItem::paint(QPainter* painter)
 {
     if (painter) {
@@ -139,8 +227,6 @@ void QHoraViewItem::paint(QPainter* painter)
         painter->setPen(QPen(QColor(0,0,0), 1.5));
         painter->drawEllipse(mMandalaCenter, eclipticRadius(), eclipticRadius());
 
-        const qreal PLANET_DIST = 0.875;
-        const qreal ASPECT_DIST = 1.0 - 2.0 * (1.0 - PLANET_DIST);
         // planet aspects radius
         painter->setPen(QPen(QColor(0x80,0x80,0x80), 1.0));
         qreal aspectRadius = eclipticRadius() * ASPECT_DIST;
@@ -183,10 +269,8 @@ void QHoraViewItem::paint(QPainter* painter)
             painter->drawLine(horaPoint(houseCusp.pos()._M_lont, isAxis ? 1.2 : 1.0), horaPoint(houseCusp.pos()._M_lont, EARTH_DIST));
         }
 
-        const qreal ONE_DEGREE = eclipticRadius() * PLANET_DIST * 2.0 * PI / 360;
-
         QFont planetFont = *mAstroFont;
-        planetFont.setPixelSize(ONE_DEGREE * 5);
+        planetFont.setPixelSize(oneDegree() * 5);
         painter->setFont(planetFont);
         QFontMetrics planetFontMetrics(planetFont);
 
@@ -224,27 +308,7 @@ void QHoraViewItem::paint(QPainter* painter)
             for (hor::planet planet : stellium)
             {
                 eph::ecl_pos planetPos = stellium.displayPos(p++);
-                eph::ecl_lont planetSignLont = planetPos._M_lont;
-                QPointF planetSignPoint(horaPoint(planetSignLont, PLANET_DIST));
-
-                // planet sign pen
-                QPen planetPen;
-                planetPen.setWidthF(0.5);
-                planetPen.setColor(Qt::black);
-                painter->setPen(planetPen);
-                // bounding circle
-                qreal planetSize = 4 * ONE_DEGREE;
-                painter->drawEllipse(planetSignPoint, planetSize, planetSize);
-                // planet sign text
-                QString planetText = QString(mAstroFont->objectLetter(planet.get_index()));
-                QSize textSize = planetFontMetrics.size(0, planetText);
-                QRectF planetSignRect(planetSignPoint - QPointF(textSize.width() / 2-2, textSize.height() / 2),
-                                      planetSignPoint + QPointF(textSize.width() / 2,   textSize.height() / 2));
-                if (planet.is_retrograd())
-                {
-                    planetText += mAstroFont->retrogradLetter();
-                }
-                painter->drawText(planetSignRect, Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextDontClip, planetText);
+                drawPlanetSymbol(painter, planet, planetPos);
 
                 painter->setPen(QPen(QBrush(QColor(0x80,0x80,0x80)), 1.0));
                 painter->drawLine(horaPoint(planet.pos()._M_lont, ASPECT_DIST), horaPoint(planetPos._M_lont, ASPECT_DIST + 0.05));
@@ -273,7 +337,7 @@ void QHoraViewItem::paint(QPainter* painter)
                     {
                     case hor::conjunction:
                         aspectPen.setColor(Qt::black);
-                        aspectPen.setWidthF(ONE_DEGREE);
+                        aspectPen.setWidthF(oneDegree());
                         break;
                     case hor::opposition:
                     case hor::quadrat:
