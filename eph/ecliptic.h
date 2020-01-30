@@ -168,6 +168,23 @@ struct ecl_pos : ecl_coords
     {
         return lont(static_cast<arc_degree>(_M_lont - _rhs._M_lont), false);
     }
+
+    bool operator<(const ecl_pos& rhs) const
+    {
+        return dist_to(rhs) > 0;
+    }
+    bool operator>(const ecl_pos& rhs) const
+    {
+        return dist_to(rhs) < 0;
+    }
+    bool operator<=(const ecl_pos& rhs) const
+    {
+        return dist_to(rhs) >= 0;
+    }
+    bool operator>=(const ecl_pos& rhs) const
+    {
+        return dist_to(rhs) <= 0;
+    }
 };
 
 struct ecl_speed

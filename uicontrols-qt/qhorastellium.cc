@@ -63,22 +63,19 @@ bool QHoraStellium::isMergeable(const QHoraStellium& rhs) const
     bool mergeable = mEquDist == rhs.mEquDist;
     if (mergeable)
     {
-        eph::arc_degree mergedSize = (size() + rhs.size() - 1) * mEquDist;
-        eph::arc_degree lDist = leftDist(rhs);
-        eph::arc_degree rDist = rightDist(rhs);
-        if (lDist <= 0 || rDist <= 0)
+        //
+        //  this: [------]
+        //  rhs:      [-------]
+        //
+        //  this.begin <= rhs.end && rhs.begin <= this.end
+
+        if (realBegin() <= rhs.realEnd() || rhs.realBegin() <= realEnd())
         {
-            mergeable = true;
-        }
-        else if (0 < lDist && lDist <= rDist)
-        {
-            eph::arc_degree newWidth = rhs.realBegin().dist_to(realEnd());
-            mergeable = (0 < newWidth && newWidth < mergedSize);
-        }
-        else if (0 < rDist && rDist < lDist)
-        {
-            eph::arc_degree newWidth = realBegin().dist_to(rhs.realEnd());
-            mergeable = (0 < newWidth && newWidth < mergedSize);
+            eph::ecl_pos mergedBegin = realBegin() <= rhs.realBegin() ? realBegin() : rhs.realBegin();
+            eph::ecl_pos mergedEnd = realEnd() <= rhs.realEnd() ? rhs.realEnd() : realEnd();
+            eph::arc_degree realMergedSize = mergedBegin.dist_fwd(mergedEnd);
+            eph::arc_degree imagMergedSize = (size() + rhs.size() - 1) * mEquDist;
+            mergeable = realMergedSize < imagMergedSize;
         }
         else
         {
