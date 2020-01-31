@@ -7,14 +7,14 @@
 #include "astro/eph/ecliptic.h"
 #include "astro/calculo/hora.h"
 #include "astro/uicontrols-qt/qastrofont.h"
-#include <QAbstractListModel>
+#include <QAbstractTableModel>
 
 hor_ns_begin
 typedef basic_hora<eph_proxy> hora;
 typedef basic_planet<eph_proxy> planet;
 hor_ns_end
 
-class ASTRO_UICONTROLS_QT_API QHoraPlanetsModel : public QAbstractListModel
+class ASTRO_UICONTROLS_QT_API QHoraPlanetsModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -23,13 +23,17 @@ public:
 
 private:
     enum {
-        SymbolRole = Qt::UserRole,
+        FirstRole = Qt::UserRole,
+        SymbolRole = FirstRole,
         EclLontRole,
         EclLattRole,
         EclSpeedRole,
+        LastRole = EclSpeedRole
     };
+
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 private:
@@ -141,10 +145,10 @@ private slots:
     void recalc();
 
 public:
-    Q_PROPERTY(QAbstractListModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
+    Q_PROPERTY(QAbstractTableModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
 private:
     QHoraPlanetsModel* mPlanetsModel;
-    QAbstractListModel* planetsModel() const { return mPlanetsModel; }
+    QAbstractTableModel* planetsModel() const { return mPlanetsModel; }
 signals:
     void planetsModelChanged();
 };

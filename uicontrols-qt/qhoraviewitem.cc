@@ -5,7 +5,7 @@
 #include "astro/uicontrols-qt/qhorastellium.h"
 
 QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
-    : QAbstractListModel(parent)
+    : QAbstractTableModel(parent)
     , mHora(hora)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
 {
@@ -13,8 +13,14 @@ QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
 
 int QHoraPlanetsModel::rowCount(const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
+    Q_UNUSED(parent)
     return mHora ? int(mHora->planet_count()) : 0;
+}
+
+int QHoraPlanetsModel::columnCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent)
+    return LastRole - FirstRole + 1;
 }
 
 QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
@@ -22,6 +28,10 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
     QVariant planetData;
     if (mHora != Q_NULLPTR)
     {
+        if (role == Qt::DisplayRole)
+        {
+            role = FirstRole + index.column();
+        }
         const hor::planet& planet = mHora->planet(index.row());
         switch (role) {
         case SymbolRole: planetData = mAstroFont->objectLetter(planet.get_index()); break;

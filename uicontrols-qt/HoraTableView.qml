@@ -27,37 +27,57 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         currentIndex: tabBar.currentIndex
-        ListView {
+        TableView {
             model: horaModel !== null ? horaModel.planetsModel : null
             flickableDirection: Flickable.VerticalFlick | Flickable.HorizontalFlick
-            delegate: Row {
-                spacing: 10
-                Text {
-                    text: symbol
-                    font.family: "Symboid"
-                    anchors.verticalCenter: parent.verticalCenter
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                ArcCoordBox {
-                    Component.onCompleted: {
-                        arcDegree = Qt.binding(function(){return ecl_lont})
-                    }
-                    sectionCalc: ZodiacSectionCalc {
+            columnSpacing: 30
+            delegate: Loader {
+                Component {
+                    id: planetSymbol
+                    Text {
+                        text: symbol
+                        font.family: "Symboid"
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
-                ArcCoordBox {
-                    Component.onCompleted: {
-                        arcDegree = Qt.binding(function(){return ecl_latt})
-                    }
-                    sectionCalc: SignumSectionCalc {
+                Component {
+                    id: planetLont
+                    ArcCoordBox {
+                        Component.onCompleted: {
+                            arcDegree = Qt.binding(function(){return ecl_lont})
+                        }
+                        sectionCalc: ZodiacSectionCalc {
+                        }
                     }
                 }
-                ArcCoordBox {
-                    Component.onCompleted: {
-                        arcDegree = Qt.binding(function(){return ecl_speed})
+                Component {
+                    id: planetLatt
+                    ArcCoordBox {
+                        Component.onCompleted: {
+                            arcDegree = Qt.binding(function(){return ecl_latt})
+                        }
+                        sectionCalc: SignumSectionCalc {
+                        }
                     }
-                    sectionCalc: SignumSectionCalc {
+                }
+                Component {
+                    id: planetSpeed
+                    ArcCoordBox {
+                        Component.onCompleted: {
+                            arcDegree = Qt.binding(function(){return ecl_speed})
+                        }
+                        sectionCalc: SignumSectionCalc {
+                        }
                     }
+                }
+                sourceComponent: switch(column)
+                {
+                case 0: return planetSymbol
+                case 1: return planetLont
+                case 2: return planetLatt
+                case 3: return planetSpeed
+                default: return null
                 }
             }
         }
