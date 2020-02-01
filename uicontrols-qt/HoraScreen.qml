@@ -252,7 +252,7 @@ Flickable {
         standardButtons: Dialog.Close
         anchors.centerIn: parent
 
-        HoraTableView {
+        HoraTablesLayout {
             anchors.fill: parent
             horaModel: horaTableDialog.opened ? horaView : null
         }

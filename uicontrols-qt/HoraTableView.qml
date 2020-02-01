@@ -1,88 +1,71 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.3
 import Symboid.Astro.Controls 1.0
+import QtQuick.Controls.Material 2.3
 
 Item {
 
-    property HoraView horaModel: null
+    property var headerModel: null
+    property var tableModel: null
 
-    TabBar {
-        id: tabBar
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        TabButton {
-            text: qsTr("Planets")
+    property var columnWidths: []
+
+    property list<Component> columnComponents: [ Component { Item { } } ]
+
+    ListView {
+        id: tableHeader
+        clip: true
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
         }
-        TabButton {
-            text: qsTr("Houses")
+        contentX: tableView.contentX
+        Material.background: "#95B2A0"
+        height: 40
+        model: headerModel
+        orientation: Qt.Horizontal
+        spacing: tableView.columnSpacing
+        delegate: Pane {
+            height: 40
+            width: columnWidths[index]
+            Label {
+                text: modelData
+                wrapMode: Label.Wrap
+            }
+            Component.onCompleted: {
+                columnWidths.push(0)
+            }
         }
     }
 
-    StackLayout {
-        anchors.top: tabBar.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        currentIndex: tabBar.currentIndex
-        TableView {
-            model: horaModel !== null ? horaModel.planetsModel : null
-            flickableDirection: Flickable.VerticalFlick | Flickable.HorizontalFlick
-            columnSpacing: 30
-            delegate: Loader {
-                Component {
-                    id: planetSymbol
-                    Text {
-                        text: symbol
-                        font.family: "Symboid"
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-                Component {
-                    id: planetLont
-                    ArcCoordBox {
-                        Component.onCompleted: {
-                            arcDegree = Qt.binding(function(){return ecl_lont})
-                        }
-                        sectionCalc: ZodiacSectionCalc {
-                        }
-                    }
-                }
-                Component {
-                    id: planetLatt
-                    ArcCoordBox {
-                        Component.onCompleted: {
-                            arcDegree = Qt.binding(function(){return ecl_latt})
-                        }
-                        sectionCalc: SignumSectionCalc {
-                        }
-                    }
-                }
-                Component {
-                    id: planetSpeed
-                    ArcCoordBox {
-                        Component.onCompleted: {
-                            arcDegree = Qt.binding(function(){return ecl_speed})
-                        }
-                        sectionCalc: SignumSectionCalc {
-                        }
-                    }
-                }
-                sourceComponent: switch(column)
+    TableView {
+        id: tableView
+        anchors {
+            top: tableHeader.bottom
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+
+        clip: true
+
+        model: tableModel
+        flickableDirection: Flickable.VerticalFlick | Flickable.HorizontalFlick
+        columnSpacing: 30
+
+        delegate: Loader {
+            property var cellData: display
+            sourceComponent: columnComponents[column + 1]
+
+            Component.onCompleted: {
+                if (columnWidths[column] < width)
                 {
-                case 0: return planetSymbol
-                case 1: return planetLont
-                case 2: return planetLatt
-                case 3: return planetSpeed
-                default: return null
+                    columnWidths[column] = width
+                    columnWidthsChanged()
                 }
             }
-        }
-        Item {
-
         }
     }
 }

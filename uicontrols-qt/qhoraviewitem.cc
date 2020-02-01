@@ -5,9 +5,7 @@
 #include "astro/uicontrols-qt/qhorastellium.h"
 
 QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
-    : QAbstractTableModel(parent)
-    , mHora(hora)
-    , mAstroFont(QAstroFontRepo::mo()->defaultFont())
+    : QHoraItemsModel(hora, parent)
 {
 }
 
@@ -20,7 +18,7 @@ int QHoraPlanetsModel::rowCount(const QModelIndex& parent) const
 int QHoraPlanetsModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
-    return LastRole - FirstRole + 1;
+    return 4;
 }
 
 QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
@@ -30,7 +28,13 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
     {
         if (role == Qt::DisplayRole)
         {
-            role = FirstRole + index.column();
+            switch (index.column())
+            {
+            case 0: role = SymbolRole; break;
+            case 1: role = EclLontRole; break;
+            case 2: role = EclLattRole; break;
+            case 3: role = EclSpeedRole; break;
+            }
         }
         const hor::planet& planet = mHora->planet(index.row());
         switch (role) {
@@ -41,16 +45,6 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
         }
     }
     return planetData;
-}
-
-QHash<int, QByteArray> QHoraPlanetsModel::roleNames() const
-{
-    QHash<int, QByteArray> roles;
-    roles[SymbolRole] = "symbol";
-    roles[EclLontRole] = "ecl_lont";
-    roles[EclLattRole] = "ecl_latt";
-    roles[EclSpeedRole] = "ecl_speed";
-    return roles;
 }
 
 QHoraViewItem::QHoraViewItem(QQuickItem* parent)

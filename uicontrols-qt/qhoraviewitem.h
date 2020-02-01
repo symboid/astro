@@ -7,41 +7,23 @@
 #include "astro/eph/ecliptic.h"
 #include "astro/calculo/hora.h"
 #include "astro/uicontrols-qt/qastrofont.h"
-#include <QAbstractTableModel>
+#include "astro/uicontrols-qt/qhoraitemsmodel.h"
 
 hor_ns_begin
-typedef basic_hora<eph_proxy> hora;
 typedef basic_planet<eph_proxy> planet;
 hor_ns_end
 
-class ASTRO_UICONTROLS_QT_API QHoraPlanetsModel : public QAbstractTableModel
+class ASTRO_UICONTROLS_QT_API QHoraPlanetsModel : public QHoraItemsModel
 {
     Q_OBJECT
 
 public:
     QHoraPlanetsModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
 
-private:
-    enum {
-        FirstRole = Qt::UserRole,
-        SymbolRole = FirstRole,
-        EclLontRole,
-        EclLattRole,
-        EclSpeedRole,
-        LastRole = EclSpeedRole
-    };
-
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    QHash<int, QByteArray> roleNames() const override;
-private:
-    const hor::hora* mHora;
-    QSharedPointer<QAstroFont> mAstroFont;
-public:
-    using QAbstractItemModel::beginResetModel;
-    using QAbstractItemModel::endResetModel;
 };
 
 class ASTRO_UICONTROLS_QT_API QHoraViewItem : public QQuickPaintedItem
