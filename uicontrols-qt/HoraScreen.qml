@@ -49,12 +49,23 @@ Flickable {
 
             DateCoordBox {
                 id: dateBox
+                enabled: !currentTimeTimer.checked
                 editable: true
             }
             TimeCoordBox {
                 id: timeBox
+                enabled: !currentTimeTimer.checked
                 editable: true
                 circularLink: dateBox.dayLink
+            }
+            HoraScreenTimer {
+                id: currentTimeTimer
+                text: qsTr("Current")
+                visible: details.checked
+                onTriggered: {
+                    dateBox.setCurrent()
+                    timeBox.setCurrent()
+                }
             }
         }
 
@@ -93,22 +104,26 @@ Flickable {
             TextField {
                 id: geoName
                 width: parent.defaultItemWidth
+                enabled: !currentLocTimer.checked
             }
             ArcCoordBox {
                 id: geoLatt
                 visible: details.checked
                 sectionCalc: GeoLattSectionCalc {}
                 editable: true
+                enabled: !currentLocTimer.checked
             }
             ArcCoordBox {
                 id: geoLont
                 visible: details.checked
                 sectionCalc: GeoLontSectionCalc {}
                 editable: true
+                enabled: !currentLocTimer.checked
             }
 
             Row {
                 visible: details.checked
+                enabled: !currentLocTimer.checked
                 spacing: 10
                 Label {
                     anchors.verticalCenter: parent.verticalCenter
@@ -127,6 +142,12 @@ Flickable {
                         }
                     }
                 }
+            }
+            HoraScreenTimer {
+                id: currentLocTimer
+                text: qsTr("Current")
+                visible: details.checked
+                onTriggered: geoNameDialog.setCurrent()
             }
         }
         HoraScreenParams {
