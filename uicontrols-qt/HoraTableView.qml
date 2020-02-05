@@ -10,32 +10,37 @@ Item {
     property var tableModel: null
 
     property var columnWidths: []
+    property int tableWidth: 500
 
     property list<Component> columnComponents: [ Component { Item { } } ]
 
-    ListView {
+    Rectangle {
         id: tableHeader
-        clip: true
         anchors {
             top: parent.top
-            left: parent.left
-            right: parent.right
+            horizontalCenter: parent.horizontalCenter
         }
-        contentX: tableView.contentX
-        Material.background: "#95B2A0"
         height: 40
-        model: headerModel
-        orientation: Qt.Horizontal
-        spacing: tableView.columnSpacing
-        delegate: Pane {
-            height: 40
-            width: columnWidths[index]
-            Label {
-                text: modelData
-                wrapMode: Label.Wrap
-            }
-            Component.onCompleted: {
-                columnWidths.push(0)
+        width: Math.min(tableWidth, parent.width)
+        color: "#95B2A0"
+        ListView {
+            anchors.fill: parent
+            clip: true
+            contentX: tableView.contentX
+            model: headerModel
+            orientation: Qt.Horizontal
+            spacing: tableView.columnSpacing
+            delegate: Pane {
+                height: 40
+                width: columnWidths[index]
+                Material.background: "#95B2A0"
+                Label {
+                    text: modelData
+                    wrapMode: Label.Wrap
+                }
+                Component.onCompleted: {
+                    columnWidths.push(0)
+                }
             }
         }
     }
@@ -44,11 +49,10 @@ Item {
         id: tableView
         anchors {
             top: tableHeader.bottom
-            left: parent.left
-            right: parent.right
+            horizontalCenter: parent.horizontalCenter
             bottom: parent.bottom
         }
-
+        width: Math.min(tableWidth, parent.width)
         rowHeightProvider: function (row) { return 40 }
         clip: true
 
@@ -64,7 +68,6 @@ Item {
                 if (columnWidths[column] < width)
                 {
                     columnWidths[column] = width
-                    columnWidthsChanged()
                 }
             }
         }
