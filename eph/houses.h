@@ -151,7 +151,9 @@ calc_result calc_houses(std::vector<house_cusp>& _houses, const basic_time_point
     for (std::size_t house_index = 1; house_index <= house_count; ++house_index)
     {
         ecl_lont house_lont_diff = house_cusp_lonts_next[house_index] - house_cusp_lonts[house_index];
-        _houses.at(house_index).set_speed(house_lont_diff / time_diff.count());
+        ecl_lont house_speed(house_lont_diff / time_diff.count(), true);
+        arc_degree deg_per_hour = (house_speed.to_arc_degree() + 360) / 24;
+        _houses.at(house_index).set_speed(deg_per_hour);
     }
     return calc_result;
 }
