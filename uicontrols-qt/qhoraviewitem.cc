@@ -47,10 +47,73 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
     return planetData;
 }
 
+QStringList QHoraPlanetsModel::headerModel() const
+{
+    return { "", tr("Ecliptic longitude"), tr("Ecliptic lattitude"), tr("Speed") };
+}
+
+QHoraHousesModel::QHoraHousesModel(const hor::hora* hora, QObject* parent)
+    : QHoraItemsModel(hora, parent)
+{
+}
+
+int QHoraHousesModel::rowCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent)
+    return mHora ? int(eph::house_system_horizon::house_count) : 0;
+}
+
+int QHoraHousesModel::columnCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent)
+    return 2;
+}
+
+QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
+{
+    QVariant houseData;
+    if (mHora != Q_NULLPTR)
+    {
+        if (role == Qt::DisplayRole)
+        {
+            switch (index.column())
+            {
+            case 0: role = SymbolRole; break;
+            case 1: role = EclLontRole; break;
+            case 2: role = EclSpeedRole; break;
+            }
+        }
+        std::size_t houseIndex = std::size_t(index.row() + 1);
+        const eph::house_cusp house = mHora->houses().at(houseIndex);
+        switch (role) {
+        case SymbolRole: {
+            switch (houseIndex) {
+            case 1: houseData = "I."; break;
+            case 4: houseData = "IV."; break;
+            case 7: houseData = "VII."; break;
+            case 10: houseData = "X."; break;
+            default: houseData = QString::number(houseIndex) + "."; break;
+            }
+            break;
+        }
+        case EclLontRole: houseData = house.pos()._M_lont.to_arc_degree(); break;
+        case EclLattRole: houseData = 0; break;
+        case EclSpeedRole: houseData = house.speed().lont_coord().arc_pos(); break;
+        }
+    }
+    return houseData;
+}
+
+QStringList QHoraHousesModel::headerModel() const
+{
+    return { "", tr("Ecliptic longitude") };
+}
+
 QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     : QQuickPaintedItem(parent)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
     , mPlanetsModel(new QHoraPlanetsModel(& mHora, this))
+    , mHousesModel(new QHoraHousesModel(& mHora, this))
 {
     setFlag(QQuickItem::ItemHasContents);
     setRenderTarget(QQuickPaintedItem::Image);
@@ -488,6 +551,7 @@ void QHoraViewItem::recalc()
     horaCoords._M_geo_latt = mGeoLatt;
     horaCoords._M_geo_lont = mGeoLont;
     mPlanetsModel->beginResetModel();
+    mHousesModel->beginResetModel();
     if (mHousesType == "koch")
     {
         mHora.calc<eph::house_system_koch>(horaCoords);
@@ -509,6 +573,7 @@ void QHoraViewItem::recalc()
         mHora.calc<eph::house_system_placidus>(horaCoords);
     }
     mPlanetsModel->endResetModel();
+    mHousesModel->endResetModel();
     update();
 }
 

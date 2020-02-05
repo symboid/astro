@@ -49,6 +49,7 @@ Item {
             bottom: parent.bottom
         }
 
+        rowHeightProvider: function (row) { return 40 }
         clip: true
 
         model: tableModel

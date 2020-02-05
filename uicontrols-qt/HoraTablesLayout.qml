@@ -30,11 +30,10 @@ Item {
         currentIndex: tabBar.currentIndex
 
         HoraTableView {
-            headerModel: [ "", qsTr("Ecliptic longitude"), qsTr("Ecliptic lattitude"), qsTr("Speed")]
+            headerModel: tableModel !== null ? tableModel.headerModel : null
             tableModel: horaModel !== null ? horaModel.planetsModel : null
             columnComponents: [
                 Component {
-
                     Text {
                         text: cellData
                         font.family: "Symboid"
@@ -71,7 +70,36 @@ Item {
                 }
             ]
         }
-        Item {
+        HoraTableView {
+            headerModel: tableModel !== null ? tableModel.headerModel : null
+            tableModel: horaModel !== null ? horaModel.housesModel : null
+            columnComponents: [
+                Component {
+                    Label {
+                        text: cellData
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                },
+                Component {
+                    ArcCoordBox {
+                        Component.onCompleted: {
+                            arcDegree = Qt.binding(function(){return cellData})
+                        }
+                        sectionCalc: ZodiacSectionCalc {
+                        }
+                    }
+                },
+                Component {
+                    ArcCoordBox {
+                        Component.onCompleted: {
+                            arcDegree = Qt.binding(function(){return cellData})
+                        }
+                        sectionCalc: SignumSectionCalc {
+                        }
+                    }
+                }
+            ]
         }
     }
 }

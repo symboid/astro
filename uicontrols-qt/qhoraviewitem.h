@@ -24,6 +24,25 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+private:
+    QStringList headerModel() const override;
+};
+
+class ASTRO_UICONTROLS_QT_API QHoraHousesModel : public QHoraItemsModel
+{
+    Q_OBJECT
+
+public:
+    QHoraHousesModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
+
+public:
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+private:
+    QStringList headerModel() const override;
 };
 
 class ASTRO_UICONTROLS_QT_API QHoraViewItem : public QQuickPaintedItem
@@ -127,12 +146,16 @@ private slots:
     void recalc();
 
 public:
-    Q_PROPERTY(QAbstractTableModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
+    Q_PROPERTY(QHoraItemsModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
+    Q_PROPERTY(QHoraItemsModel* housesModel READ housesModel NOTIFY housesModelChanged)
 private:
     QHoraPlanetsModel* mPlanetsModel;
-    QAbstractTableModel* planetsModel() const { return mPlanetsModel; }
+    QHoraHousesModel* mHousesModel;
+    QHoraItemsModel* planetsModel() const { return mPlanetsModel; }
+    QHoraItemsModel* housesModel() const { return mHousesModel; }
 signals:
     void planetsModelChanged();
+    void housesModelChanged();
 };
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_QHORAVIEWITEM_H__
