@@ -61,13 +61,15 @@ private:
     static constexpr qreal ASPECT_DIST = 1.0 - 2.0 * (1.0 - PLANET_DIST);
 
     QBrush planetBrush(hor::planet::index planetIndex, qreal alpha);
-    enum class Rank
+    enum Rank
     {
-        ELEV, // eroben
-        HOME, // otthon
-        FALL, // esesben
-        EXIL, // szamuzetes
-        PERG, // peregrin
+        PERG = 0x00, // peregrin
+
+        HOME = 0x03, // otthon
+        EXIL = 0x01, // szamuzetes
+
+        ELEV = 0x0C, // eroben
+        FALL = 0x04, // esesben
     };
     Rank planetRank(const hor::planet& planet) const;
     void drawPlanetSymbol(QPainter* painter, const hor::planet& planet, const eph::ecl_pos& displayPos);

@@ -205,7 +205,7 @@ QHoraViewItem::Rank QHoraViewItem::planetRank(const hor::planet& planet) const
     int planetIndex = int(planet.get_index() - hor::planet::sun);
     eph::zod zodSign = planet.pos().zod_coords()._M_sign;
     int zodIndex = int(zodSign) - int(eph::zod::ARI);
-    static constexpr int PLANET_COUNT = 7;
+    static constexpr int PLANET_COUNT = 10;
     static const enum Rank PLANET_RANK[PLANET_COUNT][12] =
     {
         {
@@ -217,24 +217,36 @@ QHoraViewItem::Rank QHoraViewItem::planetRank(const hor::planet& planet) const
             Rank::PERG, Rank::FALL, Rank::PERG, Rank::EXIL, Rank::PERG, Rank::PERG,
         },
         {
-            Rank::PERG, Rank::PERG, Rank::HOME, Rank::PERG, Rank::PERG, Rank::HOME,
-            Rank::PERG, Rank::PERG, Rank::EXIL, Rank::PERG, Rank::PERG, Rank::EXIL,
+            Rank::PERG, Rank::PERG, Rank::HOME, Rank::PERG, Rank::PERG, Rank(HOME + ELEV),
+            Rank::PERG, Rank::PERG, Rank::EXIL, Rank::PERG, Rank::PERG, Rank(EXIL + FALL),
         },
         {
             Rank::EXIL, Rank::HOME, Rank::PERG, Rank::PERG, Rank::PERG, Rank::FALL,
             Rank::HOME, Rank::EXIL, Rank::PERG, Rank::PERG, Rank::PERG, Rank::ELEV,
         },
         {
-            Rank::HOME, Rank::EXIL, Rank::PERG, Rank::EXIL, Rank::PERG, Rank::PERG,
+            Rank::HOME, Rank::EXIL, Rank::PERG, Rank::FALL, Rank::PERG, Rank::PERG,
             Rank::EXIL, Rank::HOME, Rank::PERG, Rank::ELEV, Rank::PERG, Rank::PERG,
         },
         {
-            Rank::PERG, Rank::PERG, Rank::EXIL, Rank::ELEV, Rank::PERG, Rank::PERG,
-            Rank::PERG, Rank::PERG, Rank::HOME, Rank::FALL, Rank::PERG, Rank::PERG,
+            Rank::PERG, Rank::PERG, Rank::EXIL, Rank::ELEV, Rank::PERG, Rank::EXIL,
+            Rank::PERG, Rank::PERG, Rank::HOME, Rank::FALL, Rank::PERG, Rank::HOME,
         },
         {
             Rank::FALL, Rank::PERG, Rank::PERG, Rank::EXIL, Rank::EXIL, Rank::PERG,
             Rank::ELEV, Rank::PERG, Rank::PERG, Rank::HOME, Rank::HOME, Rank::PERG,
+        },
+        {
+            Rank::PERG, Rank::FALL, Rank::PERG, Rank::PERG, Rank::EXIL, Rank::PERG,
+            Rank::PERG, Rank::ELEV, Rank::PERG, Rank::PERG, Rank::HOME, Rank::PERG,
+        },
+        {
+            Rank::PERG, Rank::PERG, Rank::PERG, Rank::PERG, Rank::ELEV, Rank::EXIL,
+            Rank::PERG, Rank::PERG, Rank::PERG, Rank::PERG, Rank::FALL, Rank::HOME,
+        },
+        {
+            Rank::PERG, Rank::EXIL, Rank::PERG, Rank::PERG, Rank::PERG, Rank::ELEV,
+            Rank::PERG, Rank::HOME, Rank::PERG, Rank::PERG, Rank::PERG, Rank::FALL,
         },
     };
     return 0 <= planetIndex && planetIndex < PLANET_COUNT && 0 <= zodIndex && zodIndex < 12 ? PLANET_RANK[planetIndex][zodIndex] : Rank::PERG;
@@ -255,17 +267,22 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& plane
     // planet sign pen
     QPen planetPen;
     planetPen.setWidthF(1);
-    switch (rank)
+    if ((rank & 0x0C) == Rank::ELEV)
     {
-    case Rank::ELEV: planetPen.setColor(Qt::red); break;
-    case Rank::FALL: planetPen.setColor(Qt::darkYellow); break;
-    case Rank::EXIL: planetPen.setColor(Qt::lightGray); break;
-    default: planetPen.setColor(Qt::black); break;
+        planetPen.setColor(Qt::red);
+    }
+    else if ((rank & 0x0C) == Rank::FALL)
+    {
+        planetPen.setColor("#999900");
+    }
+    else if ((rank & 0x03) == Rank::EXIL)
+    {
+        planetPen.setColor(Qt::lightGray);
     }
     painter->setPen(planetPen);
 
     // bounding circle
-    if (rank == Rank::HOME)
+    if ((rank & 0x03) == Rank::HOME)
     {
         qreal planetSize = 4 * oneDegree();
         painter->drawEllipse(planetSignPoint, planetSize, planetSize);
