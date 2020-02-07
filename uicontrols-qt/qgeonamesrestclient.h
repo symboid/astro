@@ -6,7 +6,7 @@
 #include "sdk/network-qt/qrestclient.h"
 #include "sdk/arch/mainobject.h"
 
-class ASTRO_UICONTROLS_QT_API QGeoNamesRestClient : public QRestClientJSON
+class ASTRO_UICONTROLS_QT_API QGeoNamesRestClient : public QRestClient
 {
     Q_OBJECT
     QML_SINGLETON(GeoNamesRestClient)

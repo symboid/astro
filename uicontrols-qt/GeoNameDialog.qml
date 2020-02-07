@@ -58,8 +58,9 @@ Drawer {
         active: true
     }
     RestObjectModel {
-        id: currentLocModel
+        id: currentLoc
         restClient: GeoNamesRestClient
+        interactive: true
         operation: "findNearbyPlaceNameJSON?"+
                    "lat="+currentSource.position.coordinate.latitude+
                    "&lng="+currentSource.position.coordinate.longitude+
@@ -74,10 +75,23 @@ Drawer {
         }
         */
     }
+
+    readonly property bool currentIsValid: currentSource.valid &&
+            (currentSource.position.latitudeValid || currentSource.position.longitudeValid)
     function setCurrent()
     {
-        currentLocModel.runOperation()
-        geoLattBox.arcDegree = currentSource.position.coordinate.latitude
-        geoLontBox.arcDegree = currentSource.position.coordinate.longitude
+        if (currentSource.valid)
+        {
+            var ro = currentLoc.restObject
+            geoNameBox.text = ro.name
+            if (currentSource.position.latitudeValid)
+            {
+                geoLattBox.arcDegree = currentSource.position.coordinate.latitude
+            }
+            if (currentSource.position.longitudeValid)
+            {
+                geoLontBox.arcDegree = currentSource.position.coordinate.longitude
+            }
+        }
     }
 }

@@ -148,6 +148,7 @@ Flickable {
                 text: qsTr("Current")
                 visible: details.checked
                 onTriggered: geoNameDialog.setCurrent()
+                enabled: geoNameDialog.currentIsValid
             }
         }
         HoraScreenParams {
