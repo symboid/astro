@@ -57,23 +57,18 @@ Drawer {
         id: currentSource
         active: true
     }
-    RestObjectModel {
+    RestTableModel {
         id: currentLoc
         restClient: GeoNamesRestClient
         interactive: true
         operation: "findNearbyPlaceNameJSON?"+
                    "lat="+currentSource.position.coordinate.latitude+
                    "&lng="+currentSource.position.coordinate.longitude+
+                   "&cities=cities1000"+
                    "&lang="+Qt.locale().name.substring(0,2)+
                    "&username="+"symboid"
-/*
-        onModelAboutToBeReset: busyIndicator.visible = true
-        onModelReset: busyIndicator.visible = false
         onNetworkError: {
-            networkStatusDialog.message = qsTr("Netwok error!")
-            networkStatusDialog.open()
         }
-        */
     }
 
     readonly property bool currentIsValid: currentSource.valid &&
@@ -82,8 +77,10 @@ Drawer {
     {
         if (currentSource.valid)
         {
-            var ro = currentLoc.restObject
-            geoNameBox.text = ro.name
+            if (currentLoc.objectCount() > 0)
+            {
+                geoNameBox.text = currentLoc.object(0).name
+            }
             if (currentSource.position.latitudeValid)
             {
                 geoLattBox.arcDegree = currentSource.position.coordinate.latitude

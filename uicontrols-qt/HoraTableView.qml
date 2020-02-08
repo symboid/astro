@@ -10,37 +10,45 @@ Item {
     property var tableModel: null
 
     property var columnWidths: []
-    property int tableWidth: 500
+    property int tableWidth: tableView.contentWidth
 
     property list<Component> columnComponents: [ Component { Item { } } ]
+
+    readonly property int rowHeight: 40
+    readonly property int headerHeight: rowHeight
+    readonly property int colSpacing: 30
 
     Rectangle {
         id: tableHeader
         anchors {
             top: parent.top
-            horizontalCenter: parent.horizontalCenter
+            topMargin: rowHeight / 2
+            left: parent.left
+            right: parent.right
         }
-        height: 40
+        height: headerHeight
         width: Math.min(tableWidth, parent.width)
         color: "#95B2A0"
         ListView {
-            anchors.fill: parent
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                horizontalCenter: parent.horizontalCenter
+            }
+            width: Math.min(tableWidth, parent.width)
+
             clip: true
             contentX: tableView.contentX
             model: headerModel
             orientation: Qt.Horizontal
-            spacing: tableView.columnSpacing
-            delegate: Pane {
-                height: 40
-                width: columnWidths[index]
-                Material.background: "#95B2A0"
-                Label {
-                    text: modelData
-                    wrapMode: Label.Wrap
-                }
-                Component.onCompleted: {
-                    columnWidths.push(0)
-                }
+            spacing: colSpacing
+            delegate: Label {
+                height: headerHeight
+                width: tableView.columnWidthProvider(index)
+                text: modelData
+                wrapMode: Label.Wrap
+                horizontalAlignment: Label.AlignHCenter
+                verticalAlignment: Label.AlignVCenter
             }
         }
     }
@@ -53,21 +61,30 @@ Item {
             bottom: parent.bottom
         }
         width: Math.min(tableWidth, parent.width)
-        rowHeightProvider: function (row) { return 40 }
+        rowHeightProvider: function (row) { return rowHeight }
+        columnWidthProvider: function(col)
+        {
+            return columnWidths[col]
+        }
         clip: true
 
         model: tableModel
         flickableDirection: Flickable.VerticalFlick | Flickable.HorizontalFlick
-        columnSpacing: 30
+        columnSpacing: colSpacing
 
         delegate: Loader {
             property var cellData: display
             sourceComponent: columnComponents[column + 1]
 
             Component.onCompleted: {
+                while (columnWidths.length <= column)
+                {
+                    columnWidths.push(0)
+                }
                 if (columnWidths[column] < width)
                 {
                     columnWidths[column] = width
+                    columnWidthsChanged()
                 }
             }
         }
