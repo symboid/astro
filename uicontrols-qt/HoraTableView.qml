@@ -44,7 +44,7 @@ Item {
             spacing: colSpacing
             delegate: Label {
                 height: headerHeight
-                width: tableView.columnWidthProvider(index)
+                width: columnWidths[index]
                 text: modelData
                 wrapMode: Label.Wrap
                 horizontalAlignment: Label.AlignHCenter
@@ -62,10 +62,6 @@ Item {
         }
         width: Math.min(tableWidth, parent.width)
         rowHeightProvider: function (row) { return rowHeight }
-        columnWidthProvider: function(col)
-        {
-            return columnWidths[col]
-        }
         clip: true
 
         model: tableModel

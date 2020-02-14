@@ -20,7 +20,7 @@ Drawer {
     DocItemOpsView {
         anchors.fill: parent
         leftAligned: edge === Qt.LeftEdge
-        operations: Container {
+        operations: [
             DocItemOp {
                 title: qsTr("Geographic name lookup:")
 
@@ -37,7 +37,7 @@ Drawer {
                     geoLontBox.arcDegree = temp.selectedGeoName.lontArcDegree
                     close()
                 }
-            }
+            },
             DocItemOp {
                 title: qsTr("Current location")
                 control: GeoNamesSearchItem {
@@ -51,7 +51,7 @@ Drawer {
                     close()
                 }
             }
-        }
+        ]
     }
     PositionSource {
         id: currentSource
