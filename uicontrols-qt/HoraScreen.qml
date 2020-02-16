@@ -101,11 +101,31 @@ Flickable {
             id: locationParams
             title: qsTr("Location")
 
-            TextField {
-                id: geoName
-                width: parent.defaultItemWidth
+            Row {
+                padding: geoLatt.padding
+                spacing: 10
                 enabled: !currentLocTimer.checked
+                TextField {
+                    id: geoName
+                    width: locationParams.defaultItemWidth - geoNameDialogButton.width - parent.spacing - 2*parent.padding
+                    anchors.verticalCenter: parent.verticalCenter
+                    onTextChanged: {
+                        console.log("geoname changed")
+                    }
+                }
+                RoundButton {
+                    id: geoNameDialogButton
+                    display: RoundButton.IconOnly
+                    padding: 0
+                    icon.source: "/icons/globe_3_icon&48.png"
+                    icon.color: "darkblue"
+                    icon.width: width
+                    icon.height: height
+                    anchors.verticalCenter: parent.verticalCenter
+                    onClicked: geoNameDialog.open()
+                }
             }
+
             ArcCoordBox {
                 id: geoLatt
                 visible: details.checked
@@ -207,24 +227,25 @@ Flickable {
 
             Rectangle {
                 anchors.fill: parent
-                color: "#95B2A0"
+//                color: "#95B2A0"
+                color: "transparent"
                 border.color: "black"
                 border.width: 1
                 radius: 10
                 readonly property int buttonPadding: 5
-                RoundButton {
+                /*RoundButton {
                     id: geoNameDialogButton
                     anchors.margins: parent.buttonPadding
                     height: parent.height - 2*parent.buttonPadding
                     width: height
                     icon.source: "/icons/globe_3_icon&48.png"
-                    icon.width: 48
-                    icon.height: 48
+//                    icon.width: 48
+//                    icon.height: 48
                     icon.color: "darkblue"
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
                     onClicked: geoNameDialog.open()
-                }
+                }*/
                 Switch {
                     id: details
                     anchors.margins: parent.buttonPadding
@@ -236,14 +257,14 @@ Flickable {
                 }
 
                 Rectangle {
-                    anchors.left: geoNameDialogButton.right
+                    anchors.left: parent.left//geoNameDialogButton.right
                     anchors.leftMargin: parent.buttonPadding
                     anchors.right: details.left
                     anchors.rightMargin: parent.buttonPadding
                     height: parent.height
                     color: parent.color
                     border.color: parent.border.color
-                    border.width: parent.border.width
+                    border.width: 0//parent.border.width
                     RoundButton {
                         anchors.fill: parent
                         anchors.margins: parent.parent.buttonPadding

@@ -17,11 +17,11 @@ Drawer {
         property GeoNamesSearchItem currentGeoName: null
     }
 
-    DocItemOpsView {
+    InputOperationsView {
         anchors.fill: parent
         leftAligned: edge === Qt.LeftEdge
         operations: [
-            DocItemOp {
+            InputOperation {
                 title: qsTr("Geographic name lookup:")
 
                 control: GeoNamesSearchBox {
@@ -38,7 +38,7 @@ Drawer {
                     close()
                 }
             },
-            DocItemOp {
+            InputOperation {
                 title: qsTr("Current location")
                 control: GeoNamesSearchItem {
                     id: currentLocation
