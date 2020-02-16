@@ -119,8 +119,8 @@ Flickable {
                     padding: 0
                     icon.source: "/icons/globe_3_icon&48.png"
                     icon.color: "darkblue"
-                    icon.width: width
-                    icon.height: height
+                    icon.width: width - leftInset -rightInset
+                    icon.height: height - topInset - bottomInset
                     anchors.verticalCenter: parent.verticalCenter
                     onClicked: geoNameDialog.open()
                 }
@@ -232,30 +232,18 @@ Flickable {
                 border.color: "black"
                 border.width: 1
                 radius: 10
-                readonly property int buttonPadding: 5
-                /*RoundButton {
-                    id: geoNameDialogButton
-                    anchors.margins: parent.buttonPadding
-                    height: parent.height - 2*parent.buttonPadding
-                    width: height
-                    icon.source: "/icons/globe_3_icon&48.png"
-//                    icon.width: 48
-//                    icon.height: 48
-                    icon.color: "darkblue"
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    onClicked: geoNameDialog.open()
-                }*/
+//                readonly property int buttonPadding: 5
                 Switch {
                     id: details
-                    anchors.margins: parent.buttonPadding
+//                    anchors.margins: parent.buttonPadding
                     anchors {
                         right: parent.right
+                        rightMargin: 20
                         verticalCenter: parent.verticalCenter
                     }
                     text: qsTr("Details")
                 }
-
+/*
                 Rectangle {
                     anchors.left: parent.left//geoNameDialogButton.right
                     anchors.leftMargin: parent.buttonPadding
@@ -265,14 +253,19 @@ Flickable {
                     color: parent.color
                     border.color: parent.border.color
                     border.width: 0//parent.border.width
-                    RoundButton {
-                        anchors.fill: parent
-                        anchors.margins: parent.parent.buttonPadding
-                        radius: 0
-                        text: qsTr("Tabular")
+                    */
+                    Button {
+//                        anchors.fill: parent
+//                        anchors.margins: parent.parent.buttonPadding
+                        anchors.left: parent.left
+                        anchors.leftMargin: 20
+                        anchors.verticalCenter: parent.verticalCenter
+//                        radius: 0
+                        icon.source: "file:///Users/robert/Munka/icons/black/png/3x3_grid_icon&48.png"
+                        text: qsTr("Tabulars")
                         onClicked: horaTableDialog.open()
                     }
-                }
+//                }
             }
         }
     }

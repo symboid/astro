@@ -17,5 +17,7 @@
     </qresource>
     <qresource prefix="/">
         <file>icons/globe_3_icon&amp;48.png</file>
+        <file>icons/playback_rec_icon&amp;24.png</file>
+        <file>icons/playback_stop_icon&amp;24.png</file>
     </qresource>
 </RCC>
