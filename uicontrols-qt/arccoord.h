@@ -105,7 +105,7 @@ struct ASTRO_UICONTROLS_QT_API QSignumSectionCalc : QSectionCalc
     Q_INVOKABLE virtual int sectionCount() const { return 2; }
     Q_INVOKABLE virtual int sectionMin() const { return 0; }
     Q_INVOKABLE virtual int sectionMax() const { return 180; }
-    Q_INVOKABLE virtual QStringList values() const { return { "", "-" }; }
+    Q_INVOKABLE virtual QStringList values() const { return { "   ", "-" }; }
 
     static constexpr int positive_index = 0;
     static constexpr int negative_index = 1;

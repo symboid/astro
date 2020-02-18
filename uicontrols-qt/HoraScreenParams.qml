@@ -7,7 +7,6 @@ Grid {
 
     width: parent.paramSectionWidth
     padding: parent.paramSectionPadding
-    spacing: 5
     columns: 1
     horizontalItemAlignment: Grid.AlignRight
 

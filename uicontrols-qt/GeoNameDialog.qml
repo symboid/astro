@@ -5,11 +5,14 @@ import Symboid.Sdk.Controls 1.0
 import Symboid.Astro.Controls 1.0
 import QtPositioning 5.12
 import Symboid.Sdk.Network 1.0
+import QtQuick.Controls.Material 2.3
 
 Drawer {
     property TextField geoNameBox: null
     property ArcCoordBox geoLattBox: null
     property ArcCoordBox geoLontBox: null
+
+    Material.background: "#DFEEE5"
 
     QtObject {
         id: temp
@@ -22,7 +25,7 @@ Drawer {
         leftAligned: edge === Qt.LeftEdge
         operations: [
             InputOperation {
-                title: qsTr("Geographic name lookup:")
+                title: qsTr("Geographic name lookup")
 
                 control: GeoNamesSearchBox {
                     height: 500
