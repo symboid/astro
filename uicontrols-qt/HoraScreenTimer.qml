@@ -5,33 +5,35 @@ import QtQml 2.12
 
 Pane {
     id: timerPane
-    property alias text: switchLabel.text
-    property alias checked: switchButton.checked
+    property string text: ""
+    property bool checked: false
     property int periodMsec: 1000
     signal triggered()
-    Row {
-        spacing: 10
 
+    Grid {
+        verticalItemAlignment: Grid.AlignVCenter
+        rows: 1
+        spacing: 10
         Label {
-            id: switchLabel
-            anchors.verticalCenter: parent.verticalCenter
+            text: timerPane.text
+            horizontalAlignment: Label.AlignRight
         }
 
         RoundButton {
             id: switchButton
-            anchors.verticalCenter: parent.verticalCenter
             checkable: true
+            onCheckedChanged: timerPane.checked = checked
             icon.source: checked
                        ? "/icons/playback_stop_icon&24.png"
                        : "/icons/playback_rec_icon&24.png"
         }
+    }
 
-        Timer {
-            triggeredOnStart: true
-            repeat: true
-            interval: periodMsec
-            running: switchButton.checked
-            onTriggered: timerPane.triggered()
-        }
+    Timer {
+        triggeredOnStart: true
+        repeat: true
+        interval: periodMsec
+        running: timerPane.checked
+        onTriggered: timerPane.triggered()
     }
 }

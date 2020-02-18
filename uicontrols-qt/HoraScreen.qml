@@ -4,7 +4,6 @@ import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
 import Symboid.Astro.Controls 1.0
 import QtPositioning 5.12
-import QtQuick.Controls.Material 2.3
 
 Flickable {
 
@@ -36,11 +35,8 @@ Flickable {
 
         HoraScreenParams {
             title: qsTr("Horoscope name")
-            TextField {
-                id: radixName
-                width: parent.defaultItemWidth
-                leftPadding: 10
-                rightPadding: leftPadding
+            HoraScreenTextField {
+                id: horaName
             }
         }
 
@@ -72,9 +68,8 @@ Flickable {
         HoraScreenParams {
             title: qsTr("Calendar")
             visible: details.checked
-            ComboBox {
+            HoraScreenComboBox {
                 id: calendarType
-                width: parent.defaultItemWidth
                 model: [ "Gregorian", "Julian" ]
             }
         }
@@ -101,31 +96,19 @@ Flickable {
             id: locationParams
             title: qsTr("Location")
 
-            Row {
-                padding: geoLatt.padding
-                spacing: 10
+            HoraScreenTextField {
+                id: geoName
                 enabled: !currentLocTimer.checked
-                TextField {
-                    id: geoName
-                    width: locationParams.defaultItemWidth - geoNameDialogButton.width - parent.spacing - 2*parent.padding
-                    anchors.verticalCenter: parent.verticalCenter
-                    onTextChanged: {
-                        console.log("geoname changed")
-                    }
-                }
-                RoundButton {
-                    id: geoNameDialogButton
+                button: RoundButton {
                     display: RoundButton.IconOnly
                     padding: 0
                     icon.source: "/icons/globe_3_icon&48.png"
-                    icon.color: "darkblue"
+//                    icon.color: "darkblue"
                     icon.width: width - leftInset -rightInset
                     icon.height: height - topInset - bottomInset
-                    anchors.verticalCenter: parent.verticalCenter
                     onClicked: geoNameDialog.open()
                 }
             }
-
             ArcCoordBox {
                 id: geoLatt
                 visible: details.checked
@@ -172,12 +155,12 @@ Flickable {
             }
         }
         HoraScreenParams {
+            id: houseSystemParams
             title: qsTr("House system")
             visible: details.checked
 
-            ComboBox {
+            HoraScreenComboBox {
                 id: housesType
-                width: parent.defaultItemWidth
                 textRole: "name"
                 model: ListModel {
                     ListElement {
@@ -227,45 +210,38 @@ Flickable {
 
             Rectangle {
                 anchors.fill: parent
-//                color: "#95B2A0"
                 color: "transparent"
-                border.color: "black"
                 border.width: 1
                 radius: 10
-//                readonly property int buttonPadding: 5
-                Switch {
-                    id: details
-//                    anchors.margins: parent.buttonPadding
+                Item {
                     anchors {
-                        right: parent.right
-                        rightMargin: 20
-                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        top: parent.top
+                        bottom: parent.bottom
+                        right: parent.horizontalCenter
                     }
-                    text: qsTr("Details")
-                }
-/*
-                Rectangle {
-                    anchors.left: parent.left//geoNameDialogButton.right
-                    anchors.leftMargin: parent.buttonPadding
-                    anchors.right: details.left
-                    anchors.rightMargin: parent.buttonPadding
-                    height: parent.height
-                    color: parent.color
-                    border.color: parent.border.color
-                    border.width: 0//parent.border.width
-                    */
                     Button {
-//                        anchors.fill: parent
-//                        anchors.margins: parent.parent.buttonPadding
                         anchors.left: parent.left
-                        anchors.leftMargin: 20
-                        anchors.verticalCenter: parent.verticalCenter
-//                        radius: 0
-                        icon.source: "file:///Users/robert/Munka/icons/black/png/3x3_grid_icon&48.png"
+                        anchors.centerIn: parent
+                        icon.source: "/icons/3x3_grid_icon&32.png"
                         text: qsTr("Tabulars")
                         onClicked: horaTableDialog.open()
                     }
-//                }
+                }
+                Item {
+                    anchors {
+                        left: parent.horizontalCenter
+                        top: parent.top
+                        bottom: parent.bottom
+                        right: parent.right
+                    }
+                    Switch {
+                        id: details
+                        anchors.right: parent.right
+                        anchors.centerIn: parent
+                        text: qsTr("Details")
+                    }
+                }
             }
         }
     }
@@ -275,10 +251,9 @@ Flickable {
         width: Math.min(400,parent.width)
         height: parent.height
         edge: Qt.RightEdge
-        geoNameBox: geoName
+        geoNameBox: geoName.item
         geoLattBox: geoLatt
         geoLontBox: geoLont
-        Material.background: "#DFEEE5"
         opacity: 0.875
     }
 
@@ -290,10 +265,11 @@ Flickable {
 
         HoraTablesLayout {
             anchors.fill: parent
-            horaModel: horaTableDialog.opened ? horaView : null
+            horaModel: horaView
         }
 
         height: parent.height - 50
-        width: Math.min(parent.width - 50, 700)
+//        width: 700//Math.min(parent.width - 50, 700)
+        width: parent.width - 50
     }
 }

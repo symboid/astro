@@ -11,6 +11,8 @@
         <file>GeoNameDialog.qml</file>
         <file>HoraTableView.qml</file>
         <file>HoraScreenTimer.qml</file>
+        <file>HoraScreenComboBox.qml</file>
+        <file>HoraScreenTextField.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>
@@ -19,5 +21,6 @@
         <file>icons/globe_3_icon&amp;48.png</file>
         <file>icons/playback_rec_icon&amp;24.png</file>
         <file>icons/playback_stop_icon&amp;24.png</file>
+        <file>icons/3x3_grid_icon&amp;32.png</file>
     </qresource>
 </RCC>
