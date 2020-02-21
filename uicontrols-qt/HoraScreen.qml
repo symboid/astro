@@ -269,7 +269,6 @@ Flickable {
         }
 
         height: parent.height - 50
-//        width: 700//Math.min(parent.width - 50, 700)
-        width: parent.width - 50
+        width: Math.min(parent.width - 50, 700)
     }
 }

@@ -13,6 +13,7 @@
         <file>HoraScreenTimer.qml</file>
         <file>HoraScreenComboBox.qml</file>
         <file>HoraScreenTextField.qml</file>
+        <file>ArcCoordLabel.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>

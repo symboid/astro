@@ -10,7 +10,7 @@ Item {
     property var tableModel: null
 
     property var columnWidths: []
-    property int tableWidth: tableView.contentWidth
+    property int tableWidth: parent.width//tableView.contentWidth
 
     property list<Component> columnComponents: [ Component { Item { } } ]
 
@@ -27,7 +27,7 @@ Item {
             right: parent.right
         }
         height: headerHeight
-        width: Math.min(tableWidth, parent.width)
+        width: parent.width
         color: "#95B2A0"
         ListView {
             anchors {
@@ -84,5 +84,6 @@ Item {
                 }
             }
         }
+
     }
 }

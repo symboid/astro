@@ -39,33 +39,26 @@ Item {
                         font.family: "Symboid"
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
+                        width: 80
                     }
                 },
                 Component {
-                    ArcCoordBox {
-                        Component.onCompleted: {
-                            arcDegree = Qt.binding(function(){return cellData})
-                        }
-                        sectionCalc: ZodiacSectionCalc {
-                        }
+                    ArcCoordLabel {
+                        arcDegree: cellData
+                        sectionCalc: ZodiacSectionCalc {}
+                        sectionFont.family: "Symboid"
                     }
                 },
                 Component {
-                    ArcCoordBox {
-                        Component.onCompleted: {
-                            arcDegree = Qt.binding(function(){return cellData})
-                        }
-                        sectionCalc: SignumSectionCalc {
-                        }
+                    ArcCoordLabel {
+                        arcDegree: cellData
+                        sectionCalc: SignumSectionCalc {}
                     }
                 },
                 Component {
-                    ArcCoordBox {
-                        Component.onCompleted: {
-                            arcDegree = Qt.binding(function(){return cellData})
-                        }
-                        sectionCalc: SignumSectionCalc {
-                        }
+                    ArcCoordLabel {
+                        arcDegree: cellData
+                        sectionCalc: SignumSectionCalc {}
                     }
                 }
             ]
@@ -82,21 +75,16 @@ Item {
                     }
                 },
                 Component {
-                    ArcCoordBox {
-                        Component.onCompleted: {
-                            arcDegree = Qt.binding(function(){return cellData})
-                        }
-                        sectionCalc: ZodiacSectionCalc {
-                        }
+                    ArcCoordLabel {
+                        arcDegree: cellData
+                        sectionCalc: ZodiacSectionCalc {}
+                        sectionFont.family: "Symboid"
                     }
                 },
                 Component {
-                    ArcCoordBox {
-                        Component.onCompleted: {
-                            arcDegree = Qt.binding(function(){return cellData})
-                        }
-                        sectionCalc: SignumSectionCalc {
-                        }
+                    ArcCoordLabel {
+                        arcDegree: cellData
+                        sectionCalc: SignumSectionCalc {}
                     }
                 }
             ]
