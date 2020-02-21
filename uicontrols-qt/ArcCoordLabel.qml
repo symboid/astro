@@ -8,6 +8,7 @@ Row {
     property alias arcDegree: arcCoord.arcDegree
     property alias sectionCalc: arcCoord.sectionCalc
     property alias sectionFont: sectionLabel.font
+    property bool showSecond: true
 
     ArcCoord {
         id: arcCoord
@@ -15,7 +16,7 @@ Row {
 
     TextMetrics {
         id: metrics
-        text: "000"
+        text: "0000"
     }
 
     function twoDigit(number)
@@ -23,7 +24,6 @@ Row {
         return "" + Math.floor(number / 10) + (number % 10)
     }
 
-    spacing: 10
     Label {
         id: sectionLabel
         property var valueTexts: sectionCalc.values()
@@ -52,5 +52,6 @@ Row {
         width: metrics.width
         horizontalAlignment: Label.AlignRight
         anchors.verticalCenter: parent.verticalCenter
+        visible: showSecond
     }
 }

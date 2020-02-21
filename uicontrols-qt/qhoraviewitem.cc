@@ -106,7 +106,7 @@ QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
 
 QStringList QHoraHousesModel::headerModel() const
 {
-    return { "", tr("Ecliptic longitude") };
+    return { "", tr("Ecliptic longitude"), tr("Speed (°/h)") };
 }
 
 QHoraViewItem::QHoraViewItem(QQuickItem* parent)
