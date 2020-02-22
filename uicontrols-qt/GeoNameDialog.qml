@@ -45,6 +45,9 @@ Drawer {
                 title: qsTr("Current location")
                 control: GeoNamesSearchItem {
                     id: currentLocation
+                    geoName: currentLoc.firstObject.name
+                    country: currentLoc.firstObject.countryName
+                    adminName: currentLoc.firstObject.adminName1
                     lattArcDegree: currentSource.position.coordinate.latitude
                     lontArcDegree: currentSource.position.coordinate.longitude
                 }
@@ -80,10 +83,7 @@ Drawer {
     {
         if (currentSource.valid)
         {
-            if (currentLoc.objectCount() > 0)
-            {
-                geoNameBox.text = currentLoc.object(0).name
-            }
+            geoNameBox.text = currentLoc.firstObject.name
             if (currentSource.position.latitudeValid)
             {
                 geoLattBox.arcDegree = currentSource.position.coordinate.latitude

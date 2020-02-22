@@ -25,11 +25,11 @@ Flow {
     }
     Row {
         spacing: 10
-        ArcCoordBox {
+        ArcCoordLabel {
             id: lont
             sectionCalc: GeoLontSectionCalc {}
         }
-        ArcCoordBox {
+        ArcCoordLabel {
             id: latt
             sectionCalc: GeoLattSectionCalc {}
         }
