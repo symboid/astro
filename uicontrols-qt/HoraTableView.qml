@@ -10,30 +10,30 @@ Item {
     property var tableModel: null
 
     property var columnWidths: []
-    property int tableWidth: parent.width//tableView.contentWidth
+    property int tableWidth: parent.width
 
     property list<Component> columnComponents: [ Component { Item { } } ]
 
-    readonly property int rowHeight: 40
-    readonly property int headerHeight: rowHeight
-    readonly property int colSpacing: 30
+    readonly property int headerHeight: 60
+    readonly property int colSpacing: 25
 
-    Rectangle {
+    Pane {
         id: tableHeader
+        leftInset: 0
+        leftPadding: 0
         anchors {
             top: parent.top
-            topMargin: rowHeight / 2
+            topMargin: headerHeight / 2
             left: parent.left
             right: parent.right
         }
         height: headerHeight
-        width: parent.width
-        color: "#95B2A0"
+        Material.background: "#95B2A0"
         ListView {
+            id: headerView
             anchors {
                 top: parent.top
                 bottom: parent.bottom
-                horizontalCenter: parent.horizontalCenter
             }
             width: Math.min(tableWidth, parent.width)
 
@@ -43,7 +43,6 @@ Item {
             orientation: Qt.Horizontal
             spacing: colSpacing
             delegate: Label {
-                height: headerHeight
                 width: columnWidths[index]
                 text: modelData
                 wrapMode: Label.Wrap
@@ -61,7 +60,6 @@ Item {
             bottom: parent.bottom
         }
         width: Math.min(tableWidth, parent.width)
-        rowHeightProvider: function (row) { return rowHeight }
         clip: true
 
         model: tableModel
@@ -72,7 +70,10 @@ Item {
             property var cellData: display
             sourceComponent: columnComponents[column + 1]
 
-            Component.onCompleted: {
+            onWidthChanged: correctColumnWidth()
+            Component.onCompleted: correctColumnWidth()
+
+            function correctColumnWidth(){
                 while (columnWidths.length <= column)
                 {
                     columnWidths.push(0)
@@ -84,6 +85,11 @@ Item {
                 }
             }
         }
+    }
 
+    function forceLayout()
+    {
+        tableView.forceLayout()
+        headerView.forceLayout()
     }
 }

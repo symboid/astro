@@ -103,8 +103,8 @@ Flickable {
                     display: RoundButton.IconOnly
                     padding: 0
                     icon.source: "/icons/globe_3_icon&48.png"
-//                    icon.color: "darkblue"
-                    icon.width: width - leftInset -rightInset
+                    icon.color: "darkblue"
+                    icon.width: width - leftInset - rightInset
                     icon.height: height - topInset - bottomInset
                     onClicked: geoNameDialog.open()
                 }

@@ -29,49 +29,70 @@ Item {
         anchors.right: parent.right
         currentIndex: tabBar.currentIndex
 
-        HoraTableView {
-            headerModel: tableModel !== null ? tableModel.headerModel : null
-            tableModel: horaModel !== null ? horaModel.planetsModel : null
-            columnComponents: [
-                Component {
-                    Text {
-                        text: cellData
-                        font.family: "Symboid"
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        width: 80
-                    }
-                },
-                Component {
-                    ArcCoordLabel {
-                        arcDegree: cellData
-                        sectionCalc: ZodiacSectionCalc {}
-                        sectionFont.family: "Symboid"
-                    }
-                },
-                Component {
-                    ArcCoordLabel {
-                        arcDegree: cellData
-                        sectionCalc: SignumSectionCalc {}
-                    }
-                },
-                Component {
-                    ArcCoordLabel {
-                        arcDegree: cellData
-                        sectionCalc: SignumSectionCalc {}
-                    }
+        Item {
+            HoraTableView {
+                id: planetTableView
+                anchors {
+                    top: parent.top
+                    bottom: showSeconds.top
+                    left: parent.left
+                    right: parent.right
                 }
-            ]
+                headerModel: tableModel !== null ? tableModel.headerModel : null
+                tableModel: horaModel !== null ? horaModel.planetsModel : null
+                columnComponents: [
+                    Component {
+                        Pane {
+                            Label {
+                                text: cellData
+                                font.family: "Symboid"
+                                anchors.horizontalCenter: parent.horizontalCenter
+                            }
+                        }
+                    },
+                    Component {
+                        ArcCoordLabel {
+                            arcDegree: cellData
+                            sectionCalc: ZodiacSectionCalc {}
+                            sectionFont.family: "Symboid"
+                            showSecond: showSeconds.checked
+                        }
+                    },
+                    Component {
+                        ArcCoordLabel {
+                            arcDegree: cellData
+                            sectionCalc: SignumSectionCalc {}
+                            showSecond: showSeconds.checked
+                        }
+                    },
+                    Component {
+                        ArcCoordLabel {
+                            arcDegree: cellData
+                            sectionCalc: SignumSectionCalc {}
+                            showSecond: showSeconds.checked
+                        }
+                    }
+                ]
+            }
+            CheckBox {
+                id: showSeconds
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    bottom: parent.bottom
+                }
+                text: qsTr("Show seconds")
+            }
         }
         HoraTableView {
             headerModel: tableModel !== null ? tableModel.headerModel : null
             tableModel: horaModel !== null ? horaModel.housesModel : null
             columnComponents: [
                 Component {
-                    Label {
-                        text: cellData
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                    Pane {
+                        Label {
+                            text: cellData
+                            anchors.horizontalCenter: parent.horizontalCenter
+                        }
                     }
                 },
                 Component {
