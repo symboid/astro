@@ -3,7 +3,8 @@
 #include "astro/uicontrols-qt/qgeonamesrestclient.h"
 
 QGeoNamesRestClient::QGeoNamesRestClient(QObject* parent)
-    : QRestClient(QUrl("http://api.geonames.org"), parent)
+    : QRestClient(parent)
 {
+    setApiAddress(QUrl("http://api.geonames.org"));
     setAuthUser("symboid");
 }

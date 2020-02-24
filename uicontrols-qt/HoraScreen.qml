@@ -63,6 +63,15 @@ Flickable {
                     timeBox.setCurrent()
                 }
             }
+            UnixTimeConverter {
+                id: unixTimeConverter
+                year: dateBox.year
+                month: dateBox.month
+                day: dateBox.day
+                hour: timeBox.hour
+                minute: timeBox.minute
+                second: timeBox.second
+            }
         }
 
         HoraScreenParams {
@@ -136,6 +145,10 @@ Flickable {
                     id: tzDiff
                     editable: true
                     property int hour: box(0).value
+                    function setHour(hour)
+                    {
+                        box(0).value = hour
+                    }
                     boxes: Row {
                         NumberBox {
                             from: -12
@@ -254,7 +267,9 @@ Flickable {
         geoNameBox: geoName.item
         geoLattBox: geoLatt
         geoLontBox: geoLont
+        tzBox: tzDiff
         opacity: 0.875
+        currentUnixTime: unixTimeConverter.unixTime
     }
 
     Dialog {
