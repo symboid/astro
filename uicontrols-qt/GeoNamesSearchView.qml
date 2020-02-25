@@ -22,8 +22,8 @@ ListView {
                    "&username="+apiUser
         columnNames: ["name", "countryName", "adminName1", "population", "lng", "lat"]
 
-        onModelAboutToBeReset: busyIndicator.visible = true
-        onModelReset: busyIndicator.visible = false
+        onModelAboutToBeReset: busyIndicator.running = true
+        onModelReset: busyIndicator.running = false
         onNetworkError: {
             networkStatusDialog.message = qsTr("Netwok error!")
             networkStatusDialog.open()
@@ -70,9 +70,8 @@ ListView {
 
     BusyIndicator {
         id: busyIndicator
-        visible: false
         anchors.centerIn: parent
-        running: true
+        running: false
     }
 
     Dialog {

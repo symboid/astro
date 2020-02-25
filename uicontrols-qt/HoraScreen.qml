@@ -157,6 +157,9 @@ Flickable {
                             circular: true
                         }
                     }
+                    Component.onCompleted: {
+                        setHour(0)
+                    }
                 }
             }
             HoraScreenTimer {

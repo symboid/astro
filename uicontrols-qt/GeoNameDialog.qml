@@ -11,13 +11,54 @@ Drawer {
     property TextField geoNameBox: null
     property ArcCoordBox geoLattBox: null
     property ArcCoordBox geoLontBox: null
+    property MultiNumberBox tzBox: null
+    property int currentUnixTime: 0
 
     Material.background: "#DFEEE5"
 
-    QtObject {
-        id: temp
-        property GeoNamesSearchItem selectedGeoName: null
-        property GeoNamesSearchItem currentGeoName: null
+    function setPosition(geoName,tzDiff)
+    {
+        geoNameBox.text = geoName.geoName
+        geoLattBox.arcDegree = geoName.lattArcDegree
+        geoLontBox.arcDegree = geoName.lontArcDegree
+        tzBox.setHour(tzDiff / 3600)
+    }
+
+    BusyIndicator {
+        id: busyIndicator
+        anchors.centerIn: parent
+        running: false
+    }
+
+    RestClient {
+        id: timeZoneDbRestClient
+        apiAddress: "http://api.timezonedb.com"
+        authUser: "symboid"
+    }
+
+    property GeoNamesSearchItem selectedGeoName: null
+    property GeoNamesSearchItem queryGeoName: null
+
+    RestObjectModel {
+        id: selectedTimeZone
+        restClient: timeZoneDbRestClient
+        operation: "v2.1/get-time-zone"+
+                   "?key=7JKCP2G245UG"+
+                   "&format=json"+
+                   "&by=position"+
+                   "&time="+currentUnixTime+
+                   "&lat="+(selectedGeoName !== null ? selectedGeoName.lattArcDegree : 0)+
+                   "&lng="+(selectedGeoName !== null ? selectedGeoName.lontArcDegree : 0)
+        onModelAboutToBeReset: busyIndicator.running = true
+        onModelReset: busyIndicator.running = false
+        onSuccessfullyFinished: {
+            setPosition(selectedGeoName, restObject.gmtOffset)
+            close()
+        }
+        onNetworkError: {
+            setPosition(selectedGeoName, 0)
+            close()
+        }
     }
 
     InputOperationsView {
@@ -30,25 +71,23 @@ Drawer {
                 control: GeoNamesSearchBox {
                     height: 500
                     onSelectedItemChanged: {
-                        temp.selectedGeoName = selectedItem
+                        queryGeoName = selectedItem
                     }
                 }
-                canExec: temp.selectedGeoName !== null
+                canExec: queryGeoName !== null
                 onExec: {
-                    geoNameBox.text = temp.selectedGeoName.geoName
-                    geoLattBox.arcDegree = temp.selectedGeoName.lattArcDegree
-                    geoLontBox.arcDegree = temp.selectedGeoName.lontArcDegree
-                    close()
+                    selectedGeoName = queryGeoName
+                    selectedTimeZone.runOperation()
                 }
             },
             InputOperation {
                 title: qsTr("Current location")
                 control: GeoNamesSearchItem {
-                    geoName: currentLoc.objectCount > 0 ? currentLoc.firstObject.name : ""
+                    geoName: currentGeoName.geoName
                     country: currentLoc.objectCount > 0 ? currentLoc.firstObject.countryName : ""
                     adminName: currentLoc.objectCount > 0 ? currentLoc.firstObject.adminName1 : ""
-                    lattArcDegree: currentSource.position.coordinate.latitude
-                    lontArcDegree: currentSource.position.coordinate.longitude
+                    lattArcDegree: currentGeoName.lattArcDegree
+                    lontArcDegree: currentGeoName.lontArcDegree
                 }
                 canExec: currentSource.valid
                 onExec: {
@@ -58,39 +97,40 @@ Drawer {
             }
         ]
     }
+
+    property GeoNamesSearchItem currentGeoName: GeoNamesSearchItem {
+        geoName: currentLoc.objectCount > 0 ? currentLoc.firstObject.name : ""
+        country: currentLoc.objectCount > 0 ? currentLoc.firstObject.countryName : ""
+        adminName: currentLoc.objectCount > 0 ? currentLoc.firstObject.adminName1 : ""
+        lattArcDegree: currentSource.position.coordinate.latitude
+        lontArcDegree: currentSource.position.coordinate.longitude
+    }
+
     PositionSource {
         id: currentSource
         active: true
     }
+
     RestTableModel {
         id: currentLoc
-        restClient: GeoNamesRestClient
-        interactive: true
+        restClient: RestClient {
+            apiAddress: "http://api.geonames.org"
+            authUser: "symboid"
+        }
+        interactive: currentIsValid
         operation: "findNearbyPlaceNameJSON?"+
                    "lat="+currentSource.position.coordinate.latitude+
                    "&lng="+currentSource.position.coordinate.longitude+
                    "&cities=cities1000"+
                    "&lang="+Qt.locale().name.substring(0,2)+
                    "&username="+"symboid"
-        onNetworkError: {
-        }
     }
 
     readonly property bool currentIsValid: currentSource.valid &&
             (currentSource.position.latitudeValid || currentSource.position.longitudeValid)
     function setCurrent()
     {
-        if (currentSource.valid)
-        {
-            geoNameBox.text = currentLoc.firstObject.name
-            if (currentSource.position.latitudeValid)
-            {
-                geoLattBox.arcDegree = currentSource.position.coordinate.latitude
-            }
-            if (currentSource.position.longitudeValid)
-            {
-                geoLontBox.arcDegree = currentSource.position.coordinate.longitude
-            }
-        }
+        selectedGeoName = currentGeoName
+        selectedTimeZone.runOperation()
     }
 }
