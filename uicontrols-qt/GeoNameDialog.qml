@@ -11,7 +11,7 @@ Drawer {
     property TextField geoNameBox: null
     property ArcCoordBox geoLattBox: null
     property ArcCoordBox geoLontBox: null
-    property MultiNumberBox tzBox: null
+    property HoraScreenTimeZoneBox tzBox: null
     property int currentUnixTime: 0
 
     Material.background: "#DFEEE5"

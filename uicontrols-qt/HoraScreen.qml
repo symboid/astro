@@ -96,7 +96,7 @@ Flickable {
             second: timeBox.second
             geoLatt: geoLatt.arcDegree
             geoLont: geoLont.arcDegree
-            tzDiff: tzDiff.hour
+            tzDiff: timeZoneBox.hour
             housesType: housesType.currentToken()
             withJulianCalendar: calendarType.currentIndex !== 0
         }
@@ -132,35 +132,10 @@ Flickable {
                 editable: true
                 enabled: !currentLocTimer.checked
             }
-
-            Row {
+            HoraScreenTimeZoneBox {
+                id: timeZoneBox
                 visible: details.checked
                 enabled: !currentLocTimer.checked
-                spacing: 10
-                Label {
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Time zone diff:")
-                }
-                MultiNumberBox {
-                    id: tzDiff
-                    editable: true
-                    property int hour: box(0).value
-                    function setHour(hour)
-                    {
-                        box(0).value = hour
-                    }
-                    boxes: Row {
-                        NumberBox {
-                            from: -12
-                            to: 12
-                            displaySuffix: qsTr("h")
-                            circular: true
-                        }
-                    }
-                    Component.onCompleted: {
-                        setHour(0)
-                    }
-                }
             }
             HoraScreenTimer {
                 id: currentLocTimer
@@ -270,7 +245,7 @@ Flickable {
         geoNameBox: geoName.item
         geoLattBox: geoLatt
         geoLontBox: geoLont
-        tzBox: tzDiff
+        tzBox: timeZoneBox
         opacity: 0.875
         currentUnixTime: unixTimeConverter.unixTime
     }
