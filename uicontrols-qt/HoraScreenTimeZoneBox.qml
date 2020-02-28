@@ -5,7 +5,6 @@ import Symboid.Sdk.Controls 1.0
 import Symboid.Sdk.Network 1.0
 
 Row {
-    readonly property string displaySuffix: qsTr("h")
 
     spacing: 10
     Label {
@@ -19,6 +18,7 @@ Row {
         }
     }
 
+    readonly property string displaySuffix: qsTr("h")
     MultiNumberBox {
         id: tzDiffBox
         editable: true
@@ -43,19 +43,17 @@ Row {
             }
         }
     }
-    property int hour: tzDiffBox.box(0).value / 2
+    property double diffHours: tzDiffBox.box(0).value / 2
     function setHour(hour)
     {
         tzDiffBox.box(0).value = hour * 2
-    }
-    Component.onCompleted: {
-        setHour(0)
     }
 
     property double geoNameLatt: 0.0
     property double geoNameLont: 0.0
     property int currentUnixTime: 0
-
+    property double prevLatt: 0
+    property double prevLont: 0
     RestObjectModel {
         id: timeZoneModel
         restClient: RestClient {
@@ -73,6 +71,8 @@ Row {
         onModelReset: busyIndicator.running = false
         onSuccessfullyFinished: {
             setHour(restObject.gmtOffset / 3600)
+            prevLatt = geoNameLatt
+            prevLont = geoNameLont
         }
         onNetworkError: {
             setHour(0)
@@ -80,6 +80,18 @@ Row {
     }
     function search()
     {
-        timeZoneModel.runOperation()
+        if (prevLatt !== geoNameLatt || prevLont !== geoNameLont)
+        {
+            timeZoneModel.runOperation()
+        }
+        else
+        {
+            setHour(timeZoneModel.restObject.gmtOffset / 3600)
+        }
     }
+
+    Component.onCompleted: {
+        setHour(0)
+    }
+
 }

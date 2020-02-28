@@ -96,7 +96,7 @@ Flickable {
             second: timeBox.second
             geoLatt: geoLatt.arcDegree
             geoLont: geoLont.arcDegree
-            tzDiff: timeZoneBox.hour
+            tzDiff: timeZoneBox.diffHours
             housesType: housesType.currentToken()
             withJulianCalendar: calendarType.currentIndex !== 0
         }
