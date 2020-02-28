@@ -2,6 +2,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
+import Symboid.Sdk.Network 1.0
 
 Row {
     readonly property string displaySuffix: qsTr("h")
@@ -10,6 +11,12 @@ Row {
     Label {
         anchors.verticalCenter: parent.verticalCenter
         text: qsTr("Time zone diff:")
+        BusyIndicator {
+            id: busyIndicator
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            running: false
+        }
     }
 
     MultiNumberBox {
@@ -43,5 +50,36 @@ Row {
     }
     Component.onCompleted: {
         setHour(0)
+    }
+
+    property double geoNameLatt: 0.0
+    property double geoNameLont: 0.0
+    property int currentUnixTime: 0
+
+    RestObjectModel {
+        id: timeZoneModel
+        restClient: RestClient {
+            apiAddress: "http://api.timezonedb.com"
+            authUser: "symboid"
+        }
+        operation: "v2.1/get-time-zone"+
+                   "?key=7JKCP2G245UG"+
+                   "&format=json"+
+                   "&by=position"+
+                   "&time="+currentUnixTime+
+                   "&lat="+geoNameLatt+
+                   "&lng="+geoNameLont
+        onModelAboutToBeReset: busyIndicator.running = true
+        onModelReset: busyIndicator.running = false
+        onSuccessfullyFinished: {
+            setHour(restObject.gmtOffset / 3600)
+        }
+        onNetworkError: {
+            setHour(0)
+        }
+    }
+    function search()
+    {
+        timeZoneModel.runOperation()
     }
 }

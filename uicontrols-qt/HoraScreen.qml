@@ -136,6 +136,9 @@ Flickable {
                 id: timeZoneBox
                 visible: details.checked
                 enabled: !currentLocTimer.checked
+                geoNameLatt: geoLatt.arcDegree
+                geoNameLont: geoLont.arcDegree
+                currentUnixTime: unixTimeConverter.unixTime
             }
             HoraScreenTimer {
                 id: currentLocTimer
@@ -247,7 +250,6 @@ Flickable {
         geoLontBox: geoLont
         tzBox: timeZoneBox
         opacity: 0.875
-        currentUnixTime: unixTimeConverter.unixTime
     }
 
     Dialog {

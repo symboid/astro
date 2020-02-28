@@ -12,55 +12,18 @@ Drawer {
     property ArcCoordBox geoLattBox: null
     property ArcCoordBox geoLontBox: null
     property HoraScreenTimeZoneBox tzBox: null
-    property int currentUnixTime: 0
 
     Material.background: "#DFEEE5"
 
-    function setPosition(geoName,tzDiff)
+    function setPosition(geoName)
     {
         geoNameBox.text = geoName.geoName
         geoLattBox.arcDegree = geoName.lattArcDegree
         geoLontBox.arcDegree = geoName.lontArcDegree
-        tzBox.setHour(tzDiff / 3600)
+        tzBox.search()
     }
 
-    BusyIndicator {
-        id: busyIndicator
-        anchors.centerIn: parent
-        running: false
-    }
-
-    RestClient {
-        id: timeZoneDbRestClient
-        apiAddress: "http://api.timezonedb.com"
-        authUser: "symboid"
-    }
-
-    property GeoNamesSearchItem selectedGeoName: null
     property GeoNamesSearchItem queryGeoName: null
-
-    RestObjectModel {
-        id: selectedTimeZone
-        restClient: timeZoneDbRestClient
-        operation: "v2.1/get-time-zone"+
-                   "?key=7JKCP2G245UG"+
-                   "&format=json"+
-                   "&by=position"+
-                   "&time="+currentUnixTime+
-                   "&lat="+(selectedGeoName !== null ? selectedGeoName.lattArcDegree : 0)+
-                   "&lng="+(selectedGeoName !== null ? selectedGeoName.lontArcDegree : 0)
-        onModelAboutToBeReset: busyIndicator.running = true
-        onModelReset: busyIndicator.running = false
-        onSuccessfullyFinished: {
-            setPosition(selectedGeoName, restObject.gmtOffset)
-            close()
-        }
-        onNetworkError: {
-            setPosition(selectedGeoName, 0)
-            close()
-        }
-    }
-
     InputOperationsView {
         anchors.fill: parent
         leftAligned: edge === Qt.LeftEdge
@@ -76,8 +39,8 @@ Drawer {
                 }
                 canExec: queryGeoName !== null
                 onExec: {
-                    selectedGeoName = queryGeoName
-                    selectedTimeZone.runOperation()
+                    setPosition(queryGeoName)
+                    close()
                 }
             },
             InputOperation {
@@ -130,7 +93,7 @@ Drawer {
             (currentSource.position.latitudeValid || currentSource.position.longitudeValid)
     function setCurrent()
     {
-        selectedGeoName = currentGeoName
-        selectedTimeZone.runOperation()
+        setPosition(currentGeoName)
+        close()
     }
 }
