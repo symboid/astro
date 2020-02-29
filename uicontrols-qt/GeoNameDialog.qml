@@ -1,6 +1,7 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
 import Symboid.Sdk.Controls 1.0
 import Symboid.Astro.Controls 1.0
 import QtPositioning 5.12
@@ -45,14 +46,22 @@ Drawer {
             },
             InputOperation {
                 title: qsTr("Current location")
-                control: GeoNamesSearchItem {
-                    geoName: currentGeoName.geoName
-                    country: currentLoc.objectCount > 0 ? currentLoc.firstObject.countryName : ""
-                    adminName: currentLoc.objectCount > 0 ? currentLoc.firstObject.adminName1 : ""
-                    lattArcDegree: currentGeoName.lattArcDegree
-                    lontArcDegree: currentGeoName.lontArcDegree
+                control: StackLayout {
+                    currentIndex: currentIsValid ? 0 : 1
+                    GeoNamesSearchItem {
+                        geoName: currentGeoName.geoName
+                        country: currentLoc.objectCount > 0 ? currentLoc.firstObject.countryName : ""
+                        adminName: currentLoc.objectCount > 0 ? currentLoc.firstObject.adminName1 : ""
+                        lattArcDegree: currentGeoName.lattArcDegree
+                        lontArcDegree: currentGeoName.lontArcDegree
+                    }
+                    Label {
+                        text: qsTr("Not available!")
+                        color: "red"
+                        font.bold: true
+                    }
                 }
-                canExec: currentSource.valid
+                canExec: currentIsValid
                 onExec: {
                     setCurrent()
                     close()
