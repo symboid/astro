@@ -6,7 +6,7 @@ GeoNamesSearchItem 1.0 GeoNamesSearchItem.qml
 GeoNamesSearchView 1.0 GeoNamesSearchView.qml
 GeoNamesSearchBox 1.0 GeoNamesSearchBox.qml
 HoraScreen 1.0 HoraScreen.qml
-HoraScreenParams 1.0 HoraScreenParams.qml
+HoraScreenParamBox 1.0 HoraScreenParamBox.qml
 HoraScreenTimer 1.0 HoraScreenTimer.qml
 HoraScreenTextField 1.0 HoraScreenTextField.qml
 HoraScreenComboBox 1.0 HoraScreenComboBox.qml

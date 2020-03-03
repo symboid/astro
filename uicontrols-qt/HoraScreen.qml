@@ -7,13 +7,30 @@ import QtPositioning 5.12
 
 Flickable {
 
+    // metrics:
     readonly property bool isLandscape: width > height
-
     readonly property int mandalaSize: isLandscape ? height : width
     readonly property int screenSize: isLandscape ? width : height
     readonly property int restSize: screenSize - mandalaSize
 
     property alias fontPointSize: horaView.fontPointSize
+
+    // parameters:
+    property alias title: horaName.text
+    // date and time
+    property alias year: dateBox.year
+    property alias month: dateBox.month
+    property alias day: dateBox.day
+    property alias hour: timeBox.hour
+    property alias minute: timeBox.minute
+    property alias second: timeBox.second
+    // geo loacation attributes:
+    property alias geoName: geoName.text
+    property alias geoLatt: geoLatt.arcDegree
+    property alias geoLont: geoLont.arcDegree
+    property alias geoTzDiff: timeZoneBox.diffHours
+    // other details:
+    property alias calendarType: calendarType.currentIndex
 
     flickableDirection: isLandscape ? Flickable.HorizontalFlick : Flickable.VerticalFlick
     contentWidth: horaScreen.width
@@ -33,14 +50,14 @@ Flickable {
 
         flow: isLandscape ? Flow.TopToBottom : Flow.LeftToRight
 
-        HoraScreenParams {
+        HoraScreenParamBox {
             title: qsTr("Horoscope name")
             HoraScreenTextField {
                 id: horaName
             }
         }
 
-        HoraScreenParams {
+        HoraScreenParamBox {
             title: qsTr("Date and time")
 
             DateCoordBox {
@@ -74,7 +91,7 @@ Flickable {
             }
         }
 
-        HoraScreenParams {
+        HoraScreenParamBox {
             title: qsTr("Calendar")
             visible: details.checked
             HoraScreenComboBox {
@@ -101,7 +118,7 @@ Flickable {
             withJulianCalendar: calendarType.currentIndex !== 0
         }
 
-        HoraScreenParams {
+        HoraScreenParamBox {
             id: locationParams
             title: qsTr("Location")
 
@@ -148,7 +165,7 @@ Flickable {
                 enabled: geoNameDialog.currentIsValid
             }
         }
-        HoraScreenParams {
+        HoraScreenParamBox {
             id: houseSystemParams
             title: qsTr("House system")
             visible: details.checked

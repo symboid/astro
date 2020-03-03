@@ -7,7 +7,7 @@
         <file>GeoNamesSearchItem.qml</file>
         <file>HoraTablesLayout.qml</file>
         <file>HoraScreen.qml</file>
-        <file>HoraScreenParams.qml</file>
+        <file>HoraScreenParamBox.qml</file>
         <file>GeoNameDialog.qml</file>
         <file>HoraTableView.qml</file>
         <file>HoraScreenTimer.qml</file>

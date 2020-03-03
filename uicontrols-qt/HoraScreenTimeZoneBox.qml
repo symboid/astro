@@ -44,6 +44,10 @@ Row {
         }
     }
     property double diffHours: tzDiffBox.box(0).value / 2
+    onDiffHoursChanged: {
+        setHour(diffHours)
+        diffHours = Qt.binding(function(){return tzDiffBox.box(0).value / 2})
+    }
     function setHour(hour)
     {
         tzDiffBox.box(0).value = hour * 2
