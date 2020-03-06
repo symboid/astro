@@ -36,6 +36,17 @@ Flickable {
     contentWidth: horaScreen.width
     contentHeight: horaScreen.height
 
+    function setCurrent()
+    {
+        currentTimeTimer.checked = true
+        currentLocTimer.checked = true
+    }
+    function unsetCurrent()
+    {
+        currentTimeTimer.checked = false
+        currentLocTimer.checked = false
+    }
+
     Flow {
         id: horaScreen
 

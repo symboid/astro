@@ -6,7 +6,7 @@ import QtQml 2.12
 Pane {
     id: timerPane
     property string text: ""
-    property bool checked: false
+    property alias checked: switchButton.checked
     property int periodMsec: 1000
     signal triggered()
 
