@@ -27,7 +27,7 @@ ApplicationWindow {
             anchors.fill: parent
             anchors.margins: parent.border.width
 
-            model: [ "Coordinate Items Demo", "GeoNames Demo", "HoraView Demo" ]
+            model: [ "Coordinate Items Demo", "GeoNames Demo", "HoraView Demo", "Documents Demo" ]
             delegate: Rectangle {
                 width: menu.width
                 height: 40
@@ -64,6 +64,7 @@ ApplicationWindow {
             CoordsDemoPage {}
             GeoNamesDemoPage {}
             HoraViewDemoPage {}
+            DocumentsDemoPage {}
         }
     }
 }

@@ -17,6 +17,7 @@ RESOURCES += \
 
 LIBS += $$moduleDep(astro,uicontrols-qt)
 LIBS += $$moduleDep(astro,sweph)
+LIBS += $$moduleDep(sdk,dox-qt)
 LIBS += $$moduleDep(sdk,uicontrols-qt)
 LIBS += $$moduleDep(sdk,network-qt)
 LIBS += $$moduleDep(sdk,arch)

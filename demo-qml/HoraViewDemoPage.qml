@@ -31,18 +31,19 @@ Item {
         Text {
             text: "Geogr. lattitude:"
         }
-        GeoCoordBox {
+        ArcCoordBox {
             id: geoLatt
-            isLattitude: true
             editable: true
+            sectionCalc: GeoLattSectionCalc {}
         }
         Item { width: 1; height: 10 }
         Text {
             text: "Geogr. longitude:"
         }
-        GeoCoordBox {
+        ArcCoordBox {
             id: geoLont
             editable: true
+            sectionCalc: GeoLontSectionCalc {}
         }
         Button {
             text: "Calculate"

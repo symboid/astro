@@ -58,9 +58,10 @@ Grid {
         }
         onTextChanged: geoLontOutput.arcDegree = Number(text)
     }
-    GeoCoordBox {
+    ArcCoordBox {
         id: geoLontOutput
         editable: true
+        sectionCalc: GeoLontSectionCalc {}
     }
     Text {
         text: geoLontOutput.arcDegree
