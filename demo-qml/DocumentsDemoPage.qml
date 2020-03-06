@@ -5,7 +5,7 @@ import Symboid.Sdk.Dox 1.0
 
 Item {
 
-    DocumentFolderView {
+    DocumentFolderBox {
         anchors.fill: parent
     }
 }

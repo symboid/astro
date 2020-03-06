@@ -102,7 +102,9 @@ Drawer {
             (currentSource.position.latitudeValid || currentSource.position.longitudeValid)
     function setCurrent()
     {
-        setPosition(currentGeoName)
-        close()
+        if (currentIsValid)
+        {
+            setPosition(currentGeoName)
+        }
     }
 }
