@@ -77,18 +77,18 @@ public:
     template <class _MagPoint>
     aspect_type aspect_conn(const _MagPoint& _mag_point) const
     {
-        const eph::ecl_lont aspect_dist[aspect_type_count] =
+        const hor::orbis aspect_dist[aspect_type_count] =
         {
             0, 0.0, 180.0, 120.0, 90.0, 72.0, 60.0
         };
 
-        eph::ecl_lont dist = eph::ecl_lont(eph::basic_object<_EphProxy>::pos().dist_abs(_mag_point.pos()), true);
+        hor::orbis dist = this->pos().dist_abs(_mag_point.pos()).to_arc_degree();
 
         aspect_type a = none_aspect, aspect_conn = none_aspect;
         while (aspect_conn == none_aspect && ++a < aspect_type_count)
         {
             hor::orbis aspect_orbis = this->aspect_orbis(a) + _mag_point.aspect_orbis(a);
-            eph::ecl_lont dist_min = dist - aspect_orbis, dist_max = dist + aspect_orbis;
+            hor::orbis dist_min = dist - aspect_orbis, dist_max = dist + aspect_orbis;
             if (dist_min < aspect_dist[a] && aspect_dist[a] < dist_max)
             {
                 aspect_conn = a;
