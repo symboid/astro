@@ -15,6 +15,7 @@
         <file>HoraScreenTextField.qml</file>
         <file>ArcCoordLabel.qml</file>
         <file>HoraScreenTimeZoneBox.qml</file>
+        <file>HoraScreenBottomPane.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>

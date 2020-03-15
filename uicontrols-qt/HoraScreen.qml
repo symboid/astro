@@ -213,28 +213,13 @@ Flickable {
             }
         }
 
-        Item {
-            id: referencePanel
-            width: isLandscape ? parent.paramSectionWidth : mandalaSize
-            readonly property int contentHeight: 80
-            height: isLandscape ? contentHeight + 2 * parent.paramSectionPadding : 0
-        }
-
-        Pane {
-            id: controlPanel
-            width: referencePanel.width
+        HoraScreenBottomPane {
+            referenceItem: details.checked ? houseSystemParams : locationParams
+            landscape: isLandscape
+            width: parent.paramSectionWidth
             padding: parent.paramSectionPadding
-            topPadding: isLandscape ? mandalaSize - (referencePanel.y + referencePanel.height) - referencePanel.contentHeight
-                                    : parent.paramSectionPadding
-            leftPadding: isLandscape ? parent.paramSectionPadding
-                                     : parent.paramSectionPadding + mandalaSize - parent.paramSectionWidth
-            height: referencePanel.contentHeight + topPadding
-
-            Rectangle {
-                anchors.fill: parent
-                color: "transparent"
-                border.width: 1
-                radius: 10
+            controlItem: Frame {
+                height: 60
                 Item {
                     anchors {
                         left: parent.left
