@@ -8,7 +8,7 @@ Pane {
     property Item controlItem: Item {}
     property bool landscape: true
 
-background: Rectangle { anchors.fill:parent; border.width:3; border.color:"red" }
+//background: Rectangle { anchors.fill:parent; border.width:3; border.color:"red" }
 
     readonly property int itemHeight: itemSlot.height + 2*padding
     readonly property int landscapeSpace: mandalaSize - (referenceItem.y + referenceItem.height)

@@ -39,6 +39,9 @@ public:
     Q_PROPERTY(QStringList headerModel READ headerModel CONSTANT)
 private:
     virtual QStringList headerModel() const = 0;
+
+public:
+    Q_INVOKABLE void update();
 };
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_QHORAITEMSMODEL_H__

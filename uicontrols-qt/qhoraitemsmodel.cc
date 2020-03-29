@@ -18,3 +18,9 @@ QHash<int, QByteArray> QHoraItemsModel::roleNames() const
     roles[EclSpeedRole] = "ecl_speed";
     return roles;
 }
+
+void QHoraItemsModel::update()
+{
+    beginResetModel();
+    endResetModel();
+}
