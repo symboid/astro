@@ -28,7 +28,6 @@ Row {
         id: sectionLabel
         property var valueTexts: sectionCalc.values()
         text: valueTexts[arcCoord.section]
-        width: metrics.width
         horizontalAlignment: Label.AlignRight
         anchors.verticalCenter: parent.verticalCenter
     }

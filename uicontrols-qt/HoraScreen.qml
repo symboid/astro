@@ -173,8 +173,8 @@ Flickable {
                     anchors.right: parent.right
                     anchors.bottom: showPlanetSeconds.top
                     anchors.margins: 20
-                    headerModel: tableModel.headerModel
                     tableModel: horaView.planetsModel
+                    headerModel: tableModel.headerModel
                     columnComponents: [
                         Component {
                             Pane {
@@ -222,8 +222,54 @@ Flickable {
                     }
                 }
             }
-            HoraTablesLayout {
-                horaModel: horaView
+            Item {
+                HoraTableView {
+                    id: houseTableView
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: showHousesSeconds.top
+                    anchors.margins: 20
+                    tableModel: horaView.housesModel
+                    headerModel: tableModel.headerModel
+                    columnComponents: [
+                        Component {
+                            Pane {
+                                Label {
+                                    text: cellData
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                }
+                            }
+                        },
+                        Component {
+                            ArcCoordLabel {
+                                arcDegree: cellData
+                                sectionCalc: ZodiacSectionCalc {}
+                                sectionFont.family: "Symboid"
+                                showSecond: showHousesSeconds.checked
+                            }
+                        },
+                        Component {
+                            ArcCoordLabel {
+                                arcDegree: cellData
+                                sectionCalc: SignumSectionCalc {}
+                                showSecond: showHousesSeconds.checked
+                            }
+                        }
+                    ]
+                }
+                CheckBox {
+                    id: showHousesSeconds
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        bottom: parent.bottom
+                        bottomMargin: 20
+                    }
+                    text: qsTr("Show seconds")
+                    onCheckedChanged: {
+                        houseTableView.tableModel.update()
+                    }
+                }
             }
         }
 
@@ -360,20 +406,5 @@ Flickable {
         geoLontBox: geoLont
         tzBox: timeZoneBox
         opacity: 0.875
-    }
-
-    Dialog {
-        id: horaTableDialog
-        title: qsTr("Horoscope items")
-        standardButtons: Dialog.Close
-        anchors.centerIn: parent
-
-        HoraTablesLayout {
-            anchors.fill: parent
-            horaModel: horaView
-        }
-
-        height: parent.height - 50
-        width: Math.min(parent.width - 50, 700)
     }
 }

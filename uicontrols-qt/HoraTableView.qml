@@ -10,6 +10,8 @@ Item {
     property var tableModel: null
 
     property var columnWidths: []
+    readonly property int lineWidth: 1
+
     readonly property int tableWidth: {
         var w = 0
         for (var c = 0; c < columnWidths.length; ++c)
@@ -19,42 +21,34 @@ Item {
         w += colSpacing*(columnWidths.length - 1)
         return w
     }
-    readonly property int displayWidth: Math.min(tableWidth + 50, width)
+    readonly property int displayWidth: Math.min(tableWidth + rowHeight, width)
     readonly property int verticalHeaderWidth: columnWidths.length ? columnWidths[0] : 0
+    readonly property int horizontalHeaderWidth: displayWidth - verticalHeaderWidth - lineWidth
 
     property int rowHeight: 50
     readonly property int tableHeight: rowHeight * verticalHeader.count
     readonly property int displayHeight: Math.min(tableHeight, height)
+    readonly property int verticalHeaderHeight: displayHeight - horizontalHeader.height - 2 * lineWidth
+    readonly property int horizontalHeaderHeight: rowHeight
 
     property list<Component> columnComponents: [ Component { Item { } } ]
 
-    readonly property int headerHeight: 40
     readonly property int colSpacing: 25
 
     Grid {
-        columns: 2
+        columns: 3
         anchors.centerIn: parent
 
-        Rectangle {
-            color: "black"
-            height: 1
-            width: verticalHeaderWidth
-        }
-        Rectangle {
-            color: "black"
-            height: 1
-            width: displayWidth - verticalHeaderWidth
-        }
+        HoraTableLine { length: verticalHeaderWidth; w: lineWidth }
+        HoraTableLine { length: lineWidth; w: lineWidth }
+        HoraTableLine { length: displayWidth - verticalHeaderWidth; w: lineWidth }
 
-        Rectangle {
-            //color: "blue"
-            height: headerHeight
-            width: verticalHeaderWidth
-        }
+        Item { height: 1; width: 1 }
+        HoraTableLine { vertical: true; length: rowHeight; w: lineWidth }
         ListView {
-            id: tableHeader
-            width: displayWidth - verticalHeaderWidth
-            height: headerHeight
+            id: horizontalHeader
+            width: horizontalHeaderWidth
+            height: horizontalHeaderHeight
 
             clip: true
             contentX: tableView.contentX
@@ -72,27 +66,19 @@ Item {
             }
         }
 
-        Rectangle {
-            color: "black"
-            height: 1
-            width: verticalHeaderWidth
-        }
-        Rectangle {
-            color: "black"
-            height: 1
-            width: displayWidth - verticalHeaderWidth
-        }
+        HoraTableLine { length: verticalHeaderWidth; w: lineWidth }
+        HoraTableLine { length: lineWidth; w: lineWidth}
+        HoraTableLine { length: horizontalHeaderWidth; w: lineWidth }
 
         ListView {
             id: verticalHeader
             width: verticalHeaderWidth
-            height: displayHeight - tableHeader.height - 2
+            height: verticalHeaderHeight
 
             clip: true
             contentY: tableView.contentY
             model: tableModel
-            delegate: Rectangle {
-//                border.width: 1
+            delegate: Item {
                 height: rowHeight
                 width: columnWidths[0]
 
@@ -121,10 +107,11 @@ Item {
                 }
             }
         }
+        HoraTableLine { vertical: true; length: verticalHeaderHeight; w: lineWidth }
         TableView {
             id: tableView
-            width: displayWidth - verticalHeaderWidth
-            height: displayHeight - tableHeader.height - 2
+            width: horizontalHeaderWidth
+            height: verticalHeaderHeight
             clip: true
 
             model: tableModel
@@ -133,8 +120,8 @@ Item {
 
             contentWidth: tableWidth
 
-            delegate: Rectangle {
-//                border.width: 1
+            delegate: Item {
+//            delegate: Rectangle { border.width: 1
                 implicitHeight: rowHeight
                 implicitWidth: column !== 0 && columnWidths.length > column ? columnWidths[column] : 1
                 Loader {
