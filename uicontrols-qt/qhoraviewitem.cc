@@ -158,7 +158,7 @@ void QHoraViewItem::calcMandalaGeometry()
 
 qreal QHoraViewItem::eclipticRadius() const
 {
-    return mMandalaRadius * 0.8;
+    return mMandalaRadius * (isDisplayFlagSet(SHOW_CONSTELLATIONS) ? 0.75 : 0.85);
 }
 
 qreal QHoraViewItem::oneDegree() const
@@ -302,6 +302,13 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& plane
 
 }
 
+void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellation* constellation)
+{
+    const  eph::ecl_lont startLont = constellation->begin_lont() - mandalaLeft();
+    const eph::arc_degree length = constellation->_M_length;
+    painter->drawArc(boundingRect(), (startLont + 180) * 16.0, length * 16.0);
+}
+
 void QHoraViewItem::paint(QPainter* painter)
 {
     if (painter) {
@@ -322,6 +329,11 @@ void QHoraViewItem::paint(QPainter* painter)
         qreal earthRadius = eclipticRadius() * EARTH_DIST;
         painter->drawEllipse(mMandalaCenter, earthRadius, earthRadius);
 
+        // constellations
+        eph_proxy::set_eph_dir_path("/Users/robert/code/symboid/astro/sweph/src/");
+        eph::basic_constellation<swe::proxy, eph::taurus> taurus;
+        drawConstellation(painter, &taurus);
+
         // zodiac sign domains
         mAstroFont->setPointSize(mFontPointSize);
         painter->setFont(*mAstroFont);
@@ -330,9 +342,9 @@ void QHoraViewItem::paint(QPainter* painter)
         {
             const eph::zod_sign_cusp zodSignCusp(z, eph::house_system_mundan::house_names[z]);
             eph::ecl_lont zodSignLont = zodSignCusp.pos()._M_lont;
-            painter->drawLine(horaPoint(zodSignLont, 1.0), horaPoint(zodSignLont, 1.2));
+            painter->drawLine(horaPoint(zodSignLont, 1.0), horaPoint(zodSignLont, 1.15));
 
-            QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.1));
+            QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.05));
             QSize textSize = fontMetrics.size(0, mAstroFont->zodLetter(eph::zod(z)));
             QRectF zodSignRect(zodSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
                                zodSignPoint + QPointF(textSize.width() / 2, textSize.height() / 2));
@@ -350,7 +362,7 @@ void QHoraViewItem::paint(QPainter* painter)
             housePen.setWidthF(isAxis ? 2.5 : 1.0);
             housePen.setColor(isAxis ? QColor(0x80,0x0,0x00) : QColor(0x0,0x0,0x80));
             painter->setPen(housePen);
-            painter->drawLine(horaPoint(houseCusp.pos()._M_lont, isAxis ? 1.2 : 1.0), horaPoint(houseCusp.pos()._M_lont, EARTH_DIST));
+            painter->drawLine(horaPoint(houseCusp.pos()._M_lont, isAxis ? 1.15 : 1.0), horaPoint(houseCusp.pos()._M_lont, EARTH_DIST));
         }
 
         QFont planetFont = *mAstroFont;
@@ -601,4 +613,32 @@ void QHoraViewItem::setFontPointSize(int fontPointSize)
         mFontPointSize = fontPointSize;
         emit fontPointSizeChanged();
     }
+}
+
+void QHoraViewItem::setDisplayFlags(DisplayFlags displayFlags)
+{
+    if (mDisplayFlags != displayFlags)
+    {
+        mDisplayFlags = displayFlags;
+        emit displayFlagsChanged();
+    }
+}
+
+void QHoraViewItem::setDisplayFlag(DisplayFlags displayFlag, bool isSet)
+{
+    if (isSet && (mDisplayFlags & displayFlag) != displayFlag)
+    {
+        mDisplayFlags = DisplayFlags(mDisplayFlags | displayFlag);
+        emit displayFlagsChanged();
+    }
+    else if (!isSet && (mDisplayFlags & displayFlag) != 0)
+    {
+        mDisplayFlags = DisplayFlags(mDisplayFlags & ~displayFlag);
+        emit displayFlagsChanged();
+    }
+}
+
+bool QHoraViewItem::isDisplayFlagSet(DisplayFlags displayFlag) const
+{
+    return (mDisplayFlags & displayFlag) == displayFlag;
 }

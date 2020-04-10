@@ -55,6 +55,11 @@ struct arc_coord
     {
         return std::abs(_left - _right) < second_epsilon;
     }
+
+    inline arc_degree static unpack(int _degree, int _minute, arc_degree _second = 0.0)
+    {
+        return arc_degree(_degree) + (arc_degree(_minute) * 60.0 +  _second) / 3600.0;
+    }
 };
 
 eph_ns_end

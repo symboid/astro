@@ -164,6 +164,8 @@ Flickable {
                 tzDiff: timeZoneBox.diffHours
                 housesType: housesType.currentToken()
                 withJulianCalendar: calendarType.currentIndex !== 0
+
+                displayFlags: HoraView.SHOW_CONSTELLATIONS
             }
             Item {
                 HoraTableView {

@@ -11,6 +11,7 @@ HEADERS += \
     arc_coord.h \
     calendar.h \
     calendarcoords.h \
+    constellation.h \
     defs.h \
     houses.h \
     proxy.h \

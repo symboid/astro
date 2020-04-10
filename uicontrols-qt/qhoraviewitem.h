@@ -8,6 +8,7 @@
 #include "astro/calculo/hora.h"
 #include "astro/uicontrols-qt/qastrofont.h"
 #include "astro/uicontrols-qt/qhoraitemsmodel.h"
+#include "astro/eph/constellation.h"
 
 hor_ns_begin
 typedef basic_planet<eph_proxy> planet;
@@ -73,6 +74,7 @@ private:
     };
     Rank planetRank(const hor::planet& planet) const;
     void drawPlanetSymbol(QPainter* painter, const hor::planet& planet, const eph::ecl_pos& displayPos);
+    void drawConstellation(QPainter* painter, const eph::constellation* constellation);
     void paint(QPainter* painter) override;
 private:
     QPointF horaPoint(eph::ecl_lont horaLont, qreal dist) const;
@@ -158,6 +160,24 @@ private:
 signals:
     void planetsModelChanged();
     void housesModelChanged();
+
+public:
+    enum DisplayFlags
+    {
+        NONE = 0x00,
+        SHOW_CONSTELLATIONS = 0x01,
+    };
+    Q_ENUM(DisplayFlags)
+public:
+    Q_PROPERTY(DisplayFlags displayFlags MEMBER mDisplayFlags WRITE setDisplayFlags NOTIFY displayFlagsChanged)
+private:
+    DisplayFlags mDisplayFlags;
+    void setDisplayFlags(DisplayFlags displayFlags);
+public:
+    Q_INVOKABLE void setDisplayFlag(DisplayFlags displayFlag, bool isSet = true);
+    Q_INVOKABLE bool isDisplayFlagSet(DisplayFlags displayFlag) const;
+signals:
+    void displayFlagsChanged();
 };
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_QHORAVIEWITEM_H__

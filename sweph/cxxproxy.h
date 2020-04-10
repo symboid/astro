@@ -24,18 +24,18 @@ struct ASTRO_SWEPH_API proxy
         static time_point time(const eph::calendar_coords& _calendar_coords);
     };
 
+    enum class calc_type
+    {
+        SWISSEPH,
+        JPL,
+        MOSHIER,
+
+        DEFAULT = SWISSEPH,
+    };
+    static void set_calc_type(calc_type _calc_type);
+
     struct ASTRO_SWEPH_API object
     {
-        enum class calc_type
-        {
-            SWISSEPH,
-            JPL,
-            MOSHIER,
-
-            DEFAULT = SWISSEPH,
-        };
-        static void set_calc_type(calc_type _calc_type);
-
         enum index
         {
             sun = SE_SUN,
@@ -68,6 +68,12 @@ struct ASTRO_SWEPH_API proxy
         };
         static eph::calc_result calc(clock::time_point _time, type _houses_type,
                 eph::arc_degree _geo_lont, eph::arc_degree _geo_latt, eph::ecl_lont* _ecl_lont_buffer);
+    };
+
+    struct ASTRO_SWEPH_API fixstar
+    {
+        static eph::calc_result calc_pos(const std::string& _fixstar_name, clock::time_point _time,
+                eph::ecl_pos& _ecl_pos, eph::ecl_speed& _ecl_speed);
     };
 };
 

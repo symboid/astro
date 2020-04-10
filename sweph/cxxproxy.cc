@@ -18,9 +18,9 @@ proxy::clock::time_point proxy::clock::time(const eph::calendar_coords& _calenda
     return time_point(duration(swe_julday(_calendar_coords._M_year, _calendar_coords._M_month, _calendar_coords._M_day, hours, gregFlag)));
 }
 
-static proxy::object::calc_type _G_calc_type = proxy::object::calc_type::DEFAULT;
+static proxy::calc_type _G_calc_type = proxy::calc_type::DEFAULT;
 
-void proxy::object::set_calc_type(proxy::object::calc_type _calc_type)
+void proxy::set_calc_type(proxy::calc_type _calc_type)
 {
     _G_calc_type = _calc_type;
 }
@@ -79,6 +79,46 @@ eph::calc_result proxy::houses::calc(clock::time_point _time, type _house_system
     {
         return eph::calc_result::FAILED;
     }
+}
+
+eph::calc_result proxy::fixstar::calc_pos(const std::string& _fixstar_name, clock::time_point _time,
+        eph::ecl_pos& _ecl_pos, eph::ecl_speed& _ecl_speed)
+{
+    char error_str[AS_MAXCH];
+    double eph_data[6];
+    char fixstar_name[SE_MAX_STNAME + 1];
+    std::strncpy(fixstar_name, _fixstar_name.c_str(), SE_MAX_STNAME);
+
+    // setting up ephemeris type
+    int32 type_flag;
+    switch (_G_calc_type)
+    {
+    case calc_type::JPL: type_flag = SEFLG_JPLEPH; break;
+    case calc_type::MOSHIER: type_flag = SEFLG_MOSEPH; break;
+    case calc_type::SWISSEPH: type_flag = SEFLG_SWIEPH; break;
+    }
+
+    // SEFLG_SPEED = asking for speed calculation
+    int32 calc_flag = type_flag | SEFLG_SPEED;
+
+    int ret_flag = swe_fixstar2_ut(fixstar_name, _time.time_since_epoch().count(), calc_flag,
+            eph_data, error_str);
+    if (ret_flag < 0)
+    {
+        _ecl_pos = eph::ecl_pos(0,0,0);
+        _ecl_speed = eph::ecl_speed(0,0);
+    }
+    else
+    {
+        if (ret_flag != calc_flag)
+        {
+//            WARNING;
+        }
+        _ecl_pos = eph::ecl_pos(eph_data[0], eph_data[1], eph_data[2]);
+        _ecl_speed = eph::ecl_speed(eph_data[3], eph_data[4]);
+    }
+
+    return ret_flag >= 0 ? eph::calc_result::SUCCESS : eph::calc_result::FAILED;
 }
 
 swe_ns_end
