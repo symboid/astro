@@ -147,6 +147,17 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
+
+    eph_proxy::set_eph_dir_path("/Users/robert/code/symboid/astro/sweph/src/");
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aries>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::taurus>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::gemini>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::cancer>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::leo>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::virgo>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::libra>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::escorpio>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::sagittarius>);
 }
 
 void QHoraViewItem::calcMandalaGeometry()
@@ -311,20 +322,11 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& plane
 void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellation* constellation, int radialOffset)
 {
     const qreal beginLont180 = constellation->begin_lont() - mandalaLeft() + 180.0;
-    QPen constellationPen(Qt::gray, 1.0, Qt::DotLine);
+    QPen constellationPen(Qt::gray, 2.0, Qt::DotLine);
     painter->setPen(constellationPen);
 
     qreal offset = (radialOffset - 1) * 0.03;
 
-/*
-    qreal outerRatio = eclipticRatio() * 1.25;
-    QRectF outerRect(
-            boundingRect().x() + boundingRect().width() * (1.0-outerRatio)/2.0,
-            boundingRect().y() + boundingRect().height() * (1.0-outerRatio)/2.0,
-            boundingRect().width() * outerRatio,
-            boundingRect().height() * outerRatio);
-    painter->drawArc(outerRect, (beginLont180+0.5) * 16.0, (constellation->_M_length-1.0) * 16.0);
-*/
     qreal innerRatio = eclipticRatio() * (1.15 + offset);
     QRectF innerRect(
             boundingRect().x() + boundingRect().width() * (1.0-innerRatio)/2.0,
@@ -377,13 +379,11 @@ void QHoraViewItem::paint(QPainter* painter)
         painter->drawEllipse(mMandalaCenter, earthRadius, earthRadius);
 
         // constellations
-        eph_proxy::set_eph_dir_path("/home/robert/code/symboid/astro/sweph/src/");
-        eph::basic_constellation<swe::proxy, eph::aries> aries;
-        drawConstellation(painter, &aries, 1);
-        eph::basic_constellation<swe::proxy, eph::taurus> taurus;
-        drawConstellation(painter, &taurus, 2);
-        eph::basic_constellation<swe::proxy, eph::gemini> gemini;
-        drawConstellation(painter, &gemini, 1);
+        int c = 0;
+        for (eph::constellation* constellation : mConstellations)
+        {
+            drawConstellation(painter, constellation, c++ % 2);
+        }
 
         // zodiac sign domains
         painter->setPen(QPen(QColor(0,0,0), 1.5));
@@ -654,6 +654,10 @@ void QHoraViewItem::recalc()
     else
     {
         mHora.calc<eph::house_system_placidus>(horaCoords);
+    }
+    for (eph::constellation* constellation : mConstellations)
+    {
+        constellation->calc_alpha_pos(horaCoords._M_calendar_coords);
     }
     mPlanetsModel->endResetModel();
     mHousesModel->endResetModel();

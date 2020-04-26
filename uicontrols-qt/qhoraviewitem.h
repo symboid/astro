@@ -83,6 +83,8 @@ private:
     QPointF mMandalaCenter;
     qreal mMandalaRadius;
     hor::hora mHora;
+    QList<eph::constellation*> mConstellations;
+
 private:
     eph::ecl_lont mandalaLeft() const;
     qreal eclipticRatio() const;

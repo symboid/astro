@@ -30,6 +30,7 @@ public:
 
 public:
     virtual ecl_pos alpha_pos() const = 0;
+    virtual ecl_pos calc_alpha_pos(const calendar_coords& _time) = 0;
     ecl_lont begin_lont() const { return alpha_pos()._M_lont - _M_alpha_rel_pos; }
     ecl_lont end_lont() const { return begin_lont() + _M_length; }
 };
@@ -50,7 +51,7 @@ private:
     ecl_speed _M_alpha_speed;
 public:
     ecl_pos alpha_pos() const override { return _M_alpha_pos; }
-    ecl_pos calc_alpha_pos(const calendar_coords& _time)
+    ecl_pos calc_alpha_pos(const calendar_coords& _time) override
     {
         calc_result calc_result = _EphProxy::fixstar::calc_pos(
                     this->_M_alpha_name, _EphProxy::clock::time(_time), _M_alpha_pos, _M_alpha_speed);
@@ -116,6 +117,72 @@ struct gemini : constellation_attributes
 {
     static constexpr const char* name = "Gemini";
     static constexpr const char* alpha_name = "Castor";
+};
+
+struct cancer : constellation_attributes
+    <
+        begin_pos<zod::CAN,26,28>,
+          end_pos<zod::LEO,15,57>,
+        alpha_pos<zod::LEO,12,57>
+    >
+{
+    static constexpr const char* name = "Cancer";
+    static constexpr const char* alpha_name = "Acubens";
+};
+
+struct leo : constellation_attributes
+    <
+        begin_pos<zod::LEO,14,36>,
+          end_pos<zod::VIR,20,55>,
+        alpha_pos<zod::LEO,29, 8>
+    >
+{
+    static constexpr const char* name = "Leo";
+    static constexpr const char* alpha_name = "Regulus";
+};
+
+struct virgo : constellation_attributes
+    <
+        begin_pos<zod::VIR,21, 8>,
+          end_pos<zod::ESC, 9,26>,
+        alpha_pos<zod::LIB,23, 9>
+    >
+{
+    static constexpr const char* name = "Virgo";
+    static constexpr const char* alpha_name = "Spica";
+};
+
+struct libra : constellation_attributes
+    <
+        begin_pos<zod::ESC,13,28>,
+          end_pos<zod::ESC,29,47>,
+        alpha_pos<zod::ESC,14,23>
+    >
+{
+    static constexpr const char* name = "Libra";
+    static constexpr const char* alpha_name = "Zuben Elgenubi";
+};
+
+struct escorpio : constellation_attributes
+    <
+        begin_pos<zod::SAG, 0,36>,
+          end_pos<zod::SAG,27,21>,
+        alpha_pos<zod::SAG, 9, 4>
+    >
+{
+    static constexpr const char* name = "Scorpius";
+    static constexpr const char* alpha_name = "Antares";
+};
+
+struct sagittarius : constellation_attributes
+    <
+        begin_pos<zod::CAP, 0,34>,
+          end_pos<zod::CAP,26,22>,
+        alpha_pos<zod::CAP,15,56>
+    >
+{
+    static constexpr const char* name = "Sagittarius";
+    static constexpr const char* alpha_name = "Rukbat";
 };
 
 eph_ns_end
