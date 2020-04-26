@@ -3,6 +3,7 @@
 #include "astro/uicontrols-qt/qhoraviewitem.h"
 #include <QPainter>
 #include "astro/uicontrols-qt/qhorastellium.h"
+#include <QFontMetrics>
 
 QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
     : QHoraItemsModel(hora, parent)
@@ -156,9 +157,14 @@ void QHoraViewItem::calcMandalaGeometry()
     mMandalaCenter = mandalaRect.center();
 }
 
+qreal QHoraViewItem::eclipticRatio() const
+{
+    return isDisplayFlagSet(SHOW_CONSTELLATIONS) ? 0.75 : 0.85;
+}
+
 qreal QHoraViewItem::eclipticRadius() const
 {
-    return mMandalaRadius * (isDisplayFlagSet(SHOW_CONSTELLATIONS) ? 0.75 : 0.85);
+    return mMandalaRadius * eclipticRatio();
 }
 
 qreal QHoraViewItem::oneDegree() const
@@ -302,11 +308,52 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& plane
 
 }
 
-void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellation* constellation)
+void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellation* constellation, int radialOffset)
 {
-    const  eph::ecl_lont startLont = constellation->begin_lont() - mandalaLeft();
-    const eph::arc_degree length = constellation->_M_length;
-    painter->drawArc(boundingRect(), (startLont + 180) * 16.0, length * 16.0);
+    const qreal beginLont180 = constellation->begin_lont() - mandalaLeft() + 180.0;
+    QPen constellationPen(Qt::gray, 1.0, Qt::DotLine);
+    painter->setPen(constellationPen);
+
+    qreal offset = (radialOffset - 1) * 0.03;
+
+/*
+    qreal outerRatio = eclipticRatio() * 1.25;
+    QRectF outerRect(
+            boundingRect().x() + boundingRect().width() * (1.0-outerRatio)/2.0,
+            boundingRect().y() + boundingRect().height() * (1.0-outerRatio)/2.0,
+            boundingRect().width() * outerRatio,
+            boundingRect().height() * outerRatio);
+    painter->drawArc(outerRect, (beginLont180+0.5) * 16.0, (constellation->_M_length-1.0) * 16.0);
+*/
+    qreal innerRatio = eclipticRatio() * (1.15 + offset);
+    QRectF innerRect(
+            boundingRect().x() + boundingRect().width() * (1.0-innerRatio)/2.0,
+            boundingRect().y() + boundingRect().height() * (1.0-innerRatio)/2.0,
+            boundingRect().width() * innerRatio,
+            boundingRect().height() * innerRatio);
+    painter->drawArc(innerRect, int((beginLont180+0.5) * 16.0), int((constellation->_M_length-1.0) * 16.0));
+
+    painter->save();
+    painter->translate(boundingRect().center());
+
+    bool isUpper = mandalaLeft() - constellation->begin_lont() -constellation->_M_length/2.0 < 180.0;
+    qreal baseAngle = mandalaLeft() - constellation->begin_lont() + (isUpper ? -90.0 : 90.0);
+    qreal upperEdge = isUpper ? -eclipticRadius()*(1.25+offset) : eclipticRadius()*(1.16+offset);
+    qreal lowerEdge = isUpper ? -eclipticRadius()*(1.16+offset) : eclipticRadius()*(1.25+offset);
+
+    painter->rotate(baseAngle);
+    painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
+    painter->rotate(-constellation->_M_length/2.0);
+    const QString name(constellation->_M_name.c_str());
+    const QRectF textBoundingRect(QFontMetrics(painter->font(), painter->device()).boundingRect(name));
+    const QRectF textRect(textBoundingRect.translated(-textBoundingRect.width()/2,
+                                                      (upperEdge+lowerEdge+textBoundingRect.height())/2));
+
+    painter->drawText(textRect, name);
+    painter->rotate(-constellation->_M_length/2.0);
+    painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
+
+    painter->restore();
 }
 
 void QHoraViewItem::paint(QPainter* painter)
@@ -330,11 +377,16 @@ void QHoraViewItem::paint(QPainter* painter)
         painter->drawEllipse(mMandalaCenter, earthRadius, earthRadius);
 
         // constellations
-        eph_proxy::set_eph_dir_path("/Users/robert/code/symboid/astro/sweph/src/");
+        eph_proxy::set_eph_dir_path("/home/robert/code/symboid/astro/sweph/src/");
+        eph::basic_constellation<swe::proxy, eph::aries> aries;
+        drawConstellation(painter, &aries, 1);
         eph::basic_constellation<swe::proxy, eph::taurus> taurus;
-        drawConstellation(painter, &taurus);
+        drawConstellation(painter, &taurus, 2);
+        eph::basic_constellation<swe::proxy, eph::gemini> gemini;
+        drawConstellation(painter, &gemini, 1);
 
         // zodiac sign domains
+        painter->setPen(QPen(QColor(0,0,0), 1.5));
         mAstroFont->setPointSize(mFontPointSize);
         painter->setFont(*mAstroFont);
         QFontMetrics fontMetrics(*mAstroFont);
@@ -342,7 +394,8 @@ void QHoraViewItem::paint(QPainter* painter)
         {
             const eph::zod_sign_cusp zodSignCusp(z, eph::house_system_mundan::house_names[z]);
             eph::ecl_lont zodSignLont = zodSignCusp.pos()._M_lont;
-            painter->drawLine(horaPoint(zodSignLont, 1.0), horaPoint(zodSignLont, 1.15));
+            painter->drawLine(horaPoint(zodSignLont, 1.0),
+                              horaPoint(zodSignLont, isDisplayFlagSet(SHOW_CONSTELLATIONS) ? 1.10 : 1.15));
 
             QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.05));
             QSize textSize = fontMetrics.size(0, mAstroFont->zodLetter(eph::zod(z)));
@@ -415,7 +468,8 @@ void QHoraViewItem::paint(QPainter* painter)
         }
 
         // aspect connections
-        planet = mHora.planetsBegin(), pEnd = mHora.planetsEnd();
+        planet = mHora.planetsBegin();
+        pEnd = mHora.planetsEnd();
         while (planet != pEnd)
         {
             const eph::ecl_pos planetPos = planet->pos();

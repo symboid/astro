@@ -20,6 +20,7 @@ public:
         , _M_length(_length)
     {
     }
+    virtual ~constellation() = default;
 
 public:
     const std::string _M_name;
@@ -62,18 +63,59 @@ public:
     }
 };
 
-template <int _degree, int _minute, int _second>
+template <zod _zod_sign, int _degree, int _minute, int _second = 0>
 struct pack_arc_degree
 {
-    static constexpr arc_degree value = arc_degree(_degree) + (arc_degree(_minute * 60.0 + _second) / 3600.0);
+    static constexpr arc_degree value = arc_degree(int(_zod_sign) * 30 - 30 + _degree) + (arc_degree(_minute * 60.0 + _second) / 3600.0);
 };
 
-struct taurus
+template <zod _zod_sign, int _degree, int _minute, int _second = 0>
+using begin_pos = pack_arc_degree<_zod_sign,_degree,_minute,_second>;
+
+template <zod _zod_sign, int _degree, int _minute, int _second = 0>
+using end_pos = pack_arc_degree<_zod_sign,_degree,_minute,_second>;
+
+template <zod _zod_sign, int _degree, int _minute, int _second = 0>
+using alpha_pos = pack_arc_degree<_zod_sign,_degree,_minute,_second>;
+
+template<class _BeginLont, class _EndLont, class _AlphaLont>
+struct constellation_attributes
+{
+    static constexpr const arc_degree alpha_rel_pos = _AlphaLont::value - _BeginLont::value;
+    static constexpr const arc_degree length = _EndLont::value - _BeginLont::value;
+};
+
+struct aries : constellation_attributes
+    <
+        begin_pos<zod::TAU, 2,29>,
+          end_pos<zod::TAU,22,56>,
+        alpha_pos<zod::TAU, 6,58>
+    >
+{
+    static constexpr const char* name = "Aries";
+    static constexpr const char* alpha_name = "Hamal";
+};
+
+struct taurus : constellation_attributes
+    <
+        begin_pos<zod::TAU,20,58>,
+          end_pos<zod::GEM,24, 5>,
+        alpha_pos<zod::GEM, 9, 5>
+    >
 {
     static constexpr const char* name = "Taurus";
     static constexpr const char* alpha_name = "Aldebaran";
-    static constexpr const arc_degree alpha_rel_pos = pack_arc_degree<18,37,0>::value;
-    static constexpr const arc_degree length = pack_arc_degree<33,37,0>::value;
+};
+
+struct gemini : constellation_attributes
+    <
+        begin_pos<zod::CAN, 0,15>,
+          end_pos<zod::CAN,26,32>,
+        alpha_pos<zod::CAN,19,33>
+    >
+{
+    static constexpr const char* name = "Gemini";
+    static constexpr const char* alpha_name = "Castor";
 };
 
 eph_ns_end
