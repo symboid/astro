@@ -82,8 +82,15 @@ using alpha_pos = pack_arc_degree<_zod_sign,_degree,_minute,_second>;
 template<class _BeginLont, class _EndLont, class _AlphaLont>
 struct constellation_attributes
 {
-    static constexpr const arc_degree alpha_rel_pos = _AlphaLont::value - _BeginLont::value;
-    static constexpr const arc_degree length = _EndLont::value - _BeginLont::value;
+private:
+    template<class _LeftLont, class _RightLont>
+    struct lont_diff_fwd
+    {
+        static constexpr const arc_degree value = _RightLont::value < _LeftLont::value ? _RightLont::value - _LeftLont::value + 360.0 : _RightLont::value - _LeftLont::value;
+    };
+public:
+    static constexpr const arc_degree alpha_rel_pos = lont_diff_fwd<_BeginLont,_AlphaLont>::value;
+    static constexpr const arc_degree length = lont_diff_fwd<_BeginLont,_EndLont>::value;
 };
 
 struct aries : constellation_attributes
@@ -183,6 +190,39 @@ struct sagittarius : constellation_attributes
 {
     static constexpr const char* name = "Sagittarius";
     static constexpr const char* alpha_name = "Rukbat";
+};
+
+struct capricornus : constellation_attributes
+    <
+        begin_pos<zod::AQU, 1, 3>,
+          end_pos<zod::AQU,25, 8>,
+        alpha_pos<zod::AQU, 3, 4>
+    >
+{
+    static constexpr const char* name = "Capricornus";
+    static constexpr const char* alpha_name = "Algedi";
+};
+
+struct aquarius : constellation_attributes
+    <
+        begin_pos<zod::AQU,11, 2>,
+          end_pos<zod::PIS,19,30>,
+        alpha_pos<zod::PIS, 2,39>
+    >
+{
+    static constexpr const char* name = "Aquarius";
+    static constexpr const char* alpha_name = "Sadalmelik";
+};
+
+struct pisces : constellation_attributes
+    <
+        begin_pos<zod::PIS,17,53>,
+          end_pos<zod::ARI,28,41>,
+        alpha_pos<zod::ARI,28,41>
+    >
+{
+    static constexpr const char* name = "Pisces";
+    static constexpr const char* alpha_name = "Alrischa";
 };
 
 eph_ns_end

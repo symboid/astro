@@ -134,7 +134,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     mHora.add_planet(hor::planet(hor::planet::pluto, 1.5));
 
     mHora.add_planet(hor::planet(hor::planet::dragon_head, 0.5));
-    mHora.add_planet(hor::planet(hor::planet::lilith, 1.5));
+//    mHora.add_planet(hor::planet(hor::planet::lilith, 1.5));
 
     connect(this, SIGNAL(yearChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(monthChanged()), this, SLOT(recalc()));
@@ -148,7 +148,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
 
-    eph_proxy::set_eph_dir_path("/Users/robert/code/symboid/astro/sweph/src/");
+    eph_proxy::set_eph_dir_path("/home/robert/code/symboid/astro/sweph/src/");
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aries>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::taurus>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::gemini>);
@@ -158,6 +158,9 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::libra>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::escorpio>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::sagittarius>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::capricornus>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aquarius>);
+    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::pisces>);
 }
 
 void QHoraViewItem::calcMandalaGeometry()
@@ -322,38 +325,52 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& plane
 void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellation* constellation, int radialOffset)
 {
     const qreal beginLont180 = constellation->begin_lont() - mandalaLeft() + 180.0;
-    QPen constellationPen(Qt::gray, 2.0, Qt::DotLine);
+//    QPen constellationPen(Qt::gray, 1.0, Qt::SolidLine);
+//    QPen constellationPen(QColor(radialOffset == 0 ? "#60FF0000" : "#600000FF"), 2.0, Qt::SolidLine);
+    QPen constellationPen(QColor(radialOffset == 0 ? "red" : "blue"), 1.0, Qt::SolidLine);
     painter->setPen(constellationPen);
 
-    qreal offset = (radialOffset - 1) * 0.03;
+    qreal cornerSize = 2.0;
+    qreal cornerPixelSize = sin(cornerSize / 180.0 * PI) * eclipticRadius() * 1.15;
+//    qreal cornerPixelSize = 5.0;
+    qreal offset = 0;//radialOffset * cornerPixelSize;
 
-    qreal innerRatio = eclipticRatio() * (1.15 + offset);
+    qreal innerRatio = eclipticRatio()*1.15;
     QRectF innerRect(
-            boundingRect().x() + boundingRect().width() * (1.0-innerRatio)/2.0,
-            boundingRect().y() + boundingRect().height() * (1.0-innerRatio)/2.0,
-            boundingRect().width() * innerRatio,
-            boundingRect().height() * innerRatio);
-    painter->drawArc(innerRect, int((beginLont180+0.5) * 16.0), int((constellation->_M_length-1.0) * 16.0));
+            boundingRect().x() + boundingRect().width() * (1.0-innerRatio)/2.0 - offset,
+            boundingRect().y() + boundingRect().height() * (1.0-innerRatio)/2.0 - offset,
+            boundingRect().width() * innerRatio + 2.0*offset,
+            boundingRect().height() * innerRatio + 2.0*offset);
+    painter->drawArc(innerRect, int((beginLont180+cornerSize) * 16.0), int((constellation->_M_length-2.0*cornerSize) * 16.0));
 
     painter->save();
     painter->translate(boundingRect().center());
 
     bool isUpper = mandalaLeft() - constellation->begin_lont() -constellation->_M_length/2.0 < 180.0;
+    qreal signum = isUpper ? -1.0 : 1.0;
     qreal baseAngle = mandalaLeft() - constellation->begin_lont() + (isUpper ? -90.0 : 90.0);
-    qreal upperEdge = isUpper ? -eclipticRadius()*(1.25+offset) : eclipticRadius()*(1.16+offset);
-    qreal lowerEdge = isUpper ? -eclipticRadius()*(1.16+offset) : eclipticRadius()*(1.25+offset);
+    qreal upperEdge = isUpper ? (-eclipticRadius()*1.3) : (eclipticRadius()*1.15+cornerPixelSize+offset);
+    qreal lowerEdge = isUpper ? (-eclipticRadius()*1.15-offset-cornerPixelSize) : (eclipticRadius()*1.3);
 
+    // draw begin of constellation
     painter->rotate(baseAngle);
     painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
+    QRectF cornerRect(0,signum*(eclipticRadius()*1.15+offset),signum*2.0*cornerPixelSize,signum*2.0*cornerPixelSize);
+    painter->drawArc(cornerRect, signum*90*16, 90*16);
+
+    // draw constellation text
     painter->rotate(-constellation->_M_length/2.0);
     const QString name(constellation->_M_name.c_str());
     const QRectF textBoundingRect(QFontMetrics(painter->font(), painter->device()).boundingRect(name));
     const QRectF textRect(textBoundingRect.translated(-textBoundingRect.width()/2,
-                                                      (upperEdge+lowerEdge+textBoundingRect.height())/2));
-
+                                                      isUpper?lowerEdge:upperEdge+textBoundingRect.height()/2
+                                                      ));
     painter->drawText(textRect, name);
+
+    // draw end of constellation
     painter->rotate(-constellation->_M_length/2.0);
     painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
+    painter->drawArc(cornerRect.translated(-signum*2.0*cornerPixelSize,0.0), (90-signum*90)*16, 90*16);
 
     painter->restore();
 }
