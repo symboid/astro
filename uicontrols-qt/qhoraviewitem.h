@@ -74,7 +74,7 @@ private:
     };
     Rank planetRank(const hor::planet& planet) const;
     void drawPlanetSymbol(QPainter* painter, const hor::planet& planet, const eph::ecl_pos& displayPos);
-    void drawConstellation(QPainter* painter, const eph::constellation* constellation, int radialOffset);
+    void drawConstellation(QPainter* painter, const eph::constellation* constellation);
     void paint(QPainter* painter) override;
 private:
     QPointF horaPoint(eph::ecl_lont horaLont, qreal dist) const;

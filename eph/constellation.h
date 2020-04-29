@@ -12,12 +12,25 @@ eph_ns_begin
 class constellation
 {
 public:
+    enum type
+    {
+        RED,
+        BLUE,
+        GREEN,
+        PURPLE,
+        BROWN,
+        BLACK,
+    };
+
+public:
     constellation(const std::string& _name, const std::string& _alpha_name,
-            arc_degree _alpha_rel_pos, arc_degree _length)
+            arc_degree _alpha_rel_pos, arc_degree _length, type _type, int _sphere)
         : _M_name(_name)
         , _M_alpha_name(_alpha_name)
         , _M_alpha_rel_pos(_alpha_rel_pos)
         , _M_length(_length)
+        , _M_type(_type)
+        , _M_sphere(_sphere)
     {
     }
     virtual ~constellation() = default;
@@ -27,6 +40,8 @@ public:
     const std::string _M_alpha_name;
     const arc_degree _M_alpha_rel_pos;
     const arc_degree _M_length;
+    const type _M_type;
+    const int _M_sphere;
 
 public:
     virtual ecl_pos alpha_pos() const = 0;
@@ -41,7 +56,8 @@ class basic_constellation : public constellation
 public:
     basic_constellation()
         : constellation(_ConstellationAttributes::name, _ConstellationAttributes::alpha_name,
-                        _ConstellationAttributes::alpha_rel_pos, _ConstellationAttributes::length)
+                        _ConstellationAttributes::alpha_rel_pos, _ConstellationAttributes::length,
+                        _ConstellationAttributes::type, _ConstellationAttributes::sphere)
     {
         calc_alpha_pos({1950,1,1});
     }
@@ -91,6 +107,7 @@ private:
 public:
     static constexpr const arc_degree alpha_rel_pos = lont_diff_fwd<_BeginLont,_AlphaLont>::value;
     static constexpr const arc_degree length = lont_diff_fwd<_BeginLont,_EndLont>::value;
+    static constexpr int sphere = 1;
 };
 
 struct aries : constellation_attributes
@@ -102,6 +119,7 @@ struct aries : constellation_attributes
 {
     static constexpr const char* name = "Aries";
     static constexpr const char* alpha_name = "Hamal";
+    static constexpr const constellation::type type = constellation::RED;
 };
 
 struct taurus : constellation_attributes
@@ -113,6 +131,7 @@ struct taurus : constellation_attributes
 {
     static constexpr const char* name = "Taurus";
     static constexpr const char* alpha_name = "Aldebaran";
+    static constexpr const constellation::type type = constellation::BLUE;
 };
 
 struct gemini : constellation_attributes
@@ -124,6 +143,7 @@ struct gemini : constellation_attributes
 {
     static constexpr const char* name = "Gemini";
     static constexpr const char* alpha_name = "Castor";
+    static constexpr const constellation::type type = constellation::RED;
 };
 
 struct cancer : constellation_attributes
@@ -135,6 +155,7 @@ struct cancer : constellation_attributes
 {
     static constexpr const char* name = "Cancer";
     static constexpr const char* alpha_name = "Acubens";
+    static constexpr const constellation::type type = constellation::BLUE;
 };
 
 struct leo : constellation_attributes
@@ -146,6 +167,7 @@ struct leo : constellation_attributes
 {
     static constexpr const char* name = "Leo";
     static constexpr const char* alpha_name = "Regulus";
+    static constexpr const constellation::type type = constellation::RED;
 };
 
 struct virgo : constellation_attributes
@@ -157,6 +179,7 @@ struct virgo : constellation_attributes
 {
     static constexpr const char* name = "Virgo";
     static constexpr const char* alpha_name = "Spica";
+    static constexpr const constellation::type type = constellation::BLUE;
 };
 
 struct libra : constellation_attributes
@@ -168,6 +191,7 @@ struct libra : constellation_attributes
 {
     static constexpr const char* name = "Libra";
     static constexpr const char* alpha_name = "Zuben Elgenubi";
+    static constexpr const constellation::type type = constellation::RED;
 };
 
 struct escorpio : constellation_attributes
@@ -179,6 +203,7 @@ struct escorpio : constellation_attributes
 {
     static constexpr const char* name = "Scorpius";
     static constexpr const char* alpha_name = "Antares";
+    static constexpr const constellation::type type = constellation::BLUE;
 };
 
 struct sagittarius : constellation_attributes
@@ -190,6 +215,7 @@ struct sagittarius : constellation_attributes
 {
     static constexpr const char* name = "Sagittarius";
     static constexpr const char* alpha_name = "Rukbat";
+    static constexpr const constellation::type type = constellation::RED;
 };
 
 struct capricornus : constellation_attributes
@@ -201,6 +227,7 @@ struct capricornus : constellation_attributes
 {
     static constexpr const char* name = "Capricornus";
     static constexpr const char* alpha_name = "Algedi";
+    static constexpr const constellation::type type = constellation::BLUE;
 };
 
 struct aquarius : constellation_attributes
@@ -212,6 +239,7 @@ struct aquarius : constellation_attributes
 {
     static constexpr const char* name = "Aquarius";
     static constexpr const char* alpha_name = "Sadalmelik";
+    static constexpr const constellation::type type = constellation::RED;
 };
 
 struct pisces : constellation_attributes
@@ -223,6 +251,189 @@ struct pisces : constellation_attributes
 {
     static constexpr const char* name = "Pisces";
     static constexpr const char* alpha_name = "Alrischa";
+    static constexpr const constellation::type type = constellation::BLUE;
+};
+
+struct orion : constellation_attributes
+    <
+        begin_pos<zod::GEM,11,13>,
+          end_pos<zod::CAN, 2,14>,
+        alpha_pos<zod::GEM,28, 3>
+    >
+{
+    static constexpr const char* name = "Orion";
+    static constexpr const char* alpha_name = "Betelgeuse";
+    static constexpr const constellation::type type = constellation::GREEN;
+    static constexpr int sphere = 2;
+};
+
+struct serpens_caput : constellation_attributes
+    <
+        begin_pos<zod::ESC,13,35>,
+          end_pos<zod::SAG, 1,36>,
+        alpha_pos<zod::ESC,21,22>
+    >
+{
+    static constexpr const char* name = "Serpens Caput";
+    static constexpr const char* alpha_name = "Unukalhai";
+    static constexpr const constellation::type type = constellation::GREEN;
+    static constexpr int sphere = 2;
+};
+
+struct ophiuchus : constellation_attributes
+    <
+        begin_pos<zod::SAG, 1,36>,
+          end_pos<zod::CAP, 0,49>,
+        alpha_pos<zod::SAG,21,45>
+    >
+{
+    static constexpr const char* name = "Ophiuchus";
+    static constexpr const char* alpha_name = "Rasalhague";
+    static constexpr const constellation::type type = constellation::GREEN;
+    static constexpr int sphere = 2;
+};
+
+struct serpens_cauda : constellation_attributes
+    <
+        begin_pos<zod::CAP, 0, 6>,
+          end_pos<zod::CAP,15, 4>,
+        alpha_pos<zod::CAP,15, 4>
+    >
+{
+    static constexpr const char* name = "Serpens Cauda";
+    static constexpr const char* alpha_name = "Alya";
+    static constexpr const constellation::type type = constellation::GREEN;
+    static constexpr int sphere = 2;
+};
+
+struct cetus : constellation_attributes
+    <
+        begin_pos<zod::ARI, 0,13>,
+          end_pos<zod::TAU,14,24>,
+        alpha_pos<zod::TAU,13,37>
+    >
+{
+    static constexpr const char* name = "Cetus";
+    static constexpr const char* alpha_name = "Menkar";
+    static constexpr const constellation::type type = constellation::BROWN;
+    static constexpr int sphere = 2;
+};
+
+struct eridanus : constellation_attributes
+    <
+        begin_pos<zod::PIS,14,36>,
+          end_pos<zod::GEM,14,35>,
+        alpha_pos<zod::PIS,14,36>
+    >
+{
+    static constexpr const char* name = "Eridanus";
+    static constexpr const char* alpha_name = "Achernar";
+    static constexpr const constellation::type type = constellation::PURPLE;
+    static constexpr int sphere = 3;
+};
+
+struct monoceros : constellation_attributes
+    <
+        begin_pos<zod::CAN, 3,33>,
+          end_pos<zod::LEO, 4,27>,
+        alpha_pos<zod::CAN,28,35>
+    >
+{
+    static constexpr const char* name = "Monoceros";
+    static constexpr const char* alpha_name = ",alMon";
+    static constexpr const constellation::type type = constellation::PURPLE;
+    static constexpr int sphere = 2;
+};
+
+struct hydra : constellation_attributes
+    <
+        begin_pos<zod::LEO, 9,37>,
+          end_pos<zod::ESC,17,47>,
+        alpha_pos<zod::LEO,26,35>
+    >
+{
+    static constexpr const char* name = "Hydra";
+    static constexpr const char* alpha_name = "Alphard";
+    static constexpr const constellation::type type = constellation::BROWN;
+    static constexpr int sphere = 3;
+};
+
+struct sextans : constellation_attributes
+    <
+        begin_pos<zod::VIR, 1,14>,
+          end_pos<zod::VIR, 9,25>,
+        alpha_pos<zod::VIR, 3,25>
+    >
+{
+    static constexpr const char* name = "Sextans";
+    static constexpr const char* alpha_name = ",alSex";
+    static constexpr const constellation::type type = constellation::BROWN;
+    static constexpr int sphere = 2;
+};
+
+struct crater : constellation_attributes
+    <
+        begin_pos<zod::VIR,23, 0>,
+          end_pos<zod::LIB, 5,24>,
+        alpha_pos<zod::VIR,23, 0>
+    >
+{
+    static constexpr const char* name = "Crater";
+    static constexpr const char* alpha_name = "Alkes";
+    static constexpr const constellation::type type = constellation::PURPLE;
+    static constexpr int sphere = 2;
+};
+
+struct corvus : constellation_attributes
+    <
+        begin_pos<zod::LIB,10, 2>,
+          end_pos<zod::LIB,16,40>,
+        alpha_pos<zod::LIB,11,33>
+    >
+{
+    static constexpr const char* name = "Corvus";
+    static constexpr const char* alpha_name = "Alchiba";
+    static constexpr const constellation::type type = constellation::BLACK;
+    static constexpr int sphere = 2;
+};
+
+struct aquila : constellation_attributes
+    <
+        begin_pos<zod::CAP,15,21>,
+          end_pos<zod::AQU, 4,20>,
+        alpha_pos<zod::AQU, 1, 4>
+    >
+{
+    static constexpr const char* name = "Aquila";
+    static constexpr const char* alpha_name = "Altair";
+    static constexpr const constellation::type type = constellation::PURPLE;
+    static constexpr int sphere = 2;
+};
+
+struct delphinus : constellation_attributes
+    <
+        begin_pos<zod::AQU,13,22>,
+          end_pos<zod::AQU,18,41>,
+        alpha_pos<zod::AQU,16,41>
+    >
+{
+    static constexpr const char* name = "Delphinus";
+    static constexpr const char* alpha_name = "Sualocin";
+    static constexpr const constellation::type type = constellation::PURPLE;
+    static constexpr int sphere = 2;
+};
+
+struct equuleus : constellation_attributes
+    <
+        begin_pos<zod::AQU,17,53>,
+          end_pos<zod::AQU,24,44>,
+        alpha_pos<zod::AQU,22,25>
+    >
+{
+    static constexpr const char* name = "Equuleus";
+    static constexpr const char* alpha_name = "Kitalpha";
+    static constexpr const constellation::type type = constellation::BROWN;
+    static constexpr int sphere = 3;
 };
 
 eph_ns_end
