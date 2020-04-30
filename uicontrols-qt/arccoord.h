@@ -113,6 +113,9 @@ struct ASTRO_UICONTROLS_QT_API QSignumSectionCalc : QSectionCalc
 
 struct ASTRO_UICONTROLS_QT_API QGeoLattSectionCalc : QSectionCalc
 {
+    Q_OBJECT
+public:
+
     static constexpr const char* qml_name = "GeoLattSectionCalc";
 
     eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;
@@ -130,6 +133,9 @@ struct ASTRO_UICONTROLS_QT_API QGeoLattSectionCalc : QSectionCalc
 
 struct ASTRO_UICONTROLS_QT_API QGeoLontSectionCalc : QSectionCalc
 {
+    Q_OBJECT
+public:
+
     static constexpr const char* qml_name = "GeoLontSectionCalc";
 
     eph::arc_coord::degree raw(int sectionIndex, eph::arc_coord::degree sectionDegree) const override;

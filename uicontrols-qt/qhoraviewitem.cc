@@ -148,7 +148,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
 
-    eph_proxy::set_eph_dir_path("/home/robert/code/symboid/astro/sweph/src/");
+    eph_proxy::set_eph_dir_path("/Users/robert/code/symboid/astro/sweph/src/");
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aries>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::taurus>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::gemini>);
@@ -351,12 +351,12 @@ void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellatio
     {
     case eph::constellation::RED:    color = 0xFF8888; break;
     case eph::constellation::BLUE:   color = 0x8888FF; break;
-    case eph::constellation::GREEN:  color = 0x88FF88; break;
+    case eph::constellation::GREEN:  color = 0x44FF44; break;
     case eph::constellation::BROWN:  color = 0x888855; break;
     case eph::constellation::BLACK:  color = 0x888888; break;
     case eph::constellation::PURPLE: color = 0xFF88FF; break;
     }
-    QPen constellationPen(color, 1.0, constellation->_M_type == eph::constellation::GREEN ? Qt::SolidLine : Qt::DotLine);
+    QPen constellationPen(color, 1.5, constellation->_M_type == eph::constellation::GREEN ? Qt::SolidLine : Qt::SolidLine);
     painter->setPen(constellationPen);
 
     qreal innerRatio = eclipticRatio()*1.15;

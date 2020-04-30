@@ -29,4 +29,7 @@
         <file>icons/br_next_icon&amp;24.png</file>
         <file>icons/br_prev_icon&amp;24.png</file>
     </qresource>
+    <qresource prefix="/tr">
+        <file>astro-uicontrols-qt_hu.qm</file>
+    </qresource>
 </RCC>
