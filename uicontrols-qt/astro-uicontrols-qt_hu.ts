@@ -51,7 +51,7 @@
         <location filename="HoraScreen.qml" line="89"/>
         <location filename="HoraScreen.qml" line="319"/>
         <source>Current</source>
-        <translation>Pillanatnyi</translation>
+        <translation type="unfinished">Aktuális</translation>
     </message>
     <message>
         <location filename="HoraScreen.qml" line="109"/>
