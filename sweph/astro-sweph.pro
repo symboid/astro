@@ -50,4 +50,5 @@ OTHER_FILES += \
     src/seorbel.txt
 
 DISTFILES += \
-    download.txt
+    download.txt \
+    files.pri

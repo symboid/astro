@@ -148,7 +148,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
 
-    eph_proxy::set_eph_dir_path("/Users/robert/code/symboid/astro/sweph/src/");
+    eph_proxy::set_eph_dir_path(".");
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aries>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::taurus>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::gemini>);
