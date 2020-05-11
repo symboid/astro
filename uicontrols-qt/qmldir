@@ -14,3 +14,4 @@ HoraScreenTimeZoneBox 1.0 HoraScreenTimeZoneBox.qml
 HoraScreenBottomPane 1.0 HoraScreenBottomPane.qml
 HoraTableView 1.0 HoraTableView.qml
 HoraTableLine 1.0 HoraTableLine.qml
+HoraElementsPane 1.0 HoraElementsPane.qml

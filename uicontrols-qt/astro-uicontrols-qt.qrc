@@ -16,6 +16,7 @@
         <file>HoraScreenTimeZoneBox.qml</file>
         <file>HoraScreenBottomPane.qml</file>
         <file>HoraTableLine.qml</file>
+        <file>HoraElementsPane.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>

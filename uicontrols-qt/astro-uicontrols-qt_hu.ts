@@ -36,6 +36,29 @@
     </message>
 </context>
 <context>
+    <name>HoraElementsPane</name>
+    <message>
+        <location filename="HoraElementsPane.qml" line="7"/>
+        <source>Horoscope elements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraElementsPane.qml" line="9"/>
+        <source>Planets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraElementsPane.qml" line="12"/>
+        <source>Fixstar constellation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraElementsPane.qml" line="15"/>
+        <source>House system</source>
+        <translation type="unfinished">Házrendszer</translation>
+    </message>
+</context>
+<context>
     <name>HoraScreen</name>
     <message>
         <location filename="HoraScreen.qml" line="66"/>
