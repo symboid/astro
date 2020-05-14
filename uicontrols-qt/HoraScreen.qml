@@ -36,6 +36,7 @@ Flickable {
     flickableDirection: isLandscape ? Flickable.HorizontalFlick : Flickable.VerticalFlick
     contentWidth: horaScreen.width
     contentHeight: horaScreen.height
+    clip: true
 
     function setCurrent()
     {
