@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu_HU">
 <context>
+    <name>AspectSettingsPane</name>
+    <message>
+        <location filename="AspectSettingsPane.qml" line="7"/>
+        <source>Aspects</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GeoNameDialog</name>
     <message>
         <location filename="GeoNameDialog.qml" line="33"/>
@@ -36,114 +44,91 @@
     </message>
 </context>
 <context>
-    <name>HoraElementsPane</name>
-    <message>
-        <location filename="HoraElementsPane.qml" line="7"/>
-        <source>Horoscope elements</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraElementsPane.qml" line="9"/>
-        <source>Planets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraElementsPane.qml" line="12"/>
-        <source>Fixstar constellation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraElementsPane.qml" line="15"/>
-        <source>House system</source>
-        <translation type="unfinished">Házrendszer</translation>
-    </message>
-</context>
-<context>
     <name>HoraScreen</name>
     <message>
-        <location filename="HoraScreen.qml" line="66"/>
+        <location filename="HoraScreen.qml" line="67"/>
         <source>Horoscope name</source>
         <translation>Horoszkóp neve</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="74"/>
+        <location filename="HoraScreen.qml" line="75"/>
         <source>Date and time</source>
         <translation>Dátum és idő</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="89"/>
-        <location filename="HoraScreen.qml" line="319"/>
+        <location filename="HoraScreen.qml" line="90"/>
+        <location filename="HoraScreen.qml" line="320"/>
         <source>Current</source>
         <translation type="unfinished">Aktuális</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="109"/>
+        <location filename="HoraScreen.qml" line="110"/>
         <source>Calendar</source>
         <translation>Naptár</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="128"/>
+        <location filename="HoraScreen.qml" line="129"/>
         <source>Chart</source>
         <translation>Kördiagram</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="128"/>
+        <location filename="HoraScreen.qml" line="129"/>
         <source>Planet positions</source>
         <translation>Bolygópozíciók</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="128"/>
+        <location filename="HoraScreen.qml" line="129"/>
         <source>House cusps</source>
         <translation>Házcsúcs-pozíciók</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="221"/>
-        <location filename="HoraScreen.qml" line="270"/>
+        <location filename="HoraScreen.qml" line="222"/>
+        <location filename="HoraScreen.qml" line="271"/>
         <source>Show seconds</source>
         <translation>Másodpercek megjelenítése</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="280"/>
+        <location filename="HoraScreen.qml" line="281"/>
         <source>Location</source>
         <translation>Helység</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="327"/>
+        <location filename="HoraScreen.qml" line="328"/>
         <source>House system</source>
         <translation>Házrendszer</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="335"/>
+        <location filename="HoraScreen.qml" line="336"/>
         <source>Placidus</source>
         <translation>Placidus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="339"/>
+        <location filename="HoraScreen.qml" line="340"/>
         <source>Koch</source>
         <translation>Koch</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="343"/>
+        <location filename="HoraScreen.qml" line="344"/>
         <source>Regiomontanus</source>
         <translation>Regiomontanus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="347"/>
+        <location filename="HoraScreen.qml" line="348"/>
         <source>Campanus</source>
         <translation>Campanus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="351"/>
+        <location filename="HoraScreen.qml" line="352"/>
         <source>Equal</source>
         <translation>Egyenló</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="380"/>
+        <location filename="HoraScreen.qml" line="381"/>
         <source>Settings</source>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="394"/>
+        <location filename="HoraScreen.qml" line="395"/>
         <source>Details</source>
         <translation>Részletek</translation>
     </message>
@@ -159,6 +144,67 @@
         <location filename="HoraScreenTimeZoneBox.qml" line="21"/>
         <source>h</source>
         <translation>ó</translation>
+    </message>
+</context>
+<context>
+    <name>HoraSettingsPane</name>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="7"/>
+        <source>Horoscope</source>
+        <oldsource>Horoscope elements</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="9"/>
+        <source>Planets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="11"/>
+        <source>Include Uranus, Neptune and Pluto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="15"/>
+        <source>Include Lilith</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="18"/>
+        <source>Include Chiron</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="22"/>
+        <source>House system</source>
+        <translation type="unfinished">Házrendszer</translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="25"/>
+        <source>Fixed stars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="30"/>
+        <source>Include fixed stars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="32"/>
+        <source>Fixed stars in conjuction with planets will be denoted.</source>
+        <oldsource>Only fixed start in conjuction with some planets is shown.</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="37"/>
+        <source>Show constellations</source>
+        <oldsource>Show constellations.</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="39"/>
+        <source>Constellation structures calculated by the approach of Hungarian Astrosophy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
