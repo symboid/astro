@@ -2,14 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu_HU">
 <context>
-    <name>AspectSettingsPane</name>
-    <message>
-        <location filename="AspectSettingsPane.qml" line="7"/>
-        <source>Aspects</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>GeoNameDialog</name>
     <message>
         <location filename="GeoNameDialog.qml" line="33"/>
@@ -204,6 +196,122 @@
     <message>
         <location filename="HoraSettingsPane.qml" line="39"/>
         <source>Constellation structures calculated by the approach of Hungarian Astrosophy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OrbisSettingsGroup</name>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="9"/>
+        <source>Sun</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="9"/>
+        <source>Moon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="9"/>
+        <source>Mercury</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="9"/>
+        <source>Venus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="10"/>
+        <source>Mars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="10"/>
+        <source>Jupiter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="10"/>
+        <source>Saturn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="18"/>
+        <source>Uranus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="18"/>
+        <source>Neptune</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsGroup.qml" line="18"/>
+        <source>Pluto</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OrbisSettingsPane</name>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="8"/>
+        <source>Orbis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="11"/>
+        <source>Conjunction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="11"/>
+        <source>Opposition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="11"/>
+        <source>Trigon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="11"/>
+        <source>Quadrat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="12"/>
+        <source>Quintil</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="12"/>
+        <source>Sextil</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="12"/>
+        <source>Quincunx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="12"/>
+        <source>Semi-sextil</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="20"/>
+        <source>Fixed stars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="23"/>
+        <source>Alpha star</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="OrbisSettingsPane.qml" line="27"/>
+        <source>Other star</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
