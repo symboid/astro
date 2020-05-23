@@ -223,6 +223,7 @@ eph::arc_coord::degree QGeoLattSectionCalc::degree(eph::arc_coord::signum signum
 
 int QGeoLattSectionCalc::index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
 {
+    Q_UNUSED(rawDegree);
     return signum != -1 ? north_index : south_index;
 }
 
@@ -251,6 +252,7 @@ eph::arc_coord::degree QGeoLontSectionCalc::degree(eph::arc_coord::signum signum
 
 int QGeoLontSectionCalc::index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const
 {
+    Q_UNUSED(rawDegree);
     return signum != -1 ? east_index : west_index;
 }
 

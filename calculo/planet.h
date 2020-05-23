@@ -4,28 +4,63 @@
 
 #include "astro/calculo/defs.h"
 #include "astro/eph/object.h"
+#include <memory>
 
 hor_ns_begin
 
 typedef eph::arc_degree orbis;
 
-typedef int aspect_type;
+enum aspect_type
+{
+    none_aspect = 0,
 
-static constexpr const aspect_type none_aspect = 0;
-static constexpr const aspect_type conjunction = 1;
-static constexpr const aspect_type opposition = 2;
-static constexpr const aspect_type trigon = 3;
-static constexpr const aspect_type quadrat = 4;
-static constexpr const aspect_type quintil = 5;
-static constexpr const aspect_type sextil = 6;
+    conjunction = 1,
+    opposition = 2,
+    trigon = 3,
+    quadrat = 4,
+    quintil = 5,
+    sextil = 6,
 
-static constexpr const aspect_type aspect_type_count = 7;
+    aspect_type_count = 7,
+};
+
+inline aspect_type& operator++(aspect_type& _aspect_type)
+{
+    _aspect_type = aspect_type(int(_aspect_type) + 1);
+    return _aspect_type;
+}
+
+class a_orbis_config
+{
+public:
+    virtual ~a_orbis_config() = default;
+public:
+    virtual orbis aspect_orbis(aspect_type _aspect_type) const = 0;
+};
+
+class simple_orbis_config : public a_orbis_config
+{
+public:
+    simple_orbis_config(orbis _main_orbis) : _M_main_orbis(_main_orbis) {}
+private:
+    const orbis _M_main_orbis;
+public:
+    orbis aspect_orbis(aspect_type _aspect_type) const override
+    {
+        switch (_aspect_type) {
+        case conjunction: case opposition: return _M_main_orbis;
+        case trigon: case sextil: case quadrat: return _M_main_orbis * 0.75;
+        case none_aspect: return 0.0;
+        default: return 1.0;
+        }
+    }
+};
 
 enum class aspect_conn_type
 {
-    NONE,
-    APPLICATING,
-    SEPARATING,
+    none,
+    applicating,
+    separating,
 };
 
 template <class _EphProxy>
@@ -43,35 +78,30 @@ public:
     static constexpr const index uranus = _EphProxy::object::uranus;
     static constexpr const index neptune = _EphProxy::object::neptune;
     static constexpr const index pluto = _EphProxy::object::pluto;
+    static constexpr const index chiron = _EphProxy::object::chiron;
 
     static constexpr const index dragon_head = _EphProxy::object::dragon_head;
     static constexpr const index lilith = _EphProxy::object::lilith;
 
 public:
-    basic_planet(index _planet_index, orbis _main_orbis)
+    basic_planet(index _planet_index, const a_orbis_config* _orbis_config)
         : eph::basic_object<_EphProxy>(_planet_index)
-        , _M_main_orbis(_main_orbis)
+        , _M_orbis_config(_orbis_config)
     {
     }
 
 private:
-    orbis _M_main_orbis;
+    std::shared_ptr<const a_orbis_config> _M_orbis_config;
 public:
-    orbis main_orbis() const { return _M_main_orbis; }
     orbis aspect_orbis(aspect_type _aspect_type) const
     {
-        switch (_aspect_type) {
-        case conjunction: case opposition: return main_orbis();
-        case trigon: case sextil: case quadrat: return main_orbis() * 0.75;
-        case none_aspect: return 0.0;
-        default: return 1.0;
-        }
+        return _M_orbis_config ? _M_orbis_config->aspect_orbis(_aspect_type) : 1.0;
     }
 
     template <class _MagPoint>
-    aspect_conn_type aspect_conn_type(const _MagPoint& _mag_point) const
+    aspect_conn_type aspect_conn_type(const _MagPoint&) const
     {
-        return aspect_conn_type::NONE;
+        return aspect_conn_type::none;
     }
 
     template <class _MagPoint>
@@ -94,7 +124,6 @@ public:
                 aspect_conn = a;
             }
         }
-
         return  aspect_conn;
     }
 };

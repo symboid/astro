@@ -121,20 +121,21 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
 
-    mHora.add_planet(hor::planet(hor::planet::sun, 4.0));
-    mHora.add_planet(hor::planet(hor::planet::moon, 4.0));
-    mHora.add_planet(hor::planet(hor::planet::mercury, 3.0));
-    mHora.add_planet(hor::planet(hor::planet::venus, 3.0));
-    mHora.add_planet(hor::planet(hor::planet::mars, 3.0));
-    mHora.add_planet(hor::planet(hor::planet::jupiter, 2.5));
-    mHora.add_planet(hor::planet(hor::planet::saturn, 2.5));
+    mHora.add_planet(hor::planet(hor::planet::sun, new hor::simple_orbis_config(4.0)));
+    mHora.add_planet(hor::planet(hor::planet::moon, new hor::simple_orbis_config(4.0)));
+    mHora.add_planet(hor::planet(hor::planet::mercury, new hor::simple_orbis_config(3.0)));
+    mHora.add_planet(hor::planet(hor::planet::venus, new hor::simple_orbis_config(3.0)));
+    mHora.add_planet(hor::planet(hor::planet::mars, new hor::simple_orbis_config(3.0)));
+    mHora.add_planet(hor::planet(hor::planet::jupiter, new hor::simple_orbis_config(2.5)));
+    mHora.add_planet(hor::planet(hor::planet::saturn, new hor::simple_orbis_config(2.5)));
 
-    mHora.add_planet(hor::planet(hor::planet::uranus, 2.0));
-    mHora.add_planet(hor::planet(hor::planet::neptune, 2.0));
-    mHora.add_planet(hor::planet(hor::planet::pluto, 1.5));
+    mHora.add_planet(hor::planet(hor::planet::uranus, new hor::simple_orbis_config(2.0)));
+    mHora.add_planet(hor::planet(hor::planet::neptune, new hor::simple_orbis_config(2.0)));
+    mHora.add_planet(hor::planet(hor::planet::pluto, new hor::simple_orbis_config(1.5)));
 
-    mHora.add_planet(hor::planet(hor::planet::dragon_head, 0.5));
-//    mHora.add_planet(hor::planet(hor::planet::lilith, 1.5));
+    mHora.add_planet(hor::planet(hor::planet::dragon_head, new hor::simple_orbis_config(0.5)));
+    mHora.add_planet(hor::planet(hor::planet::chiron, new hor::simple_orbis_config(0.5)));
+//    mHora.add_planet(hor::planet(hor::planet::lilith, new hor::simple_orbis_config(1.5)));
 
     connect(this, SIGNAL(yearChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(monthChanged()), this, SLOT(recalc()));
@@ -230,6 +231,7 @@ QBrush QHoraViewItem::planetBrush(hor::planet::index planetIndex, qreal alpha)
 
     case hor::planet::dragon_head: objectColor = Qt::black; break;
     case hor::planet::lilith: objectColor = Qt::black; break;
+    case hor::planet::chiron: objectColor = Qt::black; break;
     }
     objectColor.setAlphaF(alpha);
     brush.setColor(objectColor);
@@ -341,7 +343,6 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& plane
 void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellation* constellation)
 {
     const qreal beginLont180 = constellation->begin_lont() - mandalaLeft() + 180.0;
-    qreal fontSize = eclipticRatio() * 0.05;
     qreal cornerSize = 2.0;
     qreal cornerPixelSize = sin(cornerSize / 180.0 * PI) * eclipticRadius() * 1.15;
 
@@ -374,11 +375,14 @@ void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellatio
     qreal signum = isUpper ? -1.0 : 1.0;
     qreal baseAngle = mandalaLeft() - constellation->begin_lont() + (isUpper ? -90.0 : 90.0);
     qreal upperEdge = isUpper ? (-eclipticRadius()*1.38) : (eclipticRadius()*1.15+cornerPixelSize+offset);
-    qreal lowerEdge = isUpper ? (-eclipticRadius()*1.15-offset-cornerPixelSize) : (eclipticRadius()*1.38);
+    qreal lowerEdge = isUpper ? -(eclipticRadius()*1.15+offset+cornerPixelSize) : (eclipticRadius()*1.38);
+    qreal stickFrom = isUpper ? lowerEdge : upperEdge;
+    qreal stickTo   = isUpper ? lowerEdge - cornerPixelSize : upperEdge + cornerPixelSize;
 
     // draw begin of constellation
     painter->rotate(baseAngle);
-    painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
+//    painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
+    painter->drawLine(QPointF(0.0, stickFrom), QPointF(0.0, stickTo));
     QRectF cornerRect(0,signum*(eclipticRadius()*1.15+offset),signum*2.0*cornerPixelSize,signum*2.0*cornerPixelSize);
     painter->drawArc(cornerRect, signum*90*16, 90*16);
 
@@ -393,7 +397,8 @@ void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellatio
 
     // draw end of constellation
     painter->rotate(-constellation->_M_length/2.0);
-    painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
+//    painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
+    painter->drawLine(QPointF(0.0, stickFrom), QPointF(0.0, stickTo));
     painter->drawArc(cornerRect.translated(-signum*2.0*cornerPixelSize,0.0), (90-signum*90)*16, 90*16);
 
     painter->restore();
