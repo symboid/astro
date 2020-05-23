@@ -53,6 +53,10 @@ QString QSymboidFont::objectLetter(hor::planet::index planetIndex)
     {
         return QChar('m' + int(planetIndex));
     }
+    else if (planetIndex == hor::planet::chiron)
+    {
+        return QChar('K');
+    }
     else if (planetIndex == hor::planet::lilith)
     {
         return QChar('A');

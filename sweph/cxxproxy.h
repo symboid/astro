@@ -48,6 +48,7 @@ struct ASTRO_SWEPH_API proxy
             uranus = SE_URANUS,
             neptune = SE_NEPTUNE,
             pluto = SE_PLUTO,
+            chiron = SE_CHIRON,
 
             dragon_head = SE_MEAN_NODE,
             lilith = SE_MEAN_APOG,
