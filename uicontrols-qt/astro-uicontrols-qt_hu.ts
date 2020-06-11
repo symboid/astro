@@ -2,6 +2,79 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu_HU">
 <context>
+    <name>ConfigNode</name>
+    <message>
+        <location filename="qorbisconfig.h" line="19"/>
+        <source>Sun</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="20"/>
+        <source>Moon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="21"/>
+        <source>Mercury</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="22"/>
+        <source>Venus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="23"/>
+        <source>Mars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="24"/>
+        <source>Jupiter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="25"/>
+        <source>Saturn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="26"/>
+        <source>Uranus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="27"/>
+        <source>Neptune</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="28"/>
+        <source>Pluto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="29"/>
+        <source>Asc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="30"/>
+        <source>MC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="31"/>
+        <source>Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="32"/>
+        <source>House cusp</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GeoNameDialog</name>
     <message>
         <location filename="GeoNameDialog.qml" line="33"/>
@@ -200,105 +273,7 @@
     </message>
 </context>
 <context>
-    <name>OrbisSettingsGroup</name>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="9"/>
-        <source>Sun</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="9"/>
-        <source>Moon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="9"/>
-        <source>Mercury</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="9"/>
-        <source>Venus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="10"/>
-        <source>Mars</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="10"/>
-        <source>Jupiter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="10"/>
-        <source>Saturn</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="18"/>
-        <source>Uranus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="18"/>
-        <source>Neptune</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="18"/>
-        <source>Pluto</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>OrbisSettingsPane</name>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="8"/>
-        <source>Orbis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="11"/>
-        <source>Conjunction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="11"/>
-        <source>Opposition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="11"/>
-        <source>Trigon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="11"/>
-        <source>Quadrat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="12"/>
-        <source>Quintil</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="12"/>
-        <source>Sextil</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="12"/>
-        <source>Quincunx</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="12"/>
-        <source>Semi-sextil</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="OrbisSettingsPane.qml" line="20"/>
         <source>Fixed stars</source>
@@ -370,6 +345,47 @@
         <location filename="qhoraviewitem.cc" line="53"/>
         <source>Speed</source>
         <translation>Sebesség</translation>
+    </message>
+</context>
+<context>
+    <name>QHouseCuspConfigNode</name>
+    <message>
+        <location filename="qorbisconfig.h" line="57"/>
+        <source>Cusp orbis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="61"/>
+        <source>Asc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="62"/>
+        <source>Dsc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="63"/>
+        <source>MC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="64"/>
+        <source>IC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qorbisconfig.h" line="65"/>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QOrbisConfig</name>
+    <message>
+        <location filename="qorbisconfig.cc" line="6"/>
+        <source>Orbis</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

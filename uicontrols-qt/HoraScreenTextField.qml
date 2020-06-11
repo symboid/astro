@@ -1,7 +1,6 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import QtQml 2.12
 
 Pane {
     property alias item: textField

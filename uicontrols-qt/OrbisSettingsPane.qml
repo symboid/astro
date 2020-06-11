@@ -2,16 +2,16 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Hosting 1.0
+import Symboid.Astro.Controls 1.0
 
 SettingsPane {
     minimumColumnWidth: 300
-    title: qsTr("Orbis")
+    title: OrbisConfig.name
 
     Repeater {
-        model: [ qsTr("Conjunction"), qsTr("Opposition"), qsTr("Trigon"), qsTr("Quadrat"),
-            qsTr("Quintil"), qsTr("Sextil"), qsTr("Quincunx"), qsTr("Semi-sextil") ]
+        model: OrbisConfig
         OrbisSettingsGroup {
-            title: modelData
+            aspectConfig: config_item
             collapsed: true
         }
     }
@@ -21,11 +21,11 @@ SettingsPane {
         collapsed: true
         OrbisSettingsItem {
             title: qsTr("Alpha star")
-            orbis: 20
+            orbis: 3.0
         }
         OrbisSettingsItem {
             title: qsTr("Other star")
-            orbis: 10
+            orbis: 1.5
         }
     }
 }

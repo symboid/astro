@@ -2,23 +2,18 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Hosting 1.0
+import Symboid.Astro.Controls 1.0
 
 SettingsGroup {
 
-    Repeater {
-        model: [ qsTr("Sun"), qsTr("Moon"), qsTr("Mercury"), qsTr("Venus"),
-            qsTr("Mars"), qsTr("Jupiter"), qsTr("Saturn") ]
-
-        OrbisSettingsItem {
-            title: modelData
-        }
-    }
+    property ConfigNode aspectConfig: null
+    title: aspectConfig.name
 
     Repeater {
-        model: [ qsTr("Uranus"), qsTr("Neptune"), qsTr("Pluto") ]
-
+        model: aspectConfig
         OrbisSettingsItem {
-            title: modelData
+            title: config_name
+            orbis: config_value
         }
     }
 }

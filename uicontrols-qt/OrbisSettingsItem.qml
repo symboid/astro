@@ -5,7 +5,12 @@ import Symboid.Sdk.Controls 1.0
 
 Row {
     property alias title: objectTitle.text
-    property alias orbis: orbisValue.value
+    property double orbis: Number(orbisValue.value)/10
+    onOrbisChanged: {
+        orbisValue.value = orbis * 10
+        orbis = Qt.binding(function(){return Number(orbisValue.value)/10})
+    }
+
     leftPadding: 20
     rightPadding: 20
     Label {
@@ -23,6 +28,19 @@ Row {
         }
         valueFromText: function(text, locale) {
             return Number.fromLocaleString(locale, text) * 10;
+        }
+        MouseArea {
+            anchors.fill: parent
+            onWheel: {
+                if (wheel.angleDelta.y > 0)
+                {
+                    orbisValue.increase()
+                }
+                else
+                {
+                    orbisValue.decrease()
+                }
+            }
         }
     }
 }
