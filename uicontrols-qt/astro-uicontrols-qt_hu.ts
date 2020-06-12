@@ -273,24 +273,6 @@
     </message>
 </context>
 <context>
-    <name>OrbisSettingsPane</name>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="20"/>
-        <source>Fixed stars</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="23"/>
-        <source>Alpha star</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsPane.qml" line="27"/>
-        <source>Other star</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>QGeoLattSectionCalc</name>
     <message>
         <location filename="arccoord.h" line="128"/>

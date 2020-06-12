@@ -122,6 +122,9 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
 
+    arh::main_object<QOrbisConfig> orbisConfig;
+    connect(orbisConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
+
     mHora.add_planet(hor::planet(hor::planet::sun, new OrbisConfig(0)));
     mHora.add_planet(hor::planet(hor::planet::moon, new OrbisConfig(1)));
     mHora.add_planet(hor::planet(hor::planet::mercury, new OrbisConfig(2)));

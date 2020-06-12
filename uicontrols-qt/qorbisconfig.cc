@@ -24,5 +24,5 @@ hor::orbis OrbisConfig::aspect_orbis(hor::aspect_type _aspect_type) const
     case hor::sextil: aspectConfig = mOrbisConfig->sextil(); break;
     default: return 1.0;
     }
-    return aspectConfig != nullptr ? aspectConfig->subConfig(mIndex)->configValue().toDouble() : 0.0;
+    return aspectConfig != nullptr ? aspectConfig->subConfig(mIndex)->value().toDouble() : 0.0;
 }

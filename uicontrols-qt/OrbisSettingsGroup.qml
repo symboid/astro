@@ -11,9 +11,19 @@ SettingsGroup {
 
     Repeater {
         model: aspectConfig
-        OrbisSettingsItem {
-            title: config_name
-            orbis: config_value
+        Column {
+            spacing: 10
+            width: parent.width
+            Rectangle {
+                width: parent.width
+                height: 1
+                color: "lightgrey"
+                visible: index === 10 || index === 7
+            }
+            OrbisSettingsItem {
+                id: orbisSetting
+                aspectConfig: config_item
+            }
         }
     }
 }

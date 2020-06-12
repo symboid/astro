@@ -2,14 +2,10 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
+import Symboid.Sdk.Hosting 1.0
 
 Row {
-    property alias title: objectTitle.text
-    property double orbis: Number(orbisValue.value)/10
-    onOrbisChanged: {
-        orbisValue.value = orbis * 10
-        orbis = Qt.binding(function(){return Number(orbisValue.value)/10})
-    }
+    property ConfigNode aspectConfig: null
 
     leftPadding: 20
     rightPadding: 20
@@ -18,11 +14,18 @@ Row {
         width: parent.parent.width - orbisValue.width - parent.leftPadding - parent.rightPadding
         height: orbisValue.height
         verticalAlignment: Label.AlignVCenter
+        text: aspectConfig.name
     }
     SpinBox {
         id: orbisValue
         from: 0
         to: 100
+        value: aspectConfig.value * 10
+        onValueChanged: {
+            aspectConfig.value = Number(value)/10
+            value = Qt.binding(function(){return aspectConfig.value*10})
+        }
+
         textFromValue: function(value, locale) {
             return Number(value / 10).toLocaleString(locale, 'f', 1)
         }
@@ -30,7 +33,12 @@ Row {
             return Number.fromLocaleString(locale, text) * 10;
         }
         MouseArea {
-            anchors.fill: parent
+            anchors {
+                left: parent.down.indicator.right
+                right: parent.up.indicator.left
+                top: parent.top
+                bottom: parent.bottom
+            }
             onWheel: {
                 if (wheel.angleDelta.y > 0)
                 {

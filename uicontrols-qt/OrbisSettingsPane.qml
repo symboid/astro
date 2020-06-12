@@ -15,17 +15,4 @@ SettingsPane {
             collapsed: true
         }
     }
-
-    SettingsGroup {
-        title: qsTr("Fixed stars")
-        collapsed: true
-        OrbisSettingsItem {
-            title: qsTr("Alpha star")
-            orbis: 3.0
-        }
-        OrbisSettingsItem {
-            title: qsTr("Other star")
-            orbis: 1.5
-        }
-    }
 }
