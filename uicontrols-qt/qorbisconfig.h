@@ -4,6 +4,7 @@
 
 #include "astro/uicontrols-qt/defs.h"
 #include "sdk/hosting/qconfig.h"
+#include "astro/calculo/planet.h"
 
 #define Q_ORBIS_CONFIG_NODE(Name, sunOrbis,monOrbis,merOrbis,venOrbis,marOrbis, \
                                         jupOrbis,satOrbis,uraOrbis,nepOrbis,pluOrbis) \
@@ -100,5 +101,17 @@ public:
     Q_CONFIG_NODE(QHouseCuspConfigNode, house_cusp)
     Q_CONFIG_NODE(QSynastryConfigNode, synastry)
 };
+
+class OrbisConfig : public hor::a_orbis_config
+{
+public:
+    OrbisConfig(int index);
+private:
+    arh::main_object<QOrbisConfig> mOrbisConfig;
+    int mIndex;
+public:
+    hor::orbis aspect_orbis(hor::aspect_type _aspect_type) const override;
+};
+
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_QORBISCONFIG_H__

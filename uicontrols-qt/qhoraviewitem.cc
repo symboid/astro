@@ -4,6 +4,7 @@
 #include <QPainter>
 #include "astro/uicontrols-qt/qhorastellium.h"
 #include <QFontMetrics>
+#include "astro/uicontrols-qt/qorbisconfig.h"
 
 QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
     : QHoraItemsModel(hora, parent)
@@ -121,19 +122,19 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
 
-    mHora.add_planet(hor::planet(hor::planet::sun, new hor::simple_orbis_config(4.0)));
-    mHora.add_planet(hor::planet(hor::planet::moon, new hor::simple_orbis_config(4.0)));
-    mHora.add_planet(hor::planet(hor::planet::mercury, new hor::simple_orbis_config(3.0)));
-    mHora.add_planet(hor::planet(hor::planet::venus, new hor::simple_orbis_config(3.0)));
-    mHora.add_planet(hor::planet(hor::planet::mars, new hor::simple_orbis_config(3.0)));
-    mHora.add_planet(hor::planet(hor::planet::jupiter, new hor::simple_orbis_config(2.5)));
-    mHora.add_planet(hor::planet(hor::planet::saturn, new hor::simple_orbis_config(2.5)));
+    mHora.add_planet(hor::planet(hor::planet::sun, new OrbisConfig(0)));
+    mHora.add_planet(hor::planet(hor::planet::moon, new OrbisConfig(1)));
+    mHora.add_planet(hor::planet(hor::planet::mercury, new OrbisConfig(2)));
+    mHora.add_planet(hor::planet(hor::planet::venus, new OrbisConfig(3)));
+    mHora.add_planet(hor::planet(hor::planet::mars, new OrbisConfig(4)));
+    mHora.add_planet(hor::planet(hor::planet::jupiter, new OrbisConfig(5)));
+    mHora.add_planet(hor::planet(hor::planet::saturn, new OrbisConfig(6)));
 
-    mHora.add_planet(hor::planet(hor::planet::uranus, new hor::simple_orbis_config(2.0)));
-    mHora.add_planet(hor::planet(hor::planet::neptune, new hor::simple_orbis_config(2.0)));
-    mHora.add_planet(hor::planet(hor::planet::pluto, new hor::simple_orbis_config(1.5)));
+    mHora.add_planet(hor::planet(hor::planet::uranus, new OrbisConfig(7)));
+    mHora.add_planet(hor::planet(hor::planet::neptune, new OrbisConfig(8)));
+    mHora.add_planet(hor::planet(hor::planet::pluto, new OrbisConfig(9)));
 
-    mHora.add_planet(hor::planet(hor::planet::dragon_head, new hor::simple_orbis_config(0.5)));
+    mHora.add_planet(hor::planet(hor::planet::dragon_head, new OrbisConfig(12)));
     mHora.add_planet(hor::planet(hor::planet::chiron, new hor::simple_orbis_config(0.5)));
 //    mHora.add_planet(hor::planet(hor::planet::lilith, new hor::simple_orbis_config(1.5)));
 
