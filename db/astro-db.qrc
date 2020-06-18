@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/Symboid/Astro/Db">
+        <file>qmldir</file>
+    </qresource>
+    <qresource prefix="/tr"/>
+</RCC>
