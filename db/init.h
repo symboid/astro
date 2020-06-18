@@ -4,6 +4,7 @@
 
 #include "astro/db/defs.h"
 #include "sdk/arch/modqt.h"
+#include "astro/db/fixstars.h"
 
 struct ASTRO_DB_API mod_astro_db : arh::mod_qt<mod_astro_db>
 {
@@ -15,6 +16,8 @@ struct ASTRO_DB_API mod_astro_db : arh::mod_qt<mod_astro_db>
 
     mod_astro_db();
     ~mod_astro_db();
+
+    qml_singleton_init<QFixstars> _M_fixstars;
 };
 
 
