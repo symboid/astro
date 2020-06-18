@@ -18,6 +18,7 @@ Flickable {
 
     // parameters:
     property alias title: horaName.text
+    property alias interactive: horaView.interactive
     // date and time
     property alias year: dateBox.year
     property alias month: dateBox.month
@@ -167,6 +168,16 @@ Flickable {
                 withJulianCalendar: calendarType.currentIndex !== 0
 
                 displayFlags: HoraView.SHOW_CONSTELLATIONS
+
+                BusyIndicator {
+                    id: horaCalcIndicator
+                    width: 100
+                    height: 100
+                    anchors.centerIn: parent
+                    running: false
+                }
+                onStartCalc: horaCalcIndicator.running = true
+                onStopCalc: horaCalcIndicator.running = false
             }
             Item {
                 HoraTableView {
@@ -398,6 +409,8 @@ Flickable {
             }
         }
     }
+
+    Component.onCompleted: interactive = true
 
     GeoNameDialog {
         id: geoNameDialog

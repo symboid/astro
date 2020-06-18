@@ -86,7 +86,7 @@ QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
             }
         }
         std::size_t houseIndex = std::size_t(index.row() + 1);
-        const eph::house_cusp house = mHora->houses().at(houseIndex);
+        const eph::house_cusp house = mHora->houses().size() > houseIndex ? mHora->houses().at(houseIndex) : eph::house_cusp();
         switch (role) {
         case SymbolRole: {
             switch (houseIndex) {
@@ -114,6 +114,7 @@ QStringList QHoraHousesModel::headerModel() const
 QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     : QQuickPaintedItem(parent)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
+    , mIsInteractive(false)
     , mPlanetsModel(new QHoraPlanetsModel(& mHora, this))
     , mHousesModel(new QHoraHousesModel(& mHora, this))
 {
@@ -121,9 +122,6 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     setRenderTarget(QQuickPaintedItem::Image);
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
-
-    arh::main_object<QOrbisConfig> orbisConfig;
-    connect(orbisConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
 
     mHora.add_planet(hor::planet(hor::planet::sun, new OrbisConfig(0)));
     mHora.add_planet(hor::planet(hor::planet::moon, new OrbisConfig(1)));
@@ -138,20 +136,9 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     mHora.add_planet(hor::planet(hor::planet::pluto, new OrbisConfig(9)));
 
     mHora.add_planet(hor::planet(hor::planet::dragon_head, new OrbisConfig(12)));
-    mHora.add_planet(hor::planet(hor::planet::chiron, new hor::simple_orbis_config(0.5)));
-//    mHora.add_planet(hor::planet(hor::planet::lilith, new hor::simple_orbis_config(1.5)));
-
-    connect(this, SIGNAL(yearChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(monthChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(dayChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(hourChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(minuteChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(secondChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(geoLattChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(geoLontChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
+//    mHora.add_planet(hor::planet(hor::planet::chiron, new hor::simple_orbis_config(0.5)));
+    mHora.add_planet(hor::planet(hor::planet::lilith, new hor::simple_orbis_config(1.5)));
+    connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
 
     eph_proxy::set_eph_dir_path(".");
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aries>);
@@ -209,7 +196,7 @@ qreal QHoraViewItem::oneDegree() const
 
 eph::ecl_lont QHoraViewItem::mandalaLeft() const
 {
-    return mHora.houses()[1].pos()._M_lont;
+    return mHora.houses().size() > 1 ? mHora.houses()[1].pos()._M_lont : eph::ecl_lont(0.0);
 }
 
 QBrush QHoraViewItem::planetBrush(hor::planet::index planetIndex, qreal alpha)
@@ -672,6 +659,51 @@ void QHoraViewItem::setCalendarIsJulian(bool calendarIsJulian)
     }
 }
 
+void QHoraViewItem::setInteractive(bool isInteractive)
+{
+    if (mIsInteractive != isInteractive)
+    {
+        mIsInteractive = isInteractive;
+        emit interactiveChanged();
+    }
+}
+
+void QHoraViewItem::onInteractiveChanged()
+{
+    arh::main_object<QOrbisConfig> orbisConfig;
+    if (mIsInteractive)
+    {
+        connect(this, SIGNAL(yearChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(monthChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(dayChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(hourChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(minuteChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(secondChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(geoLattChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(geoLontChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
+        connect(orbisConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
+        recalc();
+    }
+    else
+    {
+        disconnect(this, SIGNAL(yearChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(monthChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(dayChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(hourChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(minuteChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(secondChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(geoLattChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(geoLontChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
+        disconnect(orbisConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
+    }
+}
+
 void QHoraViewItem::recalc()
 {
     hor::hora_coords horaCoords;
@@ -687,6 +719,7 @@ void QHoraViewItem::recalc()
     horaCoords._M_geo_lont = mGeoLont;
     mPlanetsModel->beginResetModel();
     mHousesModel->beginResetModel();
+    emit startCalc();
     if (mHousesType == "koch")
     {
         mHora.calc<eph::house_system_koch>(horaCoords);
@@ -714,6 +747,7 @@ void QHoraViewItem::recalc()
     mPlanetsModel->endResetModel();
     mHousesModel->endResetModel();
     update();
+    emit stopCalc();
 }
 
 void QHoraViewItem::setFontPointSize(int fontPointSize)

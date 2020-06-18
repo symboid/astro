@@ -97,6 +97,16 @@ private:
     QSharedPointer<QAstroFont> mAstroFont;
 
 public:
+    Q_PROPERTY(bool interactive MEMBER mIsInteractive WRITE setInteractive NOTIFY interactiveChanged)
+private:
+    bool mIsInteractive = false;
+    void setInteractive(bool isInteractive);
+signals:
+    void interactiveChanged();
+private slots:
+    void onInteractiveChanged();
+
+public:
     Q_PROPERTY(int year MEMBER mYear WRITE setYear NOTIFY yearChanged)
     Q_PROPERTY(int month MEMBER mMonth WRITE setMonth NOTIFY monthChanged)
     Q_PROPERTY(int day MEMBER mDay WRITE setDay NOTIFY dayChanged)
@@ -151,6 +161,9 @@ signals:
 
 private slots:
     void recalc();
+signals:
+    void startCalc();
+    void stopCalc();
 
 public:
     Q_PROPERTY(QHoraItemsModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
