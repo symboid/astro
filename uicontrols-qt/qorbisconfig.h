@@ -108,7 +108,7 @@ public:
     OrbisConfig(int index);
 private:
     arh::main_object<QOrbisConfig> mOrbisConfig;
-    int mIndex;
+    QConfigNode* mAspectConfigs[hor::aspect_type_count];
 public:
     hor::orbis aspect_orbis(hor::aspect_type _aspect_type) const override;
 };

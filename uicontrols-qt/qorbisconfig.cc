@@ -8,21 +8,18 @@ QOrbisConfig::QOrbisConfig(QConfigNode* parentNode)
 }
 
 OrbisConfig::OrbisConfig(int index)
-    : mIndex(index)
 {
+    mAspectConfigs[hor::none_aspect] = nullptr;
+    mAspectConfigs[hor::conjunction] = mOrbisConfig->conjunction()->subConfig(index);
+    mAspectConfigs[hor::opposition] = mOrbisConfig->opposition()->subConfig(index);
+    mAspectConfigs[hor::trigon] = mOrbisConfig->trigon()->subConfig(index);
+    mAspectConfigs[hor::quadrat] = mOrbisConfig->quadrat()->subConfig(index);
+    mAspectConfigs[hor::quintil] = mOrbisConfig->quintil()->subConfig(index);
+    mAspectConfigs[hor::sextil] = mOrbisConfig->sextil()->subConfig(index);
 }
 
 hor::orbis OrbisConfig::aspect_orbis(hor::aspect_type _aspect_type) const
 {
-    const QConfigNode* aspectConfig = nullptr;
-    switch (_aspect_type) {
-    case hor::conjunction: aspectConfig = mOrbisConfig->conjunction(); break;
-    case hor::opposition: aspectConfig = mOrbisConfig->opposition(); break;
-    case hor::trigon: aspectConfig = mOrbisConfig->trigon(); break;
-    case hor::quadrat: aspectConfig = mOrbisConfig->quadrat(); break;
-    case hor::quintil: aspectConfig = mOrbisConfig->quintil(); break;
-    case hor::sextil: aspectConfig = mOrbisConfig->sextil(); break;
-    default: return 1.0;
-    }
-    return aspectConfig != nullptr ? aspectConfig->subConfig(mIndex)->value().toDouble() : 0.0;
+    const QConfigNode* orbisConfigNode = mAspectConfigs[_aspect_type];
+    return orbisConfigNode != nullptr ? orbisConfigNode->value().toDouble() : 0.0;
 }
