@@ -81,13 +81,11 @@ eph::calc_result proxy::houses::calc(clock::time_point _time, type _house_system
     }
 }
 
-eph::calc_result proxy::fixstar::calc_pos(const std::string& _fixstar_name, clock::time_point _time,
+eph::calc_result proxy::fixstar::calc_pos(char* _name_buffer, clock::time_point _time,
         eph::ecl_pos& _ecl_pos, eph::ecl_speed& _ecl_speed)
 {
     char error_str[AS_MAXCH];
     double eph_data[6];
-    char fixstar_name[SE_MAX_STNAME + 1];
-    std::strncpy(fixstar_name, _fixstar_name.c_str(), SE_MAX_STNAME);
 
     // setting up ephemeris type
     int32 type_flag;
@@ -101,7 +99,7 @@ eph::calc_result proxy::fixstar::calc_pos(const std::string& _fixstar_name, cloc
     // SEFLG_SPEED = asking for speed calculation
     int32 calc_flag = type_flag | SEFLG_SPEED;
 
-    int ret_flag = swe_fixstar2_ut(fixstar_name, _time.time_since_epoch().count(), calc_flag,
+    int ret_flag = swe_fixstar2_ut(_name_buffer, _time.time_since_epoch().count(), calc_flag,
             eph_data, error_str);
     if (ret_flag < 0)
     {
@@ -119,6 +117,17 @@ eph::calc_result proxy::fixstar::calc_pos(const std::string& _fixstar_name, cloc
     }
 
     return ret_flag >= 0 ? eph::calc_result::SUCCESS : eph::calc_result::FAILED;
+}
+
+proxy::fixstar::magnitude proxy::fixstar::calc_magnitude(char* _name_buffer)
+{
+    char error_str[AS_MAXCH];
+    magnitude magnitude;
+    if (swe_fixstar2_mag(_name_buffer, &magnitude, error_str) != OK)
+    {
+        magnitude = 0.0;
+    }
+    return magnitude;
 }
 
 swe_ns_end

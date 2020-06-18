@@ -73,8 +73,11 @@ struct ASTRO_SWEPH_API proxy
 
     struct ASTRO_SWEPH_API fixstar
     {
-        static eph::calc_result calc_pos(const std::string& _fixstar_name, clock::time_point _time,
+        static constexpr int NAME_BUFFER_LENGTH = SE_MAX_STNAME;
+        static eph::calc_result calc_pos(char* _name_buffer, clock::time_point _time,
                 eph::ecl_pos& _ecl_pos, eph::ecl_speed& _ecl_speed);
+        typedef double magnitude;
+        static magnitude calc_magnitude(char* _name_buffer);
     };
 };
 

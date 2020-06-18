@@ -6,6 +6,7 @@
 #include <string>
 #include "astro/eph/ecliptic.h"
 #include "astro/eph/calendarcoords.h"
+#include <cstring>
 
 eph_ns_begin
 
@@ -26,18 +27,18 @@ public:
     constellation(const std::string& _name, const std::string& _alpha_name,
             arc_degree _alpha_rel_pos, arc_degree _length, type _type, int _sphere)
         : _M_name(_name)
-        , _M_alpha_name(_alpha_name)
         , _M_alpha_rel_pos(_alpha_rel_pos)
         , _M_length(_length)
         , _M_type(_type)
         , _M_sphere(_sphere)
     {
+        std::strncpy(_M_alpha_name, _alpha_name.c_str(), 256);
     }
     virtual ~constellation() = default;
 
 public:
     const std::string _M_name;
-    const std::string _M_alpha_name;
+    char _M_alpha_name[257];
     const arc_degree _M_alpha_rel_pos;
     const arc_degree _M_length;
     const type _M_type;

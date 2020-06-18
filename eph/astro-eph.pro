@@ -13,6 +13,7 @@ HEADERS += \
     calendarcoords.h \
     constellation.h \
     defs.h \
+    fixstar.h \
     houses.h \
     proxy.h \
     object.h \
