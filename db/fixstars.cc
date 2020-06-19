@@ -1,19 +1,16 @@
 
 #include "astro/db/setup.h"
 #include "astro/db/fixstars.h"
-#include <QFile>
+#include "astro/sweph/cxxproxy.h"
 
-QFixstars::QFixstars(QObject* parent)
-    : QObject(parent)
+Fixstars::Fixstars()
 {
 }
 
-bool QFixstars::load()
+bool Fixstars::load()
 {
     bool loadResult(false);
-    QFile fixstarsFile("sefstars.txt");
-    if (fixstarsFile.open(QIODevice::ReadOnly))
-    {
-    }
+    std::list<eph::basic_fixstar<swe::proxy>> fixstars;
+    loadResult = swe::proxy::fixstar::load_from_disk(fixstars);
     return loadResult;
 }

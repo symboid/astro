@@ -5,7 +5,6 @@
 #include "astro/eph/defs.h"
 #include <chrono>
 #include "astro/eph/calendarcoords.h"
-#include "astro/eph/proxy.h"
 
 eph_ns_begin
 

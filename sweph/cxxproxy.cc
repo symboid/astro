@@ -1,14 +1,26 @@
 
 #include "astro/sweph/cxxproxy.h"
 #include <cstring>
+#include <fstream>
+#include <sstream>
 
 swe_ns_begin
+
+#if defined(WIN32) || defined(_WIN32) || defined(WIN64)
+#   define DIR_SEP_STR "\\"
+#else
+#   define DIR_SEP_STR "/"
+#endif
+
+static std::string eph_dir_path;
 
 void proxy::set_eph_dir_path(const std::string& _eph_dir_path)
 {
     char path_buffer[AS_MAXCH];
     std::strncpy(path_buffer, _eph_dir_path.c_str(), AS_MAXCH);
     swe_set_ephe_path(path_buffer);
+
+    eph_dir_path = _eph_dir_path;
 }
 
 proxy::clock::time_point proxy::clock::time(const eph::calendar_coords& _calendar_coords)
@@ -128,6 +140,45 @@ proxy::fixstar::magnitude proxy::fixstar::calc_magnitude(char* _name_buffer)
         magnitude = 0.0;
     }
     return magnitude;
+}
+
+bool proxy::fixstar::load_from_disk(std::list<eph::basic_fixstar<proxy>>& _fixstar_list)
+{
+    bool loadResult(false);
+    std::ifstream fixstarsFile(eph_dir_path + DIR_SEP_STR + "sefstars.txt");
+    if (fixstarsFile.good())
+    {
+        int stcount = 0;
+        while (!fixstarsFile.eof())
+        {
+            char lineBuffer[512];
+            fixstarsFile.getline(lineBuffer, 512);
+            if (lineBuffer[0] != '#')
+            {
+                std::stringstream line(lineBuffer);
+                std::string field;
+                int f = 0;
+                std::string name, nomenclature;
+                double magnitude;
+                while (std::getline(line, field, ','))
+                {
+                    switch (++f)
+                    {
+                    case 1: name = field; break;
+                    case 2: nomenclature = field; break;
+                    case 14: magnitude = std::stod(field);
+                    }
+                }
+                name.erase(name.find_last_not_of(" ") + 1);
+                eph::basic_fixstar<proxy> fixstar(name, nomenclature, magnitude);
+                _fixstar_list.push_back(fixstar);
+                stcount++;
+            }
+        }
+        loadResult = true;
+    }
+    return loadResult;
+
 }
 
 swe_ns_end

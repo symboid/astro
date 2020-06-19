@@ -17,7 +17,7 @@ struct ASTRO_DB_API mod_astro_db : arh::mod_qt<mod_astro_db>
     mod_astro_db();
     ~mod_astro_db();
 
-    qml_singleton_init<QFixstars> _M_fixstars;
+    arh::main_object_init<Fixstars> _M_fixstars;
 };
 
 

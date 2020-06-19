@@ -8,6 +8,8 @@
 #include <chrono>
 #include "astro/eph/ecliptic.h"
 #include "astro/eph/calendarcoords.h"
+#include "astro/eph/fixstar.h"
+#include <list>
 
 swe_ns_begin
 
@@ -78,6 +80,7 @@ struct ASTRO_SWEPH_API proxy
                 eph::ecl_pos& _ecl_pos, eph::ecl_speed& _ecl_speed);
         typedef double magnitude;
         static magnitude calc_magnitude(char* _name_buffer);
+        static bool load_from_disk(std::list<eph::basic_fixstar<proxy>>& _fixstar_list);
     };
 };
 

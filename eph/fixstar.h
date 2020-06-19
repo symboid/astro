@@ -17,11 +17,16 @@ public:
     typedef typename _EphProxy::fixstar::magnitude magnitude;
 
 public:
-    basic_fixstar(const std::string& _name, const std::string& _nomenclature)
+    basic_fixstar(const std::string& _name, const std::string& _nomenclature, magnitude _magnitude)
         : _M_nomenclature(_nomenclature)
+        , _M_magnitude(_magnitude)
     {
         std::strncpy(_M_name, _name.c_str(), _EphProxy::fixstar::NAME_BUFFER_LENGTH);
-        _M_magnitude = _EphProxy::fixstar::calc_magnitude(_M_name);
+    }
+    basic_fixstar(const std::string& _name, const std::string& _nomenclature)
+        : basic_fixstar(_name, _nomenclature, 0.0)
+        , _M_magnitude(_EphProxy::fixstar::calc_magnitude(_M_name))
+    {
     }
 
 private:

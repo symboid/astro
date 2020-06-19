@@ -140,7 +140,6 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     mHora.add_planet(hor::planet(hor::planet::lilith, new hor::simple_orbis_config(1.5)));
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
 
-    eph_proxy::set_eph_dir_path(".");
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aries>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::taurus>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::gemini>);
