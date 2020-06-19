@@ -5,54 +5,31 @@
 #include "astro/eph/defs.h"
 #include "astro/eph/ecliptic.h"
 #include "astro/eph/calendar.h"
-#include "astro/eph/proxy.h"
 #include <string>
 #include <algorithm>
 
 eph_ns_begin
 
-
 template <typename _EphProxy>
 class basic_object
 {
-public:
-    typedef typename _EphProxy::object::index index;
+protected:
+    virtual ~basic_object() = default;
 
-public:
-    basic_object(const index& _index) : _M_index(_index) {}
-
-private:
-    index _M_index;
-public:
-    index get_index() const { return _M_index; }
-
-private:
+protected:
     ecl_pos _M_ecl_pos;
 public:
     ecl_pos pos() const { return _M_ecl_pos; }
 
-private:
+protected:
     ecl_speed _M_ecl_speed;
 public:
     ecl_speed speed() const { return _M_ecl_speed; }
     bool is_retrograd() const { return _M_ecl_speed._M_lont < 0.0; }
 
 public:
-    calc_result calc_pos(const basic_time_point<_EphProxy>& _time)
-    {
-        return _EphProxy::object::calc_pos(_M_index, _time, _M_ecl_pos, _M_ecl_speed);
-    }
+    virtual calc_result calc_pos(const basic_time_point<_EphProxy>& _time) = 0;
 };
-
-template <class _EphProxy, typename _EphProxy::object::index _object_index>
-class static_object : public basic_object<_EphProxy>
-{
-public:
-    static_object() : basic_object<_EphProxy>(_object_index) {}
-};
-
-template <class _EphProxy>
-using SUN = static_object<_EphProxy, _EphProxy::object::index::sun>;
 
 template <class _EphProxy>
 calc_result approx_transit_pos(basic_object<_EphProxy>& object, basic_time_point<_EphProxy> approx_time, const ecl_pos& _prec_pos, const ecl_pos& _succ_pos)

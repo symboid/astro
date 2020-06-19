@@ -10,10 +10,6 @@
 #include "astro/uicontrols-qt/qhoraitemsmodel.h"
 #include "astro/eph/constellation.h"
 
-hor_ns_begin
-typedef basic_planet<eph_proxy> planet;
-hor_ns_end
-
 class ASTRO_UICONTROLS_QT_API QHoraPlanetsModel : public QHoraItemsModel
 {
     Q_OBJECT

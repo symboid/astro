@@ -6,10 +6,6 @@
 #include <QList>
 #include "astro/calculo/planet.h"
 
-hor_ns_begin
-typedef basic_planet<eph_proxy> planet;
-hor_ns_end
-
 struct QHoraStellium : QList<hor::planet>
 {
     QHoraStellium(const eph::arc_degree& equDist, const hor::planet& planet);

@@ -9,10 +9,6 @@
 #include "astro/calculo/planet.h"
 #include <QMap>
 
-hor_ns_begin
-typedef basic_planet<eph_proxy> planet;
-hor_ns_end
-
 class ASTRO_UICONTROLS_QT_API QAstroFont : public QFont
 {
 protected:

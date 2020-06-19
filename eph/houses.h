@@ -5,7 +5,7 @@
 #include "astro/eph/defs.h"
 #include "astro/eph/ecliptic.h"
 #include "astro/eph/calendar.h"
-#include "astro/eph/proxy.h"
+#include <string>
 #include <vector>
 
 eph_ns_begin

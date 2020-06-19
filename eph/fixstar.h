@@ -4,55 +4,68 @@
 
 #include "astro/eph/defs.h"
 #include <string>
-#include "astro/eph/ecliptic.h"
-#include "astro/eph/calendar.h"
+#include "astro/eph/object.h"
 #include <cstring>
 
 eph_ns_begin
 
 template <class _EphProxy>
-class basic_fixstar
+class fixstar_data
 {
 public:
     typedef typename _EphProxy::fixstar::magnitude magnitude;
 
 public:
-    basic_fixstar(const std::string& _name, const std::string& _nomenclature, magnitude _magnitude)
+    fixstar_data(const std::string& _name, const std::string& _nomenclature, magnitude _magnitude)
         : _M_nomenclature(_nomenclature)
         , _M_magnitude(_magnitude)
     {
         std::strncpy(_M_name, _name.c_str(), _EphProxy::fixstar::NAME_BUFFER_LENGTH);
     }
-    basic_fixstar(const std::string& _name, const std::string& _nomenclature)
-        : basic_fixstar(_name, _nomenclature, 0.0)
+    fixstar_data(const std::string& _name, const std::string& _nomenclature)
+        : fixstar_data(_name, _nomenclature, 0.0)
         , _M_magnitude(_EphProxy::fixstar::calc_magnitude(_M_name))
     {
     }
 
-private:
+protected:
     char _M_name[_EphProxy::fixstar::NAME_BUFFER_LENGTH + 1];
     std::string _M_nomenclature;
     magnitude _M_magnitude;
-    ecl_pos _M_ecl_pos;
-    ecl_speed _M_ecl_speed;
 
 public:
-    const ecl_pos& ecl_pos() const { return _M_ecl_pos; }
-    const ecl_speed& ecl_speed() const { return _M_ecl_speed; }
     const char* name() const { return _M_name; }
     std::string nomenclature() const { return _M_nomenclature; }
     magnitude magn() const { return _M_magnitude; }
+};
 
+template <class _EphProxy>
+class basic_fixstar : public basic_object<_EphProxy>, public fixstar_data<_EphProxy>
+{
 public:
-    calc_result calc(const basic_time_point<_EphProxy> _time_point)
+    basic_fixstar(const std::string& _name, const std::string& _nomenclature,
+                  typename fixstar_data<_EphProxy>::magnitude _magnitude)
+        : fixstar_data<_EphProxy>(_name, _nomenclature, _magnitude)
+    {
+    }
+    basic_fixstar(const std::string& _name, const std::string& _nomenclature)
+        : fixstar_data<_EphProxy>(_name, _nomenclature)
+    {
+    }
+    basic_fixstar(const fixstar_data<_EphProxy>& _data)
+        : fixstar_data<_EphProxy>(_data)
+    {
+    }
+public:
+    calc_result calc_pos(const basic_time_point<_EphProxy>& _time_point) override
     {
         struct ecl_pos temp_ecl_pos;
         struct ecl_speed temp_ecl_speed;
-        calc_result result = _EphProxy::fixstar::calc_pos(_M_name, _time_point, temp_ecl_pos, temp_ecl_speed);
+        calc_result result = _EphProxy::fixstar::calc_pos(this->_M_name, _time_point, temp_ecl_pos, temp_ecl_speed);
         if (result == calc_result::SUCCESS)
         {
-            _M_ecl_pos = temp_ecl_pos;
-            _M_ecl_speed = temp_ecl_speed;
+            this->_M_ecl_pos = temp_ecl_pos;
+            this->_M_ecl_speed = temp_ecl_speed;
         }
         return result;
     }

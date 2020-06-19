@@ -2,7 +2,7 @@
 #include "astro/db/setup.h"
 #include "astro/db/init.h"
 #include <qglobal.h>
-#include "astro/sweph/cxxproxy.h"
+#include "astro/eph/proxy.h"
 
 mod_astro_db::mod_astro_db()
 {

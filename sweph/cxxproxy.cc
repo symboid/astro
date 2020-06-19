@@ -142,7 +142,7 @@ proxy::fixstar::magnitude proxy::fixstar::calc_magnitude(char* _name_buffer)
     return magnitude;
 }
 
-bool proxy::fixstar::load_from_disk(std::list<eph::basic_fixstar<proxy>>& _fixstar_list)
+bool proxy::fixstar::load_from_disk(AddFunctor* addFunctor)
 {
     bool loadResult(false);
     std::ifstream fixstarsFile(eph_dir_path + DIR_SEP_STR + "sefstars.txt");
@@ -170,8 +170,7 @@ bool proxy::fixstar::load_from_disk(std::list<eph::basic_fixstar<proxy>>& _fixst
                     }
                 }
                 name.erase(name.find_last_not_of(" ") + 1);
-                eph::basic_fixstar<proxy> fixstar(name, nomenclature, magnitude);
-                _fixstar_list.push_back(fixstar);
+                addFunctor->addFixstar(name, nomenclature, magnitude);
                 stcount++;
             }
         }
