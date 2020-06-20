@@ -25,8 +25,8 @@ public:
     }
     fixstar_data(const std::string& _name, const std::string& _nomenclature)
         : fixstar_data(_name, _nomenclature, 0.0)
-        , _M_magnitude(_EphProxy::fixstar::calc_magnitude(_M_name))
     {
+        _M_magnitude(_EphProxy::fixstar::calc_magnitude(_M_name_buffer));
     }
     fixstar_data(const fixstar_data& _src)
         : _M_name(_src._M_name)
