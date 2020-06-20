@@ -784,7 +784,7 @@ void QHoraViewItem::recalc()
     horaTime -= horaCoords._M_time_zone_diff;
     mFixstarsConjunctions.clear();
 
-    for (Fixstars::const_iterator fixstarData = mFixstars->begin(), fEnd = mFixstars->end();
+    for (Fixstars::List::const_iterator fixstarData = mFixstars->begin(), fEnd = mFixstars->end();
             fixstarData != fEnd; ++fixstarData)
     {
         if (fixstarData->magn() < 2.0)
