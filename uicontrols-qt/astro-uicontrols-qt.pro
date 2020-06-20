@@ -12,7 +12,6 @@ SOURCES += \
     qgeonamesrestclient.cc \
     qgeonamestablemodel.cc \
     qhoraitemsmodel.cc \
-    qhorastellium.cc \
     qhoraviewitem.cc \
     qorbisconfig.cc
 

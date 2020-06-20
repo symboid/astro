@@ -9,6 +9,7 @@
 #include "astro/uicontrols-qt/qastrofont.h"
 #include "astro/uicontrols-qt/qhoraitemsmodel.h"
 #include "astro/eph/constellation.h"
+#include "astro/db/fixstars.h"
 
 class ASTRO_UICONTROLS_QT_API QHoraPlanetsModel : public QHoraItemsModel
 {
@@ -177,7 +178,7 @@ public:
     enum DisplayFlags
     {
         NONE = 0x00,
-        SHOW_CONSTELLATIONS = 0x01,
+        SHOW_FIXSTARS = 0x01,
     };
     Q_ENUM(DisplayFlags)
 public:
@@ -190,6 +191,13 @@ public:
     Q_INVOKABLE bool isDisplayFlagSet(DisplayFlags displayFlag) const;
 signals:
     void displayFlagsChanged();
+
+private:
+    arh::main_object<Fixstars> mFixstars;
+    typedef QList<eph::ecl_lont> FixstarContext;
+//    typedef QMap<QString, FixstarContext> FixstarConjunctions;
+    typedef QMap<QString, eph::basic_fixstar<eph_proxy>> FixstarConjunctions;
+    FixstarConjunctions mFixstarsConjunctions;
 };
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_QHORAVIEWITEM_H__

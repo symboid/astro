@@ -167,7 +167,7 @@ Flickable {
                 housesType: housesType.currentToken()
                 withJulianCalendar: calendarType.currentIndex !== 0
 
-                displayFlags: HoraView.SHOW_CONSTELLATIONS
+                displayFlags: HoraView.SHOW_FIXSTARS
 
                 BusyIndicator {
                     id: horaCalcIndicator
