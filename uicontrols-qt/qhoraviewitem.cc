@@ -429,19 +429,31 @@ void QHoraViewItem::paint(QPainter* painter)
             int p = 0;
             for (eph::basic_fixstar<eph_proxy> fixstar : fss)
             {
+                static const QStringList eclConst =
+                        { "Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqr", "Psc" };
+                const size_t nomLength(fixstar.nomenclature().length());
+                const QString constellation = (nomLength > 3 ? fixstar.nomenclature().substr(nomLength-3).c_str() : "");
+                const bool isEcliptic = eclConst.contains(constellation);
+
                 eph::ecl_pos displayPos = fss.displayPos(p++);
 
-                painter->setPen(QPen(QColor(0x00,0x00,0x00), 2.0));
-                painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, 1.15), 1.0, 1.0);
+                painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 2.0));
+                painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, isEcliptic ? 1.15 : 1.25), 1.0, 1.0);
 
-                painter->setPen(QPen(QColor(0x80,0x80,0x80), 0.5));
-                painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.15),
-                                  horaPoint(displayPos._M_lont, 1.25));
+                painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 0.5));
+//                painter->setPen(QPen(QColor(0x80,0x80,0x80), 0.5));
+                if (isEcliptic)
+                {
+                    painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.15),
+                                      horaPoint(fixstar.pos()._M_lont, 1.25));
+                }
+                painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.25),
+                                  horaPoint(displayPos._M_lont, 1.35));
 
                 painter->save();
                 painter->translate(boundingRect().center());
 
-                const QString name(fixstar.name().c_str());
+                const QString name(fixstar.nomenclature().c_str());
                 const QRectF textBoundingRect(QFontMetrics(painter->font(), painter->device()).boundingRect(name));
 
                 qreal displayLont = mandalaLeft() - displayPos._M_lont;
@@ -450,12 +462,12 @@ void QHoraViewItem::paint(QPainter* painter)
                 if (displayLont < 90.0 || 270.0 < displayLont)
                 {
                     baseAngle = displayLont;
-                    translateX = -eclipticRadius() * 1.25 - textBoundingRect.width();
+                    translateX = -eclipticRadius() * 1.35 - textBoundingRect.width();
                 }
                 else
                 {
                     baseAngle = displayLont + 180.0;
-                    translateX = eclipticRadius() * 1.25;
+                    translateX = eclipticRadius() * 1.35;
                 }
                 painter->rotate(baseAngle);
                 painter->drawText(textBoundingRect.translated(translateX, 0.0), Qt::TextSingleLine, name);
@@ -787,7 +799,13 @@ void QHoraViewItem::recalc()
     for (Fixstars::List::const_iterator fixstarData = mFixstars->begin(), fEnd = mFixstars->end();
             fixstarData != fEnd; ++fixstarData)
     {
-        if (fixstarData->magn() < 2.0)
+        static const QStringList eclConst =
+                { "Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqr", "Psc" };
+        const size_t nomLength(fixstarData->nomenclature().length());
+        const QString constellation = (nomLength > 3 ? fixstarData->nomenclature().substr(nomLength-3).c_str() : "");
+        const bool isEcliptic = eclConst.contains(constellation);
+        qreal magnitudo = isEcliptic ? 4.5 : 2.5;
+        if (fixstarData->magn() < magnitudo)
         {
             eph::basic_fixstar<eph_proxy> fixstar(*fixstarData);
             if (fixstar.calc_pos(horaTime) == eph::calc_result::SUCCESS)
@@ -819,7 +837,7 @@ void QHoraViewItem::recalc()
                 if (isInOrbis)
                 {
 //                    fixstarContext.push_front(fixstarPos._M_lont);
-                    mFixstarsConjunctions[fixstar.name().c_str()] = fixstar;//Context;
+                    mFixstarsConjunctions[fixstar.nomenclature().c_str()] = fixstar;
                 }
             }
         }
