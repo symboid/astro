@@ -18,5 +18,9 @@ defineReplace(copySwephFile) {
 }
 
 QMAKE_EXTRA_TARGETS += $$copySwephFile(sefstars,txt)
+QMAKE_EXTRA_TARGETS += $$copySwephFile(seplm12,se1)
+QMAKE_EXTRA_TARGETS += $$copySwephFile(seplm06,se1)
+QMAKE_EXTRA_TARGETS += $$copySwephFile(sepl_00,se1)
+QMAKE_EXTRA_TARGETS += $$copySwephFile(sepl_06,se1)
+QMAKE_EXTRA_TARGETS += $$copySwephFile(sepl_12,se1)
 QMAKE_EXTRA_TARGETS += $$copySwephFile(sepl_18,se1)
-QMAKE_EXTRA_TARGETS += $$copySwephFile(seas_18,se1)
