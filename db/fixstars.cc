@@ -8,6 +8,8 @@
 QFixstar::QFixstar(const QString& nomenclature, const Magnitude& magnitude)
     : eph::fixstar_data<eph_proxy>(nomenclature.toStdString(), magnitude)
 {
+    _M_name_buffer[0] = ',';
+    std::strncpy(_M_name_buffer + 1, _M_nomenclature.c_str(), eph_proxy::fixstar::NAME_BUFFER_LENGTH - 1);
 }
 
 void QFixstar::addName(const QString& name)
@@ -31,6 +33,12 @@ std::string QFixstar::consltn() const
 bool QFixstar::is_ecliptic() const
 {
     return mConsltn != nullptr && mConsltn->mIsEcliptic;
+}
+
+eph::calc_result QFixstar::calc_pos(const eph::basic_time_point<eph_proxy>& timePoint,
+        eph::ecl_pos& eclPos, eph::ecl_speed& eclSpeed)
+{
+    return eph_proxy::fixstar::calc_pos(_M_name_buffer, timePoint, eclPos, eclSpeed);
 }
 
 QConsltn::QConsltn(const QString& dbAbr, const QString& dbName)
@@ -164,12 +172,12 @@ void Fixstars::addFixstar(const QString& name, const QString& nomenclature,
     }
 }
 
-Fixstars::Container::const_iterator Fixstars::_begin() const
+Fixstars::Container::iterator Fixstars::begin()
 {
     return mFixstars.begin();
 }
 
-Fixstars::Container::const_iterator Fixstars::_end() const
+Fixstars::Container::iterator Fixstars::end()
 {
     return mFixstars.end();
 }

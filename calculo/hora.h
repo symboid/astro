@@ -88,7 +88,7 @@ public:
     fixstar_const_it fixstars_begin() const { return _M_fixstars.begin(); }
     fixstar_const_it fixstars_end() const { return _M_fixstars.end(); }
     template <class _Fixstars>
-    eph::calc_result calc_fixstars(const hora_coords& _hora_coords, const _Fixstars& _fixstars)
+    eph::calc_result calc_fixstars(const hora_coords& _hora_coords, _Fixstars& _fixstars)
     {
         eph::basic_time_point<_EphProxy> hora_time =
                 eph::basic_calendar<_EphProxy>::time(_hora_coords._M_calendar_coords);
@@ -98,8 +98,8 @@ public:
 
         eph::calc_result result = eph::calc_result::SUCCESS;
 
-        typedef typename _Fixstars::Container::const_iterator ConstIterator;
-        for (ConstIterator fixstar_data = _fixstars._begin(), f_end = _fixstars._end();
+        typedef typename _Fixstars::Container::iterator Iterator;
+        for (Iterator fixstar_data = _fixstars.begin(), f_end = _fixstars.end();
              result == eph::calc_result::SUCCESS && fixstar_data != f_end; ++fixstar_data)
         {
             if (_fixstars.filter_match(*fixstar_data))

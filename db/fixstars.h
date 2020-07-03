@@ -36,6 +36,12 @@ public:
     std::string name() const override;
     std::string consltn() const override;
     bool is_ecliptic() const override;
+
+public:
+    eph::calc_result calc_pos(const eph::basic_time_point<eph_proxy>& timePoint,
+            eph::ecl_pos& eclPos, eph::ecl_speed& eclSpeed) override;
+private:
+    char _M_name_buffer[eph_proxy::fixstar::NAME_BUFFER_LENGTH + 1];
 };
 
 class ASTRO_DB_API QConsltn
@@ -76,8 +82,8 @@ public:
 private:
     Container mFixstars;
 public:
-    Container::const_iterator _begin() const;
-    Container::const_iterator _end() const;
+    Container::iterator begin();
+    Container::iterator end();
     bool filter_match(const QFixstar* fixstarData) const;
 };
 
