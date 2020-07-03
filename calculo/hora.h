@@ -5,6 +5,7 @@
 #include "astro/calculo/defs.h"
 #include "astro/calculo/planet.h"
 #include "astro/eph/houses.h"
+#include "astro/eph/fixstar.h"
 #include <list>
 #include <set>
 #include <vector>
@@ -77,6 +78,58 @@ public:
     }
     size_t planet_count() const { return _M_planets.size(); }
     const basic_planet<_EphProxy>& planet(size_t _planet_index) const { return _M_planets.at(_planet_index); }
+
+public:
+    typedef std::list<eph::basic_fixstar<_EphProxy>> fixstars;
+    typedef typename fixstars::const_iterator fixstar_const_it;
+private:
+    fixstars _M_fixstars;
+public:
+    fixstar_const_it fixstars_begin() const { return _M_fixstars.begin(); }
+    fixstar_const_it fixstars_end() const { return _M_fixstars.end(); }
+    template <class _Fixstars>
+    eph::calc_result calc_fixstars(const hora_coords& _hora_coords, const _Fixstars& _fixstars)
+    {
+        eph::basic_time_point<_EphProxy> hora_time =
+                eph::basic_calendar<_EphProxy>::time(_hora_coords._M_calendar_coords);
+        hora_time -= _hora_coords._M_time_zone_diff;
+
+        _M_fixstars.clear();
+
+        eph::calc_result result = eph::calc_result::SUCCESS;
+
+        typedef typename _Fixstars::Container::const_iterator ConstIterator;
+        for (ConstIterator fixstar_data = _fixstars._begin(), f_end = _fixstars._end();
+             result == eph::calc_result::SUCCESS && fixstar_data != f_end; ++fixstar_data)
+        {
+            if (_fixstars.filter_match(*fixstar_data))
+            {
+                eph::basic_fixstar<eph_proxy> fixstar(*fixstar_data);
+                result = fixstar.calc_pos(hora_time);
+                if (result == eph::calc_result::SUCCESS)
+                {
+                    bool conjuncting = false;
+                    const eph::ecl_pos fixstar_pos = fixstar.pos();
+                    const hor::orbis fixstar_orbis = (*fixstar_data)->orbis();
+                    for (planet_it_const planet = _M_planets.begin(), p_end = _M_planets.end();
+                            !conjuncting && planet != p_end; ++planet)
+                    {
+                        conjuncting = (planet->pos().dist_abs(fixstar_pos) < fixstar_orbis);
+                    }
+                    for (std::vector<eph::house_cusp>::const_iterator house = _M_houses.begin(), h_end = _M_houses.end();
+                            !conjuncting && house != h_end; ++house)
+                    {
+                        conjuncting = (house->pos().dist_abs(fixstar_pos) < fixstar_orbis);
+                    }
+                    if (conjuncting)
+                    {
+                        _M_fixstars.push_back(fixstar);
+                    }
+                }
+            }
+        }
+        return result;
+    }
 };
 
 }

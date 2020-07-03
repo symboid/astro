@@ -7,7 +7,7 @@
 #include "astro/eph/ecliptic.h"
 #include "astro/eph/calendarcoords.h"
 #include <cstring>
-
+/*
 eph_ns_begin
 
 class constellation
@@ -438,5 +438,5 @@ struct equuleus : constellation_attributes
 };
 
 eph_ns_end
-
+*/
 #endif // __SYMBOID_ASTRO_EPH_CONSTELLATION_H__

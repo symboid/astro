@@ -5,9 +5,54 @@
 #include "astro/db/defs.h"
 #include "sdk/arch/mainobject.h"
 #include "astro/eph/proxy.h"
+#include "astro/eph/fixstar.h"
 #include <list>
+#include <map>
+#include <QString>
+#include <QVector>
 
-class ASTRO_DB_API Fixstars : public eph_proxy::fixstar::AddFunctor
+class ASTRO_DB_API QConsltn;
+
+class ASTRO_DB_API QFixstar : public eph::fixstar_data<eph_proxy>
+{
+public:
+    typedef eph::fixstar_data<eph_proxy>::magnitude Magnitude;
+
+public:
+    QFixstar(const QString& nomenclature, const Magnitude& magnitude);
+
+public:
+    void addName(const QString& name);
+private:
+    QVector<QString> mNames;
+
+public:
+    QConsltn* mConsltn = nullptr;
+
+public:
+    qreal orbis() const { return  1.5; }
+
+public:
+    std::string name() const override;
+    std::string consltn() const override;
+    bool is_ecliptic() const override;
+};
+
+class ASTRO_DB_API QConsltn
+{
+public:
+    QConsltn(const QString& dbAbr, const QString& dbName);
+
+public:
+    const QString mDbAbr;
+    const QString mDbName;
+    const bool mIsEcliptic;
+
+private:
+    static bool isEcliptic(const QString& dbAbr);
+};
+
+class ASTRO_DB_API Fixstars
 {
     MAIN_OBJECT(Fixstars,Fixstars)
 
@@ -17,15 +62,23 @@ public:
 public:
     bool load();
 private:
-    void addFixstar(const std::string& _name, const std::string& _nomenclature, double _magnitude) override;
+    bool parseConsltnName(const char* lineBuffer, QString& consltnName);
+    bool loadFromDisk();
+    void addFixstar(const QString& name, const QString& nomenclature,
+            double magnitude, const QString& consltnName);
+
+private:
+    typedef std::map<QString, std::shared_ptr<QConsltn>> Constellations;
+    Constellations mConsltns;
 
 public:
-    typedef std::list<eph::fixstar_data<eph_proxy>> List;
+    typedef std::list<QFixstar*> Container;
 private:
-    List _M_fixstar_list;
+    Container mFixstars;
 public:
-    List::const_iterator begin() const { return _M_fixstar_list.begin(); }
-    List::const_iterator end() const { return _M_fixstar_list.end(); }
+    Container::const_iterator _begin() const;
+    Container::const_iterator _end() const;
+    bool filter_match(const QFixstar* fixstarData) const;
 };
 
 #endif // __SYMBOID_ASTRO_DB_FIXSTARS_H__

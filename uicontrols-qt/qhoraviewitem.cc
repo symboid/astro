@@ -139,7 +139,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
 //    mHora.add_planet(hor::planet(hor::planet::chiron, new hor::simple_orbis_config(0.5)));
     mHora.add_planet(hor::planet(hor::planet::lilith, new hor::simple_orbis_config(1.5)));
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
-
+/*
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aries>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::taurus>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::gemini>);
@@ -168,6 +168,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aquila>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::delphinus>);
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::equuleus>);
+    */
 }
 
 void QHoraViewItem::calcMandalaGeometry()
@@ -329,7 +330,7 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& plane
     painter->drawText(planetSignRect, Qt::AlignLeft | Qt::AlignVCenter | Qt::TextDontClip, planetText);
 
 }
-
+/*
 void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellation* constellation)
 {
     const qreal beginLont180 = constellation->begin_lont() - mandalaLeft() + 180.0;
@@ -393,7 +394,7 @@ void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellatio
 
     painter->restore();
 }
-
+*/
 void QHoraViewItem::paint(QPainter* painter)
 {
     if (painter) {
@@ -418,42 +419,34 @@ void QHoraViewItem::paint(QPainter* painter)
         Stellium<eph::basic_fixstar<eph_proxy>>::List fixstarStelliums(4.0);
 //        qreal fixstarRadius = eclipticRadius() * 1.15;
 //        painter->drawEllipse(mMandalaCenter, fixstarRadius, fixstarRadius);
-        for (FixstarConjunctions::const_iterator fcs = mFixstarsConjunctions.begin(),
-                fcsEnd = mFixstarsConjunctions.end(); fcs != fcsEnd; fcs++)
-        {
-            fixstarStelliums.add(*fcs);
-        }
 
+        for (hor::hora::fixstar_const_it fs = mHora.fixstars_begin(),
+             fsEnd = mHora.fixstars_end(); fs != fsEnd; fs++)
+        {
+            fixstarStelliums.add(*fs);
+        }
         for (Stellium<eph::basic_fixstar<eph_proxy>> fss : fixstarStelliums)
         {
             int p = 0;
             for (eph::basic_fixstar<eph_proxy> fixstar : fss)
             {
-                static const QStringList eclConst =
-                        { "Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqr", "Psc" };
-                const size_t nomLength(fixstar.nomenclature().length());
-                const QString constellation = (nomLength > 3 ? fixstar.nomenclature().substr(nomLength-3).c_str() : "");
-                const bool isEcliptic = eclConst.contains(constellation);
+                const bool isEcliptic = fixstar.data()->is_ecliptic();
 
                 eph::ecl_pos displayPos = fss.displayPos(p++);
 
                 painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 2.0));
-                painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, isEcliptic ? 1.15 : 1.25), 1.0, 1.0);
+                painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, 1.15), 1.0, 1.0);
 
                 painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 0.5));
-//                painter->setPen(QPen(QColor(0x80,0x80,0x80), 0.5));
-                if (isEcliptic)
-                {
-                    painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.15),
-                                      horaPoint(fixstar.pos()._M_lont, 1.25));
-                }
+                painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.15),
+                                  horaPoint(fixstar.pos()._M_lont, 1.25));
                 painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.25),
                                   horaPoint(displayPos._M_lont, 1.35));
 
                 painter->save();
                 painter->translate(boundingRect().center());
 
-                const QString name(fixstar.nomenclature().c_str());
+                const QString name = QString("%1 (%2)").arg(fixstar.data()->name().c_str()).arg(fixstar.data()->consltn().c_str());
                 const QRectF textBoundingRect(QFontMetrics(painter->font(), painter->device()).boundingRect(name));
 
                 qreal displayLont = mandalaLeft() - displayPos._M_lont;
@@ -786,62 +779,13 @@ void QHoraViewItem::recalc()
     {
         mHora.calc<eph::house_system_placidus>(horaCoords);
     }
+    mHora.calc_fixstars(horaCoords, *mFixstars.get());
+    /*
     for (eph::constellation* constellation : mConstellations)
     {
         constellation->calc_alpha_pos(horaCoords._M_calendar_coords);
     }
-
-    eph::basic_time_point<eph_proxy> horaTime =
-            eph::basic_calendar<eph_proxy>::time(horaCoords._M_calendar_coords);
-    horaTime -= horaCoords._M_time_zone_diff;
-    mFixstarsConjunctions.clear();
-
-    for (Fixstars::List::const_iterator fixstarData = mFixstars->begin(), fEnd = mFixstars->end();
-            fixstarData != fEnd; ++fixstarData)
-    {
-        static const QStringList eclConst =
-                { "Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Sgr", "Cap", "Aqr", "Psc" };
-        const size_t nomLength(fixstarData->nomenclature().length());
-        const QString constellation = (nomLength > 3 ? fixstarData->nomenclature().substr(nomLength-3).c_str() : "");
-        const bool isEcliptic = eclConst.contains(constellation);
-        qreal magnitudo = isEcliptic ? 4.5 : 2.5;
-        if (fixstarData->magn() < magnitudo)
-        {
-            eph::basic_fixstar<eph_proxy> fixstar(*fixstarData);
-            if (fixstar.calc_pos(horaTime) == eph::calc_result::SUCCESS)
-            {
-//                FixstarContext fixstarContext;
-                bool isInOrbis = false;
-                const eph::ecl_pos fixstarPos = fixstar.pos();
-                const hor::orbis fixstarOrbis = 1.5;
-                for (hor::hora::planet_it_const planet = mHora.planetsBegin(), pEnd = mHora.planetsEnd();
-                        !isInOrbis && planet != pEnd; ++planet)
-                {
-                    if (planet->pos().dist_abs(fixstarPos) < fixstarOrbis)
-                    {
-//                        fixstarContext.push_back(planet->pos()._M_lont);
-                        isInOrbis = true;
-                    }
-                }
-                const std::vector<eph::house_cusp>& houses = mHora.houses();
-                for (std::size_t h = 1; !isInOrbis && h < houses.size(); ++h)
-                {
-                    const eph::house_cusp& houseCusp = houses[h];
-                    if (houseCusp.pos().dist_abs(fixstarPos) < fixstarOrbis)
-                    {
-//                        fixstarContext.push_back(houseCusp.pos()._M_lont);
-                        isInOrbis = true;
-                    }
-                }
-//                if (fixstarContext.size())
-                if (isInOrbis)
-                {
-//                    fixstarContext.push_front(fixstarPos._M_lont);
-                    mFixstarsConjunctions[fixstar.nomenclature().c_str()] = fixstar;
-                }
-            }
-        }
-    }
+*/
     mPlanetsModel->endResetModel();
     mHousesModel->endResetModel();
     update();

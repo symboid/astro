@@ -23,6 +23,11 @@ void proxy::set_eph_dir_path(const std::string& _eph_dir_path)
     eph_dir_path = _eph_dir_path;
 }
 
+std::string proxy::get_eph_dir_path()
+{
+    return eph_dir_path;
+}
+
 proxy::clock::time_point proxy::clock::time(const eph::calendar_coords& _calendar_coords)
 {
     const int gregFlag = _calendar_coords._M_calendar_type == eph::calendar_type::GREGORIAN ? SE_GREG_CAL : SE_JUL_CAL;
@@ -140,44 +145,6 @@ proxy::fixstar::magnitude proxy::fixstar::calc_magnitude(char* _name_buffer)
         magnitude = 0.0;
     }
     return magnitude;
-}
-
-bool proxy::fixstar::load_from_disk(AddFunctor* addFunctor)
-{
-    bool loadResult(false);
-    std::ifstream fixstarsFile(eph_dir_path + DIR_SEP_STR + "sefstars.txt");
-    if (fixstarsFile.good())
-    {
-        int stcount = 0;
-        while (!fixstarsFile.eof())
-        {
-            char lineBuffer[512];
-            fixstarsFile.getline(lineBuffer, 512);
-            if (lineBuffer[0] != '#')
-            {
-                std::stringstream line(lineBuffer);
-                std::string field;
-                int f = 0;
-                std::string name, nomenclature;
-                double magnitude;
-                while (std::getline(line, field, ','))
-                {
-                    switch (++f)
-                    {
-                    case 1: name = field; break;
-                    case 2: nomenclature = field; break;
-                    case 14: magnitude = std::stod(field);
-                    }
-                }
-                name.erase(name.find_last_not_of(" ") + 1);
-                addFunctor->addFixstar(name, nomenclature, magnitude);
-                stcount++;
-            }
-        }
-        loadResult = true;
-    }
-    return loadResult;
-
 }
 
 swe_ns_end
