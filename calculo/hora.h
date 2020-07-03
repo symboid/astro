@@ -104,7 +104,7 @@ public:
         {
             if (_fixstars.filter_match(*fixstar_data))
             {
-                eph::basic_fixstar<eph_proxy> fixstar(*fixstar_data);
+                eph::basic_fixstar<eph_proxy> fixstar(fixstar_data->get());
                 result = fixstar.calc_pos(hora_time);
                 if (result == eph::calc_result::SUCCESS)
                 {

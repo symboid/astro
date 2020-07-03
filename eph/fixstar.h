@@ -27,6 +27,7 @@ public:
         , _M_magnitude(_src._M_magnitude)
     {
     }
+    virtual ~fixstar_data() = default;
 
 public:
     const std::string _M_nomenclature;

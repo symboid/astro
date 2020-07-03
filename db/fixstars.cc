@@ -84,16 +84,30 @@ bool Fixstars::parseConsltnName(const char* lineBuffer, QString& consltnName)
     return isName;
 }
 
-bool Fixstars::loadFromDisk()
+bool Fixstars::isClassicFixstar(const QString& nomenclature)
 {
-    bool loadResult(false);
+    bool isClassic = false;
+    int nomLength = nomenclature.length();
+    if (nomLength > 3)
+    {
+        isClassic = nomenclature[nomLength - 3].isUpper() &&
+                nomenclature[nomLength - 2].isLetter() && nomenclature[nomLength - 1].isLetter();
+    }
+    return isClassic;
+}
+
+bool Fixstars::load()
+{
+    mLoadedFixstarCount = 0;
+    mSkippedEntryCount = 0;
+    mFixstars.clear();
+
     QFile fixstarsFile(QString(eph_proxy::get_eph_dir_path().c_str()) + QDir::separator() + "sefstars.txt");
     if (fixstarsFile.open(QIODevice::ReadOnly))
     {
         QString consltnName;
 
         int lineNumber = 0;
-        int fixstarCount = 0;
         int consltnCount = 0;
         int lineLength = 0;
         char lineBuffer[512];
@@ -116,10 +130,7 @@ bool Fixstars::loadFromDisk()
                     case 14: magnitude = field.toDouble();
                     }
                 }
-
-//                name.erase(name.find_last_not_of(" ") + 1);
                 addFixstar(name, nomenclature, magnitude, consltnName);
-                fixstarCount++;
             }
             else if (parseConsltnName(lineBuffer, consltnName))
             {
@@ -133,42 +144,48 @@ bool Fixstars::loadFromDisk()
 
             ++lineNumber;
         }
-        qDebug("Found %i fixstars in %i constellations.\n", fixstarCount, consltnCount);
-        loadResult = true;
+        qDebug("Loaded %i fixstars in %i/%lu constellations.\n", mLoadedFixstarCount, consltnCount, mConsltns.size());
+        qDebug("Skipped %i fixstar entries.\n", mSkippedEntryCount);
     }
-    return loadResult;
-
-}
-
-bool Fixstars::load()
-{
-    bool loadResult(false);
-    loadResult = loadFromDisk();
-    return loadResult;
+    return mLoadedFixstarCount > 0 || mSkippedEntryCount > 0;
 }
 
 void Fixstars::addFixstar(const QString& name, const QString& nomenclature,
         double magnitude, const QString& consltnName)
 {
     Container::reverse_iterator existing = std::find_if(mFixstars.rbegin(), mFixstars.rend(),
-            [nomenclature](QFixstar* fixstar){ return nomenclature == fixstar->_M_nomenclature.c_str(); });
+            [nomenclature](QSharedPointer<QFixstar> fixstar){ return nomenclature == fixstar->_M_nomenclature.c_str(); });
 
-    if (existing != mFixstars.rend())
+    const QString consltnAbr = nomenclature.right(3);
+    bool isEcliptic = QConsltn::isEcliptic(consltnAbr);
+    QFixstar::Magnitude magnitudeFilter = isEcliptic ? 4.5 : 2.5;
+    if (!isClassicFixstar(nomenclature))
+    {
+        mSkippedEntryCount++;
+        qDebug().noquote() << "Irregular fixstar found: " << nomenclature;
+    }
+    else if (magnitude > magnitudeFilter || consltnName == "")
+    {
+        mSkippedEntryCount++;
+    }
+    else if (existing != mFixstars.rend())
     {
         (*existing)->addName(name);
     }
-    else if (consltnName != "")
+    else
     {
-        QFixstar* newFixstar = new QFixstar(nomenclature, magnitude);
+        QSharedPointer<QFixstar> newFixstar(new QFixstar(nomenclature, magnitude));
         newFixstar->addName(name);
-        const QString consltnAbr = nomenclature.right(3);
-        std::shared_ptr<QConsltn>& constellation = mConsltns[consltnAbr];
+
+        QSharedPointer<QConsltn>& constellation = mConsltns[consltnAbr];
         if (!constellation.get())
         {
             constellation.reset(new QConsltn(consltnAbr, consltnName));
         }
         newFixstar->mConsltn = constellation.get();
+
         mFixstars.push_back(newFixstar);
+        mLoadedFixstarCount++;
     }
 }
 
@@ -182,7 +199,7 @@ Fixstars::Container::iterator Fixstars::end()
     return mFixstars.end();
 }
 
-bool Fixstars::filter_match(const QFixstar* fixstar) const
+bool Fixstars::filter_match(const QSharedPointer<QFixstar> fixstar) const
 {
     return fixstar != nullptr && fixstar->_M_magnitude < (fixstar->is_ecliptic() ? 4.5 : 2.5);
 }

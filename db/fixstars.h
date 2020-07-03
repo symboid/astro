@@ -6,10 +6,10 @@
 #include "sdk/arch/mainobject.h"
 #include "astro/eph/proxy.h"
 #include "astro/eph/fixstar.h"
-#include <list>
-#include <map>
 #include <QString>
-#include <QVector>
+#include <QList>
+#include <QMap>
+#include <QSharedPointer>
 
 class ASTRO_DB_API QConsltn;
 
@@ -24,7 +24,7 @@ public:
 public:
     void addName(const QString& name);
 private:
-    QVector<QString> mNames;
+    QList<QString> mNames;
 
 public:
     QConsltn* mConsltn = nullptr;
@@ -54,7 +54,7 @@ public:
     const QString mDbName;
     const bool mIsEcliptic;
 
-private:
+public:
     static bool isEcliptic(const QString& dbAbr);
 };
 
@@ -68,23 +68,25 @@ public:
 public:
     bool load();
 private:
-    bool parseConsltnName(const char* lineBuffer, QString& consltnName);
-    bool loadFromDisk();
+    static bool parseConsltnName(const char* lineBuffer, QString& consltnName);
+    static bool isClassicFixstar(const QString& nomenclature);
     void addFixstar(const QString& name, const QString& nomenclature,
             double magnitude, const QString& consltnName);
 
 private:
-    typedef std::map<QString, std::shared_ptr<QConsltn>> Constellations;
+    typedef QMap<QString, QSharedPointer<QConsltn>> Constellations;
     Constellations mConsltns;
 
 public:
-    typedef std::list<QFixstar*> Container;
+    typedef QList<QSharedPointer<QFixstar>> Container;
 private:
+    int mLoadedFixstarCount;
+    int mSkippedEntryCount;
     Container mFixstars;
 public:
     Container::iterator begin();
     Container::iterator end();
-    bool filter_match(const QFixstar* fixstarData) const;
+    bool filter_match(const QSharedPointer<QFixstar> fixstarData) const;
 };
 
 #endif // __SYMBOID_ASTRO_DB_FIXSTARS_H__
