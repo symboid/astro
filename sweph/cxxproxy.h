@@ -8,7 +8,6 @@
 #include <chrono>
 #include "astro/eph/ecliptic.h"
 #include "astro/eph/calendarcoords.h"
-#include "astro/eph/fixstar.h"
 #include <list>
 
 swe_ns_begin
@@ -16,6 +15,7 @@ swe_ns_begin
 struct ASTRO_SWEPH_API proxy
 {
     static void set_eph_dir_path(const std::string& _eph_dir_path);
+    static std::string get_eph_dir_path();
 
     struct ASTRO_SWEPH_API clock
     {
@@ -80,13 +80,6 @@ struct ASTRO_SWEPH_API proxy
                 eph::ecl_pos& _ecl_pos, eph::ecl_speed& _ecl_speed);
         typedef double magnitude;
         static magnitude calc_magnitude(char* _name_buffer);
-
-        struct AddFunctor
-        {
-            virtual ~AddFunctor() = default;
-            virtual void addFixstar(const std::string& _name, const std::string& _nomenclature, double _magnitude) = 0;
-        };
-        static bool load_from_disk(AddFunctor* addFunctor);
     };
 };
 

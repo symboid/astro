@@ -71,7 +71,7 @@ private:
     };
     Rank planetRank(const hor::planet& planet) const;
     void drawPlanetSymbol(QPainter* painter, const hor::planet& planet, const eph::ecl_pos& displayPos);
-    void drawConstellation(QPainter* painter, const eph::constellation* constellation);
+//    void drawConstellation(QPainter* painter, const eph::constellation* constellation);
     void paint(QPainter* painter) override;
 private:
     QPointF horaPoint(eph::ecl_lont horaLont, qreal dist) const;
@@ -80,7 +80,7 @@ private:
     QPointF mMandalaCenter;
     qreal mMandalaRadius;
     hor::hora mHora;
-    QList<eph::constellation*> mConstellations;
+//    QList<eph::constellation*> mConstellations;
 
 private:
     eph::ecl_lont mandalaLeft() const;
@@ -194,10 +194,6 @@ signals:
 
 private:
     arh::main_object<Fixstars> mFixstars;
-    typedef QList<eph::ecl_lont> FixstarContext;
-//    typedef QMap<QString, FixstarContext> FixstarConjunctions;
-    typedef QMap<QString, eph::basic_fixstar<eph_proxy>> FixstarConjunctions;
-    FixstarConjunctions mFixstarsConjunctions;
 };
 
 #endif // __SYMBOID_ASTRO_UICONTROLS_QT_QHORAVIEWITEM_H__
