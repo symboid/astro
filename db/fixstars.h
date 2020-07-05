@@ -69,7 +69,7 @@ public:
     bool load();
 private:
     static bool parseConsltnName(const char* lineBuffer, QString& consltnName);
-    static bool isClassicFixstar(const QString& nomenclature);
+    static bool isLoadableFixstar(const QString& nomenclature);
     void addFixstar(const QString& name, const QString& nomenclature,
             double magnitude, const QString& consltnName);
 
@@ -80,9 +80,9 @@ private:
 public:
     typedef QList<QSharedPointer<QFixstar>> Container;
 private:
-    int mLoadedFixstarCount;
     int mSkippedEntryCount;
-    Container mFixstars;
+    Container mLoadedFixstars;
+    Container mEffectiveFixstars;
 public:
     Container::iterator begin();
     Container::iterator end();

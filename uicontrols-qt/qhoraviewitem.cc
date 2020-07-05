@@ -446,6 +446,10 @@ void QHoraViewItem::paint(QPainter* painter)
                 painter->save();
                 painter->translate(boundingRect().center());
 
+                QFont textFont = painter->font();
+                textFont.setPixelSize(int(oneDegree()*3));
+                painter->setFont(textFont);
+
                 const QString name = QString("%1 (%2)").arg(fixstar.data()->name().c_str()).arg(fixstar.data()->consltn().c_str());
                 const QRectF textBoundingRect(QFontMetrics(painter->font(), painter->device()).boundingRect(name));
 
