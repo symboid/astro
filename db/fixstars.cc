@@ -55,6 +55,14 @@ bool QConsltn::isEcliptic(const QString& dbAbr)
     return std::find(eclConsltn,eclConsltn + 12, dbAbr) != (eclConsltn + 12);
 }
 
+eph::basic_time_point<eph_proxy> QConsltn::sReferenceTime = eph::basic_calendar<eph_proxy>::time({ 1950,1,1, 0,0,0 });
+
+void QConsltn::addFixstar(QSharedPointer<QFixstar> fixstar)
+{
+    fixstar->mConsltn = this;
+    mFixstars.push_back(fixstar);
+}
+
 Fixstars::Fixstars()
 {
 }
@@ -78,7 +86,7 @@ bool Fixstars::parseConsltnName(const char* lineBuffer, QString& consltnName)
         }
         if (isName)
         {
-            consltnName = QByteArray(begin,letter-begin);
+            consltnName = QByteArray(begin,int(letter-begin));
         }
     }
     return isName;
@@ -88,7 +96,7 @@ bool Fixstars::isLoadableFixstar(const QString& nomenclature)
 {
     bool isClassic = false;
     int nomLength = nomenclature.length();
-    if (nomenclature == "SgrA*")
+    if (nomenclature == "SgrA*" || nomenclature == "VC")
     {
         isClassic = true;
     }
@@ -121,7 +129,7 @@ bool Fixstars::load()
         while ((lineLength = fixstarsFile.readLine(lineBuffer, 512)) != -1)
         {
             lineBuffer[lineLength - 1] = 0;
-            if (lineBuffer[0] != '#' && consltnName != "")
+            if (lineBuffer[0] != '#')
             {
                 QStringList line = QString(lineBuffer).split(',');
                 int f = 0;
@@ -176,6 +184,16 @@ void Fixstars::addFixstar(const QString& name, const QString& nomenclature,
     else if (existing != mLoadedFixstars.rend())
     {
         (*existing)->addName(name);
+        if ((*existing)->mConsltn == nullptr && consltnName != "")
+        {
+            const QString consltnAbr = nomenclature.right(3);
+            QSharedPointer<QConsltn>& constellation = mConsltns[consltnName];
+            if (!constellation.get())
+            {
+                constellation.reset(new QConsltn(consltnAbr, consltnName));
+            }
+            constellation->addFixstar(*existing);
+        }
     }
     else
     {
@@ -189,7 +207,7 @@ void Fixstars::addFixstar(const QString& name, const QString& nomenclature,
         {
             constellation.reset(new QConsltn(consltnAbr, consltnName));
         }
-        newFixstar->mConsltn = constellation.get();
+        constellation->addFixstar(newFixstar);
 
         mLoadedFixstars.push_back(newFixstar);
 
@@ -198,6 +216,18 @@ void Fixstars::addFixstar(const QString& name, const QString& nomenclature,
         if (magnitude < magnitudeFilter)
         {
             mEffectiveFixstars.push_back(newFixstar);
+        }
+    }
+}
+
+void Fixstars::addConsltn(const QString& consltnAbr, const QString& consltnName)
+{
+    if (consltnName != "")
+    {
+        QSharedPointer<QConsltn>& constellation = mConsltns[consltnName];
+        if (!constellation.get())
+        {
+            constellation.reset(new QConsltn(consltnAbr, consltnName));
         }
     }
 }

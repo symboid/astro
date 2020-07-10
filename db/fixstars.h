@@ -56,6 +56,12 @@ public:
 
 public:
     static bool isEcliptic(const QString& dbAbr);
+
+public:
+    void addFixstar(QSharedPointer<QFixstar> fixstar);
+private:
+    QList<QSharedPointer<QFixstar>> mFixstars;
+    static eph::basic_time_point<eph_proxy> sReferenceTime;
 };
 
 class ASTRO_DB_API Fixstars
@@ -72,6 +78,7 @@ private:
     static bool isLoadableFixstar(const QString& nomenclature);
     void addFixstar(const QString& name, const QString& nomenclature,
             double magnitude, const QString& consltnName);
+    void addConsltn(const QString& consltnAbr, const QString& consltnName);
 
 private:
     typedef QMap<QString, QSharedPointer<QConsltn>> Constellations;
