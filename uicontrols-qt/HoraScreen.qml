@@ -152,32 +152,85 @@ Flickable {
             width: mandalaSize
             height: mandalaSize
             currentIndex: viewSelector.currentIndex
-            HoraView {
-                id: horaView
+            Rectangle {
+                border.width: horaFlickable.minHoraSize != horaFlickable.horaSize ? 1 : 0
+                border.color: "lightgray"
+                color: "transparent"
+                Flickable {
+                    id: horaFlickable
+                    anchors.fill: parent
+                    contentWidth: horaView.width
+                    contentHeight: horaView.height
+                    clip: true
 
-                year: dateBox.year
-                month: dateBox.month
-                day: dateBox.day
-                hour: timeBox.hour
-                minute: timeBox.minute
-                second: timeBox.second
-                geoLatt: geoLatt.arcDegree
-                geoLont: geoLont.arcDegree
-                tzDiff: timeZoneBox.diffHours
-                housesType: housesType.currentToken()
-                withJulianCalendar: calendarType.currentIndex !== 0
+                    function zoomToMinimum()
+                    {
+                        horaSize = minHoraSize
+                        contentX = 0
+                        contentY = 0
+                    }
+                    function zoomToDefault()
+                    {
+                        zoomToMinimum()
+                    }
+                    function zoomTo(zoomPointX,zoomPointY,zoomDelta)
+                    {
+                        var zoomRatio = (horaSize + zoomDelta) / horaSize
+                        if (horaSize + zoomDelta >= minHoraSize)
+                        {
+                            horaSize += zoomDelta
+                            contentX += (zoomRatio - 1) * zoomPointX
+                            contentY += (zoomRatio - 1) * zoomPointY
+                        }
+                        else
+                        {
+                            zoomToMinimum()
+                        }
+                    }
 
-                displayFlags: HoraView.SHOW_FIXSTARS
+                    onWidthChanged:  zoomToDefault()
+                    onHeightChanged: zoomToDefault()
 
-                BusyIndicator {
-                    id: horaCalcIndicator
-                    width: 100
-                    height: 100
-                    anchors.centerIn: parent
-                    running: false
+                    readonly property int minHoraSize: mandalaSize
+                    property int horaSize: mandalaSize
+                    MouseArea {
+                        anchors.fill: parent
+                        onWheel: {
+                            var zoomDelta = (wheel.angleDelta.y > 0 ? -1 : 1) * horaFlickable.horaSize / 10
+                            horaFlickable.zoomTo(wheel.x, wheel.y, zoomDelta)
+                        }
+                    }
+
+                    HoraView {
+                        id: horaView
+                        width: horaFlickable.horaSize
+                        height: horaFlickable.horaSize
+
+                        year: dateBox.year
+                        month: dateBox.month
+                        day: dateBox.day
+                        hour: timeBox.hour
+                        minute: timeBox.minute
+                        second: timeBox.second
+                        geoLatt: geoLatt.arcDegree
+                        geoLont: geoLont.arcDegree
+                        tzDiff: timeZoneBox.diffHours
+                        housesType: housesType.currentToken()
+                        withJulianCalendar: calendarType.currentIndex !== 0
+
+                        displayFlags: HoraView.SHOW_FIXSTARS
+
+                        BusyIndicator {
+                            id: horaCalcIndicator
+                            width: 100
+                            height: 100
+                            anchors.centerIn: parent
+                            running: false
+                        }
+                        onStartCalc: horaCalcIndicator.running = true
+                        onStopCalc: horaCalcIndicator.running = false
+                    }
                 }
-                onStartCalc: horaCalcIndicator.running = true
-                onStopCalc: horaCalcIndicator.running = false
             }
             Item {
                 HoraTableView {

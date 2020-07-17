@@ -122,7 +122,7 @@
     </message>
     <message>
         <location filename="HoraScreen.qml" line="91"/>
-        <location filename="HoraScreen.qml" line="331"/>
+        <location filename="HoraScreen.qml" line="384"/>
         <source>Current</source>
         <translation type="unfinished">Aktuális</translation>
     </message>
@@ -147,53 +147,53 @@
         <translation>Házcsúcs-pozíciók</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="233"/>
-        <location filename="HoraScreen.qml" line="282"/>
+        <location filename="HoraScreen.qml" line="286"/>
+        <location filename="HoraScreen.qml" line="335"/>
         <source>Show seconds</source>
         <translation>Másodpercek megjelenítése</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="292"/>
+        <location filename="HoraScreen.qml" line="345"/>
         <source>Location</source>
         <translation>Helység</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="339"/>
+        <location filename="HoraScreen.qml" line="392"/>
         <source>House system</source>
         <translation>Házrendszer</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="347"/>
+        <location filename="HoraScreen.qml" line="400"/>
         <source>Placidus</source>
         <translation>Placidus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="351"/>
+        <location filename="HoraScreen.qml" line="404"/>
         <source>Koch</source>
         <translation>Koch</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="355"/>
+        <location filename="HoraScreen.qml" line="408"/>
         <source>Regiomontanus</source>
         <translation>Regiomontanus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="359"/>
+        <location filename="HoraScreen.qml" line="412"/>
         <source>Campanus</source>
         <translation>Campanus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="363"/>
+        <location filename="HoraScreen.qml" line="416"/>
         <source>Equal</source>
         <translation>Egyenló</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="392"/>
+        <location filename="HoraScreen.qml" line="445"/>
         <source>Settings</source>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="406"/>
+        <location filename="HoraScreen.qml" line="459"/>
         <source>Details</source>
         <translation>Részletek</translation>
     </message>
