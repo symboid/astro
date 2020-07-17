@@ -14,6 +14,14 @@ defineReplace(copySwephFile) {
     eval(PRE_TARGETDEPS += $$TGT_FILE)
     eval(export(PRE_TARGETDEPS))
 
+    eval(deploy_$${file_name}.files = $$SRC_FILE)
+    eval(deploy_$${file_name}.path = .)
+    eval(export(deploy_$${file_name}.files))
+    eval(export(deploy_$${file_name}.path))
+    ios {
+        eval(QMAKE_BUNDLE_DATA += deploy_$${file_name})
+        eval(export(QMAKE_BUNDLE_DATA))
+    }
     return (copy_$${file_name})
 }
 
