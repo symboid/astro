@@ -196,8 +196,17 @@ Flickable {
                     MouseArea {
                         anchors.fill: parent
                         onWheel: {
+//                            var zoomDelta = (-wheel.angleDelta.y/500.0) * horaFlickable.horaSize
                             var zoomDelta = (wheel.angleDelta.y > 0 ? -1 : 1) * horaFlickable.horaSize / 10
+                            console.log("WHEEL DELTA = "+wheel.angleDelta.y+", ZOOM DELTA = "+zoomDelta)
                             horaFlickable.zoomTo(wheel.x, wheel.y, zoomDelta)
+                        }
+                    }
+                    PinchArea {
+                        anchors.fill: parent
+                        onPinchUpdated: {
+                            var zoomDelta = (pinch.scale > 1 ? 1 : -1) * horaFlickable.horaSize / 30
+                            horaFlickable.zoomTo(pinch.center.x, pinch.center.y, zoomDelta)
                         }
                     }
 
