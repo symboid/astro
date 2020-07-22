@@ -49,6 +49,10 @@ Flickable {
         currentTimeTimer.checked = false
         currentLocTimer.checked = false
     }
+    function zoomToDefault()
+    {
+        horaFlickable.zoomToDefault()
+    }
 
     Flow {
         id: horaScreen
@@ -171,7 +175,9 @@ Flickable {
                     }
                     function zoomToDefault()
                     {
-                        zoomToMinimum()
+                        horaSize = minHoraSize / horaView.defaultZoom
+                        contentX = (horaSize - minHoraSize) / 2
+                        contentY = contentX
                     }
                     function zoomTo(zoomPointX,zoomPointY,zoomDelta)
                     {
@@ -196,11 +202,10 @@ Flickable {
                     MouseArea {
                         anchors.fill: parent
                         onWheel: {
-//                            var zoomDelta = (-wheel.angleDelta.y/500.0) * horaFlickable.horaSize
-                            var zoomDelta = (wheel.angleDelta.y > 0 ? -1 : 1) * horaFlickable.horaSize / 10
-                            console.log("WHEEL DELTA = "+wheel.angleDelta.y+", ZOOM DELTA = "+zoomDelta)
+                            var zoomDelta = (wheel.angleDelta.y/500.0) * horaFlickable.horaSize
                             horaFlickable.zoomTo(wheel.x, wheel.y, zoomDelta)
                         }
+                        onDoubleClicked: horaFlickable.zoomToDefault()
                     }
                     PinchArea {
                         anchors.fill: parent

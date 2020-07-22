@@ -89,6 +89,11 @@ private:
     qreal oneDegree() const;
 private slots:
     void calcMandalaGeometry();
+public:
+    Q_PROPERTY(qreal defaultZoom READ defaultZoom NOTIFY defaultZoomChanged)
+    qreal defaultZoom() const;
+signals:
+    void defaultZoomChanged();
 
 private:
     QSharedPointer<QAstroFont> mAstroFont;

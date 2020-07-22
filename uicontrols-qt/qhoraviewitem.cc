@@ -179,9 +179,14 @@ void QHoraViewItem::calcMandalaGeometry()
     mMandalaCenter = mandalaRect.center();
 }
 
+qreal QHoraViewItem::defaultZoom() const
+{
+    return eclipticRatio() + 0.15;
+}
+
 qreal QHoraViewItem::eclipticRatio() const
 {
-    return isDisplayFlagSet(SHOW_FIXSTARS) ? 0.75 : 0.85;
+    return isDisplayFlagSet(SHOW_FIXSTARS) ? 0.55 : 0.85;
 }
 
 qreal QHoraViewItem::eclipticRadius() const
