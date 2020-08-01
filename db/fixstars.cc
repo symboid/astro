@@ -128,7 +128,11 @@ bool Fixstars::load()
         char lineBuffer[512];
         while ((lineLength = fixstarsFile.readLine(lineBuffer, 512)) != -1)
         {
-            lineBuffer[lineLength - 1] = 0;
+            while (lineLength > 0 && (lineBuffer[lineLength - 1] == '\n' || lineBuffer[lineLength - 1] == '\r'))
+            {
+                lineBuffer[lineLength - 1] = 0;
+                lineLength--;
+            }
             if (lineBuffer[0] != '#')
             {
                 QStringList line = QString(lineBuffer).split(',');
