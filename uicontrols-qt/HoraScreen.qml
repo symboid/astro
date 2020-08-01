@@ -185,8 +185,11 @@ Flickable {
                         if (horaSize + zoomDelta >= minHoraSize)
                         {
                             horaSize += zoomDelta
-                            contentX += (zoomRatio - 1) * zoomPointX
-                            contentY += (zoomRatio - 1) * zoomPointY
+                            var newContentX = contentX + (zoomRatio - 1) * zoomPointX
+                            var newContentY = contentY + (zoomRatio - 1) * zoomPointY
+                            contentX = newContentX < 0.0 ? 0.0 : newContentX
+                            contentY = newContentY < 0.0 ? 0.0 : newContentY
+//                            console.log("contentCorner = ("+contentX+","+contentY+"), zoom=("+zoomDelta+","+zoomRatio+")")
                         }
                         else
                         {
@@ -205,6 +208,10 @@ Flickable {
                             var zoomDelta = (wheel.angleDelta.y/500.0) * horaFlickable.horaSize
                             horaFlickable.zoomTo(wheel.x, wheel.y, zoomDelta)
                         }
+                        onClicked: {
+//                            console.log("contentCorner = ("+contentX+","+contentY+")")
+                        }
+
                         onDoubleClicked: horaFlickable.zoomToDefault()
                     }
                     PinchArea {
