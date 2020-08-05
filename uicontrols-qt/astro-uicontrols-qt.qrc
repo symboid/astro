@@ -20,6 +20,7 @@
         <file>OrbisSettingsPane.qml</file>
         <file>OrbisSettingsGroup.qml</file>
         <file>OrbisSettingsItem.qml</file>
+        <file>RecentGeoNamesOperation.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>

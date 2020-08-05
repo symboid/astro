@@ -91,6 +91,11 @@
         <source>Not available!</source>
         <translation>Nem elérhető!</translation>
     </message>
+    <message>
+        <location filename="GeoNameDialog.qml" line="71"/>
+        <source>Recent locations</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GeoNamesSearchBox</name>

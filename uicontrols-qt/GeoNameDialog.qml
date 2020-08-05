@@ -66,7 +66,11 @@ Drawer {
                     setCurrent()
                     close()
                 }
+            },
+            RecentGeoNamesOperation {
+                title: qsTr("Recent locations")
             }
+
         ]
     }
 

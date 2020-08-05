@@ -8,25 +8,27 @@ SOURCES += \
     arccoord.cc \
     init.cc \
     qastrofont.cc \
-    qgeonamemodel.cc \
+    qgeonamesmodel.cc \
     qgeonamesrestclient.cc \
     qgeonamestablemodel.cc \
     qhoraitemsmodel.cc \
     qhoraviewitem.cc \
-    qorbisconfig.cc
+    qorbisconfig.cc \
+    qrecentgeonamesmodel.cc
 
 HEADERS += \
     arccoord.h \
     defs.h \
     init.h \
     qastrofont.h \
-    qgeonamemodel.h \
+    qgeonamesmodel.h \
     qgeonamesrestclient.h \
     qgeonamestablemodel.h \
     qhoraitemsmodel.h \
     qhorastellium.h \
     qhoraviewitem.h \
     qorbisconfig.h \
+    qrecentgeonamesmodel.h \
     setup.h
 
 RESOURCES += \
