@@ -13,8 +13,7 @@ SOURCES += \
     qgeonamestablemodel.cc \
     qhoraitemsmodel.cc \
     qhoraviewitem.cc \
-    qorbisconfig.cc \
-    qrecentgeonamesmodel.cc
+    qorbisconfig.cc
 
 HEADERS += \
     arccoord.h \
@@ -28,7 +27,6 @@ HEADERS += \
     qhorastellium.h \
     qhoraviewitem.h \
     qorbisconfig.h \
-    qrecentgeonamesmodel.h \
     setup.h
 
 RESOURCES += \
