@@ -6,6 +6,7 @@
 #include "sdk/arch/modqt.h"
 #include "sdk/uicontrols-qt/init.h"
 #include "sdk/network-qt/init.h"
+#include "sdk/hosting/init.h"
 #include "astro/db/init.h"
 #include "astro/uicontrols-qt/qgeonamesrestclient.h"
 #include "astro/uicontrols-qt/arccoord.h"
@@ -26,6 +27,7 @@ struct ASTRO_UICONTROLS_QT_API mod_astro_uicontrols_qt : arh::mod_qt<mod_astro_u
 
     arh::mod_init<mod_sdk_network_qt> _M_mod_sdk_network_qt;
     arh::mod_init<mod_sdk_uicontrols_qt> _M_mod_sdk_uicontrols_qt;
+    arh::mod_init<mod_sdk_hosting> _M_mod_sdk_hosting;
     arh::mod_init<mod_astro_db> _M_mod_astro_db;
 
     qml_singleton_init<QGeoNamesRestClient> _M_geo_names_rest_client;
