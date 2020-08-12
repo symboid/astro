@@ -19,3 +19,5 @@ RESOURCES += \
 
 LIBS += $$moduleDep(astro,sweph)
 LIBS += $$moduleDep(sdk,arch)
+
+QMAKE_EXTRA_TARGETS += $$object_dep_on_component_header(init)

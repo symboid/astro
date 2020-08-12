@@ -3,6 +3,7 @@
 #include <cstring>
 #include <fstream>
 #include <sstream>
+#include "sdk/arch/log.h"
 
 swe_ns_begin
 
@@ -65,12 +66,13 @@ eph::calc_result proxy::object::calc_pos(index _object_index, proxy::clock::time
     {
         _ecl_pos = eph::ecl_pos(0,0,0);
         _ecl_speed = eph::ecl_speed(0,0);
+        log_error << "SWEPH OBJECT: " << error_str;
     }
     else
     {
         if (ret_flag != calc_flag)
         {
-//            WARNING;
+            log_warning << "SWEPH OBJECT: " << error_str;
         }
         _ecl_pos = eph::ecl_pos(eph_data[0], eph_data[1], eph_data[2]);
         _ecl_speed = eph::ecl_speed(eph_data[3], eph_data[4]);
@@ -122,12 +124,13 @@ eph::calc_result proxy::fixstar::calc_pos(char* _name_buffer, clock::time_point 
     {
         _ecl_pos = eph::ecl_pos(0,0,0);
         _ecl_speed = eph::ecl_speed(0,0);
+        log_error << "SWEPH FIXSTAR: " << error_str;
     }
     else
     {
         if (ret_flag != calc_flag)
         {
-//            WARNING;
+            log_warning << "SWEPH FIXSTAR: " << error_str;
         }
         _ecl_pos = eph::ecl_pos(eph_data[0], eph_data[1], eph_data[2]);
         _ecl_speed = eph::ecl_speed(eph_data[3], eph_data[4]);

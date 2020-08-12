@@ -22,10 +22,17 @@ defineReplace(copySwephFile) {
         eval(QMAKE_BUNDLE_DATA += deploy_$${file_name})
         eval(export(QMAKE_BUNDLE_DATA))
     }
+    else:android {
+        eval(deploy_$${file_name}.path = /assets/ephe)
+        eval(export(deploy_$${file_name}.path))
+        eval(INSTALLS += deploy_$${file_name})
+        eval(export(INSTALLS))
+    }
     return (copy_$${file_name})
 }
 
 QMAKE_EXTRA_TARGETS += $$copySwephFile(sefstars,txt)
+QMAKE_EXTRA_TARGETS += $$copySwephFile(seplm30,se1)
 QMAKE_EXTRA_TARGETS += $$copySwephFile(seplm12,se1)
 QMAKE_EXTRA_TARGETS += $$copySwephFile(seplm06,se1)
 QMAKE_EXTRA_TARGETS += $$copySwephFile(sepl_00,se1)

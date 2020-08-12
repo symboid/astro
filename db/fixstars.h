@@ -72,7 +72,7 @@ public:
     Fixstars();
 
 public:
-    bool load();
+    bool load(const QString& fixstarsFilePath);
 private:
     static bool parseConsltnName(const char* lineBuffer, QString& consltnName);
     static bool isLoadableFixstar(const QString& nomenclature);

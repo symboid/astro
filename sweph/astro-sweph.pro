@@ -52,3 +52,5 @@ OTHER_FILES += \
 DISTFILES += \
     download.txt \
     files.pri
+
+LIBS += $$moduleDep(sdk,arch)

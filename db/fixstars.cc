@@ -112,13 +112,13 @@ bool Fixstars::isLoadableFixstar(const QString& nomenclature)
     return isClassic;
 }
 
-bool Fixstars::load()
+bool Fixstars::load(const QString& fixstarsFilePath)
 {
     mSkippedEntryCount = 0;
     mLoadedFixstars.clear();
     mEffectiveFixstars.clear();
 
-    QFile fixstarsFile(QString(eph_proxy::get_eph_dir_path().c_str()) + QDir::separator() + "sefstars.txt");
+    QFile fixstarsFile(fixstarsFilePath);
     if (fixstarsFile.open(QIODevice::ReadOnly))
     {
         QString consltnName;
