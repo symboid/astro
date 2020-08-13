@@ -53,7 +53,8 @@ mod_astro_db::mod_astro_db()
 #else
     QDir epheDir(".");
 #endif
-    eph_proxy::set_eph_dir_path(epheDir.absolutePath().toStdString());
+    QString epheDirPath(QDir::toNativeSeparators(epheDir.absolutePath()));
+    eph_proxy::set_eph_dir_path(epheDirPath.toStdString());
     _M_fixstars->load(epheDir.absoluteFilePath("sefstars.txt"));
 }
 
