@@ -3,42 +3,41 @@
 #define __SYMBOID_ASTRO_DB_QGEONAMESMODEL_H__
 
 #include "astro/db/defs.h"
-#include <QAbstractListModel>
-#include "sdk/arch/mainobject.h"
-#include <QVector>
+#include "sdk/uicontrols-qt/qjsonsyncmodel.h"
 
-struct ASTRO_DB_API QGeoNameItem
+class ASTRO_DB_API QGeoNameItem : public QJsonSyncNode
 {
-    QString mName;
-    qreal mLont;
-    qreal mLatt;
+    Q_OBJECT
+public:
+    static constexpr const char* qml_name = "GeoNameItem";
+
+    QGeoNameItem(QObject* parent = Q_NULLPTR) : QJsonSyncNode(parent) {}
+
+    Q_PROPERTY(QString geoName MEMBER mGeoName CONSTANT)
+    QString mGeoName;
+
+    Q_PROPERTY(qreal geoLont MEMBER mGeoLont CONSTANT)
+    qreal mGeoLont;
+
+    Q_PROPERTY(qreal geoLatt MEMBER mGeoLatt CONSTANT)
+    qreal mGeoLatt;
+
+    Q_PROPERTY(QString countryName MEMBER mCountryName CONSTANT)
     QString mCountryName;
+
+    Q_PROPERTY(QString adminName MEMBER mAdminName CONSTANT)
     QString mAdminName;
 };
 
-class ASTRO_DB_API QGeoNamesModel : public QAbstractListModel
+class ASTRO_DB_API QGeoNamesModel : public QJsonSyncModel<QGeoNameItem>
 {
     Q_OBJECT
 
 public:
-    QGeoNamesModel(QObject* parent);
-
-private:
-    enum Role
+    QGeoNamesModel(QObject* parent = Q_NULLPTR)
+        : QJsonSyncModel<QGeoNameItem>(parent)
     {
-        GeoName,
-        GeoLont,
-        GeoLatt,
-        CountryName,
-        AdminName,
-    };
-public:
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    QHash<int,QByteArray> roleNames() const override;
-
-private:
-    QVector<QGeoNameItem> mGeoNames;
+    }
 };
 
 #endif // __SYMBOID_ASTRO_DB_QGEONAMESMODEL_H__

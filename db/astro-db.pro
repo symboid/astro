@@ -17,7 +17,6 @@ clang|gcc {
 SOURCES += \
     fixstars.cc \
     init.cc \
-    qgeonamesmodel.cc \
     qgeonamesrestclient.cc \
     qgeonamestablemodel.cc \
     sweph/src/swedate.c \
