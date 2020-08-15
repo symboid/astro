@@ -1,12 +1,12 @@
 
-#ifndef __SYMBOID_ASTRO_UICONTROLS_QT_QGEONAMESTABLEMODEL_H__
-#define __SYMBOID_ASTRO_UICONTROLS_QT_QGEONAMESTABLEMODEL_H__
+#ifndef __SYMBOID_ASTRO_DB_QGEONAMESTABLEMODEL_H__
+#define __SYMBOID_ASTRO_DB_QGEONAMESTABLEMODEL_H__
 
-#include "astro/uicontrols-qt/defs.h"
+#include "astro/db/defs.h"
 #include <QAbstractTableModel>
 #include "sdk/network-qt/qresttablemodel.h"
 
-class ASTRO_UICONTROLS_QT_API QGeoNamesTableModel : public QRestTableModel
+class ASTRO_DB_API QGeoNamesTableModel : public QRestTableModel
 {
     Q_OBJECT
 
@@ -19,4 +19,4 @@ public:
     QGeoNamesTableModel(QObject* parent = Q_NULLPTR);
 };
 
-#endif // __SYMBOID_ASTRO_UICONTROLS_QT_QGEONAMESTABLEMODEL_H__
+#endif // __SYMBOID_ASTRO_DB_QGEONAMESTABLEMODEL_H__

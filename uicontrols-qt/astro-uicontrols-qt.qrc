@@ -2,12 +2,8 @@
     <qresource prefix="/Symboid/Astro/Controls">
         <file>ArcCoordBox.qml</file>
         <file>qmldir</file>
-        <file>GeoNamesSearchView.qml</file>
-        <file>GeoNamesSearchBox.qml</file>
-        <file>GeoNamesSearchItem.qml</file>
         <file>HoraScreen.qml</file>
         <file>HoraScreenParamBox.qml</file>
-        <file>GeoNameDialog.qml</file>
         <file>HoraTableView.qml</file>
         <file>HoraScreenTimer.qml</file>
         <file>HoraScreenComboBox.qml</file>
@@ -20,7 +16,6 @@
         <file>OrbisSettingsPane.qml</file>
         <file>OrbisSettingsGroup.qml</file>
         <file>OrbisSettingsItem.qml</file>
-        <file>RecentGeoNamesOperation.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>

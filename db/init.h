@@ -4,6 +4,7 @@
 
 #include "astro/db/defs.h"
 #include "sdk/arch/modqt.h"
+#include "astro/db/qgeonamesrestclient.h"
 #include "astro/db/fixstars.h"
 
 struct ASTRO_DB_API mod_astro_db : arh::mod_qt<mod_astro_db>
@@ -17,6 +18,7 @@ struct ASTRO_DB_API mod_astro_db : arh::mod_qt<mod_astro_db>
     mod_astro_db();
     ~mod_astro_db();
 
+    qml_singleton_init<QGeoNamesRestClient> _M_geo_names_rest_client;
     arh::main_object_init<Fixstars> _M_fixstars;
 };
 

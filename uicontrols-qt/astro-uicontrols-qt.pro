@@ -8,9 +8,6 @@ SOURCES += \
     arccoord.cc \
     init.cc \
     qastrofont.cc \
-    qgeonamesmodel.cc \
-    qgeonamesrestclient.cc \
-    qgeonamestablemodel.cc \
     qhoraitemsmodel.cc \
     qhoraviewitem.cc \
     qorbisconfig.cc
@@ -20,9 +17,6 @@ HEADERS += \
     defs.h \
     init.h \
     qastrofont.h \
-    qgeonamesmodel.h \
-    qgeonamesrestclient.h \
-    qgeonamestablemodel.h \
     qhoraitemsmodel.h \
     qhorastellium.h \
     qhoraviewitem.h \

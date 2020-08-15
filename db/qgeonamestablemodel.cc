@@ -1,6 +1,6 @@
 
-#include "astro/uicontrols-qt/setup.h"
-#include "astro/uicontrols-qt/qgeonamestablemodel.h"
+#include "astro/db/setup.h"
+#include "astro/db/qgeonamestablemodel.h"
 
 QGeoNamesTableModel::QGeoNamesTableModel(QObject* parent)
     : QRestTableModel(parent)

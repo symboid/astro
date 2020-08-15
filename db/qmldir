@@ -1,1 +1,6 @@
 module Symboid.Astro.Db
+GeoNamesSearchItem 1.0 GeoNamesSearchItem.qml
+GeoNamesSearchView 1.0 GeoNamesSearchView.qml
+GeoNamesSearchBox 1.0 GeoNamesSearchBox.qml
+GeoNameDialog 1.0 GeoNameDialog.qml
+RecentGeoNamesOperation 1.0 RecentGeoNamesOperation.qml

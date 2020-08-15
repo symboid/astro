@@ -3,6 +3,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
 import Symboid.Astro.Controls 1.0
+import Symboid.Astro.Db 1.0
 import QtPositioning 5.12
 import QtQuick.Layouts 1.12
 
@@ -494,7 +495,7 @@ Flickable {
         geoNameBox: geoName.item
         geoLattBox: geoLatt
         geoLontBox: geoLont
-        tzBox: timeZoneBox
         opacity: 0.875
+        onGeoNameChanged: timeZoneBox.search()
     }
 }

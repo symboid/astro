@@ -1,6 +1,11 @@
 <RCC>
     <qresource prefix="/Symboid/Astro/Db">
         <file>qmldir</file>
+        <file>GeoNameDialog.qml</file>
+        <file>GeoNamesSearchBox.qml</file>
+        <file>GeoNamesSearchItem.qml</file>
+        <file>GeoNamesSearchView.qml</file>
+        <file>RecentGeoNamesOperation.qml</file>
     </qresource>
     <qresource prefix="/tr"/>
 </RCC>

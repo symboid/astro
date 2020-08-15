@@ -12,16 +12,16 @@ Drawer {
     property TextField geoNameBox: null
     property ArcCoordBox geoLattBox: null
     property ArcCoordBox geoLontBox: null
-    property HoraScreenTimeZoneBox tzBox: null
 
     Material.background: "#DFEEE5"
 
+    signal geoNameChanged
     function setPosition(geoName)
     {
         geoNameBox.text = geoName.geoName
         geoLattBox.arcDegree = geoName.lattArcDegree
         geoLontBox.arcDegree = geoName.lontArcDegree
-        tzBox.search()
+        geoNameChanged()
     }
 
     property GeoNamesSearchItem queryGeoName: null

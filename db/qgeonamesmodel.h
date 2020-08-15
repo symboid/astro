@@ -1,13 +1,13 @@
 
-#ifndef __SYMBOID_ASTRO_UICONTROLS_QT_QGEONAMESMODEL_H__
-#define __SYMBOID_ASTRO_UICONTROLS_QT_QGEONAMESMODEL_H__
+#ifndef __SYMBOID_ASTRO_DB_QGEONAMESMODEL_H__
+#define __SYMBOID_ASTRO_DB_QGEONAMESMODEL_H__
 
-#include "astro/uicontrols-qt/defs.h"
+#include "astro/db/defs.h"
 #include <QAbstractListModel>
 #include "sdk/arch/mainobject.h"
 #include <QVector>
 
-struct ASTRO_UICONTROLS_QT_API QGeoNameItem
+struct ASTRO_DB_API QGeoNameItem
 {
     QString mName;
     qreal mLont;
@@ -16,7 +16,7 @@ struct ASTRO_UICONTROLS_QT_API QGeoNameItem
     QString mAdminName;
 };
 
-class ASTRO_UICONTROLS_QT_API QGeoNamesModel : public QAbstractListModel
+class ASTRO_DB_API QGeoNamesModel : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -41,4 +41,4 @@ private:
     QVector<QGeoNameItem> mGeoNames;
 };
 
-#endif // __SYMBOID_ASTRO_UICONTROLS_QT_QGEONAMESMODEL_H__
+#endif // __SYMBOID_ASTRO_DB_QGEONAMESMODEL_H__

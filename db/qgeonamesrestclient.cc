@@ -1,6 +1,6 @@
 
-#include "astro/uicontrols-qt/setup.h"
-#include "astro/uicontrols-qt/qgeonamesrestclient.h"
+#include "astro/db/setup.h"
+#include "astro/db/qgeonamesrestclient.h"
 
 QGeoNamesRestClient::QGeoNamesRestClient(QObject* parent)
     : QRestClient(parent)

@@ -75,130 +75,91 @@
     </message>
 </context>
 <context>
-    <name>GeoNameDialog</name>
-    <message>
-        <location filename="GeoNameDialog.qml" line="33"/>
-        <source>Geographic name lookup</source>
-        <translation>Földrajzi hely kereső</translation>
-    </message>
-    <message>
-        <location filename="GeoNameDialog.qml" line="48"/>
-        <source>Current location</source>
-        <translation>Jelenlegi pozíció</translation>
-    </message>
-    <message>
-        <location filename="GeoNameDialog.qml" line="59"/>
-        <source>Not available!</source>
-        <translation>Nem elérhető!</translation>
-    </message>
-    <message>
-        <location filename="GeoNameDialog.qml" line="71"/>
-        <source>Recent locations</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GeoNamesSearchBox</name>
-    <message>
-        <location filename="GeoNamesSearchBox.qml" line="26"/>
-        <source>Search</source>
-        <translation>Keresés</translation>
-    </message>
-</context>
-<context>
-    <name>GeoNamesSearchView</name>
-    <message>
-        <location filename="GeoNamesSearchView.qml" line="28"/>
-        <source>Netwok error!</source>
-        <translation>Hálózati hiba!</translation>
-    </message>
-</context>
-<context>
     <name>HoraScreen</name>
     <message>
-        <location filename="HoraScreen.qml" line="72"/>
+        <location filename="HoraScreen.qml" line="73"/>
         <source>Horoscope name</source>
         <translation>Horoszkóp neve</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="80"/>
+        <location filename="HoraScreen.qml" line="81"/>
         <source>Date and time</source>
         <translation>Dátum és idő</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="95"/>
-        <location filename="HoraScreen.qml" line="405"/>
+        <location filename="HoraScreen.qml" line="96"/>
+        <location filename="HoraScreen.qml" line="406"/>
         <source>Current</source>
         <translation type="unfinished">Aktuális</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="115"/>
+        <location filename="HoraScreen.qml" line="116"/>
         <source>Calendar</source>
         <translation>Naptár</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="134"/>
+        <location filename="HoraScreen.qml" line="135"/>
         <source>Chart</source>
         <translation>Kördiagram</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="134"/>
+        <location filename="HoraScreen.qml" line="135"/>
         <source>Planet positions</source>
         <translation>Bolygópozíciók</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="134"/>
+        <location filename="HoraScreen.qml" line="135"/>
         <source>House cusps</source>
         <translation>Házcsúcs-pozíciók</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="307"/>
-        <location filename="HoraScreen.qml" line="356"/>
+        <location filename="HoraScreen.qml" line="308"/>
+        <location filename="HoraScreen.qml" line="357"/>
         <source>Show seconds</source>
         <translation>Másodpercek megjelenítése</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="366"/>
+        <location filename="HoraScreen.qml" line="367"/>
         <source>Location</source>
         <translation>Helység</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="413"/>
+        <location filename="HoraScreen.qml" line="414"/>
         <source>House system</source>
         <translation>Házrendszer</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="421"/>
+        <location filename="HoraScreen.qml" line="422"/>
         <source>Placidus</source>
         <translation>Placidus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="425"/>
+        <location filename="HoraScreen.qml" line="426"/>
         <source>Koch</source>
         <translation>Koch</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="429"/>
+        <location filename="HoraScreen.qml" line="430"/>
         <source>Regiomontanus</source>
         <translation>Regiomontanus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="433"/>
+        <location filename="HoraScreen.qml" line="434"/>
         <source>Campanus</source>
         <translation>Campanus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="437"/>
+        <location filename="HoraScreen.qml" line="438"/>
         <source>Equal</source>
         <translation>Egyenló</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="466"/>
+        <location filename="HoraScreen.qml" line="467"/>
         <source>Settings</source>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="480"/>
+        <location filename="HoraScreen.qml" line="481"/>
         <source>Details</source>
         <translation>Részletek</translation>
     </message>
