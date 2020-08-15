@@ -1,11 +1,11 @@
 
-#include "astro/sweph/cxxproxy.h"
+#include "astro/db/swephcpp.h"
 #include <cstring>
 #include <fstream>
 #include <sstream>
 #include "sdk/arch/log.h"
 
-swe_ns_begin
+sy_ns_begin(swe)
 
 #if defined(WIN32) || defined(_WIN32) || defined(WIN64)
 #   define DIR_SEP_STR "\\"
@@ -150,4 +150,4 @@ proxy::fixstar::magnitude proxy::fixstar::calc_magnitude(char* _name_buffer)
     return magnitude;
 }
 
-swe_ns_end
+sy_ns_end

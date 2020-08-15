@@ -3,7 +3,7 @@ defineReplace(copySwephFile) {
     file_name = $$1
     file_ext = $$2
 
-    SRC_FILE = $$shell_path($$PWD/src/$${file_name}.$${file_ext})
+    SRC_FILE = $$shell_path($$PWD/$${file_name}.$${file_ext})
     TGT_FILE = $$shell_path($$OUT_PWD/$${file_name}.$${file_ext})
 
     eval(copy_$${file_name}.target = $$TGT_FILE)
