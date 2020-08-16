@@ -4,7 +4,7 @@
 
 #include "astro/db/defs.h"
 #include <QAbstractTableModel>
-#include "sdk/network-qt/qresttablemodel.h"
+#include "sdk/network/qresttablemodel.h"
 
 class ASTRO_DB_API QGeoNamesTableModel : public QRestTableModel
 {

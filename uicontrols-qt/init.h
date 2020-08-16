@@ -5,7 +5,7 @@
 #include "astro/uicontrols-qt/defs.h"
 #include "sdk/arch/modqt.h"
 #include "sdk/uicontrols-qt/init.h"
-#include "sdk/network-qt/init.h"
+#include "sdk/network/init.h"
 #include "sdk/hosting/init.h"
 #include "astro/db/init.h"
 #include "astro/uicontrols-qt/arccoord.h"
@@ -24,7 +24,7 @@ struct ASTRO_UICONTROLS_QT_API mod_astro_uicontrols_qt : arh::mod_qt<mod_astro_u
     mod_astro_uicontrols_qt();
     ~mod_astro_uicontrols_qt();
 
-    arh::mod_init<mod_sdk_network_qt> _M_mod_sdk_network_qt;
+    arh::mod_init<mod_sdk_network> _M_mod_sdk_network;
     arh::mod_init<mod_sdk_uicontrols_qt> _M_mod_sdk_uicontrols_qt;
     arh::mod_init<mod_sdk_hosting> _M_mod_sdk_hosting;
     arh::mod_init<mod_astro_db> _M_mod_astro_db;

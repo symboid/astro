@@ -4,7 +4,7 @@
 
 #include "astro/demo-qml/defs.h"
 #include "sdk/arch/appqml.h"
-#include "sdk/network-qt/init.h"
+#include "sdk/network/init.h"
 #include "astro/uicontrols-qt/init.h"
 #include "sdk/dox/init.h"
 
@@ -16,7 +16,7 @@ struct app_astro_demo_qt : arh::app_qml<app_astro_demo_qt>
         : arh::app_qml<app_astro_demo_qt>(_argc, _argv)
     {
     }
-    arh::mod_init<mod_sdk_network_qt> _M_mod_sdk_network_qt;
+    arh::mod_init<mod_sdk_network> _M_mod_sdk_network;
     arh::mod_init<mod_astro_uicontrols_qt> _M_mod_astro_uicontrols_qt;
     arh::mod_init<mod_sdk_dox> _M_mod_sdk_dox;
 };

@@ -29,5 +29,5 @@ RESOURCES += \
 LIBS += $$moduleDep(astro,db)
 LIBS += $$moduleDep(sdk,hosting)
 LIBS += $$moduleDep(sdk,uicontrols-qt)
-LIBS += $$moduleDep(sdk,network-qt)
+LIBS += $$moduleDep(sdk,network)
 LIBS += $$moduleDep(sdk,arch)
