@@ -5,15 +5,15 @@
     <name>GeoNameDialog</name>
     <message>
         <source>Geographic name lookup</source>
-        <translation type="unfinished"></translation>
+        <translation>Földrajzi hely kereső</translation>
     </message>
     <message>
         <source>Current location</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelenlegi pozíció</translation>
     </message>
     <message>
         <source>Not available!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem elérhető!</translation>
     </message>
     <message>
         <source>Recent locations</source>
@@ -24,14 +24,14 @@
     <name>GeoNamesSearchBox</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Keresés</translation>
     </message>
 </context>
 <context>
     <name>GeoNamesSearchView</name>
     <message>
         <source>Netwok error!</source>
-        <translation type="unfinished"></translation>
+        <translation>Hálózati hiba!</translation>
     </message>
 </context>
 </TS>

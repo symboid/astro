@@ -120,7 +120,6 @@ Item {
             contentWidth: tableWidth
 
             delegate: Item {
-//            delegate: Rectangle { border.width: 1
                 implicitHeight: rowHeight
                 implicitWidth: column !== 0 && columnWidths.length > column ? columnWidths[column] : 1
                 Loader {
