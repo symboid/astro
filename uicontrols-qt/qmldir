@@ -2,12 +2,6 @@ module Symboid.Astro.Controls
 ArcCoordBox 1.0 ArcCoordBox.qml
 ArcCoordLabel 1.0 ArcCoordLabel.qml
 HoraScreen 1.0 HoraScreen.qml
-HoraScreenParamBox 1.0 HoraScreenParamBox.qml
-HoraScreenTimer 1.0 HoraScreenTimer.qml
-HoraScreenTextField 1.0 HoraScreenTextField.qml
-HoraScreenComboBox 1.0 HoraScreenComboBox.qml
-HoraScreenTimeZoneBox 1.0 HoraScreenTimeZoneBox.qml
-HoraScreenBottomPane 1.0 HoraScreenBottomPane.qml
 HoraTableView 1.0 HoraTableView.qml
 HoraTableLine 1.0 HoraTableLine.qml
 HoraSettingsPane 1.0 HoraSettingsPane.qml

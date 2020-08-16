@@ -34,4 +34,14 @@
         <translation>Hálózati hiba!</translation>
     </message>
 </context>
-</TS>
+<context>
+    <name>GeoTimeZoneBox</name>
+    <message>
+        <source>Time zone diff:</source>
+        <translation>Időzóna eltérés:</translation>
+    </message>
+    <message>
+        <source>h</source>
+        <translation>ó</translation>
+    </message>
+</context></TS>

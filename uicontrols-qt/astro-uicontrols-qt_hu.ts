@@ -124,57 +124,39 @@
         <translation>Helység</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="414"/>
+        <location filename="HoraScreen.qml" line="415"/>
         <source>House system</source>
         <translation>Házrendszer</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="422"/>
+        <location filename="HoraScreen.qml" line="423"/>
         <source>Placidus</source>
         <translation>Placidus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="426"/>
+        <location filename="HoraScreen.qml" line="427"/>
         <source>Koch</source>
         <translation>Koch</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="430"/>
+        <location filename="HoraScreen.qml" line="431"/>
         <source>Regiomontanus</source>
         <translation>Regiomontanus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="434"/>
+        <location filename="HoraScreen.qml" line="435"/>
         <source>Campanus</source>
         <translation>Campanus</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="438"/>
+        <location filename="HoraScreen.qml" line="439"/>
         <source>Equal</source>
         <translation>Egyenló</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="467"/>
-        <source>Settings</source>
-        <translation>Beállítások</translation>
-    </message>
-    <message>
-        <location filename="HoraScreen.qml" line="481"/>
+        <location filename="HoraScreen.qml" line="459"/>
         <source>Details</source>
         <translation>Részletek</translation>
-    </message>
-</context>
-<context>
-    <name>HoraScreenTimeZoneBox</name>
-    <message>
-        <location filename="HoraScreenTimeZoneBox.qml" line="12"/>
-        <source>Time zone diff:</source>
-        <translation>Időzóna eltérés:</translation>
-    </message>
-    <message>
-        <location filename="HoraScreenTimeZoneBox.qml" line="21"/>
-        <source>h</source>
-        <translation>ó</translation>
     </message>
 </context>
 <context>

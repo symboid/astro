@@ -69,14 +69,14 @@ Flickable {
 
         flow: isLandscape ? Flow.TopToBottom : Flow.LeftToRight
 
-        HoraScreenParamBox {
+        MainScreenParamBox {
             title: qsTr("Horoscope name")
-            HoraScreenTextField {
+            MainScreenTextField {
                 id: horaName
             }
         }
 
-        HoraScreenParamBox {
+        MainScreenParamBox {
             id: dateTimeParams
             title: qsTr("Date and time")
 
@@ -91,7 +91,7 @@ Flickable {
                 editable: true
                 circularLink: dateBox.dayLink
             }
-            HoraScreenTimer {
+            MainScreenTimer {
                 id: currentTimeTimer
                 text: qsTr("Current")
                 visible: details.checked
@@ -111,17 +111,17 @@ Flickable {
             }
         }
 
-        HoraScreenParamBox {
+        MainScreenParamBox {
             id: calendarParam
             title: qsTr("Calendar")
             visible: details.checked
-            HoraScreenComboBox {
+            MainScreenComboBox {
                 id: calendarType
                 model: [ "Gregorian", "Julian" ]
             }
         }
 
-        HoraScreenBottomPane {
+        MainScreenBottomPane {
             id: viewSelector
             property int currentIndex: 0
             referenceItem: details.checked ? calendarParam : dateTimeParams
@@ -362,11 +362,11 @@ Flickable {
             }
         }
 
-        HoraScreenParamBox {
+        MainScreenParamBox {
             id: locationParams
             title: qsTr("Location")
 
-            HoraScreenTextField {
+            MainScreenTextField {
                 id: geoName
                 enabled: !currentLocTimer.checked
                 button: RoundButton {
@@ -393,7 +393,7 @@ Flickable {
                 editable: true
                 enabled: !currentLocTimer.checked
             }
-            HoraScreenTimeZoneBox {
+            GeoTimeZoneBox {
                 id: timeZoneBox
                 visible: details.checked
                 enabled: !currentLocTimer.checked
@@ -401,7 +401,7 @@ Flickable {
                 geoNameLont: geoLont.arcDegree
                 currentUnixTime: unixTimeConverter.unixTime
             }
-            HoraScreenTimer {
+            MainScreenTimer {
                 id: currentLocTimer
                 text: qsTr("Current")
                 visible: details.checked
@@ -409,12 +409,13 @@ Flickable {
                 enabled: geoNameDialog.currentIsValid
             }
         }
-        HoraScreenParamBox {
+
+        MainScreenParamBox {
             id: houseSystemParams
             title: qsTr("House system")
             visible: details.checked
 
-            HoraScreenComboBox {
+            MainScreenComboBox {
                 id: housesType
                 textRole: "name"
                 model: ListModel {
@@ -446,40 +447,16 @@ Flickable {
             }
         }
 
-        HoraScreenBottomPane {
+        MainScreenBottomPane {
             referenceItem: details.checked ? houseSystemParams : locationParams
             landscape: isLandscape
             width: parent.paramSectionWidth
             padding: parent.paramSectionPadding
             controlItem: Frame {
-                height: 60
-                Item {
-                    anchors {
-                        left: parent.left
-                        top: parent.top
-                        bottom: parent.bottom
-                        right: parent.horizontalCenter
-                    }
-                    RoundButton {
-                        anchors.left: parent.left
-                        anchors.centerIn: parent
-                        icon.source: "/icons/cog_icon&32.png"
-                        text: qsTr("Settings")
-                    }
-                }
-                Item {
-                    anchors {
-                        left: parent.horizontalCenter
-                        top: parent.top
-                        bottom: parent.bottom
-                        right: parent.right
-                    }
-                    Switch {
-                        id: details
-                        anchors.right: parent.right
-                        anchors.centerIn: parent
-                        text: qsTr("Details")
-                    }
+                Switch {
+                    id: details
+                    anchors.centerIn: parent
+                    text: qsTr("Details")
                 }
             }
         }
