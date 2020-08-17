@@ -7,13 +7,7 @@ import Symboid.Astro.Db 1.0
 import QtPositioning 5.12
 import QtQuick.Layouts 1.12
 
-Flickable {
-
-    // metrics:
-    readonly property bool isLandscape: width > height
-    readonly property int mandalaSize: isLandscape ? height : width
-    readonly property int screenSize: isLandscape ? width : height
-    readonly property int restSize: screenSize - mandalaSize
+MainScreen {
 
     property alias fontPointSize: horaView.fontPointSize
 
@@ -35,11 +29,6 @@ Flickable {
     // other details:
     property alias calendarType: calendarType.currentIndex
 
-    flickableDirection: isLandscape ? Flickable.HorizontalFlick : Flickable.VerticalFlick
-    contentWidth: horaScreen.width
-    contentHeight: horaScreen.height
-    clip: true
-
     function setCurrent()
     {
         currentTimeTimer.checked = true
@@ -55,414 +44,368 @@ Flickable {
         horaFlickable.zoomToDefault()
     }
 
-    Flow {
-        id: horaScreen
-
-        width: isLandscape ? childrenRect.width : mandalaSize
-        height: isLandscape ? mandalaSize : childrenRect.height
-
-        readonly property int minParamSectionWidth: 300
-        readonly property int paramSectionWidth:
-            isLandscape ? ((restSize / 2) < minParamSectionWidth ? minParamSectionWidth : restSize / 2)
-                        : ((mandalaSize / 2) < minParamSectionWidth ? mandalaSize : mandalaSize / 2)
-        readonly property int paramSectionPadding: 20
-
-        flow: isLandscape ? Flow.TopToBottom : Flow.LeftToRight
-
-        MainScreenParamBox {
-            title: qsTr("Horoscope name")
-            MainScreenTextField {
-                id: horaName
-            }
+    MainScreenParamBox {
+        title: qsTr("Horoscope name")
+        MainScreenTextField {
+            id: horaName
         }
+    }
 
-        MainScreenParamBox {
-            id: dateTimeParams
-            title: qsTr("Date and time")
+    MainScreenParamBox {
+        id: dateTimeParams
+        title: qsTr("Date and time")
 
-            DateCoordBox {
-                id: dateBox
-                enabled: !currentTimeTimer.checked
-                editable: true
-            }
-            TimeCoordBox {
-                id: timeBox
-                enabled: !currentTimeTimer.checked
-                editable: true
-                circularLink: dateBox.dayLink
-            }
-            MainScreenTimer {
-                id: currentTimeTimer
-                text: qsTr("Current")
-                visible: details.checked
-                onTriggered: {
-                    dateBox.setCurrent()
-                    timeBox.setCurrent()
-                }
-            }
-            UnixTimeConverter {
-                id: unixTimeConverter
-                year: dateBox.year
-                month: dateBox.month
-                day: dateBox.day
-                hour: timeBox.hour
-                minute: timeBox.minute
-                second: timeBox.second
-            }
+        DateCoordBox {
+            id: dateBox
+            enabled: !currentTimeTimer.checked
+            editable: true
         }
-
-        MainScreenParamBox {
-            id: calendarParam
-            title: qsTr("Calendar")
+        TimeCoordBox {
+            id: timeBox
+            enabled: !currentTimeTimer.checked
+            editable: true
+            circularLink: dateBox.dayLink
+        }
+        MainScreenTimer {
+            id: currentTimeTimer
+            text: qsTr("Current")
             visible: details.checked
-            MainScreenComboBox {
-                id: calendarType
-                model: [ "Gregorian", "Julian" ]
+            onTriggered: {
+                dateBox.setCurrent()
+                timeBox.setCurrent()
             }
         }
+        UnixTimeConverter {
+            id: unixTimeConverter
+            year: dateBox.year
+            month: dateBox.month
+            day: dateBox.day
+            hour: timeBox.hour
+            minute: timeBox.minute
+            second: timeBox.second
+        }
+    }
 
-        MainScreenBottomPane {
-            id: viewSelector
-            property int currentIndex: 0
-            referenceItem: details.checked ? calendarParam : dateTimeParams
-            landscape: isLandscape
-            width: parent.paramSectionWidth
-            padding: parent.paramSectionPadding
-            controlItem: SpinBox {
-                id: viewSpin
-                to: viewNames.length - 1
-                onValueChanged: viewSelector.currentIndex = value
-                property var viewNames: [ qsTr("Chart"), qsTr("Planet positions"), qsTr("House cusps") ]
-                textFromValue: function(value, locale)
+    MainScreenParamBox {
+        id: calendarParam
+        title: qsTr("Calendar")
+        visible: details.checked
+        MainScreenComboBox {
+            id: calendarType
+            model: [ "Gregorian", "Julian" ]
+        }
+    }
+
+    MainScreenViewSelector {
+        id: viewSelector
+        viewNames: [ qsTr("Chart"), qsTr("Planet positions"), qsTr("House cusps") ]
+        referenceItem: details.checked ? calendarParam : dateTimeParams
+    }
+
+    StackLayout {
+        width: metrics.mandalaSize
+        height: metrics.mandalaSize
+        currentIndex: viewSelector.currentIndex
+        Rectangle {
+            border.width: horaFlickable.minHoraSize != horaFlickable.horaSize ? 1 : 0
+            border.color: "lightgray"
+            color: "transparent"
+            Flickable {
+                id: horaFlickable
+                anchors.fill: parent
+                contentWidth: horaView.width
+                contentHeight: horaView.height
+                clip: true
+
+                function zoomToMinimum()
                 {
-                    return viewNames[value]
+                    horaSize = minHoraSize
+                    contentX = 0
+                    contentY = 0
                 }
-
-                down.indicator: Image {
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    opacity: viewSpin.value > viewSpin.from ? 1.0 : 0.1
-                    source: "/icons/br_prev_icon&24.png"
+                function zoomToDefault()
+                {
+                    horaSize = minHoraSize / horaView.defaultZoom
+                    contentX = (horaSize - minHoraSize) / 2
+                    contentY = contentX
                 }
-                up.indicator: Image {
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    opacity: viewSpin.value < viewSpin.to ? 1.0 : 0.1
-                    source: "/icons/br_next_icon&24.png"
-                }
-            }
-        }
-
-        StackLayout {
-            width: mandalaSize
-            height: mandalaSize
-            currentIndex: viewSelector.currentIndex
-            Rectangle {
-                border.width: horaFlickable.minHoraSize != horaFlickable.horaSize ? 1 : 0
-                border.color: "lightgray"
-                color: "transparent"
-                Flickable {
-                    id: horaFlickable
-                    anchors.fill: parent
-                    contentWidth: horaView.width
-                    contentHeight: horaView.height
-                    clip: true
-
-                    function zoomToMinimum()
+                function zoomTo(zoomPointX,zoomPointY,zoomDelta)
+                {
+                    var zoomRatio = (horaSize + zoomDelta) / horaSize
+                    if (horaSize + zoomDelta >= minHoraSize)
                     {
-                        horaSize = minHoraSize
-                        contentX = 0
-                        contentY = 0
-                    }
-                    function zoomToDefault()
-                    {
-                        horaSize = minHoraSize / horaView.defaultZoom
-                        contentX = (horaSize - minHoraSize) / 2
-                        contentY = contentX
-                    }
-                    function zoomTo(zoomPointX,zoomPointY,zoomDelta)
-                    {
-                        var zoomRatio = (horaSize + zoomDelta) / horaSize
-                        if (horaSize + zoomDelta >= minHoraSize)
-                        {
-                            horaSize += zoomDelta
-                            var newContentX = contentX + (zoomRatio - 1) * zoomPointX
-                            var newContentY = contentY + (zoomRatio - 1) * zoomPointY
-                            contentX = newContentX < 0.0 ? 0.0 : newContentX
-                            contentY = newContentY < 0.0 ? 0.0 : newContentY
+                        horaSize += zoomDelta
+                        var newContentX = contentX + (zoomRatio - 1) * zoomPointX
+                        var newContentY = contentY + (zoomRatio - 1) * zoomPointY
+                        contentX = newContentX < 0.0 ? 0.0 : newContentX
+                        contentY = newContentY < 0.0 ? 0.0 : newContentY
 //                            console.log("contentCorner = ("+contentX+","+contentY+"), zoom=("+zoomDelta+","+zoomRatio+")")
-                        }
-                        else
-                        {
-                            zoomToMinimum()
-                        }
                     }
+                    else
+                    {
+                        zoomToMinimum()
+                    }
+                }
 
-                    onWidthChanged:  zoomToDefault()
-                    onHeightChanged: zoomToDefault()
+                onWidthChanged:  zoomToDefault()
+                onHeightChanged: zoomToDefault()
 
-                    readonly property int minHoraSize: mandalaSize
-                    property int horaSize: mandalaSize
-                    MouseArea {
-                        anchors.fill: parent
-                        onWheel: {
-                            var zoomDelta = (wheel.angleDelta.y/500.0) * horaFlickable.horaSize
-                            horaFlickable.zoomTo(wheel.x, wheel.y, zoomDelta)
-                        }
-                        onClicked: {
+                readonly property int minHoraSize: metrics.mandalaSize
+                property int horaSize: metrics.mandalaSize
+                MouseArea {
+                    anchors.fill: parent
+                    onWheel: {
+                        var zoomDelta = (wheel.angleDelta.y/500.0) * horaFlickable.horaSize
+                        horaFlickable.zoomTo(wheel.x, wheel.y, zoomDelta)
+                    }
+                    onClicked: {
 //                            console.log("contentCorner = ("+contentX+","+contentY+")")
-                        }
-
-                        onDoubleClicked: horaFlickable.zoomToDefault()
-                    }
-                    PinchArea {
-                        anchors.fill: parent
-                        onPinchUpdated: {
-                            var zoomDelta = (pinch.scale > 1 ? 1 : -1) * horaFlickable.horaSize / 30
-                            horaFlickable.zoomTo(pinch.center.x, pinch.center.y, zoomDelta)
-                        }
                     }
 
-                    HoraView {
-                        id: horaView
-                        width: horaFlickable.horaSize
-                        height: horaFlickable.horaSize
-
-                        year: dateBox.year
-                        month: dateBox.month
-                        day: dateBox.day
-                        hour: timeBox.hour
-                        minute: timeBox.minute
-                        second: timeBox.second
-                        geoLatt: geoLatt.arcDegree
-                        geoLont: geoLont.arcDegree
-                        tzDiff: timeZoneBox.diffHours
-                        housesType: housesType.currentToken()
-                        withJulianCalendar: calendarType.currentIndex !== 0
-
-                        displayFlags: HoraView.SHOW_FIXSTARS
-
-                        BusyIndicator {
-                            id: horaCalcIndicator
-                            width: 100
-                            height: 100
-                            anchors.centerIn: parent
-                            running: false
-                        }
-                        onStartCalc: horaCalcIndicator.running = true
-                        onStopCalc: horaCalcIndicator.running = false
+                    onDoubleClicked: horaFlickable.zoomToDefault()
+                }
+                PinchArea {
+                    anchors.fill: parent
+                    onPinchUpdated: {
+                        var zoomDelta = (pinch.scale > 1 ? 1 : -1) * horaFlickable.horaSize / 30
+                        horaFlickable.zoomTo(pinch.center.x, pinch.center.y, zoomDelta)
                     }
                 }
-            }
-            Item {
-                HoraTableView {
-                    id: planetTableView
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: showPlanetSeconds.top
-                    anchors.margins: 20
-                    tableModel: horaView.planetsModel
-                    headerModel: tableModel.headerModel
-                    columnComponents: [
-                        Component {
-                            Pane {
-                                Label {
-                                    text: cellData
-                                    font.family: "Symboid"
-                                    width: 40
-                                }
-                            }
-                        },
-                        Component {
-                            ArcCoordLabel {
-                                arcDegree: cellData
-                                sectionCalc: ZodiacSectionCalc {}
-                                sectionFont.family: "Symboid"
-                                showSecond: showPlanetSeconds.checked
-                            }
-                        },
-                        Component {
-                            ArcCoordLabel {
-                                arcDegree: cellData
-                                sectionCalc: SignumSectionCalc {}
-                                showSecond: showPlanetSeconds.checked
-                            }
-                        },
-                        Component {
-                            ArcCoordLabel {
-                                arcDegree: cellData
-                                sectionCalc: SignumSectionCalc {}
-                                showSecond: showPlanetSeconds.checked
-                            }
-                        }
-                    ]
-                }
-                CheckBox {
-                    id: showPlanetSeconds
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter
-                        bottom: parent.bottom
-                        bottomMargin: 20
+
+                HoraView {
+                    id: horaView
+                    width: horaFlickable.horaSize
+                    height: horaFlickable.horaSize
+
+                    year: dateBox.year
+                    month: dateBox.month
+                    day: dateBox.day
+                    hour: timeBox.hour
+                    minute: timeBox.minute
+                    second: timeBox.second
+                    geoLatt: geoLatt.arcDegree
+                    geoLont: geoLont.arcDegree
+                    tzDiff: timeZoneBox.diffHours
+                    housesType: housesType.currentToken()
+                    withJulianCalendar: calendarType.currentIndex !== 0
+
+                    displayFlags: HoraView.SHOW_FIXSTARS
+
+                    BusyIndicator {
+                        id: horaCalcIndicator
+                        width: 100
+                        height: 100
+                        anchors.centerIn: parent
+                        running: false
                     }
-                    text: qsTr("Show seconds")
-                    onCheckedChanged: {
-                        planetTableView.tableModel.update()
-                    }
-                }
-            }
-            Item {
-                HoraTableView {
-                    id: houseTableView
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: showHousesSeconds.top
-                    anchors.margins: 20
-                    tableModel: horaView.housesModel
-                    headerModel: tableModel.headerModel
-                    columnComponents: [
-                        Component {
-                            Pane {
-                                Label {
-                                    text: cellData
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                        },
-                        Component {
-                            ArcCoordLabel {
-                                arcDegree: cellData
-                                sectionCalc: ZodiacSectionCalc {}
-                                sectionFont.family: "Symboid"
-                                showSecond: showHousesSeconds.checked
-                            }
-                        },
-                        Component {
-                            ArcCoordLabel {
-                                arcDegree: cellData
-                                sectionCalc: SignumSectionCalc {}
-                                showSecond: showHousesSeconds.checked
-                            }
-                        }
-                    ]
-                }
-                CheckBox {
-                    id: showHousesSeconds
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter
-                        bottom: parent.bottom
-                        bottomMargin: 20
-                    }
-                    text: qsTr("Show seconds")
-                    onCheckedChanged: {
-                        houseTableView.tableModel.update()
-                    }
+                    onStartCalc: horaCalcIndicator.running = true
+                    onStopCalc: horaCalcIndicator.running = false
                 }
             }
         }
-
-        MainScreenParamBox {
-            id: locationParams
-            title: qsTr("Location")
-
-            MainScreenTextField {
-                id: geoName
-                enabled: !currentLocTimer.checked
-                button: RoundButton {
-                    display: RoundButton.IconOnly
-                    padding: 0
-                    icon.source: "/icons/globe_3_icon&48.png"
-                    icon.color: "darkblue"
-                    icon.width: width - leftInset - rightInset
-                    icon.height: height - topInset - bottomInset
-                    onClicked: geoNameDialog.open()
+        Item {
+            HoraTableView {
+                id: planetTableView
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: showPlanetSeconds.top
+                anchors.margins: 20
+                tableModel: horaView.planetsModel
+                headerModel: tableModel.headerModel
+                columnComponents: [
+                    Component {
+                        Pane {
+                            Label {
+                                text: cellData
+                                font.family: "Symboid"
+                                width: 40
+                            }
+                        }
+                    },
+                    Component {
+                        ArcCoordLabel {
+                            arcDegree: cellData
+                            sectionCalc: ZodiacSectionCalc {}
+                            sectionFont.family: "Symboid"
+                            showSecond: showPlanetSeconds.checked
+                        }
+                    },
+                    Component {
+                        ArcCoordLabel {
+                            arcDegree: cellData
+                            sectionCalc: SignumSectionCalc {}
+                            showSecond: showPlanetSeconds.checked
+                        }
+                    },
+                    Component {
+                        ArcCoordLabel {
+                            arcDegree: cellData
+                            sectionCalc: SignumSectionCalc {}
+                            showSecond: showPlanetSeconds.checked
+                        }
+                    }
+                ]
+            }
+            CheckBox {
+                id: showPlanetSeconds
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    bottom: parent.bottom
+                    bottomMargin: 20
                 }
-            }
-            ArcCoordBox {
-                id: geoLatt
-                visible: details.checked
-                sectionCalc: GeoLattSectionCalc {}
-                editable: true
-                enabled: !currentLocTimer.checked
-            }
-            ArcCoordBox {
-                id: geoLont
-                visible: details.checked
-                sectionCalc: GeoLontSectionCalc {}
-                editable: true
-                enabled: !currentLocTimer.checked
-            }
-            GeoTimeZoneBox {
-                id: timeZoneBox
-                visible: details.checked
-                enabled: !currentLocTimer.checked
-                geoNameLatt: geoLatt.arcDegree
-                geoNameLont: geoLont.arcDegree
-                currentUnixTime: unixTimeConverter.unixTime
-            }
-            MainScreenTimer {
-                id: currentLocTimer
-                text: qsTr("Current")
-                visible: details.checked
-                onTriggered: geoNameDialog.setCurrent()
-                enabled: geoNameDialog.currentIsValid
-            }
-        }
-
-        MainScreenParamBox {
-            id: houseSystemParams
-            title: qsTr("House system")
-            visible: details.checked
-
-            MainScreenComboBox {
-                id: housesType
-                textRole: "name"
-                model: ListModel {
-                    ListElement {
-                        name: qsTr("Placidus")
-                        token: "placidus"
-                    }
-                    ListElement {
-                        name: qsTr("Koch")
-                        token: "koch"
-                    }
-                    ListElement {
-                        name: qsTr("Regiomontanus")
-                        token: "regiomontanus"
-                    }
-                    ListElement {
-                        name: qsTr("Campanus")
-                        token: "campanus"
-                    }
-                    ListElement {
-                        name: qsTr("Equal")
-                        token: "equal"
-                    }
-                }
-                function currentToken()
-                {
-                    return model.data(model.index(currentIndex, 0))
+                text: qsTr("Show seconds")
+                onCheckedChanged: {
+                    planetTableView.tableModel.update()
                 }
             }
         }
-
-        MainScreenBottomPane {
-            referenceItem: details.checked ? houseSystemParams : locationParams
-            landscape: isLandscape
-            width: parent.paramSectionWidth
-            padding: parent.paramSectionPadding
-            controlItem: Frame {
-                Switch {
-                    id: details
-                    anchors.centerIn: parent
-                    text: qsTr("Details")
+        Item {
+            HoraTableView {
+                id: houseTableView
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: showHousesSeconds.top
+                anchors.margins: 20
+                tableModel: horaView.housesModel
+                headerModel: tableModel.headerModel
+                columnComponents: [
+                    Component {
+                        Pane {
+                            Label {
+                                text: cellData
+                                anchors.horizontalCenter: parent.horizontalCenter
+                            }
+                        }
+                    },
+                    Component {
+                        ArcCoordLabel {
+                            arcDegree: cellData
+                            sectionCalc: ZodiacSectionCalc {}
+                            sectionFont.family: "Symboid"
+                            showSecond: showHousesSeconds.checked
+                        }
+                    },
+                    Component {
+                        ArcCoordLabel {
+                            arcDegree: cellData
+                            sectionCalc: SignumSectionCalc {}
+                            showSecond: showHousesSeconds.checked
+                        }
+                    }
+                ]
+            }
+            CheckBox {
+                id: showHousesSeconds
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    bottom: parent.bottom
+                    bottomMargin: 20
+                }
+                text: qsTr("Show seconds")
+                onCheckedChanged: {
+                    houseTableView.tableModel.update()
                 }
             }
         }
     }
 
-    Component.onCompleted: interactive = true
+    MainScreenParamBox {
+        id: locationParams
+        title: qsTr("Location")
+
+        MainScreenTextField {
+            id: geoName
+            enabled: !currentLocTimer.checked
+            button: RoundButton {
+                display: RoundButton.IconOnly
+                padding: 0
+                icon.source: "/icons/globe_3_icon&48.png"
+                icon.color: "darkblue"
+                icon.width: width - leftInset - rightInset
+                icon.height: height - topInset - bottomInset
+                onClicked: geoNameDialog.open()
+            }
+        }
+        ArcCoordBox {
+            id: geoLatt
+            visible: details.checked
+            sectionCalc: GeoLattSectionCalc {}
+            editable: true
+            enabled: !currentLocTimer.checked
+        }
+        ArcCoordBox {
+            id: geoLont
+            visible: details.checked
+            sectionCalc: GeoLontSectionCalc {}
+            editable: true
+            enabled: !currentLocTimer.checked
+        }
+        GeoTimeZoneBox {
+            id: timeZoneBox
+            visible: details.checked
+            enabled: !currentLocTimer.checked
+            geoNameLatt: geoLatt.arcDegree
+            geoNameLont: geoLont.arcDegree
+            currentUnixTime: unixTimeConverter.unixTime
+        }
+        MainScreenTimer {
+            id: currentLocTimer
+            text: qsTr("Current")
+            visible: details.checked
+            onTriggered: geoNameDialog.setCurrent()
+            enabled: geoNameDialog.currentIsValid
+        }
+    }
+
+    MainScreenParamBox {
+        id: houseSystemParams
+        title: qsTr("House system")
+        visible: details.checked
+
+        MainScreenComboBox {
+            id: housesType
+            textRole: "name"
+            model: ListModel {
+                ListElement {
+                    name: qsTr("Placidus")
+                    token: "placidus"
+                }
+                ListElement {
+                    name: qsTr("Koch")
+                    token: "koch"
+                }
+                ListElement {
+                    name: qsTr("Regiomontanus")
+                    token: "regiomontanus"
+                }
+                ListElement {
+                    name: qsTr("Campanus")
+                    token: "campanus"
+                }
+                ListElement {
+                    name: qsTr("Equal")
+                    token: "equal"
+                }
+            }
+            function currentToken()
+            {
+                return model.data(model.index(currentIndex, 0))
+            }
+        }
+    }
+
+    MainScreenBottomPane {
+        referenceItem: details.checked ? houseSystemParams : locationParams
+        controlItem: Frame {
+            Switch {
+                id: details
+                anchors.centerIn: parent
+                text: qsTr("Details")
+            }
+        }
+    }
 
     GeoNameDialog {
         id: geoNameDialog
@@ -475,4 +418,6 @@ Flickable {
         opacity: 0.875
         onGeoNameChanged: timeZoneBox.search()
     }
+
+    Component.onCompleted: interactive = true
 }
