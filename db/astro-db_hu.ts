@@ -44,4 +44,27 @@
         <source>h</source>
         <translation>ó</translation>
     </message>
-</context></TS>
+</context>
+<context>
+    <name>QGeoLattSectionCalc</name>
+    <message>
+        <source>N</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QGeoLontSectionCalc</name>
+    <message>
+        <source>E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>W</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+</TS>

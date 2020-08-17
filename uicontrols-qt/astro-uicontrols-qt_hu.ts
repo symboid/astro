@@ -221,32 +221,6 @@
     </message>
 </context>
 <context>
-    <name>QGeoLattSectionCalc</name>
-    <message>
-        <location filename="arccoord.h" line="128"/>
-        <source>N</source>
-        <translation>É</translation>
-    </message>
-    <message>
-        <location filename="arccoord.h" line="128"/>
-        <source>S</source>
-        <translation>D</translation>
-    </message>
-</context>
-<context>
-    <name>QGeoLontSectionCalc</name>
-    <message>
-        <location filename="arccoord.h" line="148"/>
-        <source>E</source>
-        <translation>K</translation>
-    </message>
-    <message>
-        <location filename="arccoord.h" line="148"/>
-        <source>W</source>
-        <translation>Ny</translation>
-    </message>
-</context>
-<context>
     <name>QHoraHousesModel</name>
     <message>
         <location filename="qhoraviewitem.cc" line="111"/>

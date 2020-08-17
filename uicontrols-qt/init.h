@@ -31,8 +31,6 @@ struct ASTRO_UICONTROLS_QT_API mod_astro_uicontrols_qt : arh::mod_qt<mod_astro_u
 
     qml_type_register<QArcCoord> _reg_arc_coord;
     qml_type_register<QNoneSectionCalc> _none_section_calc;
-    qml_type_register<QGeoLattSectionCalc> _geo_latt_section_calc;
-    qml_type_register<QGeoLontSectionCalc> _geo_lont_section_calc;
     qml_type_register<QZodiacSectionCalc> _zodiac_section_calc;
     qml_type_register<QSignumSectionCalc> _signum_section_calc;
     arh::main_object_init<QAstroFontRepo> _M_astro_font_repo;

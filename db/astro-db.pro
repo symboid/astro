@@ -16,6 +16,7 @@ clang|gcc {
 
 SOURCES += \
     fixstars.cc \
+    geocoord.cc \
     init.cc \
     qgeonamesrestclient.cc \
     qgeonamestablemodel.cc \
@@ -35,6 +36,7 @@ SOURCES += \
 HEADERS += \
     defs.h \
     fixstars.h \
+    geocoord.h \
     init.h \
     setup.h \
     qgeonamesmodel.h \
