@@ -1,8 +1,8 @@
 
-#ifndef __SYMBOID_ASTRO_UICONTROLS_QT_QORBISCONFIG_H__
-#define __SYMBOID_ASTRO_UICONTROLS_QT_QORBISCONFIG_H__
+#ifndef __SYMBOID_ASTRO_HORA_QORBISCONFIG_H__
+#define __SYMBOID_ASTRO_HORA_QORBISCONFIG_H__
 
-#include "astro/uicontrols-qt/defs.h"
+#include "astro/hora/defs.h"
 #include "sdk/hosting/qconfig.h"
 #include "astro/calculo/planet.h"
 
@@ -114,4 +114,4 @@ public:
 };
 
 
-#endif // __SYMBOID_ASTRO_UICONTROLS_QT_QORBISCONFIG_H__
+#endif // __SYMBOID_ASTRO_HORA_QORBISCONFIG_H__

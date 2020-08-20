@@ -1,8 +1,8 @@
 
-#ifndef __SYMBOID_ASTRO_UICONTROLS_QT_QHORASTELLIUM_H__
-#define __SYMBOID_ASTRO_UICONTROLS_QT_QHORASTELLIUM_H__
+#ifndef __SYMBOID_ASTRO_HORA_QHORASTELLIUM_H__
+#define __SYMBOID_ASTRO_HORA_QHORASTELLIUM_H__
 
-#include "astro/uicontrols-qt/defs.h"
+#include "astro/hora/defs.h"
 #include <QList>
 #include "astro/calculo/planet.h"
 
@@ -154,4 +154,4 @@ public:
 
 typedef Stellium<hor::planet> QHoraStellium;
 
-#endif // __SYMBOID_ASTRO_UICONTROLS_QT_QHORASTELLIUM_H__
+#endif // __SYMBOID_ASTRO_HORA_QHORASTELLIUM_H__

@@ -1,8 +1,8 @@
 
-#ifndef __SYMBOID_ASTRO_UICONTROLS_QT_QHORAITEMSMODEL_H__
-#define __SYMBOID_ASTRO_UICONTROLS_QT_QHORAITEMSMODEL_H__
+#ifndef __SYMBOID_ASTRO_HORA_QHORAITEMSMODEL_H__
+#define __SYMBOID_ASTRO_HORA_QHORAITEMSMODEL_H__
 
-#include "astro/uicontrols-qt/defs.h"
+#include "astro/hora/defs.h"
 #include "astro/calculo/hora.h"
 #include <QAbstractTableModel>
 #include "astro/uicontrols-qt/qastrofont.h"
@@ -44,4 +44,4 @@ public:
     Q_INVOKABLE void update();
 };
 
-#endif // __SYMBOID_ASTRO_UICONTROLS_QT_QHORAITEMSMODEL_H__
+#endif // __SYMBOID_ASTRO_HORA_QHORAITEMSMODEL_H__

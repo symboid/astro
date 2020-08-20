@@ -1,10 +1,3 @@
 module Symboid.Astro.Controls
 ArcCoordBox 1.0 ArcCoordBox.qml
 ArcCoordLabel 1.0 ArcCoordLabel.qml
-HoraScreen 1.0 HoraScreen.qml
-HoraTableView 1.0 HoraTableView.qml
-HoraTableLine 1.0 HoraTableLine.qml
-HoraSettingsPane 1.0 HoraSettingsPane.qml
-OrbisSettingsPane 1.0 OrbisSettingsPane.qml
-OrbisSettingsGroup 1.0 OrbisSettingsGroup.qml
-OrbisSettingsItem 1.0 OrbisSettingsItem.qml

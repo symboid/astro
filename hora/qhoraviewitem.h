@@ -1,17 +1,17 @@
 
-#ifndef __SYMBOID_ASTRO_UICONTROLS_QT_QHORAVIEWITEM_H__
-#define __SYMBOID_ASTRO_UICONTROLS_QT_QHORAVIEWITEM_H__
+#ifndef __SYMBOID_ASTRO_HORA_QHORAVIEWITEM_H__
+#define __SYMBOID_ASTRO_HORA_QHORAVIEWITEM_H__
 
-#include "astro/uicontrols-qt/defs.h"
+#include "astro/hora/defs.h"
 #include <QQuickPaintedItem>
 #include "astro/eph/ecliptic.h"
 #include "astro/calculo/hora.h"
 #include "astro/uicontrols-qt/qastrofont.h"
-#include "astro/uicontrols-qt/qhoraitemsmodel.h"
+#include "astro/hora/qhoraitemsmodel.h"
 #include "astro/eph/constellation.h"
 #include "astro/db/fixstars.h"
 
-class ASTRO_UICONTROLS_QT_API QHoraPlanetsModel : public QHoraItemsModel
+class ASTRO_HORA_API QHoraPlanetsModel : public QHoraItemsModel
 {
     Q_OBJECT
 
@@ -27,7 +27,7 @@ private:
     QStringList headerModel() const override;
 };
 
-class ASTRO_UICONTROLS_QT_API QHoraHousesModel : public QHoraItemsModel
+class ASTRO_HORA_API QHoraHousesModel : public QHoraItemsModel
 {
     Q_OBJECT
 
@@ -43,7 +43,7 @@ private:
     QStringList headerModel() const override;
 };
 
-class ASTRO_UICONTROLS_QT_API QHoraViewItem : public QQuickPaintedItem
+class ASTRO_HORA_API QHoraViewItem : public QQuickPaintedItem
 {
     Q_OBJECT
 
@@ -201,4 +201,4 @@ private:
     arh::main_object<Fixstars> mFixstars;
 };
 
-#endif // __SYMBOID_ASTRO_UICONTROLS_QT_QHORAVIEWITEM_H__
+#endif // __SYMBOID_ASTRO_HORA_QHORAVIEWITEM_H__

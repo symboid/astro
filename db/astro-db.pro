@@ -58,9 +58,9 @@ HEADERS += \
 RESOURCES += \
     astro-db.qrc
 
-LIBS += $$moduleDep(sdk,arch)
+LIBS += $$moduleDep(astro,uicontrols-qt)
 LIBS += $$moduleDep(sdk,uicontrols-qt)
 LIBS += $$moduleDep(sdk,network)
-LIBS += $$moduleDep(astro,uicontrols-qt)
+LIBS += $$moduleDep(sdk,arch)
 
 QMAKE_EXTRA_TARGETS += $$object_dep_on_component_header(init)

@@ -1,6 +1,6 @@
 
-#include "astro/uicontrols-qt/setup.h"
-#include "astro/uicontrols-qt/qorbisconfig.h"
+#include "astro/hora/setup.h"
+#include "astro/hora/qorbisconfig.h"
 
 QOrbisConfig::QOrbisConfig(QConfigNode* parentNode)
     : QConfigNode(tr("Orbis"), parentNode)

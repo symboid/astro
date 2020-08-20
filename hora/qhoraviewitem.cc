@@ -1,10 +1,10 @@
 
-#include "astro/uicontrols-qt/setup.h"
-#include "astro/uicontrols-qt/qhoraviewitem.h"
+#include "astro/hora/setup.h"
+#include "astro/hora/qhoraviewitem.h"
 #include <QPainter>
-#include "astro/uicontrols-qt/qhorastellium.h"
+#include "astro/hora/qhorastellium.h"
 #include <QFontMetrics>
-#include "astro/uicontrols-qt/qorbisconfig.h"
+#include "astro/hora/qorbisconfig.h"
 
 QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
     : QHoraItemsModel(hora, parent)

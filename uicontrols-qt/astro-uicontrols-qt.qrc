@@ -2,22 +2,10 @@
     <qresource prefix="/Symboid/Astro/Controls">
         <file>ArcCoordBox.qml</file>
         <file>qmldir</file>
-        <file>HoraScreen.qml</file>
-        <file>HoraTableView.qml</file>
         <file>ArcCoordLabel.qml</file>
-        <file>HoraTableLine.qml</file>
-        <file>HoraSettingsPane.qml</file>
-        <file>OrbisSettingsPane.qml</file>
-        <file>OrbisSettingsGroup.qml</file>
-        <file>OrbisSettingsItem.qml</file>
     </qresource>
     <qresource prefix="/font">
         <file>symboid.ttf</file>
-    </qresource>
-    <qresource prefix="/">
-        <file>icons/globe_3_icon&amp;48.png</file>
-        <file>icons/br_next_icon&amp;24.png</file>
-        <file>icons/br_prev_icon&amp;24.png</file>
     </qresource>
     <qresource prefix="/tr">
         <file>astro-uicontrols-qt_hu.qm</file>

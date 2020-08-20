@@ -1,6 +1,6 @@
 
-#include "astro/uicontrols-qt/setup.h"
-#include "astro/uicontrols-qt/qhoraitemsmodel.h"
+#include "astro/hora/setup.h"
+#include "astro/hora/qhoraitemsmodel.h"
 
 QHoraItemsModel::QHoraItemsModel(const hor::hora* hora, QObject* parent)
     : QAbstractTableModel(parent)

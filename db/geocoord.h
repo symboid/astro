@@ -5,7 +5,7 @@
 #include "astro/db/defs.h"
 #include "astro/uicontrols-qt/arccoord.h"
 
-struct ASTRO_UICONTROLS_QT_API QGeoLattSectionCalc : QSectionCalc
+struct ASTRO_DB_API QGeoLattSectionCalc : QSectionCalc
 {
     Q_OBJECT
 public:
@@ -25,7 +25,7 @@ public:
     static constexpr int south_index = 1;
 };
 
-struct ASTRO_UICONTROLS_QT_API QGeoLontSectionCalc : QSectionCalc
+struct ASTRO_DB_API QGeoLontSectionCalc : QSectionCalc
 {
     Q_OBJECT
 public:
