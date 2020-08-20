@@ -15,12 +15,12 @@ MainScreen {
     property alias title: horaName.text
     property alias interactive: horaView.interactive
     // date and time
-    property alias year: dateBox.year
-    property alias month: dateBox.month
-    property alias day: dateBox.day
-    property alias hour: timeBox.hour
-    property alias minute: timeBox.minute
-    property alias second: timeBox.second
+    property alias year: dateTimeParams.year
+    property alias month: dateTimeParams.month
+    property alias day: dateTimeParams.day
+    property alias hour: dateTimeParams.hour
+    property alias minute: dateTimeParams.minute
+    property alias second: dateTimeParams.second
     // geo loacation attributes:
     property alias geoName: geoName.text
     property alias geoLatt: geoLatt.arcDegree
@@ -31,12 +31,12 @@ MainScreen {
 
     function setCurrent()
     {
-        currentTimeTimer.checked = true
+        dateTimeParams.currentTimerOn = true
         currentLocTimer.checked = true
     }
     function unsetCurrent()
     {
-        currentTimeTimer.checked = false
+        dateTimeParams.currentTimerOn = false
         currentLocTimer.checked = false
     }
     function zoomToDefault()
@@ -51,39 +51,10 @@ MainScreen {
         }
     }
 
-    MainScreenParamBox {
+    MainScreenDateTimeBox {
         id: dateTimeParams
-        title: qsTr("Date and time")
+        showDetails: details.checked
 
-        DateCoordBox {
-            id: dateBox
-            enabled: !currentTimeTimer.checked
-            editable: true
-        }
-        TimeCoordBox {
-            id: timeBox
-            enabled: !currentTimeTimer.checked
-            editable: true
-            circularLink: dateBox.dayLink
-        }
-        MainScreenTimer {
-            id: currentTimeTimer
-            text: qsTr("Current")
-            visible: details.checked
-            onTriggered: {
-                dateBox.setCurrent()
-                timeBox.setCurrent()
-            }
-        }
-        UnixTimeConverter {
-            id: unixTimeConverter
-            year: dateBox.year
-            month: dateBox.month
-            day: dateBox.day
-            hour: timeBox.hour
-            minute: timeBox.minute
-            second: timeBox.second
-        }
     }
 
     MainScreenParamBox {
@@ -177,12 +148,12 @@ MainScreen {
                     width: horaFlickable.horaSize
                     height: horaFlickable.horaSize
 
-                    year: dateBox.year
-                    month: dateBox.month
-                    day: dateBox.day
-                    hour: timeBox.hour
-                    minute: timeBox.minute
-                    second: timeBox.second
+                    year: dateTimeParams.year
+                    month: dateTimeParams.month
+                    day: dateTimeParams.day
+                    hour: dateTimeParams.hour
+                    minute: dateTimeParams.minute
+                    second: dateTimeParams.second
                     geoLatt: geoLatt.arcDegree
                     geoLont: geoLont.arcDegree
                     tzDiff: timeZoneBox.diffHours
@@ -348,7 +319,7 @@ MainScreen {
             enabled: !currentLocTimer.checked
             geoNameLatt: geoLatt.arcDegree
             geoNameLont: geoLont.arcDegree
-            currentUnixTime: unixTimeConverter.unixTime
+            currentUnixTime: dateTimeParams.unixTime
         }
         MainScreenTimer {
             id: currentLocTimer
