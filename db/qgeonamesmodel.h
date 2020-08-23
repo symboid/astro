@@ -3,7 +3,7 @@
 #define __SYMBOID_ASTRO_DB_QGEONAMESMODEL_H__
 
 #include "astro/db/defs.h"
-#include "sdk/uicontrols-qt/qjsonsyncmodel.h"
+#include "sdk/controls/qjsonsyncmodel.h"
 
 class ASTRO_DB_API QGeoNameItem : public QJsonSyncNode
 {

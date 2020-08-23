@@ -20,6 +20,6 @@ RESOURCES += \
     astro-uicontrols-qt.qrc
 
 LIBS += $$moduleDep(sdk,hosting)
-LIBS += $$moduleDep(sdk,uicontrols-qt)
+LIBS += $$moduleDep(sdk,controls)
 LIBS += $$moduleDep(sdk,network)
 LIBS += $$moduleDep(sdk,arch)
