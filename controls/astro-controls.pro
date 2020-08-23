@@ -1,5 +1,5 @@
 
-TARGET = astro-uicontrols-qt
+TARGET = astro-controls
 BUILD_ROOT=../..
 COMPONENT_NAME=astro
 include($${BUILD_ROOT}/sdk/build/qmake/qt-module.pri)
@@ -17,7 +17,7 @@ HEADERS += \
     setup.h
 
 RESOURCES += \
-    astro-uicontrols-qt.qrc
+    astro-controls.qrc
 
 LIBS += $$moduleDep(sdk,hosting)
 LIBS += $$moduleDep(sdk,controls)

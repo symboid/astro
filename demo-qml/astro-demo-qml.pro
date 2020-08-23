@@ -15,7 +15,7 @@ HEADERS += \
 RESOURCES += \
     astro-demo-qml.qrc
 
-LIBS += $$moduleDep(astro,uicontrols-qt)
+LIBS += $$moduleDep(astro,controls)
 LIBS += $$moduleDep(astro,db)
 LIBS += $$moduleDep(sdk,dox)
 LIBS += $$moduleDep(sdk,controls)

@@ -1,6 +1,6 @@
 
-#include "astro/uicontrols-qt/setup.h"
-#include "astro/uicontrols-qt/arccoord.h"
+#include "astro/controls/setup.h"
+#include "astro/controls/arccoord.h"
 
 QArcCoord::QArcCoord(QObject* parent)
     : QObject(parent)

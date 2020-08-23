@@ -8,6 +8,6 @@
         <file>symboid.ttf</file>
     </qresource>
     <qresource prefix="/tr">
-        <file>astro-uicontrols-qt_hu.qm</file>
+        <file>astro-controls_hu.qm</file>
     </qresource>
 </RCC>

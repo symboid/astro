@@ -5,7 +5,7 @@
 #include "astro/hora/defs.h"
 #include "astro/calculo/hora.h"
 #include <QAbstractTableModel>
-#include "astro/uicontrols-qt/qastrofont.h"
+#include "astro/controls/qastrofont.h"
 
 hor_ns_begin
 typedef basic_hora<eph_proxy> hora;

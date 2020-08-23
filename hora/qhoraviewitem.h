@@ -6,7 +6,7 @@
 #include <QQuickPaintedItem>
 #include "astro/eph/ecliptic.h"
 #include "astro/calculo/hora.h"
-#include "astro/uicontrols-qt/qastrofont.h"
+#include "astro/controls/qastrofont.h"
 #include "astro/hora/qhoraitemsmodel.h"
 #include "astro/eph/constellation.h"
 #include "astro/db/fixstars.h"

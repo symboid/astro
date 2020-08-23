@@ -23,7 +23,7 @@ RESOURCES += \
     astro-hora.qrc
 
 LIBS += $$moduleDep(astro,db)
-LIBS += $$moduleDep(astro,uicontrols-qt)
+LIBS += $$moduleDep(astro,controls)
 LIBS += $$moduleDep(sdk,hosting)
 LIBS += $$moduleDep(sdk,controls)
 LIBS += $$moduleDep(sdk,network)

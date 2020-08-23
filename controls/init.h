@@ -1,25 +1,25 @@
 
-#ifndef __SYMBOID_ASTRO_UICONTROLS_QT_INIT_H__
-#define __SYMBOID_ASTRO_UICONTROLS_QT_INIT_H__
+#ifndef __SYMBOID_ASTRO_CONTROLS_INIT_H__
+#define __SYMBOID_ASTRO_CONTROLS_INIT_H__
 
-#include "astro/uicontrols-qt/defs.h"
+#include "astro/controls/defs.h"
 #include "sdk/arch/modqt.h"
 #include "sdk/controls/init.h"
 #include "sdk/network/init.h"
 #include "sdk/hosting/init.h"
-#include "astro/uicontrols-qt/arccoord.h"
-#include "astro/uicontrols-qt/qastrofont.h"
+#include "astro/controls/arccoord.h"
+#include "astro/controls/qastrofont.h"
 
-struct ASTRO_UICONTROLS_QT_API mod_astro_uicontrols_qt : arh::mod_qt<mod_astro_uicontrols_qt>
+struct ASTRO_CONTROLS_API mod_astro_controls : arh::mod_qt<mod_astro_controls>
 {
-    MOD_OBJECT(astro_uicontrols_qt)
+    MOD_OBJECT(astro_controls)
 
     static constexpr const char* qml_pkg_name = "Symboid.Astro.Controls";
     static constexpr int qml_pkg_ver_major = 1;
     static constexpr int qml_pkg_ver_minor = 0;
 
-    mod_astro_uicontrols_qt();
-    ~mod_astro_uicontrols_qt();
+    mod_astro_controls();
+    ~mod_astro_controls();
 
     arh::mod_init<mod_sdk_network> _M_mod_sdk_network;
     arh::mod_init<mod_sdk_controls> _M_mod_sdk_controls;
@@ -33,4 +33,4 @@ struct ASTRO_UICONTROLS_QT_API mod_astro_uicontrols_qt : arh::mod_qt<mod_astro_u
 };
 
 
-#endif // __SYMBOID_ASTRO_UICONTROLS_QT_INIT_H__
+#endif // __SYMBOID_ASTRO_CONTROLS_INIT_H__

@@ -3,7 +3,7 @@
 #define __SYMBOID_ASTRO_DB_GEOCOORD_H__
 
 #include "astro/db/defs.h"
-#include "astro/uicontrols-qt/arccoord.h"
+#include "astro/controls/arccoord.h"
 
 struct ASTRO_DB_API QGeoLattSectionCalc : QSectionCalc
 {

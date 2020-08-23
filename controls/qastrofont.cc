@@ -1,6 +1,6 @@
 
-#include "astro/uicontrols-qt/setup.h"
-#include "astro/uicontrols-qt/qastrofont.h"
+#include "astro/controls/setup.h"
+#include "astro/controls/qastrofont.h"
 
 #include <QResource>
 #include <QFontDatabase>

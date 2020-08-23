@@ -1,14 +1,14 @@
 
-#ifndef __SYMBOID_ASTRO_UICONTROLS_QT_ARCCOORD_H__
-#define __SYMBOID_ASTRO_UICONTROLS_QT_ARCCOORD_H__
+#ifndef __SYMBOID_ASTRO_CONTROLS_ARCCOORD_H__
+#define __SYMBOID_ASTRO_CONTROLS_ARCCOORD_H__
 
-#include "astro/uicontrols-qt/defs.h"
+#include "astro/controls/defs.h"
 #include <QObject>
 #include "astro/eph/ecliptic.h"
 #include <QSharedPointer>
-#include "astro/uicontrols-qt/qastrofont.h"
+#include "astro/controls/qastrofont.h"
 
-class ASTRO_UICONTROLS_QT_API QSectionCalc : public QObject
+class ASTRO_CONTROLS_API QSectionCalc : public QObject
 {
     Q_OBJECT
 
@@ -26,7 +26,7 @@ public:
     Q_INVOKABLE virtual QStringList values() const { return QStringList(""); }
 };
 
-class ASTRO_UICONTROLS_QT_API QArcCoord : public QObject
+class ASTRO_CONTROLS_API QArcCoord : public QObject
 {
     Q_OBJECT
 public:
@@ -83,7 +83,7 @@ signals:
     void arcDegreeChanged();
 };
 
-struct ASTRO_UICONTROLS_QT_API QNoneSectionCalc : QSectionCalc
+struct ASTRO_CONTROLS_API QNoneSectionCalc : QSectionCalc
 {
     static constexpr const char* qml_name = "NoneSectionCalc";
 
@@ -93,7 +93,7 @@ struct ASTRO_UICONTROLS_QT_API QNoneSectionCalc : QSectionCalc
     int index(eph::arc_coord::signum signum, eph::arc_coord::degree rawDegree) const override;
 };
 
-struct ASTRO_UICONTROLS_QT_API QSignumSectionCalc : QSectionCalc
+struct ASTRO_CONTROLS_API QSignumSectionCalc : QSectionCalc
 {
     static constexpr const char* qml_name = "SignumSectionCalc";
 
@@ -111,7 +111,7 @@ struct ASTRO_UICONTROLS_QT_API QSignumSectionCalc : QSectionCalc
     static constexpr int negative_index = 1;
 };
 
-struct ASTRO_UICONTROLS_QT_API QZodiacSectionCalc : QSectionCalc
+struct ASTRO_CONTROLS_API QZodiacSectionCalc : QSectionCalc
 {
     static constexpr const char* qml_name = "ZodiacSectionCalc";
 
@@ -127,4 +127,4 @@ struct ASTRO_UICONTROLS_QT_API QZodiacSectionCalc : QSectionCalc
     Q_INVOKABLE virtual QStringList values() const override { return {  "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l" }; }
 };
 
-#endif // __SYMBOID_ASTRO_UICONTROLS_QT_ARCCOORD_H__
+#endif // __SYMBOID_ASTRO_CONTROLS_ARCCOORD_H__
