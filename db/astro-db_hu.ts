@@ -46,6 +46,17 @@
     </message>
 </context>
 <context>
+    <name>MainScreenLocationBox</name>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QGeoLattSectionCalc</name>
     <message>
         <source>N</source>

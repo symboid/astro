@@ -7,6 +7,7 @@
         <file>GeoNamesSearchView.qml</file>
         <file>RecentGeoNamesOperation.qml</file>
         <file>GeoTimeZoneBox.qml</file>
+        <file>MainScreenLocationBox.qml</file>
     </qresource>
     <qresource prefix="/tr"/>
 </RCC>

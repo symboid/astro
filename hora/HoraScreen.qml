@@ -23,22 +23,22 @@ MainScreen {
     property alias minute: dateTimeParams.minute
     property alias second: dateTimeParams.second
     // geo loacation attributes:
-    property alias geoName: geoName.text
-    property alias geoLatt: geoLatt.arcDegree
-    property alias geoLont: geoLont.arcDegree
-    property alias geoTzDiff: timeZoneBox.diffHours
+    property alias geoName: locationParams.geoName
+    property alias geoLatt: locationParams.geoLatt
+    property alias geoLont: locationParams.geoLont
+    property alias geoTzDiff: locationParams.geoTzDiff
     // other details:
     property alias calendarType: calendarType.currentIndex
 
     function setCurrent()
     {
         dateTimeParams.currentTimerOn = true
-        currentLocTimer.checked = true
+        locationParams.lockedToCurrent = true
     }
     function unsetCurrent()
     {
         dateTimeParams.currentTimerOn = false
-        currentLocTimer.checked = false
+        locationParams.lockedToCurrent = false
     }
     function zoomToDefault()
     {
@@ -54,8 +54,7 @@ MainScreen {
 
     MainScreenDateTimeBox {
         id: dateTimeParams
-        showDetails: details.checked
-
+        showCurrentTimer: details.checked
     }
 
     MainScreenParamBox {
@@ -155,9 +154,9 @@ MainScreen {
                     hour: dateTimeParams.hour
                     minute: dateTimeParams.minute
                     second: dateTimeParams.second
-                    geoLatt: geoLatt.arcDegree
-                    geoLont: geoLont.arcDegree
-                    tzDiff: timeZoneBox.diffHours
+                    geoLatt: locationParams.geoLatt
+                    geoLont: locationParams.geoLont
+                    tzDiff: locationParams.geoTzDiff
                     housesType: housesType.currentToken()
                     withJulianCalendar: calendarType.currentIndex !== 0
 
@@ -283,52 +282,9 @@ MainScreen {
         }
     }
 
-    MainScreenParamBox {
+    MainScreenLocationBox {
         id: locationParams
-        title: qsTr("Location")
-
-        MainScreenTextField {
-            id: geoName
-            enabled: !currentLocTimer.checked
-            button: RoundButton {
-                display: RoundButton.IconOnly
-                padding: 0
-                icon.source: "/icons/globe_3_icon&48.png"
-                icon.color: "darkblue"
-                icon.width: width - leftInset - rightInset
-                icon.height: height - topInset - bottomInset
-                onClicked: geoNameDialog.open()
-            }
-        }
-        ArcCoordBox {
-            id: geoLatt
-            visible: details.checked
-            sectionCalc: GeoLattSectionCalc {}
-            editable: true
-            enabled: !currentLocTimer.checked
-        }
-        ArcCoordBox {
-            id: geoLont
-            visible: details.checked
-            sectionCalc: GeoLontSectionCalc {}
-            editable: true
-            enabled: !currentLocTimer.checked
-        }
-        GeoTimeZoneBox {
-            id: timeZoneBox
-            visible: details.checked
-            enabled: !currentLocTimer.checked
-            geoNameLatt: geoLatt.arcDegree
-            geoNameLont: geoLont.arcDegree
-            currentUnixTime: dateTimeParams.unixTime
-        }
-        MainScreenTimer {
-            id: currentLocTimer
-            text: qsTr("Current")
-            visible: details.checked
-            onTriggered: geoNameDialog.setCurrent()
-            enabled: geoNameDialog.currentIsValid
-        }
+        showDetails: details.checked
     }
 
     MainScreenParamBox {
@@ -377,18 +333,6 @@ MainScreen {
                 text: qsTr("Details")
             }
         }
-    }
-
-    GeoNameDialog {
-        id: geoNameDialog
-        width: Math.min(400,parent.width)
-        height: parent.height
-        edge: Qt.RightEdge
-        geoNameBox: geoName.item
-        geoLattBox: geoLatt
-        geoLontBox: geoLont
-        opacity: 0.875
-        onGeoNameChanged: timeZoneBox.search()
     }
 
     Component.onCompleted: interactive = true
