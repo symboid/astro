@@ -1,5 +1,4 @@
 module Symboid.Astro.Controls
-HoraScreen 1.0 HoraScreen.qml
 HoraTableView 1.0 HoraTableView.qml
 HoraTableLine 1.0 HoraTableLine.qml
 HoraSettingsPane 1.0 HoraSettingsPane.qml

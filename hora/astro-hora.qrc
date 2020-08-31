@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/Symboid/Astro/Hora">
         <file>qmldir</file>
-        <file>HoraScreen.qml</file>
         <file>HoraTableView.qml</file>
         <file>HoraTableLine.qml</file>
         <file>HoraSettingsPane.qml</file>
