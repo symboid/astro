@@ -138,7 +138,7 @@
         <translation>Egyenló</translation>
     </message>
     <message>
-        <location filename="HoraScreen.qml" line="333"/>
+        <location filename="HoraScreen.qml" line="334"/>
         <source>Details</source>
         <translation>Részletek</translation>
     </message>

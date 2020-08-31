@@ -14,6 +14,7 @@ MainScreenParamBox {
     property alias geoTzDiff: timeZoneBox.diffHours
     property bool showDetails: false
     property alias lockedToCurrent: currentLocTimer.checked
+    property alias showCurrentTimer: currentLocTimer.visible
 
     title: qsTr("Location")
 

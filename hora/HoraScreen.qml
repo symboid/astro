@@ -326,7 +326,8 @@ MainScreen {
 
     MainScreenBottomPane {
         referenceItem: details.checked ? houseSystemParams : locationParams
-        controlItem: Frame {
+        controlItem: Pane {
+            padding: 0
             Switch {
                 id: details
                 anchors.centerIn: parent
