@@ -7,6 +7,9 @@
         <file>OrbisSettingsPane.qml</file>
         <file>OrbisSettingsGroup.qml</file>
         <file>OrbisSettingsItem.qml</file>
+        <file>HoraPanel.qml</file>
+        <file>PlanetsTableView.qml</file>
+        <file>HousesTableView.qml</file>
     </qresource>
     <qresource prefix="/tr"/>
     <qresource prefix="/">

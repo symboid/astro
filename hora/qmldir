@@ -5,3 +5,6 @@ HoraSettingsPane 1.0 HoraSettingsPane.qml
 OrbisSettingsPane 1.0 OrbisSettingsPane.qml
 OrbisSettingsGroup 1.0 OrbisSettingsGroup.qml
 OrbisSettingsItem 1.0 OrbisSettingsItem.qml
+HoraPanel 1.0 HoraPanel.qml
+PlanetsTableView 1.0 PlanetsTableView.qml
+HousesTableView 1.0 HousesTableView.qml
