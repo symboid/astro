@@ -7,6 +7,17 @@ Item {
 
     property var headerModel: null
     property var tableModel: null
+    property bool withSpeed: true
+    onWithSpeedChanged: {
+        if (headerModel)
+        {
+            headerModel.withSpeed = withSpeed
+        }
+        if (tableModel)
+        {
+            tableModel.withSpeed = withSpeed
+        }
+    }
 
     property var columnWidths: []
     readonly property int lineWidth: 1

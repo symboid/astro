@@ -36,9 +36,20 @@ public:
     using QAbstractItemModel::endResetModel;
 
 public:
-    Q_PROPERTY(QStringList headerModel READ headerModel CONSTANT)
+    Q_PROPERTY(QStringList headerModel READ headerModel NOTIFY headerModelChanged)
 private:
     virtual QStringList headerModel() const = 0;
+signals:
+    void headerModelChanged();
+
+public:
+    Q_PROPERTY(bool withSpeed MEMBER mWithSpeed WRITE setWithSpeed NOTIFY withSpeedChanged)
+protected:
+    bool mWithSpeed;
+public:
+    void setWithSpeed(bool withSpeed);
+signals:
+    void withSpeedChanged();
 
 public:
     Q_INVOKABLE void update();

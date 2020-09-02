@@ -20,7 +20,7 @@ int QHoraPlanetsModel::rowCount(const QModelIndex& parent) const
 int QHoraPlanetsModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
-    return 4;
+    return mWithSpeed ? 4 : 3;
 }
 
 QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
@@ -51,7 +51,14 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
 
 QStringList QHoraPlanetsModel::headerModel() const
 {
-    return { "", tr("Ecliptic longitude"), tr("Ecliptic lattitude"), tr("Speed") };
+    if (mWithSpeed)
+    {
+        return { "", tr("Ecliptic longitude"), tr("Ecliptic lattitude"), tr("Speed") };
+    }
+    else
+    {
+        return { "", tr("Ecliptic longitude"), tr("Ecliptic lattitude") };
+    }
 }
 
 QHoraHousesModel::QHoraHousesModel(const hor::hora* hora, QObject* parent)
@@ -68,7 +75,7 @@ int QHoraHousesModel::rowCount(const QModelIndex& parent) const
 int QHoraHousesModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
-    return 3;
+    return mWithSpeed ? 3 : 2;
 }
 
 QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
@@ -108,7 +115,14 @@ QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
 
 QStringList QHoraHousesModel::headerModel() const
 {
-    return { "", tr("Ecliptic longitude"), tr("Speed (°/h)") };
+    if (mWithSpeed)
+    {
+        return { "", tr("Ecliptic longitude"), tr("Speed (°/h)") };
+    }
+    else
+    {
+        return { "", tr("Ecliptic longitude") };
+    }
 }
 
 QHoraViewItem::QHoraViewItem(QQuickItem* parent)
