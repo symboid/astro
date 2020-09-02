@@ -13,8 +13,6 @@ Drawer {
     property ArcCoordBox geoLattBox: null
     property ArcCoordBox geoLontBox: null
 
-    Material.background: "#DFEEE5"
-
     signal geoNameChanged
     function setPosition(geoName)
     {

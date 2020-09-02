@@ -19,6 +19,7 @@ Flickable {
     property alias geoLont: horaView.geoLont
     property alias tzDiff: horaView.tzDiff
 
+    property alias displayFlags: horaView.displayFlags
     property alias housesType: horaView.housesType
     property alias withJulianCalendar: horaView.withJulianCalendar
 
@@ -88,7 +89,6 @@ Flickable {
         width: horaSize
         height: horaSize
 
-        displayFlags: HoraView.SHOW_FIXSTARS
         fontPointSize: mainWindow.font.pointSize
 
         BusyIndicator {

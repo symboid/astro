@@ -1,9 +1,11 @@
 
+SWEPH_DIR=$$PWD
+
 defineReplace(copySwephFile) {
     file_name = $$1
     file_ext = $$2
 
-    SRC_FILE = $$shell_path($$PWD/$${file_name}.$${file_ext})
+    SRC_FILE = $$shell_path($$SWEPH_DIR/$${file_name}.$${file_ext})
     TGT_FILE = $$shell_path($$OUT_PWD/$${file_name}.$${file_ext})
 
     eval(copy_$${file_name}.target = $$TGT_FILE)
@@ -28,14 +30,8 @@ defineReplace(copySwephFile) {
         eval(INSTALLS += deploy_$${file_name})
         eval(export(INSTALLS))
     }
+    eval(QMAKE_EXTRA_TARGETS += copy_$${file_name})
+    eval(export(QMAKE_EXTRA_TARGETS))
+
     return (copy_$${file_name})
 }
-
-QMAKE_EXTRA_TARGETS += $$copySwephFile(sefstars,txt)
-QMAKE_EXTRA_TARGETS += $$copySwephFile(seplm30,se1)
-QMAKE_EXTRA_TARGETS += $$copySwephFile(seplm12,se1)
-QMAKE_EXTRA_TARGETS += $$copySwephFile(seplm06,se1)
-QMAKE_EXTRA_TARGETS += $$copySwephFile(sepl_00,se1)
-QMAKE_EXTRA_TARGETS += $$copySwephFile(sepl_06,se1)
-QMAKE_EXTRA_TARGETS += $$copySwephFile(sepl_12,se1)
-QMAKE_EXTRA_TARGETS += $$copySwephFile(sepl_18,se1)
