@@ -3,7 +3,23 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import Symboid.Astro.Hora 1.0
 
-Flickable {
+Item {
+    property bool isLandscape: true
+    Rectangle {
+        height: isLandscape ? parent.height : 1
+        width: isLandscape ? 1 : parent.width
+        color: "lightgray"
+        visible: minHoraSize !== horaSize
+    }
+
+    Rectangle {
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: isLandscape ? parent.height : 1
+        width: isLandscape ? 1 : parent.width
+        color: "lightgray"
+        visible: minHoraSize !== horaSize
+    }
 
     property int minHoraSize: 100
     property int horaSize: minHoraSize
@@ -27,78 +43,84 @@ Flickable {
     property alias housesModel: horaView.housesModel
     property alias interactive: horaView.interactive
 
-    contentWidth: horaView.width
-    contentHeight: horaView.height
-    clip: true
+    Flickable {
+        id: horaFlickable
 
-    function zoomToMinimum()
-    {
-        horaSize = minHoraSize
-        contentX = 0
-        contentY = 0
-    }
-    function zoomToDefault()
-    {
-        horaSize = minHoraSize / horaView.defaultZoom
-        contentX = (horaSize - minHoraSize) / 2
-        contentY = contentX
-    }
-    function zoomTo(zoomPointX,zoomPointY,zoomDelta)
-    {
-        var zoomRatio = (horaSize + zoomDelta) / horaSize
-        if (horaSize + zoomDelta >= minHoraSize)
-        {
-            horaSize += zoomDelta
-            var newContentX = contentX + (zoomRatio - 1) * zoomPointX
-            var newContentY = contentY + (zoomRatio - 1) * zoomPointY
-            contentX = newContentX < 0.0 ? 0.0 : newContentX
-            contentY = newContentY < 0.0 ? 0.0 : newContentY
-//                            console.log("contentCorner = ("+contentX+","+contentY+"), zoom=("+zoomDelta+","+zoomRatio+")")
-        }
-        else
-        {
-            zoomToMinimum()
-        }
-    }
-
-    onWidthChanged:  zoomToDefault()
-    onHeightChanged: zoomToDefault()
-
-    MouseArea {
         anchors.fill: parent
-        onWheel: {
-            var zoomDelta = (wheel.angleDelta.y/500.0) * horaSize
-            zoomTo(wheel.x, wheel.y, zoomDelta)
+
+        contentWidth: horaView.width
+        contentHeight: horaView.height
+        clip: true
+
+        function zoomToMinimum()
+        {
+            horaSize = minHoraSize
+            contentX = 0
+            contentY = 0
         }
-        onClicked: {
-//                            console.log("contentCorner = ("+contentX+","+contentY+")")
+        function zoomToDefault()
+        {
+            horaSize = minHoraSize / horaView.defaultZoom
+            contentX = (horaSize - minHoraSize) / 2
+            contentY = contentX
+        }
+        function zoomTo(zoomPointX,zoomPointY,zoomDelta)
+        {
+            var zoomRatio = (horaSize + zoomDelta) / horaSize
+            if (horaSize + zoomDelta >= minHoraSize)
+            {
+                horaSize += zoomDelta
+                var newContentX = contentX + (zoomRatio - 1) * zoomPointX
+                var newContentY = contentY + (zoomRatio - 1) * zoomPointY
+                contentX = newContentX < 0.0 ? 0.0 : newContentX
+                contentY = newContentY < 0.0 ? 0.0 : newContentY
+    //                            console.log("contentCorner = ("+contentX+","+contentY+"), zoom=("+zoomDelta+","+zoomRatio+")")
+            }
+            else
+            {
+                zoomToMinimum()
+            }
         }
 
-        onDoubleClicked: zoomToDefault()
-    }
-    PinchArea {
-        anchors.fill: parent
-        onPinchUpdated: {
-            var zoomDelta = (pinch.scale > 1 ? 1 : -1) * horaSize / 30
-            zoomTo(pinch.center.x, pinch.center.y, zoomDelta)
+        onWidthChanged:  zoomToDefault()
+        onHeightChanged: zoomToDefault()
+
+        MouseArea {
+            anchors.fill: parent
+            onWheel: {
+                var zoomDelta = (wheel.angleDelta.y/500.0) * horaSize
+                horaFlickable.zoomTo(wheel.x, wheel.y, zoomDelta)
+            }
+            onClicked: {
+    //                            console.log("contentCorner = ("+contentX+","+contentY+")")
+            }
+
+            onDoubleClicked: horaFlickable.zoomToDefault()
         }
-    }
-
-    HoraView {
-        id: horaView
-        width: horaSize
-        height: horaSize
-
-        fontPointSize: mainWindow.font.pointSize
-
-        BusyIndicator {
-            id: horaCalcIndicator
-            width: 100
-            height: 100
-            anchors.centerIn: parent
-            running: false
+        PinchArea {
+            anchors.fill: parent
+            onPinchUpdated: {
+                var zoomDelta = (pinch.scale > 1 ? 1 : -1) * horaSize / 30
+                horaFlickable.zoomTo(pinch.center.x, pinch.center.y, zoomDelta)
+            }
         }
-        onStartCalc: horaCalcIndicator.running = true
-        onStopCalc: horaCalcIndicator.running = false
+
+        HoraView {
+            id: horaView
+            width: horaSize
+            height: horaSize
+
+            fontPointSize: mainWindow.font.pointSize
+
+            BusyIndicator {
+                id: horaCalcIndicator
+                width: 100
+                height: 100
+                anchors.centerIn: parent
+                running: false
+            }
+            onStartCalc: horaCalcIndicator.running = true
+            onStopCalc: horaCalcIndicator.running = false
+        }
     }
 }
