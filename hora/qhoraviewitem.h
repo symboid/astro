@@ -43,6 +43,17 @@ private:
     QStringList headerModel() const override;
 };
 
+class ASTRO_HORA_API QHoraConfig
+{
+    MAIN_OBJECT(QHoraConfig, HoraConfig)
+
+public:
+    typedef QList<hor::planet> Planets;
+    Planets mPlanets;
+    typedef QSet<hor::aspect_type> AspectTypes;
+    AspectTypes mAspectTypes;
+};
+
 class ASTRO_HORA_API QHoraViewItem : public QQuickPaintedItem
 {
     Q_OBJECT

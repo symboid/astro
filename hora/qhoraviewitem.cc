@@ -137,21 +137,12 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
 
-    mHora.add_planet(hor::planet(hor::planet::sun, new OrbisConfig(0)));
-    mHora.add_planet(hor::planet(hor::planet::moon, new OrbisConfig(1)));
-    mHora.add_planet(hor::planet(hor::planet::mercury, new OrbisConfig(2)));
-    mHora.add_planet(hor::planet(hor::planet::venus, new OrbisConfig(3)));
-    mHora.add_planet(hor::planet(hor::planet::mars, new OrbisConfig(4)));
-    mHora.add_planet(hor::planet(hor::planet::jupiter, new OrbisConfig(5)));
-    mHora.add_planet(hor::planet(hor::planet::saturn, new OrbisConfig(6)));
+    arh::main_object<QHoraConfig> horaConfig;
+    for (hor::planet planet : horaConfig->mPlanets)
+    {
+        mHora.add_planet(planet);
+    }
 
-    mHora.add_planet(hor::planet(hor::planet::uranus, new OrbisConfig(7)));
-    mHora.add_planet(hor::planet(hor::planet::neptune, new OrbisConfig(8)));
-    mHora.add_planet(hor::planet(hor::planet::pluto, new OrbisConfig(9)));
-
-    mHora.add_planet(hor::planet(hor::planet::dragon_head, new OrbisConfig(12)));
-//    mHora.add_planet(hor::planet(hor::planet::chiron, new hor::simple_orbis_config(0.5)));
-    mHora.add_planet(hor::planet(hor::planet::lilith, new hor::simple_orbis_config(1.5)));
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
 /*
     mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aries>);
@@ -569,6 +560,7 @@ void QHoraViewItem::paint(QPainter* painter)
         }
 
         // aspect connections
+        arh::main_object<QHoraConfig> horaConfig;
         planet = mHora.planetsBegin();
         pEnd = mHora.planetsEnd();
         while (planet != pEnd)
@@ -580,7 +572,7 @@ void QHoraViewItem::paint(QPainter* painter)
             while (++planet2 != pEnd)
             {
                 hor::aspect_type aspect_conn = planet->aspect_conn(*planet2);
-                if (aspect_conn != hor::none_aspect)
+                if (horaConfig->mAspectTypes.find(aspect_conn) != horaConfig->mAspectTypes.end())
                 {
                     QPointF leftPoint(horaPoint(planetPos._M_lont, ASPECT_DIST));
                     QPointF rightPoint(horaPoint(planet2->pos()._M_lont, ASPECT_DIST));
