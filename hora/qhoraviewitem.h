@@ -11,7 +11,7 @@
 #include "astro/eph/constellation.h"
 #include "astro/db/fixstars.h"
 
-class ASTRO_HORA_API QHoraPlanetsModel : public QHoraItemsModel
+class ASTRO_HORA_API QHoraPlanetsModel : public QEclipticTableModel
 {
     Q_OBJECT
 
@@ -27,7 +27,7 @@ private:
     QStringList headerModel() const override;
 };
 
-class ASTRO_HORA_API QHoraHousesModel : public QHoraItemsModel
+class ASTRO_HORA_API QHoraHousesModel : public QEclipticTableModel
 {
     Q_OBJECT
 
@@ -168,13 +168,13 @@ signals:
     void stopCalc();
 
 public:
-    Q_PROPERTY(QHoraItemsModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
-    Q_PROPERTY(QHoraItemsModel* housesModel READ housesModel NOTIFY housesModelChanged)
+    Q_PROPERTY(QEclipticTableModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
+    Q_PROPERTY(QEclipticTableModel* housesModel READ housesModel NOTIFY housesModelChanged)
 private:
     QHoraPlanetsModel* mPlanetsModel;
     QHoraHousesModel* mHousesModel;
-    QHoraItemsModel* planetsModel() const { return mPlanetsModel; }
-    QHoraItemsModel* housesModel() const { return mHousesModel; }
+    QEclipticTableModel* planetsModel() const { return mPlanetsModel; }
+    QEclipticTableModel* housesModel() const { return mHousesModel; }
 signals:
     void planetsModelChanged();
     void housesModelChanged();

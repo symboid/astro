@@ -11,23 +11,13 @@ hor_ns_begin
 typedef basic_hora<eph_proxy> hora;
 hor_ns_end
 
-class QHoraItemsModel : public QAbstractTableModel
+class QHoraTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    QHoraItemsModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
+    QHoraTableModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
 
-protected:
-    enum {
-        SymbolRole = Qt::UserRole,
-        EclLontRole,
-        EclLattRole,
-        EclSpeedRole,
-    };
-
-public:
-    QHash<int, QByteArray> roleNames() const override;
 protected:
     const hor::hora* mHora;
     QSharedPointer<QAstroFont> mAstroFont;
@@ -43,6 +33,28 @@ signals:
     void headerModelChanged();
 
 public:
+    Q_INVOKABLE void update();
+};
+
+class QEclipticTableModel : public QHoraTableModel
+{
+    Q_OBJECT
+
+public:
+    QEclipticTableModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
+
+protected:
+    enum {
+        SymbolRole = Qt::UserRole,
+        EclLontRole,
+        EclLattRole,
+        EclSpeedRole,
+    };
+
+public:
+    QHash<int, QByteArray> roleNames() const override;
+
+public:
     Q_PROPERTY(bool withSpeed MEMBER mWithSpeed WRITE setWithSpeed NOTIFY withSpeedChanged)
 protected:
     bool mWithSpeed;
@@ -50,9 +62,6 @@ public:
     void setWithSpeed(bool withSpeed);
 signals:
     void withSpeedChanged();
-
-public:
-    Q_INVOKABLE void update();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORAITEMSMODEL_H__

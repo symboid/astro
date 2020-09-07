@@ -2,15 +2,26 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qhoraitemsmodel.h"
 
-QHoraItemsModel::QHoraItemsModel(const hor::hora* hora, QObject* parent)
+QHoraTableModel::QHoraTableModel(const hor::hora* hora, QObject* parent)
     : QAbstractTableModel(parent)
     , mHora(hora)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
+{
+}
+
+void QHoraTableModel::update()
+{
+    beginResetModel();
+    endResetModel();
+}
+
+QEclipticTableModel::QEclipticTableModel(const hor::hora* hora, QObject* parent)
+    : QHoraTableModel(hora, parent)
     , mWithSpeed(true)
 {
 }
 
-QHash<int, QByteArray> QHoraItemsModel::roleNames() const
+QHash<int, QByteArray> QEclipticTableModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractTableModel::roleNames();
     roles[SymbolRole] = "symbol";
@@ -23,7 +34,7 @@ QHash<int, QByteArray> QHoraItemsModel::roleNames() const
     return roles;
 }
 
-void QHoraItemsModel::setWithSpeed(bool withSpeed)
+void QEclipticTableModel::setWithSpeed(bool withSpeed)
 {
     if (mWithSpeed != withSpeed)
     {
@@ -33,10 +44,4 @@ void QHoraItemsModel::setWithSpeed(bool withSpeed)
         emit headerModelChanged();
         endResetModel();
     }
-}
-
-void QHoraItemsModel::update()
-{
-    beginResetModel();
-    endResetModel();
 }

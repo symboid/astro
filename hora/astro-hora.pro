@@ -13,6 +13,7 @@ SOURCES += \
 HEADERS += \
     defs.h \
     init.h \
+    qforecastmodel.h \
     qhoraitemsmodel.h \
     qhorastellium.h \
     qhoraviewitem.h \
