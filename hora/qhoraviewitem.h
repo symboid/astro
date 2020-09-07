@@ -10,6 +10,7 @@
 #include "astro/hora/qhoraitemsmodel.h"
 #include "astro/eph/constellation.h"
 #include "astro/db/fixstars.h"
+#include "astro/hora/qhoraconfig.h"
 
 class ASTRO_HORA_API QHoraPlanetsModel : public QHoraItemsModel
 {
@@ -41,17 +42,6 @@ public:
 
 private:
     QStringList headerModel() const override;
-};
-
-class ASTRO_HORA_API QHoraConfig
-{
-    MAIN_OBJECT(QHoraConfig, HoraConfig)
-
-public:
-    typedef QList<hor::planet> Planets;
-    Planets mPlanets;
-    typedef QSet<hor::aspect_type> AspectTypes;
-    AspectTypes mAspectTypes;
 };
 
 class ASTRO_HORA_API QHoraViewItem : public QQuickPaintedItem
@@ -210,6 +200,7 @@ signals:
 
 private:
     arh::main_object<Fixstars> mFixstars;
+    arh::main_object<QHoraConfig> mHoraConfig;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORAVIEWITEM_H__

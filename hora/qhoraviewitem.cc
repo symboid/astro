@@ -137,8 +137,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
 
-    arh::main_object<QHoraConfig> horaConfig;
-    for (hor::planet planet : horaConfig->mPlanets)
+    for (hor::planet planet : mHoraConfig->mPlanets)
     {
         mHora.add_planet(planet);
     }
@@ -560,7 +559,6 @@ void QHoraViewItem::paint(QPainter* painter)
         }
 
         // aspect connections
-        arh::main_object<QHoraConfig> horaConfig;
         planet = mHora.planetsBegin();
         pEnd = mHora.planetsEnd();
         while (planet != pEnd)
@@ -572,7 +570,7 @@ void QHoraViewItem::paint(QPainter* painter)
             while (++planet2 != pEnd)
             {
                 hor::aspect_type aspect_conn = planet->aspect_conn(*planet2);
-                if (horaConfig->mAspectTypes.find(aspect_conn) != horaConfig->mAspectTypes.end())
+                if (mHoraConfig->mAspectTypes.find(aspect_conn) != mHoraConfig->mAspectTypes.end())
                 {
                     QPointF leftPoint(horaPoint(planetPos._M_lont, ASPECT_DIST));
                     QPointF rightPoint(horaPoint(planet2->pos()._M_lont, ASPECT_DIST));

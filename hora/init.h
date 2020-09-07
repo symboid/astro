@@ -9,6 +9,7 @@
 #include "sdk/hosting/init.h"
 #include "astro/controls/init.h"
 #include "astro/db/init.h"
+#include "astro/hora/qhoraconfig.h"
 #include "astro/hora/qhoraviewitem.h"
 #include "astro/hora/qorbisconfig.h"
 
@@ -30,7 +31,7 @@ struct ASTRO_HORA_API mod_astro_hora : arh::mod_qt<mod_astro_hora>
     arh::mod_init<mod_astro_db> _M_mod_astro_db;
 
     qml_type_register<QHoraViewItem> _M_reg_hora_view;
-    arh::main_object_init<QHoraConfig> _M_reg_hora_config;
+    qml_singleton_init<QHoraConfig> _M_reg_hora_config;
     qml_singleton_init<QOrbisConfig> _M_orbis_config;
 };
 

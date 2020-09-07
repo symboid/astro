@@ -6,6 +6,7 @@ include($${BUILD_ROOT}/sdk/build/qmake/qt-module.pri)
 
 SOURCES += \
     init.cc \
+    qhoraconfig.cc \
     qhoraitemsmodel.cc \
     qhoraviewitem.cc \
     qorbisconfig.cc
@@ -13,6 +14,7 @@ SOURCES += \
 HEADERS += \
     defs.h \
     init.h \
+    qhoraconfig.h \
     qhoraitemsmodel.h \
     qhorastellium.h \
     qhoraviewitem.h \
