@@ -15,6 +15,7 @@ HEADERS += \
     defs.h \
     init.h \
     qhoraconfig.h \
+    qforecastmodel.h \
     qhoraitemsmodel.h \
     qhorastellium.h \
     qhoraviewitem.h \

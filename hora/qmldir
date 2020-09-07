@@ -8,3 +8,4 @@ OrbisSettingsItem 1.0 OrbisSettingsItem.qml
 HoraPanel 1.0 HoraPanel.qml
 PlanetsTableView 1.0 PlanetsTableView.qml
 HousesTableView 1.0 HousesTableView.qml
+ForecastTableView 1.0 ForecastTableView.qml

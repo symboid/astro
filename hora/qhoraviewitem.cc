@@ -7,7 +7,7 @@
 #include "astro/hora/qorbisconfig.h"
 
 QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
-    : QHoraItemsModel(hora, parent)
+    : QEclipticTableModel(hora, parent)
 {
 }
 
@@ -62,7 +62,7 @@ QStringList QHoraPlanetsModel::headerModel() const
 }
 
 QHoraHousesModel::QHoraHousesModel(const hor::hora* hora, QObject* parent)
-    : QHoraItemsModel(hora, parent)
+    : QEclipticTableModel(hora, parent)
 {
 }
 
