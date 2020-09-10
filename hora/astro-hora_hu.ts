@@ -138,13 +138,13 @@
 <context>
     <name>QHoraHousesModel</name>
     <message>
-        <location filename="qhoraviewitem.cc" line="120"/>
-        <location filename="qhoraviewitem.cc" line="124"/>
+        <location filename="qhoraviewitem.cc" line="108"/>
+        <location filename="qhoraviewitem.cc" line="112"/>
         <source>Ecliptic longitude</source>
         <translation>Ekliptikai hosszúság</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="120"/>
+        <location filename="qhoraviewitem.cc" line="108"/>
         <source>Speed (°/h)</source>
         <translation>Sebesség (°/ó)</translation>
     </message>
@@ -152,19 +152,19 @@
 <context>
     <name>QHoraPlanetsModel</name>
     <message>
-        <location filename="qhoraviewitem.cc" line="56"/>
-        <location filename="qhoraviewitem.cc" line="60"/>
+        <location filename="qhoraviewitem.cc" line="50"/>
+        <location filename="qhoraviewitem.cc" line="54"/>
         <source>Ecliptic longitude</source>
         <translation>Ekliptikai hosszúság</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="56"/>
-        <location filename="qhoraviewitem.cc" line="60"/>
+        <location filename="qhoraviewitem.cc" line="50"/>
+        <location filename="qhoraviewitem.cc" line="54"/>
         <source>Ecliptic lattitude</source>
         <translation>Ekliptikai szélesség</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="56"/>
+        <location filename="qhoraviewitem.cc" line="50"/>
         <source>Speed</source>
         <translation>Sebesség</translation>
     </message>

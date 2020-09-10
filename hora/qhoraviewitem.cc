@@ -17,12 +17,6 @@ int QHoraPlanetsModel::rowCount(const QModelIndex& parent) const
     return mHora ? int(mHora->planet_count()) : 0;
 }
 
-int QHoraPlanetsModel::columnCount(const QModelIndex& parent) const
-{
-    Q_UNUSED(parent)
-    return mWithSpeed ? 4 : 3;
-}
-
 QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
 {
     QVariant planetData;
@@ -70,12 +64,6 @@ int QHoraHousesModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
     return mHora ? int(eph::house_system_horizon::house_count) : 0;
-}
-
-int QHoraHousesModel::columnCount(const QModelIndex& parent) const
-{
-    Q_UNUSED(parent)
-    return mWithSpeed ? 3 : 2;
 }
 
 QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const

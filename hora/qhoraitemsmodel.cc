@@ -9,6 +9,21 @@ QHoraTableModel::QHoraTableModel(const hor::hora* hora, QObject* parent)
 {
 }
 
+void QHoraTableModel::setHora(const hor::hora* hora)
+{
+    if (mHora != hora)
+    {
+        mHora = hora;
+        emit horaChanged();
+    }
+}
+
+int QHoraTableModel::columnCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+    return headerModel().size();
+}
+
 void QHoraTableModel::update()
 {
     beginResetModel();

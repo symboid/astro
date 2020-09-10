@@ -5,6 +5,8 @@ import Symboid.Astro.Hora 1.0
 
 Item {
     property bool isLandscape: true
+    property alias view: horaView
+
     Rectangle {
         height: isLandscape ? parent.height : 1
         width: isLandscape ? 1 : parent.width

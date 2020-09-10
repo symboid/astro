@@ -21,7 +21,6 @@ public:
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
@@ -37,7 +36,6 @@ public:
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
@@ -81,6 +79,10 @@ private:
     QPointF mMandalaCenter;
     qreal mMandalaRadius;
     hor::hora mHora;
+
+    Q_PROPERTY(const hor::hora* hora READ hora CONSTANT)
+private:
+    const hor::hora* hora() const { return & mHora; }
 //    QList<eph::constellation*> mConstellations;
 
 private:

@@ -18,12 +18,23 @@ class QHoraTableModel : public QAbstractTableModel
 public:
     QHoraTableModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
 
+public:
+    Q_PROPERTY(const hor::hora* hora MEMBER mHora WRITE setHora NOTIFY horaChanged)
 protected:
     const hor::hora* mHora;
+public:
+    void setHora(const hor::hora* hora);
+signals:
+    void horaChanged();
+
+protected:
     QSharedPointer<QAstroFont> mAstroFont;
 public:
     using QAbstractItemModel::beginResetModel;
     using QAbstractItemModel::endResetModel;
+
+public:
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
 public:
     Q_PROPERTY(QStringList headerModel READ headerModel NOTIFY headerModelChanged)
