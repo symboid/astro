@@ -1,39 +1,8 @@
 
 #include "astro/hora/setup.h"
 #include "astro/hora/forecast.h"
-
 #include <set>
-/*
-class ForcEvent : public Sa::ForcEvent
-{
-public:
-    ForcEvent(const MagItem* sgtor, const eph::time_point& initTime);
 
-private:
-    MagItem* mSgtor;
-    eph::time_point mExactTime;
-    MagItem* mPmsor;
-    eph::time_point mBeginTime;
-    eph::time_point mEndTime;
-
-public:
-    const MagItem* sgtor() const override;
-    const MagItem* pmsor() const override;
-
-public:
-    eph::time_point exactTimePos() const override;
-    eph::time_point beginTimePos() const override;
-    eph::time_point endTimePos() const override;
-    bool lt(const Sa::ForcEvent::Ref rhs) const override;
-
-public:
-    void calc(Forecast::Model* forcModel, MagItems& pmsors);
-
-public:
-    SyString debugStr(bool isShort = false) const override;
-    SyString symbolStr(const AstroFont* symbolFont) const override;
-};
-*/
 ForcEvent::ForcEvent(const MagItem* sgtor, const eph::time_point& initTime)
     : mSgtor(sgtor->clone())
     , mExactTime(initTime)
@@ -98,12 +67,12 @@ QString ForcEvent::debugStr(bool isShort) const
         eventString = QString(mSgtor->isRetrograd() ? "r." : "  ") + mSgtor->name() + " ";
         if (isShort)
         {
-            Aspect::Auto aspect(aspectType());
-            eventString += aspect->debugStr() + " " + mPmsor->name();
+//            Aspect::Auto aspect(aspectType());
+//            eventString += aspect->debugStr() + " " + mPmsor->name();
         }
         else
         {
-            eventString += mPmsor->debugStr() + " " + mExactTime->debugStr();
+//            eventString += mPmsor->debugStr() + " " + mExactTime->debugStr();
         }
     }
     return eventString;
@@ -116,13 +85,13 @@ QString ForcEvent::symbolStr(QAstroFont* symbolFont) const
     {
         QString retrogradStr = symbolFont->retrogradLetter();
 
-        Aspect::Auto aspect(aspectType());
+//        Aspect::Auto aspect(aspectType());
         symbols = mSgtor->symbolStr(symbolFont);
         if (mSgtor->isRetrograd())
         {
             symbols += retrogradStr;
         }
-        symbols += aspect->symbolStr(symbolFont);
+//        symbols += aspect->symbolStr(symbolFont);
         symbols += mPmsor->symbolStr(symbolFont);
         if (mPmsor->isRetrograd())
         {
@@ -155,23 +124,24 @@ void Forecast::addAspectType(hor::aspect_type aspectType)
 
 void Forecast::collectPmsors()
 {
-    MagItemFactory::Auto magItemFactory(mRadixHora);
+    MagItemFactory magItemFactory(mRadixHora);
 
     mPmsors.deleteElements();
 
-    int planetCount = mRadixHora->planetCount();
+    int planetCount = mRadixHora->planet_count();
     for (int p = 0; p < planetCount; ++p)
     {
-        for (AspectType aspectType : mAspectTypes)
+        for (hor::aspect_type aspectType : mAspectTypes)
         {
             mPmsors.insert(magItemFactory->createPlanetItem(p, aspectType));
-            if (aspectType != A_CONJUNCTION && aspectType != A_OPPOSITION)
+            if (aspectType != hor::aspect_type::conjunction &&
+                    aspectType != hor::aspect_type::opposition)
             {
                 mPmsors.insert(magItemFactory->createPlanetItem(p, aspectType, true));
             }
         }
     }
-    for (int h = 1; h <= mRadixHora->houseCount(); ++h)
+    for (int h = 1; h <= mRadixHora->houses().size(); ++h)
     {
         mPmsors.insert(magItemFactory->createHouseCuspItem(h));
         mPmsors.insert(magItemFactory->createSignBorderItem(Se::ZodSign(h)));
@@ -337,14 +307,14 @@ void ForecastTransit::init(const hor::hora* hora)
 ForecastModel::Sgtors ForecastTransit::sgtors(const hor::hora* hora) const
 {
     Sgtors sgtors;
-    MagItemFactory::Auto magItemFactory(hora);
+    MagItemFactory magItemFactory(hora);
 
     std::size_t planetCount = hora->planet_count();
     for (std::size_t planetIndex = 0; planetIndex < planetCount; ++planetIndex)
     {
         if (isPlanetSgtor(hora->planet(planetIndex)))
         {
-            sgtors.push_back(magItemFactory->createPlanetItem(planetIndex));
+            sgtors.push_back(magItemFactory.ícreatePlanetItem(planetIndex));
         }
     }
 
@@ -479,11 +449,11 @@ void ForecastSecDirex::init(const hor::hora* hora)
 ForecastModel::Sgtors ForecastSecDirex::sgtors(const hor::hora* hora) const
 {
     Sgtors sgtors;
-    MagItemFactory::Auto magItemFactory(hora);
+    MagItemFactory magItemFactory(hora);
 
     for (int planetIndex = 0; planetIndex < 7; ++planetIndex)
     {
-        sgtors.push_back(magItemFactory->createPlanetItem(planetIndex));
+        sgtors.push_back(magItemFactory.createPlanetItem(planetIndex));
     }
 /*
     for (int axis = 1; axis < 12; axis += 3)

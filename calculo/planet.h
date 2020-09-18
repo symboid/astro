@@ -25,6 +25,11 @@ enum aspect_type
     aspect_type_count = 7,
 };
 
+const hor::orbis aspect_dist[aspect_type_count] =
+{
+    0, 0.0, 180.0, 120.0, 90.0, 72.0, 60.0
+};
+
 inline aspect_type& operator++(aspect_type& _aspect_type)
 {
     _aspect_type = aspect_type(int(_aspect_type) + 1);
@@ -118,11 +123,6 @@ public:
     template <class _MagPoint>
     aspect_type aspect_conn(const _MagPoint& _mag_point) const
     {
-        const hor::orbis aspect_dist[aspect_type_count] =
-        {
-            0, 0.0, 180.0, 120.0, 90.0, 72.0, 60.0
-        };
-
         hor::orbis dist = this->pos().dist_abs(_mag_point.pos()).to_arc_degree();
 
         aspect_type a = none_aspect, aspect_conn = none_aspect;

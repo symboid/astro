@@ -5,7 +5,6 @@ COMPONENT_NAME=astro
 include($${BUILD_ROOT}/sdk/build/qmake/qt-module.pri)
 
 SOURCES += \
-    forecast.cc \
     init.cc \
     qforecastmodel.cc \
     qhoraconfig.cc \
@@ -15,7 +14,6 @@ SOURCES += \
 
 HEADERS += \
     defs.h \
-    forecast.h \
     init.h \
     qhoraconfig.h \
     qforecastmodel.h \

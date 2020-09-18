@@ -5,6 +5,7 @@
 #include "astro/hora/defs.h"
 #include "astro/calculo/hora.h"
 #include "astro/controls/qastrofont.h"
+#include "astro/hora/magitem.h"
 
 hor_ns_begin
 typedef basic_hora<eph_proxy> hora;
@@ -13,95 +14,6 @@ hor_ns_end
 eph_ns_begin
 typedef basic_time_point<eph_proxy> time_point;
 eph_ns_end
-
-class MagItem
-{
-/// Name of item.
-public:
-    virtual QString name() const = 0;
-    virtual QString debugStr() const = 0;
-    virtual QString symbolStr(const QAstroFont* symbolFont, bool isSgtor = true) const = 0;
-    typedef int Index;
-    virtual Index index() const = 0;
-
-/// Type of item.
-public:
-    enum Type
-    {
-        PLANET,
-        AXIS,
-        HOUSE_CUSP,
-        SIGN_BORDER,
-    };
-    virtual Type type() const = 0;
-
-/// Type of aspect.
-public:
-    virtual hor::aspect_type aspectType() const = 0;
-
-/// Ecliptic position.
-public:
-    virtual eph::ecl_pos calcEclPos(eph::time_point julDay) = 0;
-    virtual eph::ecl_pos eclPos() const = 0;
-    virtual void setEclPos(const eph::ecl_pos& eclPos) = 0;
-    virtual bool lt(const MagItem* rhs) const = 0;
-
-/// Orbis calculation.
-public:
-    virtual hor::orbis orbis() const = 0;
-    virtual hor::orbis orbis(hor::aspect_type aspectType) const = 0;
-    virtual hor::orbis connectingOrbis() const = 0;
-    virtual hor::orbis connectingOrbis(hor::aspect_type aspectType) const = 0;
-    virtual hor::orbis direxOrbis() const = 0;
-
-/// Copying.
-public:
-    virtual MagItem* clone() const = 0;
-
-public:
-    virtual bool isRetrograd() const = 0;
-
-/// Radix attributes.
-    virtual eph::zod radixSign() const = 0;
-    virtual int radixHouse() const = 0;
-    virtual QString radixHouseName() const = 0;
-};
-
-class MagItems : public std::list<MagItem*>
-{
-public:
-    struct Siblings
-    {
-        Siblings(MagItem* prec, MagItem* succ) : mPrec(prec), mSucc(succ) {}
-        MagItem* mPrec;
-        MagItem* mSucc;
-    };
-    inline Siblings findSiblings(const MagItem* item)
-    {
-        iterator precIt = end();
-        iterator succIt = end();
-        iterator it = begin();
-        while (it != end() && (*it)->lt(item))
-        {
-            precIt = it;
-            ++it;
-        }
-        if (precIt != end() && ++(precIt) != end())
-        {
-            succIt = ++(precIt);
-        }
-        // no preceeding item means:
-        // this ecliptic position is lesser than every single item's position in list
-        else
-        {
-            // this means: the preceeding item is the last one:
-            // and the succeeding item is the first one:
-            succIt = begin();
-            precIt = --end();
-        }
-        return Siblings(*precIt, *succIt);
-    }
-};
 
 class ForecastModel;
 
