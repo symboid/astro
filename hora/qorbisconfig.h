@@ -78,7 +78,7 @@ public:
     Q_CONFIG_PROPERTY(double, multiplier, 0.3, tr("Orbis multiplier"))
 };
 
-class QOrbisConfig : public QConfigNode
+class ASTRO_HORA_API QOrbisConfig : public QConfigNode
 {
     Q_OBJECT
     QML_SINGLETON(OrbisConfig)
@@ -102,7 +102,7 @@ public:
     Q_CONFIG_NODE(QSynastryConfigNode, synastry)
 };
 
-class OrbisConfig : public hor::a_orbis_config
+class ASTRO_HORA_API OrbisConfig : public hor::a_orbis_config
 {
 public:
     OrbisConfig(int index);
