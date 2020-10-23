@@ -15,7 +15,19 @@ SettingsPane {
             text: qsTr("Include Lilith")
         }
         CheckBox {
-            text: qsTr("Include Chiron")
+            id: dragonHeadCheck
+            text: qsTr("Include Dragon Head")
+        }
+        CheckBox {
+            enabled: dragonHeadCheck.checked
+            onEnabledChanged: {
+                if (!enabled)
+                {
+                    checked = false
+                }
+            }
+
+            text: qsTr("Include Dragon Tail")
         }
     }
     SettingsGroup {
@@ -30,13 +42,6 @@ SettingsPane {
                 text: qsTr("Include fixed stars")
             }
             hint: qsTr("Fixed stars in conjuction with planets will be denoted.")
-        }
-
-        SettingsItem {
-            setting: CheckBox {
-                text: qsTr("Show constellations")
-            }
-            hint: qsTr("Constellation structures calculated by the approach of Hungarian Astrosophy")
         }
     }
 }

@@ -98,40 +98,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="18"/>
-        <source>Include Chiron</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="22"/>
-        <source>House system</source>
-        <translation type="unfinished">Házrendszer</translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="25"/>
-        <source>Fixed stars</source>
+        <location filename="HoraSettingsPane.qml" line="19"/>
+        <source>Include Dragon Head</source>
+        <oldsource>Include Chiron</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="30"/>
+        <source>Include Dragon Tail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="34"/>
+        <source>House system</source>
+        <translation type="unfinished">Házrendszer</translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="37"/>
+        <source>Fixed stars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="42"/>
         <source>Include fixed stars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="32"/>
+        <location filename="HoraSettingsPane.qml" line="44"/>
         <source>Fixed stars in conjuction with planets will be denoted.</source>
         <oldsource>Only fixed start in conjuction with some planets is shown.</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="37"/>
-        <source>Show constellations</source>
-        <oldsource>Show constellations.</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="39"/>
-        <source>Constellation structures calculated by the approach of Hungarian Astrosophy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
