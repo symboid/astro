@@ -10,5 +10,7 @@
     </qresource>
     <qresource prefix="/">
         <file>icons/zoom_icon&amp;32.png</file>
+        <file>icons/pin_map_down_icon&amp;16.png</file>
+        <file>icons/pin_map_icon&amp;16.png</file>
     </qresource>
 </RCC>

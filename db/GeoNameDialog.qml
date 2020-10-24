@@ -15,13 +15,6 @@ Drawer {
     property ArcCoordBox geoLontBox: null
 
     signal geoNameChanged
-    function setPosition(geoName)
-    {
-        geoNameBox.text = geoName.geoName
-        geoLattBox.arcDegree = geoName.lattArcDegree
-        geoLontBox.arcDegree = geoName.lontArcDegree
-        geoNameChanged()
-    }
 
     property int rowWidth: width
 
@@ -64,8 +57,13 @@ Drawer {
             anchors.right: parent.right
             itemWidth: rowWidth
             editable: false
-            selectable: false
             revertedLayout: true
+            selectable: index === geoListView.currentIndex
+            selectIndicator: Image {
+                anchors.verticalCenter: parent.verticalCenter
+                source: parent.checked ? "/icons/pin_map_down_icon&16.png" : "/icons/pin_map_icon&16.png"
+                verticalAlignment: Image.AlignVCenter
+            }
             onItemClicked: geoListView.currentIndex = index
             onButtonClicked: {
                 geoNameBox.text = name
@@ -183,7 +181,7 @@ Drawer {
         lattArcDegree: currentSource.position.coordinate.latitude
         lontArcDegree: currentSource.position.coordinate.longitude
     }
-
+*/
     PositionSource {
         id: currentSource
         active: true
@@ -210,8 +208,10 @@ Drawer {
     {
         if (currentIsValid)
         {
-            setPosition(currentGeoName)
+            geoNameBox.text = currentLoc.objectCount > 0 ? currentLoc.firstObject.name : ""
+            geoLattBox.arcDegree = currentSource.position.coordinate.latitude
+            geoLontBox.arcDegree = currentSource.position.coordinate.longitude
+            geoNameChanged()
         }
     }
-    */
 }

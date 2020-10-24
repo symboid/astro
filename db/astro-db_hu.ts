@@ -9,20 +9,6 @@
     </message>
 </context>
 <context>
-    <name>GeoNamesSearchBox</name>
-    <message>
-        <source>Search</source>
-        <translation>Keresés</translation>
-    </message>
-</context>
-<context>
-    <name>GeoNamesSearchView</name>
-    <message>
-        <source>Netwok error!</source>
-        <translation>Hálózati hiba!</translation>
-    </message>
-</context>
-<context>
     <name>GeoTimeZoneBox</name>
     <message>
         <source>Time zone diff:</source>
