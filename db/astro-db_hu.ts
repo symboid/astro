@@ -4,20 +4,8 @@
 <context>
     <name>GeoNameDialog</name>
     <message>
-        <source>Geographic name lookup</source>
-        <translation>Földrajzi hely kereső</translation>
-    </message>
-    <message>
-        <source>Current location</source>
-        <translation>Jelenlegi pozíció</translation>
-    </message>
-    <message>
-        <source>Not available!</source>
-        <translation>Nem elérhető!</translation>
-    </message>
-    <message>
-        <source>Recent locations</source>
-        <translation type="unfinished"></translation>
+        <source>Netwok error!</source>
+        <translation type="unfinished">Hálózati hiba!</translation>
     </message>
 </context>
 <context>
