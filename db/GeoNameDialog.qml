@@ -181,7 +181,7 @@ Drawer {
         lattArcDegree: currentSource.position.coordinate.latitude
         lontArcDegree: currentSource.position.coordinate.longitude
     }
-*/
+
     PositionSource {
         id: currentSource
         active: true
@@ -214,4 +214,5 @@ Drawer {
             geoNameChanged()
         }
     }
+    */
 }

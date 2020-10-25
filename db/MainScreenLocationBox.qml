@@ -13,14 +13,11 @@ MainScreenParamBox {
     property alias geoLont: geoLont.arcDegree
     property alias geoTzDiff: timeZoneBox.diffHours
     property bool showDetails: false
-    property alias lockedToCurrent: currentLocTimer.checked
-    property alias showCurrentTimer: currentLocTimer.visible
 
     title: qsTr("Location")
 
     MainScreenTextField {
         id: geoName
-        enabled: !lockedToCurrent
         button: RoundButton {
             display: RoundButton.IconOnly
             padding: 0
@@ -36,29 +33,19 @@ MainScreenParamBox {
         visible: showDetails
         sectionCalc: GeoLattSectionCalc {}
         editable: true
-        enabled: !lockedToCurrent
     }
     ArcCoordBox {
         id: geoLont
         visible: showDetails
         sectionCalc: GeoLontSectionCalc {}
         editable: true
-        enabled: !lockedToCurrent
     }
     GeoTimeZoneBox {
         id: timeZoneBox
         visible: showDetails
-        enabled: !lockedToCurrent
         geoNameLatt: geoLatt.arcDegree
         geoNameLont: geoLont.arcDegree
         currentUnixTime: dateTimeParams.unixTime
-    }
-    MainScreenTimer {
-        id: currentLocTimer
-        text: qsTr("Current")
-        visible: showDetails
-        onTriggered: geoNameDialog.setCurrent()
-        enabled: geoNameDialog.currentIsValid
     }
     GeoNameDialog {
         id: geoNameDialog
