@@ -4,15 +4,14 @@ import QtQuick.Controls 2.5
 import Symboid.Sdk.Hosting 1.0
 import Symboid.Astro.Hora 1.0
 
-SettingsPane {
-    minimumColumnWidth: 300
+SettingsGroup {
     title: OrbisConfig.name
 
     Repeater {
         model: OrbisConfig
         OrbisSettingsGroup {
             aspectConfig: config_item
-            collapsed: true
+            expanded: false
         }
     }
 }

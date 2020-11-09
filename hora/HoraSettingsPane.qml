@@ -3,37 +3,44 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Hosting 1.0
 
-SettingsPane {
+SettingsGroup {
     title: qsTr("Horoscope")
-    SettingsGroup {
+    SettingsGroupExpanding {
         title: qsTr("Planets")
-        CheckBox {
-            text: qsTr("Include Uranus, Neptune and Pluto")
-            checked: true
+        SettingsItem {
+            setting: CheckBox {
+                text: qsTr("Include Uranus, Neptune and Pluto")
+                checked: true
+            }
         }
-        CheckBox {
-            text: qsTr("Include Lilith")
+        SettingsItem {
+            setting: CheckBox {
+                text: qsTr("Include Lilith")
+            }
         }
-        CheckBox {
-            id: dragonHeadCheck
-            text: qsTr("Include Dragon Head")
+        SettingsItem {
+            setting: CheckBox {
+                id: dragonHeadCheck
+                text: qsTr("Include Dragon Head")
+            }
         }
-        CheckBox {
-            enabled: dragonHeadCheck.checked
-            onEnabledChanged: {
-                if (!enabled)
-                {
-                    checked = false
+        SettingsItem {
+            setting: CheckBox {
+                text: qsTr("Include Dragon Tail")
+                enabled: dragonHeadCheck.checked
+                onEnabledChanged: {
+                    if (!enabled)
+                    {
+                        checked = false
+                    }
                 }
             }
-
-            text: qsTr("Include Dragon Tail")
         }
     }
-    SettingsGroup {
+    SettingsGroupExpanding {
         title: qsTr("House system")
     }
-    SettingsGroup {
+    SettingsGroupExpanding {
         title: qsTr("Fixed stars")
 
         SettingsItem {
