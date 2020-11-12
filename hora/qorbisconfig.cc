@@ -5,6 +5,14 @@
 QOrbisConfig::QOrbisConfig(QConfigNode* parentNode)
     : QConfigNode(tr("Orbis"), parentNode)
 {
+    QSettings settings;
+    loadFromSettings(&settings);
+}
+
+QOrbisConfig::~QOrbisConfig()
+{
+    QSettings settings;
+    saveToSettings(&settings);
 }
 
 OrbisConfig::OrbisConfig(int index)

@@ -84,6 +84,7 @@ class ASTRO_HORA_API QOrbisConfig : public QConfigNode
     QML_SINGLETON(OrbisConfig)
 public:
     QOrbisConfig(QConfigNode* parentNode);
+    ~QOrbisConfig();
 
     Q_CONFIG_NODE(QConjunctionConfigNode, conjunction)
     Q_CONFIG_NODE(QOppositionConfigNode, opposition)
