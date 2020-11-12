@@ -4,7 +4,6 @@
         <file>HoraTableView.qml</file>
         <file>HoraTableLine.qml</file>
         <file>HoraSettingsPane.qml</file>
-        <file>OrbisSettingsPane.qml</file>
         <file>OrbisSettingsGroup.qml</file>
         <file>OrbisSettingsItem.qml</file>
         <file>HoraPanel.qml</file>

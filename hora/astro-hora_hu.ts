@@ -77,54 +77,55 @@
 <context>
     <name>HoraSettingsPane</name>
     <message>
-        <location filename="HoraSettingsPane.qml" line="7"/>
+        <location filename="HoraSettingsPane.qml" line="8"/>
         <source>Horoscope</source>
         <oldsource>Horoscope elements</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="9"/>
+        <location filename="HoraSettingsPane.qml" line="10"/>
+        <location filename="HoraSettingsPane.qml" line="12"/>
         <source>Planets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="12"/>
+        <location filename="HoraSettingsPane.qml" line="15"/>
         <source>Include Uranus, Neptune and Pluto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="18"/>
+        <location filename="HoraSettingsPane.qml" line="21"/>
         <source>Include Lilith</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="24"/>
+        <location filename="HoraSettingsPane.qml" line="27"/>
         <source>Include Dragon Head</source>
         <oldsource>Include Chiron</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="29"/>
+        <location filename="HoraSettingsPane.qml" line="32"/>
         <source>Include Dragon Tail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="41"/>
+        <location filename="HoraSettingsPane.qml" line="45"/>
         <source>House system</source>
         <translation type="unfinished">Házrendszer</translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="44"/>
+        <location filename="HoraSettingsPane.qml" line="48"/>
         <source>Fixed stars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="49"/>
+        <location filename="HoraSettingsPane.qml" line="53"/>
         <source>Include fixed stars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="51"/>
+        <location filename="HoraSettingsPane.qml" line="55"/>
         <source>Fixed stars in conjuction with planets will be denoted.</source>
         <oldsource>Only fixed start in conjuction with some planets is shown.</oldsource>
         <translation type="unfinished"></translation>
