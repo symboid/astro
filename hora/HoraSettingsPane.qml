@@ -65,7 +65,6 @@ SettingsGroup {
                 model: OrbisConfig
                 OrbisSettingsGroup {
                     aspectConfig: config_item
-                    expanded: false
                 }
             }
         }
