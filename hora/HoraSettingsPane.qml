@@ -41,6 +41,25 @@ SettingsGroup {
             }
         }
     }
+    SettingsGroupLink {
+        title: AspectConfig.name
+        settingsPane: SettingsPane {
+            title: AspectConfig.name
+            Repeater {
+                model: AspectConfig
+                SettingsItem {
+                    setting: CheckBox {
+                        text: config_item.name
+                        checked: config_item.value
+                        onCheckedChanged: {
+                            config_item.value = checked
+                            checked = Qt.binding(function(){return config_item.value})
+                        }
+                    }
+                }
+            }
+        }
+    }
     SettingsGroupExpanding {
         title: qsTr("House system")
     }

@@ -8,11 +8,11 @@
 
 #define Q_ORBIS_CONFIG_NODE(Name, sunOrbis,monOrbis,merOrbis,venOrbis,marOrbis, \
                                         jupOrbis,satOrbis,uraOrbis,nepOrbis,pluOrbis) \
-class Q##Name##ConfigNode : public QConfigNode \
+class Q##Name##OrbisConfigNode : public QConfigNode \
 { \
     Q_OBJECT \
 public: \
-    Q##Name##ConfigNode(QConfigNode* parent, const char* parentSignal) \
+    Q##Name##OrbisConfigNode(QConfigNode* parent, const char* parentSignal) \
         : QConfigNode(tr(#Name), parent, parentSignal) \
     { \
     } \
@@ -41,20 +41,20 @@ Q_ORBIS_CONFIG_NODE(Conjunction, 4.0, 4.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.5, 2.
 Q_ORBIS_CONFIG_NODE(Opposition,  4.0, 4.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.5, 2.5)
 Q_ORBIS_CONFIG_NODE(Trigon,      3.5, 3.5, 3.0, 3.0, 2.5, 2.5, 2.5, 2.5, 2.0, 2.0)
 Q_ORBIS_CONFIG_NODE(Quadrat,     3.5, 3.5, 3.0, 3.0, 2.5, 2.5, 2.5, 2.5, 2.0, 2.0)
-Q_ORBIS_CONFIG_NOD1(Quintil,     1.0)
-Q_ORBIS_CONFIG_NODE(Sextil,      3.0, 3.0, 2.5, 2.5, 2.0, 2.0, 2.0, 2.0, 1.5, 1.5)
+Q_ORBIS_CONFIG_NOD1(Quintile,    1.0)
+Q_ORBIS_CONFIG_NODE(Sextile,     3.0, 3.0, 2.5, 2.5, 2.0, 2.0, 2.0, 2.0, 1.5, 1.5)
 
-Q_ORBIS_CONFIG_NOD1(Semisextil,  1.0)
+Q_ORBIS_CONFIG_NOD1(Semisextile, 1.0)
 Q_ORBIS_CONFIG_NOD1(Quincunx,    1.0)
 Q_ORBIS_CONFIG_NOD1(Semiquadrat, 1.0)
 Q_ORBIS_CONFIG_NOD1(Sesquiquadrat, 1.0)
-Q_ORBIS_CONFIG_NOD1(Biquintil,   1.0)
+Q_ORBIS_CONFIG_NOD1(Biquintile,  1.0)
 
-class QHouseCuspConfigNode : public QConfigNode
+class QHouseCuspOrbisConfigNode : public QConfigNode
 {
     Q_OBJECT
 public:
-    QHouseCuspConfigNode(QConfigNode* parentNode, const char* parentSignal)
+    QHouseCuspOrbisConfigNode(QConfigNode* parentNode, const char* parentSignal)
         : QConfigNode(tr("Before house cusp"), parentNode, parentSignal)
     {
     }
@@ -66,18 +66,6 @@ public:
     Q_CONFIG_PROPERTY(double, other, 2.0, tr("Other"))
 };
 
-class QSynastryConfigNode : public QConfigNode
-{
-    Q_OBJECT
-public:
-    QSynastryConfigNode(QConfigNode* parentNode, const char* parentSignal)
-        : QConfigNode(tr("Synastry"), parentNode, parentSignal)
-    {
-    }
-
-    Q_CONFIG_PROPERTY(double, multiplier, 0.3, tr("Orbis multiplier"))
-};
-
 class ASTRO_HORA_API QOrbisConfig : public QConfigNode
 {
     Q_OBJECT
@@ -86,21 +74,20 @@ public:
     QOrbisConfig(QConfigNode* parentNode);
     ~QOrbisConfig();
 
-    Q_CONFIG_NODE(QConjunctionConfigNode, conjunction)
-    Q_CONFIG_NODE(QOppositionConfigNode, opposition)
-    Q_CONFIG_NODE(QTrigonConfigNode, trigon)
-    Q_CONFIG_NODE(QQuadratConfigNode, quadrat)
-    Q_CONFIG_NODE(QQuintilConfigNode, quintil)
-    Q_CONFIG_NODE(QSextilConfigNode, sextil)
+    Q_CONFIG_NODE(QConjunctionOrbisConfigNode, conjunction)
+    Q_CONFIG_NODE(QOppositionOrbisConfigNode, opposition)
+    Q_CONFIG_NODE(QTrigonOrbisConfigNode, trigon)
+    Q_CONFIG_NODE(QQuadratOrbisConfigNode, quadrat)
+    Q_CONFIG_NODE(QQuintileOrbisConfigNode, quintil)
+    Q_CONFIG_NODE(QSextileOrbisConfigNode, sextil)
 
-    Q_CONFIG_NODE(QSemisextilConfigNode, semisextil)
-    Q_CONFIG_NODE(QQuincunxConfigNode, quincunx)
-    Q_CONFIG_NODE(QSemiquadratConfigNode, semiquadrat)
-    Q_CONFIG_NODE(QSesquiquadratConfigNode, sesquiquadrat)
-    Q_CONFIG_NODE(QBiquintilConfigNode, biquintil)
+    Q_CONFIG_NODE(QSemisextileOrbisConfigNode, semisextil)
+    Q_CONFIG_NODE(QQuincunxOrbisConfigNode, quincunx)
+    Q_CONFIG_NODE(QSemiquadratOrbisConfigNode, semiquadrat)
+    Q_CONFIG_NODE(QSesquiquadratOrbisConfigNode, sesquiquadrat)
+    Q_CONFIG_NODE(QBiquintileOrbisConfigNode, biquintil)
 
-    Q_CONFIG_NODE(QHouseCuspConfigNode, house_cusp)
-    Q_CONFIG_NODE(QSynastryConfigNode, synastry)
+    Q_CONFIG_NODE(QHouseCuspOrbisConfigNode, house_cusp)
 };
 
 class ASTRO_HORA_API OrbisConfig : public hor::a_orbis_config
