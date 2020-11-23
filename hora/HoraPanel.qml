@@ -112,8 +112,6 @@ Item {
             width: horaSize
             height: horaSize
 
-            fontPointSize: mainWindow.font.pointSize
-
             BusyIndicator {
                 id: horaCalcIndicator
                 width: 100

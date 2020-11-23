@@ -4,6 +4,7 @@
 #include <QPainter>
 #include "astro/hora/qhorastellium.h"
 #include <QFontMetrics>
+#include "astro/hora/qaspectconfig.h"
 #include "astro/hora/qorbisconfig.h"
 
 QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
@@ -131,36 +132,6 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     }
 
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
-/*
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aries>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::taurus>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::gemini>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::cancer>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::leo>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::virgo>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::libra>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::escorpio>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::sagittarius>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::capricornus>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aquarius>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::pisces>);
-
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::orion>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::serpens_caput>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::ophiuchus>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::serpens_cauda>);
-
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::cetus>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::eridanus>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::monoceros>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::hydra>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::sextans>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::crater>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::corvus>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::aquila>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::delphinus>);
-    mConstellations.push_back(new eph::basic_constellation<swe::proxy, eph::equuleus>);
-    */
 }
 
 void QHoraViewItem::calcMandalaGeometry()
@@ -482,8 +453,9 @@ void QHoraViewItem::paint(QPainter* painter)
 
         // zodiac sign domains
         painter->setPen(QPen(QColor(0,0,0), 1.5));
-        mAstroFont->setPointSize(mFontPointSize);
-        painter->setFont(*mAstroFont);
+        QFont zodiacFont(*mAstroFont);
+        zodiacFont.setPixelSize(oneDegree() * 4);
+        painter->setFont(zodiacFont);
         QFontMetrics fontMetrics(*mAstroFont);
         for (std::size_t z = 1; z <= eph::house_system_mundan::house_count; ++z)
         {
@@ -492,7 +464,7 @@ void QHoraViewItem::paint(QPainter* painter)
             painter->drawLine(horaPoint(zodSignLont, 1.0),
                               horaPoint(zodSignLont, isDisplayFlagSet(SHOW_FIXSTARS) ? 1.10 : 1.15));
 
-            QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.05));
+            QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.07));
             QSize textSize = fontMetrics.size(0, mAstroFont->zodLetter(eph::zod(z)));
             QRectF zodSignRect(zodSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
                                zodSignPoint + QPointF(textSize.width() / 2, textSize.height() / 2));
@@ -501,6 +473,13 @@ void QHoraViewItem::paint(QPainter* painter)
         }
 
         // houses
+//        painter->setPen(QPen(QColor(0x0,0x0,0x80), 0.5));
+//        qreal housesRadius = eclipticRadius() * (EARTH_DIST + 0.08);
+//        painter->drawEllipse(mMandalaCenter, housesRadius, housesRadius);
+        QFont housesFont;
+        housesFont.setPixelSize(oneDegree() * 3);
+        painter->setFont(housesFont);
+
         const std::vector<eph::house_cusp>& houses = mHora.houses();
         for (std::size_t h = 1; h < houses.size(); ++h)
         {
@@ -511,6 +490,29 @@ void QHoraViewItem::paint(QPainter* painter)
             housePen.setColor(isAxis ? QColor(0x80,0x0,0x00) : QColor(0x0,0x0,0x80));
             painter->setPen(housePen);
             painter->drawLine(horaPoint(houseCusp.pos()._M_lont, isAxis ? 1.15 : 1.0), horaPoint(houseCusp.pos()._M_lont, EARTH_DIST));
+            if (h == 1 || h == 10)
+            {
+                painter->drawLine(horaPoint(houseCusp.pos()._M_lont, 1.17), horaPoint(houseCusp.pos()._M_lont - 0.7, 1.10));
+                painter->drawLine(horaPoint(houseCusp.pos()._M_lont, 1.17), horaPoint(houseCusp.pos()._M_lont + 0.7, 1.10));
+            }
+
+            housePen.setColor(QColor(0x0,0x0,0x00));
+            painter->setPen(housePen);
+            QString houseSign;
+            switch (h) {
+            case 1: houseSign = "I."; break;
+            case 4: houseSign = "IV."; break;
+            case 7: houseSign = "VII."; break;
+            case 10: houseSign = "X."; break;
+            default: houseSign = QString::number(h) + ".";
+            }
+            eph::ecl_lont houseSignLont = houseCusp.pos()._M_lont;
+            QPointF houseSignPoint(horaPoint(houseSignLont + 8.0, EARTH_DIST + 0.04));
+            QSize textSize = fontMetrics.size(0, houseSign);
+            QRectF houseSignRect(houseSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
+                               houseSignPoint + QPointF(textSize.width() / 2, textSize.height() / 2));
+            painter->drawText(houseSignRect, Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextDontClip,
+                              houseSign);
         }
 
         QFont planetFont = *mAstroFont;
@@ -710,6 +712,7 @@ void QHoraViewItem::setInteractive(bool isInteractive)
 
 void QHoraViewItem::onInteractiveChanged()
 {
+    arh::main_object<QAspectConfig> aspectConfig;
     arh::main_object<QOrbisConfig> orbisConfig;
     if (mIsInteractive)
     {
@@ -724,6 +727,7 @@ void QHoraViewItem::onInteractiveChanged()
         connect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
         connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
         connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
+        connect(aspectConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
         connect(orbisConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
         recalc();
     }
@@ -781,25 +785,11 @@ void QHoraViewItem::recalc()
         mHora.calc<eph::house_system_placidus>(horaCoords);
     }
     mHora.calc_fixstars(horaCoords, *mFixstars.get());
-    /*
-    for (eph::constellation* constellation : mConstellations)
-    {
-        constellation->calc_alpha_pos(horaCoords._M_calendar_coords);
-    }
-*/
+
     mPlanetsModel->endResetModel();
     mHousesModel->endResetModel();
     update();
     emit stopCalc();
-}
-
-void QHoraViewItem::setFontPointSize(int fontPointSize)
-{
-    if (mFontPointSize != fontPointSize)
-    {
-        mFontPointSize = fontPointSize;
-        emit fontPointSizeChanged();
-    }
 }
 
 void QHoraViewItem::setDisplayFlags(DisplayFlags displayFlags)

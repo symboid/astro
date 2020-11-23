@@ -123,7 +123,6 @@ public:
     Q_PROPERTY(qreal tzDiff MEMBER mTzDiff WRITE setTzDiff NOTIFY tzDiffChanged)
     Q_PROPERTY(QString housesType MEMBER mHousesType WRITE setHousesType NOTIFY housesTypeChanged)
     Q_PROPERTY(bool withJulianCalendar MEMBER mCalendarIsJulian WRITE setCalendarIsJulian NOTIFY withJulianCalendarChanged)
-    Q_PROPERTY(int fontPointSize MEMBER mFontPointSize WRITE setFontPointSize NOTIFY fontPointSizeChanged)
 public:
     void setYear(int year);
     void setMonth(int month);
@@ -136,7 +135,6 @@ public:
     void setTzDiff(qreal tzDiff);
     void setHousesType(const QString& housesType);
     void setCalendarIsJulian(bool calendarIsJulian);
-    void setFontPointSize(int fontPointSize);
 private:
     int mYear;
     int mMonth;
@@ -149,7 +147,6 @@ private:
     qreal mTzDiff;
     QString mHousesType;
     bool mCalendarIsJulian;
-    int mFontPointSize;
 signals:
     void yearChanged();
     void monthChanged();

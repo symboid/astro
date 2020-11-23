@@ -116,11 +116,11 @@ public:
                     {
                         conjuncting = (planet->pos().dist_abs(fixstar_pos) < fixstar_orbis);
                     }
-                    for (std::vector<eph::house_cusp>::const_iterator house = _M_houses.begin(), h_end = _M_houses.end();
-                            !conjuncting && house != h_end; ++house)
-                    {
-                        conjuncting = (house->pos().dist_abs(fixstar_pos) < fixstar_orbis);
-                    }
+//                    for (std::vector<eph::house_cusp>::const_iterator house = _M_houses.begin(), h_end = _M_houses.end();
+//                            !conjuncting && house != h_end; ++house)
+//                    {
+//                        conjuncting = (house->pos().dist_abs(fixstar_pos) < fixstar_orbis);
+//                    }
                     if (conjuncting)
                     {
                         _M_fixstars.push_back(fixstar);

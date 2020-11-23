@@ -22,7 +22,7 @@ void QFixstar::addName(const QString& name)
 
 std::string QFixstar::name() const
 {
-    return mNames.size() > 0 ? mNames.front().toStdString() : _M_nomenclature;
+    return mNames.size() > 0 ? mNames.front().toStdString() : "";//_M_nomenclature;
 }
 
 std::string QFixstar::consltn() const
