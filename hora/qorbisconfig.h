@@ -69,9 +69,8 @@ public:
 class ASTRO_HORA_API QOrbisConfig : public QConfigNode
 {
     Q_OBJECT
-    QML_SINGLETON(OrbisConfig)
 public:
-    QOrbisConfig(QConfigNode* parentNode);
+    QOrbisConfig(QConfigNode* parentNode, const char* parentSignal);
     ~QOrbisConfig();
 
     Q_CONFIG_NODE(QConjunctionOrbisConfigNode, conjunction)
@@ -93,9 +92,9 @@ public:
 class ASTRO_HORA_API OrbisConfig : public hor::a_orbis_config
 {
 public:
-    OrbisConfig(int index);
+    OrbisConfig(QOrbisConfig* orbisConfig, int index);
 private:
-    arh::main_object<QOrbisConfig> mOrbisConfig;
+    QOrbisConfig* mOrbisConfig;
     QConfigNode* mAspectConfigs[hor::aspect_type_count];
 public:
     hor::orbis aspect_orbis(hor::aspect_type _aspect_type) const override;

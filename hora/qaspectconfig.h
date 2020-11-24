@@ -8,9 +8,8 @@
 class ASTRO_HORA_API QAspectConfig : public QConfigNode
 {
     Q_OBJECT
-    QML_SINGLETON(AspectConfig)
 public:
-    QAspectConfig(QConfigNode* parentNode);
+    QAspectConfig(QConfigNode* parentNode, const char* parentSignal);
     ~QAspectConfig();
 
     Q_CONFIG_PROPERTY(bool, conjunction, true, tr("Conjunction"))

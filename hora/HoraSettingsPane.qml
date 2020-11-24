@@ -42,11 +42,11 @@ SettingsGroup {
         }
     }
     SettingsGroupLink {
-        title: AspectConfig.name
+        title: HoraConfig.aspects.name
         settingsPane: SettingsPane {
-            title: AspectConfig.name
+            title: HoraConfig.aspects.name
             Repeater {
-                model: AspectConfig
+                model: HoraConfig.aspects
                 SettingsItem {
                     setting: CheckBox {
                         text: config_item.name
@@ -75,13 +75,13 @@ SettingsGroup {
         }
     }
     SettingsGroupLink {
-        title: OrbisConfig.name
+        title: HoraConfig.orbis.name
 
         settingsPane: SettingsPane {
-            title: OrbisConfig.name
+            title: HoraConfig.orbis.name
             id: orbisSettingsPane
             Repeater {
-                model: OrbisConfig
+                model: HoraConfig.orbis
                 OrbisSettingsGroup {
                     aspectConfig: config_item
                 }

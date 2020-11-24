@@ -712,8 +712,6 @@ void QHoraViewItem::setInteractive(bool isInteractive)
 
 void QHoraViewItem::onInteractiveChanged()
 {
-    arh::main_object<QAspectConfig> aspectConfig;
-    arh::main_object<QOrbisConfig> orbisConfig;
     if (mIsInteractive)
     {
         connect(this, SIGNAL(yearChanged()), this, SLOT(recalc()));
@@ -727,8 +725,8 @@ void QHoraViewItem::onInteractiveChanged()
         connect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
         connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
         connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
-        connect(aspectConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
-        connect(orbisConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
+        connect(mHoraConfig->aspects(), SIGNAL(changed()), this, SLOT(recalc()));
+        connect(mHoraConfig->orbis(), SIGNAL(changed()), this, SLOT(recalc()));
         recalc();
     }
     else
@@ -744,7 +742,8 @@ void QHoraViewItem::onInteractiveChanged()
         disconnect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
         disconnect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
         disconnect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
-        disconnect(orbisConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
+        disconnect(mHoraConfig->aspects(), SIGNAL(changed()), this, SLOT(recalc()));
+        disconnect(mHoraConfig->orbis(), SIGNAL(changed()), this, SLOT(recalc()));
     }
 }
 

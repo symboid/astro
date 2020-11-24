@@ -139,58 +139,58 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="16"/>
+        <location filename="qaspectconfig.h" line="15"/>
         <source>Conjunction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="17"/>
+        <location filename="qaspectconfig.h" line="16"/>
         <source>Opposition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="18"/>
+        <location filename="qaspectconfig.h" line="17"/>
         <source>Trigon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="19"/>
+        <location filename="qaspectconfig.h" line="18"/>
         <source>Quadrat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="20"/>
+        <location filename="qaspectconfig.h" line="19"/>
         <source>Sextile</source>
         <oldsource>Quintil</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="21"/>
+        <location filename="qaspectconfig.h" line="20"/>
         <source>Quintile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="23"/>
+        <location filename="qaspectconfig.h" line="22"/>
         <source>Semi-sextile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="24"/>
+        <location filename="qaspectconfig.h" line="23"/>
         <source>Quincunx</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="25"/>
+        <location filename="qaspectconfig.h" line="24"/>
         <source>Semi-quadrat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="26"/>
+        <location filename="qaspectconfig.h" line="25"/>
         <source>Sesqui-quadrat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="27"/>
+        <location filename="qaspectconfig.h" line="26"/>
         <source>Biquintile</source>
         <translation type="unfinished"></translation>
     </message>

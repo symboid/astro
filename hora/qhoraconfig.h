@@ -5,11 +5,13 @@
 #include "astro/hora/defs.h"
 #include "sdk/arch/mainobject.h"
 #include "astro/calculo/hora.h"
-#include "sdk/controls/qjsonsyncnode.h"
+#include "sdk/hosting/qconfig.h"
+#include "astro/hora/qaspectconfig.h"
+#include "astro/hora/qorbisconfig.h"
 #include <QList>
 #include <QSet>
 
-class ASTRO_HORA_API QHoraConfig : public QJsonSyncFile
+class ASTRO_HORA_API QHoraConfig : public QConfigNode
 {
     Q_OBJECT
     QML_SINGLETON(HoraConfig)
@@ -23,6 +25,9 @@ public:
     Planets mPlanets;
     typedef QSet<hor::aspect_type> AspectTypes;
     AspectTypes mAspectTypes;
+
+    Q_CONFIG_NODE(QAspectConfig, aspects)
+    Q_CONFIG_NODE(QOrbisConfig, orbis)
 };
 
 
