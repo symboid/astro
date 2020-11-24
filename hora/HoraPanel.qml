@@ -37,7 +37,6 @@ Item {
     property alias geoLont: horaView.geoLont
     property alias tzDiff: horaView.tzDiff
 
-    property alias displayFlags: horaView.displayFlags
     property alias housesType: horaView.housesType
     property alias withJulianCalendar: horaView.withJulianCalendar
 
@@ -121,6 +120,11 @@ Item {
             }
             onStartCalc: horaCalcIndicator.running = true
             onStopCalc: horaCalcIndicator.running = false
+        }
+
+        Connections {
+            target: HoraConfig.fixstars
+            onEnabledChanged: horaFlickable.zoomToDefault()
         }
     }
 }

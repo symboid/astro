@@ -4,8 +4,6 @@
 #include <QPainter>
 #include "astro/hora/qhorastellium.h"
 #include <QFontMetrics>
-#include "astro/hora/qaspectconfig.h"
-#include "astro/hora/qorbisconfig.h"
 
 QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
     : QEclipticTableModel(hora, parent)
@@ -149,7 +147,7 @@ qreal QHoraViewItem::defaultZoom() const
 
 qreal QHoraViewItem::eclipticRatio() const
 {
-    return isDisplayFlagSet(SHOW_FIXSTARS) ? 0.55 : 0.85;
+    return mHoraConfig->fixstars()->enabled() ? 0.55 : 0.85;
 }
 
 qreal QHoraViewItem::eclipticRadius() const
@@ -298,71 +296,7 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& plane
     painter->drawText(planetSignRect, Qt::AlignLeft | Qt::AlignVCenter | Qt::TextDontClip, planetText);
 
 }
-/*
-void QHoraViewItem::drawConstellation(QPainter* painter, const eph::constellation* constellation)
-{
-    const qreal beginLont180 = constellation->begin_lont() - mandalaLeft() + 180.0;
-    qreal cornerSize = 2.0;
-    qreal cornerPixelSize = sin(cornerSize / 180.0 * PI) * eclipticRadius() * 1.15;
 
-    QColor color;
-    qreal offset = (constellation->_M_sphere - 1) * 2.0 * cornerPixelSize;
-    switch (constellation->_M_type)
-    {
-    case eph::constellation::RED:    color = 0xFF8888; break;
-    case eph::constellation::BLUE:   color = 0x8888FF; break;
-    case eph::constellation::GREEN:  color = 0x44FF44; break;
-    case eph::constellation::BROWN:  color = 0x888855; break;
-    case eph::constellation::BLACK:  color = 0x888888; break;
-    case eph::constellation::PURPLE: color = 0xFF88FF; break;
-    }
-    QPen constellationPen(color, 1.5, constellation->_M_type == eph::constellation::GREEN ? Qt::SolidLine : Qt::SolidLine);
-    painter->setPen(constellationPen);
-
-    qreal innerRatio = eclipticRatio()*1.15;
-    QRectF innerRect(
-            boundingRect().x() + boundingRect().width() * (1.0-innerRatio)/2.0 - offset,
-            boundingRect().y() + boundingRect().height() * (1.0-innerRatio)/2.0 - offset,
-            boundingRect().width() * innerRatio + 2.0*offset,
-            boundingRect().height() * innerRatio + 2.0*offset);
-    painter->drawArc(innerRect, int((beginLont180+cornerSize) * 16.0), int((constellation->_M_length-2.0*cornerSize) * 16.0));
-
-    painter->save();
-    painter->translate(boundingRect().center());
-
-    bool isUpper = mandalaLeft() - constellation->begin_lont() -constellation->_M_length/2.0 < 180.0;
-    qreal signum = isUpper ? -1.0 : 1.0;
-    qreal baseAngle = mandalaLeft() - constellation->begin_lont() + (isUpper ? -90.0 : 90.0);
-    qreal upperEdge = isUpper ? (-eclipticRadius()*1.38) : (eclipticRadius()*1.15+cornerPixelSize+offset);
-    qreal lowerEdge = isUpper ? -(eclipticRadius()*1.15+offset+cornerPixelSize) : (eclipticRadius()*1.38);
-    qreal stickFrom = isUpper ? lowerEdge : upperEdge;
-    qreal stickTo   = isUpper ? lowerEdge - cornerPixelSize : upperEdge + cornerPixelSize;
-
-    // draw begin of constellation
-    painter->rotate(baseAngle);
-//    painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
-    painter->drawLine(QPointF(0.0, stickFrom), QPointF(0.0, stickTo));
-    QRectF cornerRect(0,signum*(eclipticRadius()*1.15+offset),signum*2.0*cornerPixelSize,signum*2.0*cornerPixelSize);
-    painter->drawArc(cornerRect, signum*90*16, 90*16);
-
-    // draw constellation text
-    painter->rotate(-constellation->_M_length/2.0);
-    const QString name(constellation->_M_name.c_str());
-    const QRectF textBoundingRect(QFontMetrics(painter->font(), painter->device()).boundingRect(name));
-    const QRectF textRect(textBoundingRect.translated(-textBoundingRect.width()/2,
-                                                      isUpper?lowerEdge+textBoundingRect.height()/2-2.0:upperEdge+2.0
-                                                      ));
-    painter->drawText(textRect, Qt::TextSingleLine, name);
-
-    // draw end of constellation
-    painter->rotate(-constellation->_M_length/2.0);
-//    painter->drawLine(QPointF(0.0, upperEdge), QPointF(0.0, lowerEdge));
-    painter->drawLine(QPointF(0.0, stickFrom), QPointF(0.0, stickTo));
-    painter->drawArc(cornerRect.translated(-signum*2.0*cornerPixelSize,0.0), (90-signum*90)*16, 90*16);
-
-    painter->restore();
-}
-*/
 void QHoraViewItem::paint(QPainter* painter)
 {
     if (painter) {
@@ -384,72 +318,64 @@ void QHoraViewItem::paint(QPainter* painter)
         painter->drawEllipse(mMandalaCenter, earthRadius, earthRadius);
 
         // fixstars
-        Stellium<eph::basic_fixstar<eph_proxy>>::List fixstarStelliums(4.0);
-//        qreal fixstarRadius = eclipticRadius() * 1.15;
-//        painter->drawEllipse(mMandalaCenter, fixstarRadius, fixstarRadius);
+        if (mHoraConfig->fixstars()->enabled())
+        {
+            Stellium<eph::basic_fixstar<eph_proxy>>::List fixstarStelliums(4.0);
+    //        qreal fixstarRadius = eclipticRadius() * 1.15;
+    //        painter->drawEllipse(mMandalaCenter, fixstarRadius, fixstarRadius);
 
-        for (hor::hora::fixstar_const_it fs = mHora.fixstars_begin(),
-             fsEnd = mHora.fixstars_end(); fs != fsEnd; fs++)
-        {
-            fixstarStelliums.add(*fs);
-        }
-        for (Stellium<eph::basic_fixstar<eph_proxy>> fss : fixstarStelliums)
-        {
-            int p = 0;
-            for (eph::basic_fixstar<eph_proxy> fixstar : fss)
+            for (hor::hora::fixstar_const_it fs = mHora.fixstars_begin(),
+                 fsEnd = mHora.fixstars_end(); fs != fsEnd; fs++)
             {
-                const bool isEcliptic = fixstar.data()->is_ecliptic();
-
-                eph::ecl_pos displayPos = fss.displayPos(p++);
-
-                painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 2.0));
-                painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, 1.15), 1.0, 1.0);
-
-                painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 0.5));
-                painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.15),
-                                  horaPoint(fixstar.pos()._M_lont, 1.25));
-                painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.25),
-                                  horaPoint(displayPos._M_lont, 1.35));
-
-                painter->save();
-                painter->translate(boundingRect().center());
-
-                QFont textFont = painter->font();
-                textFont.setPixelSize(int(oneDegree()*3));
-                painter->setFont(textFont);
-
-                const QString name = QString("%1 (%2)").arg(fixstar.data()->name().c_str()).arg(fixstar.data()->consltn().c_str());
-                const QRectF textBoundingRect(QFontMetrics(painter->font(), painter->device()).boundingRect(name));
-
-                qreal displayLont = mandalaLeft() - displayPos._M_lont;
-                qreal baseAngle;
-                qreal translateX;
-                if (displayLont < 90.0 || 270.0 < displayLont)
+                fixstarStelliums.add(*fs);
+            }
+            for (Stellium<eph::basic_fixstar<eph_proxy>> fss : fixstarStelliums)
+            {
+                int p = 0;
+                for (eph::basic_fixstar<eph_proxy> fixstar : fss)
                 {
-                    baseAngle = displayLont;
-                    translateX = -eclipticRadius() * 1.35 - textBoundingRect.width();
+                    const bool isEcliptic = fixstar.data()->is_ecliptic();
+
+                    eph::ecl_pos displayPos = fss.displayPos(p++);
+
+                    painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 2.0));
+                    painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, 1.15), 1.0, 1.0);
+
+                    painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 0.5));
+                    painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.15),
+                                      horaPoint(fixstar.pos()._M_lont, 1.25));
+                    painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.25),
+                                      horaPoint(displayPos._M_lont, 1.35));
+
+                    painter->save();
+                    painter->translate(boundingRect().center());
+
+                    QFont textFont = painter->font();
+                    textFont.setPixelSize(int(oneDegree()*3));
+                    painter->setFont(textFont);
+
+                    const QString name = QString("%1 (%2)").arg(fixstar.data()->name().c_str()).arg(fixstar.data()->consltn().c_str());
+                    const QRectF textBoundingRect(QFontMetrics(painter->font(), painter->device()).boundingRect(name));
+
+                    qreal displayLont = mandalaLeft() - displayPos._M_lont;
+                    qreal baseAngle;
+                    qreal translateX;
+                    if (displayLont < 90.0 || 270.0 < displayLont)
+                    {
+                        baseAngle = displayLont;
+                        translateX = -eclipticRadius() * 1.35 - textBoundingRect.width();
+                    }
+                    else
+                    {
+                        baseAngle = displayLont + 180.0;
+                        translateX = eclipticRadius() * 1.35;
+                    }
+                    painter->rotate(baseAngle);
+                    painter->drawText(textBoundingRect.translated(translateX, 0.0), Qt::TextSingleLine, name);
+                    painter->restore();
                 }
-                else
-                {
-                    baseAngle = displayLont + 180.0;
-                    translateX = eclipticRadius() * 1.35;
-                }
-                painter->rotate(baseAngle);
-                painter->drawText(textBoundingRect.translated(translateX, 0.0), Qt::TextSingleLine, name);
-                painter->restore();
             }
         }
-
-/*
-        // constellations
-        QFont constellationFont;
-        constellationFont.setPixelSize(int(eclipticRadius() * 0.05));
-        painter->setFont(constellationFont);
-        for (eph::constellation* constellation : mConstellations)
-        {
-            drawConstellation(painter, constellation);
-        }
-*/
 
         // zodiac sign domains
         painter->setPen(QPen(QColor(0,0,0), 1.5));
@@ -462,7 +388,7 @@ void QHoraViewItem::paint(QPainter* painter)
             const eph::zod_sign_cusp zodSignCusp(z, eph::house_system_mundan::house_names[z]);
             eph::ecl_lont zodSignLont = zodSignCusp.pos()._M_lont;
             painter->drawLine(horaPoint(zodSignLont, 1.0),
-                              horaPoint(zodSignLont, isDisplayFlagSet(SHOW_FIXSTARS) ? 1.10 : 1.15));
+                              horaPoint(zodSignLont, mHoraConfig->fixstars()->enabled() ? 1.10 : 1.15));
 
             QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.07));
             QSize textSize = fontMetrics.size(0, mAstroFont->zodLetter(eph::zod(z)));
@@ -725,8 +651,7 @@ void QHoraViewItem::onInteractiveChanged()
         connect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
         connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
         connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
-        connect(mHoraConfig->aspects(), SIGNAL(changed()), this, SLOT(recalc()));
-        connect(mHoraConfig->orbis(), SIGNAL(changed()), this, SLOT(recalc()));
+        connect(mHoraConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
         recalc();
     }
     else
@@ -742,8 +667,7 @@ void QHoraViewItem::onInteractiveChanged()
         disconnect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
         disconnect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
         disconnect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
-        disconnect(mHoraConfig->aspects(), SIGNAL(changed()), this, SLOT(recalc()));
-        disconnect(mHoraConfig->orbis(), SIGNAL(changed()), this, SLOT(recalc()));
+        disconnect(mHoraConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
     }
 }
 
@@ -789,32 +713,4 @@ void QHoraViewItem::recalc()
     mHousesModel->endResetModel();
     update();
     emit stopCalc();
-}
-
-void QHoraViewItem::setDisplayFlags(DisplayFlags displayFlags)
-{
-    if (mDisplayFlags != displayFlags)
-    {
-        mDisplayFlags = displayFlags;
-        emit displayFlagsChanged();
-    }
-}
-
-void QHoraViewItem::setDisplayFlag(DisplayFlags displayFlag, bool isSet)
-{
-    if (isSet && (mDisplayFlags & displayFlag) != displayFlag)
-    {
-        mDisplayFlags = DisplayFlags(mDisplayFlags | displayFlag);
-        emit displayFlagsChanged();
-    }
-    else if (!isSet && (mDisplayFlags & displayFlag) != 0)
-    {
-        mDisplayFlags = DisplayFlags(mDisplayFlags & ~displayFlag);
-        emit displayFlagsChanged();
-    }
-}
-
-bool QHoraViewItem::isDisplayFlagSet(DisplayFlags displayFlag) const
-{
-    return (mDisplayFlags & displayFlag) == displayFlag;
 }

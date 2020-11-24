@@ -8,6 +8,7 @@
 #include "sdk/hosting/qconfig.h"
 #include "astro/hora/qaspectconfig.h"
 #include "astro/hora/qorbisconfig.h"
+#include "astro/db/qfixstarconfig.h"
 #include <QList>
 #include <QSet>
 
@@ -28,6 +29,7 @@ public:
 
     Q_CONFIG_NODE(QAspectConfig, aspects)
     Q_CONFIG_NODE(QOrbisConfig, orbis)
+    Q_CONFIG_NODE(QFixstarConfig, fixstars)
 };
 
 

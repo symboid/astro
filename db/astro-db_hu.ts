@@ -27,6 +27,17 @@
     </message>
 </context>
 <context>
+    <name>QFixstarConfig</name>
+    <message>
+        <source>Fixed stars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include fixed stars</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QGeoLattSectionCalc</name>
     <message>
         <source>N</source>

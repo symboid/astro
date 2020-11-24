@@ -18,6 +18,7 @@ SOURCES += \
     fixstars.cc \
     geocoord.cc \
     init.cc \
+    qfixstarconfig.cc \
     qgeonamesrestclient.cc \
     qgeonamestablemodel.cc \
     sweph/src/swedate.c \
@@ -38,6 +39,7 @@ HEADERS += \
     fixstars.h \
     geocoord.h \
     init.h \
+    qfixstarconfig.h \
     setup.h \
     qgeonamesmodel.h \
     qgeonamesrestclient.h \
@@ -59,6 +61,7 @@ RESOURCES += \
     astro-db.qrc
 
 LIBS += $$moduleDep(astro,controls)
+LIBS += $$moduleDep(sdk,hosting)
 LIBS += $$moduleDep(sdk,controls)
 LIBS += $$moduleDep(sdk,network)
 LIBS += $$moduleDep(sdk,arch)

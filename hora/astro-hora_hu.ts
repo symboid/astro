@@ -42,17 +42,7 @@
         <translation type="unfinished">Házrendszer</translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="67"/>
-        <source>Fixed stars</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="72"/>
-        <source>Include fixed stars</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="74"/>
+        <location filename="HoraSettingsPane.qml" line="79"/>
         <source>Fixed stars in conjuction with planets will be denoted.</source>
         <oldsource>Only fixed start in conjuction with some planets is shown.</oldsource>
         <translation type="unfinished"></translation>
@@ -198,13 +188,13 @@
 <context>
     <name>QHoraHousesModel</name>
     <message>
-        <location filename="qhoraviewitem.cc" line="109"/>
-        <location filename="qhoraviewitem.cc" line="113"/>
+        <location filename="qhoraviewitem.cc" line="107"/>
+        <location filename="qhoraviewitem.cc" line="111"/>
         <source>Ecliptic longitude</source>
         <translation>Ekliptikai hosszúság</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="109"/>
+        <location filename="qhoraviewitem.cc" line="107"/>
         <source>Speed (°/h)</source>
         <translation>Sebesség (°/ó)</translation>
     </message>
@@ -212,19 +202,19 @@
 <context>
     <name>QHoraPlanetsModel</name>
     <message>
-        <location filename="qhoraviewitem.cc" line="51"/>
-        <location filename="qhoraviewitem.cc" line="55"/>
+        <location filename="qhoraviewitem.cc" line="49"/>
+        <location filename="qhoraviewitem.cc" line="53"/>
         <source>Ecliptic longitude</source>
         <translation>Ekliptikai hosszúság</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="51"/>
-        <location filename="qhoraviewitem.cc" line="55"/>
+        <location filename="qhoraviewitem.cc" line="49"/>
+        <location filename="qhoraviewitem.cc" line="53"/>
         <source>Ecliptic lattitude</source>
         <translation>Ekliptikai szélesség</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="51"/>
+        <location filename="qhoraviewitem.cc" line="49"/>
         <source>Speed</source>
         <translation>Sebesség</translation>
     </message>
