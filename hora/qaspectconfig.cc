@@ -2,8 +2,8 @@
 #include "setup.h"
 #include "qaspectconfig.h"
 
-QAspectConfig::QAspectConfig(QConfigNode* parentNode)
-    : QConfigNode(tr("Aspect connections"), parentNode)
+QAspectConfig::QAspectConfig(QConfigNode* parentNode, const char* parentSignal)
+    : QConfigNode(tr("Aspect connections"), parentNode, parentSignal)
 {
     QSettings settings;
     loadFromSettings(&settings);

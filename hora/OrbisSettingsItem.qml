@@ -15,7 +15,7 @@ SettingsItem {
             width: parent.parent.width - orbisValue.width - parent.leftPadding - parent.rightPadding
             height: orbisValue.height
             verticalAlignment: Label.AlignVCenter
-            text: aspectConfig.name
+            text: aspectConfig.title
         }
         SpinBox {
             id: orbisValue

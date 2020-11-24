@@ -179,24 +179,6 @@ signals:
     void planetsModelChanged();
     void housesModelChanged();
 
-public:
-    enum DisplayFlags
-    {
-        NONE = 0x00,
-        SHOW_FIXSTARS = 0x01,
-    };
-    Q_ENUM(DisplayFlags)
-public:
-    Q_PROPERTY(DisplayFlags displayFlags MEMBER mDisplayFlags WRITE setDisplayFlags NOTIFY displayFlagsChanged)
-private:
-    DisplayFlags mDisplayFlags;
-    void setDisplayFlags(DisplayFlags displayFlags);
-public:
-    Q_INVOKABLE void setDisplayFlag(DisplayFlags displayFlag, bool isSet = true);
-    Q_INVOKABLE bool isDisplayFlagSet(DisplayFlags displayFlag) const;
-signals:
-    void displayFlagsChanged();
-
 private:
     arh::main_object<Fixstars> mFixstars;
     arh::main_object<QHoraConfig> mHoraConfig;

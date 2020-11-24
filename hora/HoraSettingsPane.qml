@@ -42,14 +42,14 @@ SettingsGroupFixed {
         }
     }
     SettingsGroupLink {
-        title: AspectConfig.name
+        title: HoraConfig.aspects.title
         settingsPane: SettingsPane {
-            title: AspectConfig.name
+            title: HoraConfig.aspects.title
             Repeater {
-                model: AspectConfig
+                model: HoraConfig.aspects
                 SettingsItem {
                     setting: CheckBox {
-                        text: config_item.name
+                        text: config_title
                         checked: config_item.value
                         onCheckedChanged: {
                             config_item.value = checked
@@ -64,24 +64,29 @@ SettingsGroupFixed {
         title: qsTr("House system")
     }
     SettingsGroupExpanding {
-        title: qsTr("Fixed stars")
+        title: HoraConfig.fixstars.title
 
         SettingsItem {
             setting: CheckBox {
                 id: fixedStars
-                text: qsTr("Include fixed stars")
+                text: HoraConfig.fixstars.enabled_title
+                checked: HoraConfig.fixstars.enabled
+                onCheckedChanged: {
+                    HoraConfig.fixstars.enabled = checked
+                    checked = Qt.binding(function(){return HoraConfig.fixstars.enabled})
+                }
             }
             hint: qsTr("Fixed stars in conjuction with planets will be denoted.")
         }
     }
     SettingsGroupLink {
-        title: OrbisConfig.name
+        title: HoraConfig.orbis.title
 
         settingsPane: SettingsPane {
-            title: OrbisConfig.name
+            title: HoraConfig.orbis.title
             id: orbisSettingsPane
             Repeater {
-                model: OrbisConfig
+                model: HoraConfig.orbis
                 OrbisSettingsGroup {
                     aspectConfig: config_item
                 }

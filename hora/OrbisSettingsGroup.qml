@@ -6,10 +6,10 @@ import Symboid.Sdk.Hosting 1.0
 SettingsGroupLink {
 
     property ConfigNode aspectConfig: null
-    title: aspectConfig.name
+    title: aspectConfig.title
 
     settingsPane: SettingsPane {
-        title: aspectConfig.name
+        title: aspectConfig.title
         Repeater {
             model: aspectConfig
             OrbisSettingsItem {
