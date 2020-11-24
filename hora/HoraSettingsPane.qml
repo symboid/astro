@@ -4,7 +4,7 @@ import QtQuick.Controls 2.5
 import Symboid.Sdk.Hosting 1.0
 import Symboid.Astro.Hora 1.0
 
-SettingsGroup {
+SettingsGroupFixed {
     title: qsTr("Horoscope")
     SettingsGroupLink {
         title: qsTr("Planets")
