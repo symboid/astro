@@ -9,8 +9,8 @@ class ASTRO_HORA_API QAspectConfig : public QConfigSync
 {
     Q_OBJECT
 public:
-    QAspectConfig(QConfigNode* parentNode, const char* parentSignal)
-        : QConfigSync(tr("Aspect connections"), parentNode, parentSignal)
+    QAspectConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
+        : QConfigSync(id, tr("Aspect connections"), parentNode, parentSignal)
     {
     }
 

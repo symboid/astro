@@ -9,8 +9,8 @@ class ASTRO_DB_API QFixstarConfig : public QConfigSync
 {
     Q_OBJECT
 public:
-    QFixstarConfig(QConfigNode* parentNode, const char* parentSignal)
-        : QConfigSync(tr("Fixed stars"), parentNode, parentSignal)
+    QFixstarConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
+        : QConfigSync(id, tr("Fixed stars"), parentNode, parentSignal)
     {
     }
 

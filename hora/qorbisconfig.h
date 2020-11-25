@@ -12,8 +12,8 @@ class ASTRO_HORA_API Q##Name##OrbisConfigNode : public QConfigNode \
 { \
     Q_OBJECT \
 public: \
-    Q##Name##OrbisConfigNode(QConfigNode* parent, const char* parentSignal) \
-        : QConfigNode(tr(#Name), parent, parentSignal) \
+    Q##Name##OrbisConfigNode(const QString& id, QConfigNode* parent, const char* parentSignal) \
+        : QConfigNode(id, tr(#Name), parent, parentSignal) \
     { \
     } \
 public: \
@@ -54,8 +54,8 @@ class ASTRO_HORA_API QHouseCuspOrbisConfigNode : public QConfigNode
 {
     Q_OBJECT
 public:
-    QHouseCuspOrbisConfigNode(QConfigNode* parentNode, const char* parentSignal)
-        : QConfigNode(tr("Before house cusp"), parentNode, parentSignal)
+    QHouseCuspOrbisConfigNode(const QString& id, QConfigNode* parentNode, const char* parentSignal)
+        : QConfigNode(id, tr("Before house cusp"), parentNode, parentSignal)
     {
     }
 
@@ -70,8 +70,8 @@ class ASTRO_HORA_API QOrbisConfig : public QConfigSync
 {
     Q_OBJECT
 public:
-    QOrbisConfig(QConfigNode* parentNode, const char* parentSignal)
-        : QConfigSync(tr("Orbis"), parentNode, parentSignal)
+    QOrbisConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
+        : QConfigSync(id, tr("Orbis"), parentNode, parentSignal)
     {
     }
 

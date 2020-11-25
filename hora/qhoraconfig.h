@@ -16,8 +16,8 @@ class ASTRO_HORA_API QKarmaConfig : public QConfigSync
 {
     Q_OBJECT
 public:
-    QKarmaConfig(QConfigNode* parentNode, const char* parentSignal)
-        : QConfigSync(tr("Karmic points"), parentNode, parentSignal)
+    QKarmaConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
+        : QConfigSync(id, tr("Karmic points"), parentNode, parentSignal)
     {
     }
 
