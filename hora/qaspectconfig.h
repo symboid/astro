@@ -5,12 +5,14 @@
 #include "astro/hora/defs.h"
 #include "sdk/hosting/qconfig.h"
 
-class ASTRO_HORA_API QAspectConfig : public QConfigNode
+class ASTRO_HORA_API QAspectConfig : public QConfigSync
 {
     Q_OBJECT
 public:
-    QAspectConfig(QConfigNode* parentNode, const char* parentSignal);
-    ~QAspectConfig();
+    QAspectConfig(QConfigNode* parentNode, const char* parentSignal)
+        : QConfigSync(tr("Aspect connections"), parentNode, parentSignal)
+    {
+    }
 
     Q_CONFIG_PROPERTY(bool, conjunction, true, tr("Conjunction"))
     Q_CONFIG_PROPERTY(bool, opposition, true, tr("Opposition"))

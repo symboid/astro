@@ -2,19 +2,6 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qorbisconfig.h"
 
-QOrbisConfig::QOrbisConfig(QConfigNode* parentNode, const char* parentSignal)
-    : QConfigNode(tr("Orbis"), parentNode, parentSignal)
-{
-    QSettings settings;
-    loadFromSettings(&settings);
-}
-
-QOrbisConfig::~QOrbisConfig()
-{
-    QSettings settings;
-    saveToSettings(&settings);
-}
-
 OrbisConfig::OrbisConfig(QOrbisConfig* orbisConfig, int index)
 {
     mAspectConfigs[hor::none_aspect] = nullptr;

@@ -97,63 +97,63 @@
 <context>
     <name>QAspectConfig</name>
     <message>
-        <location filename="qaspectconfig.cc" line="6"/>
+        <location filename="qaspectconfig.h" line="13"/>
         <source>Aspect connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="15"/>
+        <location filename="qaspectconfig.h" line="17"/>
         <source>Conjunction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="16"/>
+        <location filename="qaspectconfig.h" line="18"/>
         <source>Opposition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="17"/>
+        <location filename="qaspectconfig.h" line="19"/>
         <source>Trigon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="18"/>
+        <location filename="qaspectconfig.h" line="20"/>
         <source>Quadrat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="19"/>
+        <location filename="qaspectconfig.h" line="21"/>
         <source>Sextile</source>
         <oldsource>Quintil</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="20"/>
+        <location filename="qaspectconfig.h" line="22"/>
         <source>Quintile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="22"/>
+        <location filename="qaspectconfig.h" line="24"/>
         <source>Semi-sextile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="23"/>
+        <location filename="qaspectconfig.h" line="25"/>
         <source>Quincunx</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="24"/>
+        <location filename="qaspectconfig.h" line="26"/>
         <source>Semi-quadrat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="25"/>
+        <location filename="qaspectconfig.h" line="27"/>
         <source>Sesqui-quadrat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qaspectconfig.h" line="26"/>
+        <location filename="qaspectconfig.h" line="28"/>
         <source>Biquintile</source>
         <translation type="unfinished"></translation>
     </message>
@@ -228,27 +228,27 @@
 <context>
     <name>QKarmaConfig</name>
     <message>
-        <location filename="qhoraconfig.cc" line="6"/>
+        <location filename="qhoraconfig.h" line="20"/>
         <source>Karmic points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhoraconfig.h" line="22"/>
+        <location filename="qhoraconfig.h" line="24"/>
         <source>Include Dragon Head</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhoraconfig.h" line="23"/>
+        <location filename="qhoraconfig.h" line="25"/>
         <source>Include Dragon Tail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhoraconfig.h" line="24"/>
+        <location filename="qhoraconfig.h" line="26"/>
         <source>Include Lilith</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhoraconfig.h" line="25"/>
+        <location filename="qhoraconfig.h" line="27"/>
         <source>Draw axis on lunar nodes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -256,7 +256,7 @@
 <context>
     <name>QOrbisConfig</name>
     <message>
-        <location filename="qorbisconfig.cc" line="6"/>
+        <location filename="qorbisconfig.h" line="74"/>
         <source>Orbis</source>
         <translation type="unfinished"></translation>
     </message>

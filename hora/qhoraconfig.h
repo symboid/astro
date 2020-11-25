@@ -12,12 +12,14 @@
 #include <QList>
 #include <QSet>
 
-class ASTRO_HORA_API QKarmaConfig : public QConfigNode
+class ASTRO_HORA_API QKarmaConfig : public QConfigSync
 {
     Q_OBJECT
 public:
-    QKarmaConfig(QConfigNode* parentNode, const char* parentSignal);
-    ~QKarmaConfig();
+    QKarmaConfig(QConfigNode* parentNode, const char* parentSignal)
+        : QConfigSync(tr("Karmic points"), parentNode, parentSignal)
+    {
+    }
 
     Q_CONFIG_PROPERTY(bool, dragonHead, true, tr("Include Dragon Head"))
     Q_CONFIG_PROPERTY(bool, dragonTail, false, tr("Include Dragon Tail"))

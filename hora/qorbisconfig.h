@@ -66,12 +66,14 @@ public:
     Q_CONFIG_PROPERTY(double, other, 2.0, tr("Other"))
 };
 
-class ASTRO_HORA_API QOrbisConfig : public QConfigNode
+class ASTRO_HORA_API QOrbisConfig : public QConfigSync
 {
     Q_OBJECT
 public:
-    QOrbisConfig(QConfigNode* parentNode, const char* parentSignal);
-    ~QOrbisConfig();
+    QOrbisConfig(QConfigNode* parentNode, const char* parentSignal)
+        : QConfigSync(tr("Orbis"), parentNode, parentSignal)
+    {
+    }
 
     Q_CONFIG_NODE(QConjunctionOrbisConfigNode, conjunction)
     Q_CONFIG_NODE(QOppositionOrbisConfigNode, opposition)

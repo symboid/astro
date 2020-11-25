@@ -18,7 +18,6 @@ SOURCES += \
     fixstars.cc \
     geocoord.cc \
     init.cc \
-    qfixstarconfig.cc \
     qgeonamesrestclient.cc \
     qgeonamestablemodel.cc \
     sweph/src/swedate.c \
