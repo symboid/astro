@@ -7,75 +7,22 @@ import Symboid.Astro.Hora 1.0
 SettingsGroupFixed {
     title: qsTr("Horoscope")
     SettingsGroupLink {
-        title: qsTr("Planets")
-        settingsPane: SettingsPane {
-            title: qsTr("Planets")
-            SettingsItem {
-                setting: CheckBox {
-                    text: qsTr("Include Uranus, Neptune and Pluto")
-                    checked: true
-                }
-            }
-            SettingsItem {
-                setting: CheckBox {
-                    text: qsTr("Include Lilith")
-                }
-            }
-            SettingsItem {
-                setting: CheckBox {
-                    id: dragonHeadCheck
-                    text: qsTr("Include Dragon Head")
-                }
-            }
-            SettingsItem {
-                setting: CheckBox {
-                    text: qsTr("Include Dragon Tail")
-                    enabled: dragonHeadCheck.checked
-                    onEnabledChanged: {
-                        if (!enabled)
-                        {
-                            checked = false
-                        }
-                    }
-                }
-            }
-        }
-    }
-    SettingsGroupLink {
         title: HoraConfig.aspects.title
         settingsPane: SettingsPane {
             title: HoraConfig.aspects.title
             Repeater {
                 model: HoraConfig.aspects
-                SettingsItem {
-                    setting: CheckBox {
-                        text: config_title
-                        checked: config_item.value
-                        onCheckedChanged: {
-                            config_item.value = checked
-                            checked = Qt.binding(function(){return config_item.value})
-                        }
-                    }
+                SettingsCheckBox {
+                    configNode: config_item
                 }
             }
         }
     }
     SettingsGroupExpanding {
-        title: qsTr("House system")
-    }
-    SettingsGroupExpanding {
         title: HoraConfig.fixstars.title
 
-        SettingsItem {
-            setting: CheckBox {
-                id: fixedStars
-                text: HoraConfig.fixstars.enabled_title
-                checked: HoraConfig.fixstars.enabled
-                onCheckedChanged: {
-                    HoraConfig.fixstars.enabled = checked
-                    checked = Qt.binding(function(){return HoraConfig.fixstars.enabled})
-                }
-            }
+        SettingsCheckBox {
+            configNode: HoraConfig.fixstars.enabled_node
             hint: qsTr("Fixed stars in conjuction with planets will be denoted.")
         }
     }
@@ -89,6 +36,37 @@ SettingsGroupFixed {
                 model: HoraConfig.orbis
                 OrbisSettingsGroup {
                     aspectConfig: config_item
+                }
+            }
+        }
+    }
+    SettingsGroupExpanding {
+        title: qsTr("Karmic points")
+        SettingsCheckBox {
+            id: dragonHeadCheck
+            configNode: HoraConfig.karma.dragonHead_node
+        }
+        SettingsCheckBox {
+            id: dragonTailCheck
+            configNode: HoraConfig.karma.dragonTail_node
+            enabled: dragonHeadCheck.checked
+            onEnabledChanged: {
+                if (!enabled)
+                {
+                    checked = false
+                }
+            }
+        }
+        SettingsCheckBox {
+            configNode: HoraConfig.karma.lilith_node
+        }
+        SettingsCheckBox {
+            configNode: HoraConfig.karma.drawAxis_node
+            enabled: dragonTailCheck.checked
+            onEnabledChanged: {
+                if (!enabled)
+                {
+                    checked = false
                 }
             }
         }

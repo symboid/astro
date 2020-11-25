@@ -12,6 +12,19 @@
 #include <QList>
 #include <QSet>
 
+class ASTRO_HORA_API QKarmaConfig : public QConfigNode
+{
+    Q_OBJECT
+public:
+    QKarmaConfig(QConfigNode* parentNode, const char* parentSignal);
+    ~QKarmaConfig();
+
+    Q_CONFIG_PROPERTY(bool, dragonHead, true, tr("Include Dragon Head"))
+    Q_CONFIG_PROPERTY(bool, dragonTail, false, tr("Include Dragon Tail"))
+    Q_CONFIG_PROPERTY(bool, lilith, false, tr("Include Lilith"))
+    Q_CONFIG_PROPERTY(bool, drawAxis, true, tr("Draw axis on lunar nodes"))
+};
+
 class ASTRO_HORA_API QHoraConfig : public QConfigNode
 {
     Q_OBJECT
@@ -30,6 +43,7 @@ public:
     Q_CONFIG_NODE(QAspectConfig, aspects)
     Q_CONFIG_NODE(QOrbisConfig, orbis)
     Q_CONFIG_NODE(QFixstarConfig, fixstars)
+    Q_CONFIG_NODE(QKarmaConfig, karma)
 };
 
 

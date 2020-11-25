@@ -10,39 +10,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="10"/>
-        <location filename="HoraSettingsPane.qml" line="12"/>
-        <source>Planets</source>
+        <location filename="HoraSettingsPane.qml" line="44"/>
+        <source>Karmic points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="15"/>
-        <source>Include Uranus, Neptune and Pluto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="21"/>
-        <source>Include Lilith</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="27"/>
-        <source>Include Dragon Head</source>
-        <oldsource>Include Chiron</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="32"/>
-        <source>Include Dragon Tail</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="64"/>
-        <source>House system</source>
-        <translation type="unfinished">Házrendszer</translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="79"/>
+        <location filename="HoraSettingsPane.qml" line="26"/>
         <source>Fixed stars in conjuction with planets will be denoted.</source>
         <oldsource>Only fixed start in conjuction with some planets is shown.</oldsource>
         <translation type="unfinished"></translation>
@@ -249,6 +222,34 @@
     <message>
         <location filename="qorbisconfig.h" line="66"/>
         <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QKarmaConfig</name>
+    <message>
+        <location filename="qhoraconfig.cc" line="6"/>
+        <source>Karmic points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhoraconfig.h" line="22"/>
+        <source>Include Dragon Head</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhoraconfig.h" line="23"/>
+        <source>Include Dragon Tail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhoraconfig.h" line="24"/>
+        <source>Include Lilith</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhoraconfig.h" line="25"/>
+        <source>Draw axis on lunar nodes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
