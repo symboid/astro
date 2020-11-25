@@ -8,7 +8,7 @@
 
 #define Q_ORBIS_CONFIG_NODE(Name, sunOrbis,monOrbis,merOrbis,venOrbis,marOrbis, \
                                         jupOrbis,satOrbis,uraOrbis,nepOrbis,pluOrbis) \
-class Q##Name##OrbisConfigNode : public QConfigNode \
+class ASTRO_HORA_API Q##Name##OrbisConfigNode : public QConfigNode \
 { \
     Q_OBJECT \
 public: \
@@ -50,7 +50,7 @@ Q_ORBIS_CONFIG_NOD1(Semiquadrat, 1.0)
 Q_ORBIS_CONFIG_NOD1(Sesquiquadrat, 1.0)
 Q_ORBIS_CONFIG_NOD1(Biquintile,  1.0)
 
-class QHouseCuspOrbisConfigNode : public QConfigNode
+class ASTRO_HORA_API QHouseCuspOrbisConfigNode : public QConfigNode
 {
     Q_OBJECT
 public:

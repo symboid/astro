@@ -5,7 +5,7 @@
 #include "astro/db/defs.h"
 #include "sdk/hosting/qconfig.h"
 
-class QFixstarConfig : public QConfigNode
+class ASTRO_DB_API QFixstarConfig : public QConfigNode
 {
     Q_OBJECT
 public:

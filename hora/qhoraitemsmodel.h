@@ -11,7 +11,7 @@ hor_ns_begin
 typedef basic_hora<eph_proxy> hora;
 hor_ns_end
 
-class QHoraTableModel : public QAbstractTableModel
+class ASTRO_HORA_API QHoraTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -47,7 +47,7 @@ public:
     Q_INVOKABLE void update();
 };
 
-class QEclipticTableModel : public QHoraTableModel
+class ASTRO_HORA_API QEclipticTableModel : public QHoraTableModel
 {
     Q_OBJECT
 
