@@ -5,12 +5,12 @@
 #include "astro/db/defs.h"
 #include "sdk/hosting/qconfig.h"
 
-class ASTRO_DB_API QFixstarConfig : public QConfigSync
+class ASTRO_DB_API QFixstarConfig : public QConfigNode
 {
     Q_OBJECT
 public:
     QFixstarConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
-        : QConfigSync(id, tr("Fixed stars"), parentNode, parentSignal)
+        : QConfigNode(id, tr("Fixed stars"), parentNode, parentSignal)
     {
     }
 

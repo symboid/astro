@@ -12,12 +12,12 @@
 #include <QList>
 #include <QSet>
 
-class ASTRO_HORA_API QKarmaConfig : public QConfigSync
+class ASTRO_HORA_API QKarmaConfig : public QConfigNode
 {
     Q_OBJECT
 public:
     QKarmaConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
-        : QConfigSync(id, tr("Karmic points"), parentNode, parentSignal)
+        : QConfigNode(id, tr("Karmic points"), parentNode, parentSignal)
     {
     }
 
