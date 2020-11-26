@@ -9,8 +9,8 @@ OrbisConfig::OrbisConfig(QOrbisConfig* orbisConfig, int index)
     mAspectConfigs[hor::opposition] = orbisConfig->opposition()->subConfig(index);
     mAspectConfigs[hor::trigon] = orbisConfig->trigon()->subConfig(index);
     mAspectConfigs[hor::quadrat] = orbisConfig->quadrat()->subConfig(index);
-    mAspectConfigs[hor::quintil] = orbisConfig->quintil()->subConfig(index);
-    mAspectConfigs[hor::sextil] = orbisConfig->sextil()->subConfig(index);
+    mAspectConfigs[hor::quintil] = orbisConfig->quintile()->subConfig(index);
+    mAspectConfigs[hor::sextil] = orbisConfig->sextile()->subConfig(index);
 }
 
 hor::orbis OrbisConfig::aspect_orbis(hor::aspect_type _aspect_type) const

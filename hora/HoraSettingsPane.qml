@@ -6,35 +6,43 @@ import Symboid.Astro.Hora 1.0
 
 SettingsGroupFixed {
     title: qsTr("Horoscope")
+    property var aspectTitles: [
+        qsTr("Conjunction"), qsTr("Opposition"), qsTr("Trigon"), qsTr("Quadrat"),
+        qsTr("Quintile"), qsTr("Sextile"), qsTr("Semi-sextile"), qsTr("Quincunx"),
+        qsTr("Semi-quadrat"), qsTr("Sesqui-quadrat"), qsTr("Biquintile"), qsTr("Before house cusps")
+    ]
     SettingsGroupLink {
-        title: HoraConfig.aspects.title
+        title: qsTr("Aspect connections")
         settingsPane: SettingsPane {
-            title: HoraConfig.aspects.title
+            title: qsTr("Aspect connections")
             Repeater {
                 model: HoraConfig.aspects
                 SettingsSwitch {
+                    text: aspectTitles[index]
                     configNode: config_item
                 }
             }
         }
     }
     SettingsGroupExpanding {
-        title: HoraConfig.fixstars.title
+        title: qsTr("Fixed stars")
 
         SettingsCheckBox {
             configNode: HoraConfig.fixstars.enabled_node
+            text: qsTr("Include fixed stars")
             hint: qsTr("Fixed stars in conjuction with planets will be denoted.")
         }
     }
     SettingsGroupLink {
-        title: HoraConfig.orbis.title
+        title: qsTr("Orbis")
 
         settingsPane: SettingsPane {
-            title: HoraConfig.orbis.title
+            title: qsTr("Orbis")
             id: orbisSettingsPane
             Repeater {
                 model: HoraConfig.orbis
                 OrbisSettingsGroup {
+                    title: aspectTitles[index]
                     aspectConfig: config_item
                 }
             }
@@ -42,12 +50,14 @@ SettingsGroupFixed {
     }
     SettingsGroupExpanding {
         title: qsTr("Karmic points")
-        SettingsCheckBox {
+        SettingsSwitch {
             id: dragonHeadCheck
+            text: qsTr("Dragon Head")
             configNode: HoraConfig.karma.dragonHead_node
         }
-        SettingsCheckBox {
+        SettingsSwitch {
             id: dragonTailCheck
+            text: qsTr("Dragon Tail")
             configNode: HoraConfig.karma.dragonTail_node
             enabled: dragonHeadCheck.checked
             onEnabledChanged: {
@@ -57,10 +67,12 @@ SettingsGroupFixed {
                 }
             }
         }
-        SettingsCheckBox {
+        SettingsSwitch {
+            text: qsTr("Lilith")
             configNode: HoraConfig.karma.lilith_node
         }
-        SettingsCheckBox {
+        SettingsSwitch {
+            text: qsTr("Axis on lunar nodes")
             configNode: HoraConfig.karma.drawAxis_node
             enabled: dragonTailCheck.checked
             onEnabledChanged: {

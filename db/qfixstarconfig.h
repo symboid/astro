@@ -10,11 +10,11 @@ class ASTRO_DB_API QFixstarConfig : public QConfigNode
     Q_OBJECT
 public:
     QFixstarConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
-        : QConfigNode(id, tr("Fixed stars"), parentNode, parentSignal)
+        : QConfigNode(id, parentNode, parentSignal)
     {
     }
 
-    Q_CONFIG_PROPERTY(bool, enabled, false, tr("Include fixed stars"))
+    Q_CONFIG_PROPERTY(bool, enabled, false)
 };
 
 #endif // __SYMBOID_ASTRO_DB_QFIXSTARCONFIG_H__

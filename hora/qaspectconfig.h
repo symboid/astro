@@ -10,22 +10,22 @@ class ASTRO_HORA_API QAspectConfig : public QConfigNode
     Q_OBJECT
 public:
     QAspectConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
-        : QConfigNode(id, tr("Aspect connections"), parentNode, parentSignal)
+        : QConfigNode(id, parentNode, parentSignal)
     {
     }
 
-    Q_CONFIG_PROPERTY(bool, conjunction, true, tr("Conjunction"))
-    Q_CONFIG_PROPERTY(bool, opposition, true, tr("Opposition"))
-    Q_CONFIG_PROPERTY(bool, trigon, true, tr("Trigon"))
-    Q_CONFIG_PROPERTY(bool, quadrat, true, tr("Quadrat"))
-    Q_CONFIG_PROPERTY(bool, sextile, true, tr("Sextile"))
-    Q_CONFIG_PROPERTY(bool, quintile, false, tr("Quintile"))
+    Q_CONFIG_PROPERTY(bool, conjunction, true)
+    Q_CONFIG_PROPERTY(bool, opposition, true)
+    Q_CONFIG_PROPERTY(bool, trigon, true)
+    Q_CONFIG_PROPERTY(bool, quadrat, true)
+    Q_CONFIG_PROPERTY(bool, sextile, true)
+    Q_CONFIG_PROPERTY(bool, quintile, false)
 
-    Q_CONFIG_PROPERTY(bool, semisextile, false, tr("Semi-sextile"))
-    Q_CONFIG_PROPERTY(bool, quincunx, true, tr("Quincunx"))
-    Q_CONFIG_PROPERTY(bool, semiquadrat, false, tr("Semi-quadrat"))
-    Q_CONFIG_PROPERTY(bool, sesquiquadrat, false, tr("Sesqui-quadrat"))
-    Q_CONFIG_PROPERTY(bool, biquintile, false, tr("Biquintile"))
+    Q_CONFIG_PROPERTY(bool, semisextile, false)
+    Q_CONFIG_PROPERTY(bool, quincunx, true)
+    Q_CONFIG_PROPERTY(bool, semiquadrat, false)
+    Q_CONFIG_PROPERTY(bool, sesquiquadrat, false)
+    Q_CONFIG_PROPERTY(bool, biquintile, false)
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QASPECTCONFIG_H__

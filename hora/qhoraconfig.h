@@ -17,14 +17,14 @@ class ASTRO_HORA_API QKarmaConfig : public QConfigNode
     Q_OBJECT
 public:
     QKarmaConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
-        : QConfigNode(id, tr("Karmic points"), parentNode, parentSignal)
+        : QConfigNode(id, parentNode, parentSignal)
     {
     }
 
-    Q_CONFIG_PROPERTY(bool, dragonHead, true, tr("Include Dragon Head"))
-    Q_CONFIG_PROPERTY(bool, dragonTail, false, tr("Include Dragon Tail"))
-    Q_CONFIG_PROPERTY(bool, lilith, false, tr("Include Lilith"))
-    Q_CONFIG_PROPERTY(bool, drawAxis, true, tr("Draw axis on lunar nodes"))
+    Q_CONFIG_PROPERTY(bool, dragonHead, true)
+    Q_CONFIG_PROPERTY(bool, dragonTail, false)
+    Q_CONFIG_PROPERTY(bool, lilith, false)
+    Q_CONFIG_PROPERTY(bool, drawAxis, true)
 };
 
 class ASTRO_HORA_API QHoraConfig : public QConfigNode

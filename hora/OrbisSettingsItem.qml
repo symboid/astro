@@ -5,6 +5,7 @@ import Symboid.Sdk.Controls 1.0
 import Symboid.Sdk.Hosting 1.0
 
 SettingsItem {
+    property alias text: objectTitle.text
     property ConfigNode aspectConfig: null
     setting: Row {
 
@@ -15,7 +16,6 @@ SettingsItem {
             width: parent.parent.width - orbisValue.width - parent.leftPadding - parent.rightPadding
             height: orbisValue.height
             verticalAlignment: Label.AlignVCenter
-            text: aspectConfig.title
         }
         SpinBox {
             id: orbisValue

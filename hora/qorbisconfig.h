@@ -13,24 +13,24 @@ class ASTRO_HORA_API Q##Name##OrbisConfigNode : public QConfigNode \
     Q_OBJECT \
 public: \
     Q##Name##OrbisConfigNode(const QString& id, QConfigNode* parent, const char* parentSignal) \
-        : QConfigNode(id, tr(#Name), parent, parentSignal) \
+        : QConfigNode(id, parent, parentSignal) \
     { \
     } \
 public: \
-    Q_CONFIG_PROPERTY(double, sun, sunOrbis, tr("Sun")) \
-    Q_CONFIG_PROPERTY(double, mon, monOrbis, tr("Moon")) \
-    Q_CONFIG_PROPERTY(double, mer, merOrbis, tr("Mercury")) \
-    Q_CONFIG_PROPERTY(double, ven, venOrbis, tr("Venus")) \
-    Q_CONFIG_PROPERTY(double, mar, marOrbis, tr("Mars")) \
-    Q_CONFIG_PROPERTY(double, jup, jupOrbis, tr("Jupiter")) \
-    Q_CONFIG_PROPERTY(double, sat, satOrbis, tr("Saturn")) \
-    Q_CONFIG_PROPERTY(double, ura, uraOrbis, tr("Uranus")) \
-    Q_CONFIG_PROPERTY(double, nep, nepOrbis, tr("Neptune")) \
-    Q_CONFIG_PROPERTY(double, plu, pluOrbis, tr("Pluto")) \
-    Q_CONFIG_PROPERTY(double, asc, 0.1,      tr("Asc")) \
-    Q_CONFIG_PROPERTY(double, mc,  0.1,      tr("MC")) \
-    Q_CONFIG_PROPERTY(double, node, 0.5,     tr("Node")) \
-    Q_CONFIG_PROPERTY(double, cusp, 0.1,     tr("House cusp")) \
+    Q_CONFIG_PROPERTY(double, sun, sunOrbis) \
+    Q_CONFIG_PROPERTY(double, mon, monOrbis) \
+    Q_CONFIG_PROPERTY(double, mer, merOrbis) \
+    Q_CONFIG_PROPERTY(double, ven, venOrbis) \
+    Q_CONFIG_PROPERTY(double, mar, marOrbis) \
+    Q_CONFIG_PROPERTY(double, jup, jupOrbis) \
+    Q_CONFIG_PROPERTY(double, sat, satOrbis) \
+    Q_CONFIG_PROPERTY(double, ura, uraOrbis) \
+    Q_CONFIG_PROPERTY(double, nep, nepOrbis) \
+    Q_CONFIG_PROPERTY(double, plu, pluOrbis) \
+    Q_CONFIG_PROPERTY(double, asc, 0.1) \
+    Q_CONFIG_PROPERTY(double, mc,  0.1) \
+    Q_CONFIG_PROPERTY(double, node, 0.5) \
+    Q_CONFIG_PROPERTY(double, cusp, 0.1) \
 };
 
 #define Q_ORBIS_CONFIG_NOD1(ClassName, equOrbis) \
@@ -55,15 +55,15 @@ class ASTRO_HORA_API QHouseCuspOrbisConfigNode : public QConfigNode
     Q_OBJECT
 public:
     QHouseCuspOrbisConfigNode(const QString& id, QConfigNode* parentNode, const char* parentSignal)
-        : QConfigNode(id, tr("Before house cusp"), parentNode, parentSignal)
+        : QConfigNode(id, parentNode, parentSignal)
     {
     }
 
-    Q_CONFIG_PROPERTY(double, asc, 2.0, tr("Asc"))
-    Q_CONFIG_PROPERTY(double, dsc, 2.0, tr("Dsc"))
-    Q_CONFIG_PROPERTY(double, mc,  2.0, tr("MC"))
-    Q_CONFIG_PROPERTY(double, ic,  2.0, tr("IC"))
-    Q_CONFIG_PROPERTY(double, other, 2.0, tr("Other"))
+    Q_CONFIG_PROPERTY(double, asc, 2.0)
+    Q_CONFIG_PROPERTY(double, dsc, 2.0)
+    Q_CONFIG_PROPERTY(double, mc,  2.0)
+    Q_CONFIG_PROPERTY(double, ic,  2.0)
+    Q_CONFIG_PROPERTY(double, other, 2.0)
 };
 
 class ASTRO_HORA_API QOrbisConfig : public QConfigNode
@@ -71,7 +71,7 @@ class ASTRO_HORA_API QOrbisConfig : public QConfigNode
     Q_OBJECT
 public:
     QOrbisConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
-        : QConfigNode(id, tr("Orbis"), parentNode, parentSignal)
+        : QConfigNode(id, parentNode, parentSignal)
     {
     }
 
@@ -79,14 +79,14 @@ public:
     Q_CONFIG_NODE(QOppositionOrbisConfigNode, opposition)
     Q_CONFIG_NODE(QTrigonOrbisConfigNode, trigon)
     Q_CONFIG_NODE(QQuadratOrbisConfigNode, quadrat)
-    Q_CONFIG_NODE(QQuintileOrbisConfigNode, quintil)
-    Q_CONFIG_NODE(QSextileOrbisConfigNode, sextil)
+    Q_CONFIG_NODE(QQuintileOrbisConfigNode, quintile)
+    Q_CONFIG_NODE(QSextileOrbisConfigNode, sextile)
 
-    Q_CONFIG_NODE(QSemisextileOrbisConfigNode, semisextil)
+    Q_CONFIG_NODE(QSemisextileOrbisConfigNode, semi_sextile)
     Q_CONFIG_NODE(QQuincunxOrbisConfigNode, quincunx)
-    Q_CONFIG_NODE(QSemiquadratOrbisConfigNode, semiquadrat)
-    Q_CONFIG_NODE(QSesquiquadratOrbisConfigNode, sesquiquadrat)
-    Q_CONFIG_NODE(QBiquintileOrbisConfigNode, biquintil)
+    Q_CONFIG_NODE(QSemiquadratOrbisConfigNode, semi_quadrat)
+    Q_CONFIG_NODE(QSesquiquadratOrbisConfigNode, sesqui_quadrat)
+    Q_CONFIG_NODE(QBiquintileOrbisConfigNode, biquintile)
 
     Q_CONFIG_NODE(QHouseCuspOrbisConfigNode, house_cusp)
 };
