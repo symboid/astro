@@ -18,13 +18,13 @@ public:
     Q_CONFIG_PROPERTY(bool, opposition, true)
     Q_CONFIG_PROPERTY(bool, trigon, true)
     Q_CONFIG_PROPERTY(bool, quadrat, true)
-    Q_CONFIG_PROPERTY(bool, sextile, true)
     Q_CONFIG_PROPERTY(bool, quintile, false)
+    Q_CONFIG_PROPERTY(bool, sextile, true)
 
-    Q_CONFIG_PROPERTY(bool, semisextile, false)
+    Q_CONFIG_PROPERTY(bool, semi_sextile, false)
     Q_CONFIG_PROPERTY(bool, quincunx, true)
-    Q_CONFIG_PROPERTY(bool, semiquadrat, false)
-    Q_CONFIG_PROPERTY(bool, sesquiquadrat, false)
+    Q_CONFIG_PROPERTY(bool, semi_quadrat, false)
+    Q_CONFIG_PROPERTY(bool, sesqui_quadrat, false)
     Q_CONFIG_PROPERTY(bool, biquintile, false)
 };
 

@@ -10,7 +10,7 @@
 #include "astro/hora/qorbisconfig.h"
 #include "astro/db/qfixstarconfig.h"
 #include <QList>
-#include <QSet>
+#include <QMap>
 
 class ASTRO_HORA_API QKarmaConfig : public QConfigNode
 {
@@ -21,10 +21,10 @@ public:
     {
     }
 
-    Q_CONFIG_PROPERTY(bool, dragonHead, true)
-    Q_CONFIG_PROPERTY(bool, dragonTail, false)
+    Q_CONFIG_PROPERTY(bool, dragon_head, true)
+    Q_CONFIG_PROPERTY(bool, dragon_tail, false)
     Q_CONFIG_PROPERTY(bool, lilith, false)
-    Q_CONFIG_PROPERTY(bool, drawAxis, true)
+    Q_CONFIG_PROPERTY(bool, draw_axis, true)
 };
 
 class ASTRO_HORA_API QHoraConfig : public QConfigNode
@@ -39,7 +39,7 @@ public:
 public:
     typedef QList<hor::planet> Planets;
     Planets mPlanets;
-    typedef QSet<hor::aspect_type> AspectTypes;
+    typedef QMap<hor::aspect_type, QConfigNode*> AspectTypes;
     AspectTypes mAspectTypes;
 
     Q_CONFIG_NODE(QAspectConfig, aspects)

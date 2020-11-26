@@ -19,15 +19,22 @@ enum aspect_type
     opposition = 2,
     trigon = 3,
     quadrat = 4,
-    quintil = 5,
-    sextil = 6,
+    quintile = 5,
+    sextile = 6,
 
-    aspect_type_count = 7,
+    semi_sextile = 7,
+    quincunx = 8,
+    semi_quadrat = 9,
+    sesqui_quadrat = 10,
+    biquintile = 11,
+
+    aspect_type_count = 12,
 };
 
 const hor::orbis aspect_dist[aspect_type_count] =
 {
-    0, 0.0, 180.0, 120.0, 90.0, 72.0, 60.0
+    0, 0.0, 180.0, 120.0, 90.0, 72.0, 60.0,
+    30.0, 150.0, 45.0, 135.0, 144.0
 };
 
 inline aspect_type& operator++(aspect_type& _aspect_type)
@@ -55,7 +62,7 @@ public:
     {
         switch (_aspect_type) {
         case conjunction: case opposition: return _M_main_orbis;
-        case trigon: case sextil: case quadrat: return _M_main_orbis * 0.75;
+        case trigon: case sextile: case quadrat: return _M_main_orbis * 0.75;
         case none_aspect: return 0.0;
         default: return 1.0;
         }

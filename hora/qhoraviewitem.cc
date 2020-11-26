@@ -486,28 +486,56 @@ void QHoraViewItem::paint(QPainter* painter)
             while (++planet2 != pEnd)
             {
                 hor::aspect_type aspect_conn = planet->aspect_conn(*planet2);
-                if (mHoraConfig->mAspectTypes.find(aspect_conn) != mHoraConfig->mAspectTypes.end())
+                QHoraConfig::AspectTypes::ConstIterator aspect = mHoraConfig->mAspectTypes.find(aspect_conn);
+                if (aspect != mHoraConfig->mAspectTypes.end() && aspect.value()->value().toBool())
                 {
                     QPointF leftPoint(horaPoint(planetPos._M_lont, ASPECT_DIST));
                     QPointF rightPoint(horaPoint(planet2->pos()._M_lont, ASPECT_DIST));
                     switch (aspect_conn)
                     {
                     case hor::conjunction:
+                        aspectPen.setStyle(Qt::SolidLine);
                         aspectPen.setColor(Qt::black);
                         aspectPen.setWidthF(oneDegree());
                         break;
+
+                    case hor::semi_quadrat:
+                    case hor::sesqui_quadrat:
+                        aspectPen.setStyle(Qt::DashLine);
+                        aspectPen.setColor(Qt::red);
+                        aspectPen.setWidthF(1.0);
+                        break;
+
                     case hor::opposition:
                     case hor::quadrat:
+                        aspectPen.setStyle(Qt::SolidLine);
                         aspectPen.setColor(Qt::red);
                         aspectPen.setWidthF(1.5);
                         break;
-                    case hor::quintil:
+
+                    case hor::biquintile:
+                        aspectPen.setStyle(Qt::DashLine);
                         aspectPen.setColor(Qt::blue);
                         aspectPen.setWidthF(1.0);
                         break;
-                    default:
+
+                    case hor::quintile:
+                        aspectPen.setStyle(Qt::SolidLine);
+                        aspectPen.setColor(Qt::blue);
+                        aspectPen.setWidthF(1.0);
+                        break;
+
+                    case hor::trigon:
+                    case hor::sextile:
+                        aspectPen.setStyle(Qt::SolidLine);
                         aspectPen.setColor(Qt::green);
                         aspectPen.setWidthF(1.5);
+                        break;
+
+                    default:
+                        aspectPen.setStyle(Qt::DashLine);
+                        aspectPen.setColor(Qt::darkRed);
+                        aspectPen.setWidthF(1.0);
                         break;
                     }
                     painter->setPen(aspectPen);
