@@ -5,6 +5,10 @@
 QHoraConfig::QHoraConfig(QObject* parent)
     : QConfigNode(parent)
 {
+    aspects()->loadSettings();
+    orbis()->loadSettings();
+    fixstars()->loadSettings();
+    karma()->loadSettings();
 }
 
 QHoraConfig::~QHoraConfig()

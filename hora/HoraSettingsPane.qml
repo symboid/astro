@@ -12,7 +12,7 @@ SettingsGroupFixed {
             title: HoraConfig.aspects.title
             Repeater {
                 model: HoraConfig.aspects
-                SettingsCheckBox {
+                SettingsSwitch {
                     configNode: config_item
                 }
             }
