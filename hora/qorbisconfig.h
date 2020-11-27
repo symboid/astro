@@ -6,49 +6,71 @@
 #include "sdk/hosting/qconfig.h"
 #include "astro/calculo/planet.h"
 
-#define Q_ORBIS_CONFIG_NODE(Name, sunOrbis,monOrbis,merOrbis,venOrbis,marOrbis, \
-                                        jupOrbis,satOrbis,uraOrbis,nepOrbis,pluOrbis) \
-class ASTRO_HORA_API Q##Name##OrbisConfigNode : public QConfigNode \
-{ \
-    Q_OBJECT \
-public: \
-    Q##Name##OrbisConfigNode(const QString& id, QConfigNode* parent, const char* parentSignal) \
-        : QConfigNode(id, parent, parentSignal) \
-    { \
-    } \
-public: \
-    Q_CONFIG_PROPERTY(double, sun, sunOrbis) \
-    Q_CONFIG_PROPERTY(double, mon, monOrbis) \
-    Q_CONFIG_PROPERTY(double, mer, merOrbis) \
-    Q_CONFIG_PROPERTY(double, ven, venOrbis) \
-    Q_CONFIG_PROPERTY(double, mar, marOrbis) \
-    Q_CONFIG_PROPERTY(double, jup, jupOrbis) \
-    Q_CONFIG_PROPERTY(double, sat, satOrbis) \
-    Q_CONFIG_PROPERTY(double, ura, uraOrbis) \
-    Q_CONFIG_PROPERTY(double, nep, nepOrbis) \
-    Q_CONFIG_PROPERTY(double, plu, pluOrbis) \
-    Q_CONFIG_PROPERTY(double, asc, 0.1) \
-    Q_CONFIG_PROPERTY(double, mc,  0.1) \
-    Q_CONFIG_PROPERTY(double, node, 0.5) \
-    Q_CONFIG_PROPERTY(double, cusp, 0.1) \
+class ASTRO_HORA_API QOrbisConfigNode : public QConfigNode
+{
+    Q_OBJECT
+public:
+    QOrbisConfigNode(const QString& id, QConfigNode* parent, const char* parentSignal,
+            const double* orbisDefaults)
+        : QConfigNode(id, parent, parentSignal)
+        , mOrbisDefaults(orbisDefaults)
+    {
+    }
+
+private:
+    const double* mOrbisDefaults;
+
+public:
+    Q_CONFIG_PROPERTY(double, sun, mOrbisDefaults[0])
+    Q_CONFIG_PROPERTY(double, mon, mOrbisDefaults[1])
+    Q_CONFIG_PROPERTY(double, mer, mOrbisDefaults[2])
+    Q_CONFIG_PROPERTY(double, ven, mOrbisDefaults[3])
+    Q_CONFIG_PROPERTY(double, mar, mOrbisDefaults[4])
+    Q_CONFIG_PROPERTY(double, jup, mOrbisDefaults[5])
+    Q_CONFIG_PROPERTY(double, sat, mOrbisDefaults[6])
+    Q_CONFIG_PROPERTY(double, ura, mOrbisDefaults[7])
+    Q_CONFIG_PROPERTY(double, nep, mOrbisDefaults[8])
+    Q_CONFIG_PROPERTY(double, plu, mOrbisDefaults[9])
+    Q_CONFIG_PROPERTY(double, asc, 0.1)
+    Q_CONFIG_PROPERTY(double, mc,  0.1)
+    Q_CONFIG_PROPERTY(double, node, 0.5)
+    Q_CONFIG_PROPERTY(double, cusp, 0.1)
 };
 
-#define Q_ORBIS_CONFIG_NOD1(ClassName, equOrbis) \
-    Q_ORBIS_CONFIG_NODE(ClassName, equOrbis,equOrbis,equOrbis,equOrbis,equOrbis,\
-                                   equOrbis,equOrbis,equOrbis,equOrbis,equOrbis)
+#define Q_ORBIS_CONFIG_NODE(orbisDefaults) \
+    Q_CONFIG_NODE_INTERFACE(QOrbisConfigNode,orbis)\
+    private: \
+        QOrbisConfigNode* _M_orbis = new QOrbisConfigNode("orbis",this,SIGNAL(orbisChanged()), \
+                orbisDefaults );
 
-Q_ORBIS_CONFIG_NODE(Conjunction, 4.0, 4.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.5, 2.5)
-Q_ORBIS_CONFIG_NODE(Opposition,  4.0, 4.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.5, 2.5)
-Q_ORBIS_CONFIG_NODE(Trigon,      3.5, 3.5, 3.0, 3.0, 2.5, 2.5, 2.5, 2.5, 2.0, 2.0)
-Q_ORBIS_CONFIG_NODE(Quadrat,     3.5, 3.5, 3.0, 3.0, 2.5, 2.5, 2.5, 2.5, 2.0, 2.0)
-Q_ORBIS_CONFIG_NOD1(Quintile,    1.0)
-Q_ORBIS_CONFIG_NODE(Sextile,     3.0, 3.0, 2.5, 2.5, 2.0, 2.0, 2.0, 2.0, 1.5, 1.5)
 
-Q_ORBIS_CONFIG_NOD1(Semisextile, 1.0)
-Q_ORBIS_CONFIG_NOD1(Quincunx,    1.0)
-Q_ORBIS_CONFIG_NOD1(Semiquadrat, 1.0)
-Q_ORBIS_CONFIG_NOD1(Sesquiquadrat, 1.0)
-Q_ORBIS_CONFIG_NOD1(Biquintile,  1.0)
+class ASTRO_HORA_API QAspectConfigNode : public QConfigNode
+{
+    Q_OBJECT
+public:
+    QAspectConfigNode(const QString& id, QConfigNode* parent, const char* parentSignal,
+            bool enabledDefault, const double* orbisDefaults)
+        : QConfigNode(id, parent, parentSignal)
+        , mEnabledDefault(enabledDefault)
+        , mOrbisDefaults(orbisDefaults)
+    {
+    }
+
+private:
+    const bool mEnabledDefault;
+    const double* mOrbisDefaults;
+
+public:
+    Q_CONFIG_PROPERTY(bool, enabled, mEnabledDefault);
+    Q_ORBIS_CONFIG_NODE(mOrbisDefaults);
+};
+
+#define Q_ASPECT_CONFIG_NODE(name,enabledDefault,...) \
+    Q_CONFIG_NODE_INTERFACE(QAspectConfigNode,name) \
+    private: \
+        const double name##OrbisDefaults[10] = { __VA_ARGS__ }; \
+        QAspectConfigNode* _M_##name = new QAspectConfigNode(#name,this,SIGNAL(name##Changed()), \
+                enabledDefault, name##OrbisDefaults ); \
 
 class ASTRO_HORA_API QOrbisConfig : public QConfigNode
 {
@@ -59,18 +81,18 @@ public:
     {
     }
 
-    Q_CONFIG_NODE(QConjunctionOrbisConfigNode, conjunction)
-    Q_CONFIG_NODE(QOppositionOrbisConfigNode, opposition)
-    Q_CONFIG_NODE(QTrigonOrbisConfigNode, trigon)
-    Q_CONFIG_NODE(QQuadratOrbisConfigNode, quadrat)
-    Q_CONFIG_NODE(QQuintileOrbisConfigNode, quintile)
-    Q_CONFIG_NODE(QSextileOrbisConfigNode, sextile)
+    Q_ASPECT_CONFIG_NODE(conjunction,    true,  4.0, 4.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.5, 2.5)
+    Q_ASPECT_CONFIG_NODE(opposition,     true,  4.0, 4.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.5, 2.5)
+    Q_ASPECT_CONFIG_NODE(trigon,         true,  3.5, 3.5, 3.0, 3.0, 2.5, 2.5, 2.5, 2.5, 2.0, 2.0)
+    Q_ASPECT_CONFIG_NODE(quadrat,        true,  3.5, 3.5, 3.0, 3.0, 2.5, 2.5, 2.5, 2.5, 2.0, 2.0)
+    Q_ASPECT_CONFIG_NODE(quintile,       false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
+    Q_ASPECT_CONFIG_NODE(sextile,        true,  3.0, 3.0, 2.5, 2.5, 2.0, 2.0, 2.0, 2.0, 1.5, 1.5)
 
-    Q_CONFIG_NODE(QSemisextileOrbisConfigNode, semi_sextile)
-    Q_CONFIG_NODE(QQuincunxOrbisConfigNode, quincunx)
-    Q_CONFIG_NODE(QSemiquadratOrbisConfigNode, semi_quadrat)
-    Q_CONFIG_NODE(QSesquiquadratOrbisConfigNode, sesqui_quadrat)
-    Q_CONFIG_NODE(QBiquintileOrbisConfigNode, biquintile)
+    Q_ASPECT_CONFIG_NODE(semi_sextile,   false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
+    Q_ASPECT_CONFIG_NODE(quincunx,       false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
+    Q_ASPECT_CONFIG_NODE(semi_quadrat,   false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
+    Q_ASPECT_CONFIG_NODE(sesqui_quadrat, false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
+    Q_ASPECT_CONFIG_NODE(biquintile,     false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
 };
 
 class ASTRO_HORA_API OrbisConfig : public hor::a_orbis_config

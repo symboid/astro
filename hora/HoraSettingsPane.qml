@@ -43,7 +43,7 @@ SettingsGroupFixed {
                 model: HoraConfig.orbis
                 OrbisSettingsGroup {
                     title: aspectTitles[index]
-                    aspectConfig: config_item
+                    aspectConfig: config_item.orbis
                     elementNames: [
                         qsTr("Sun"), qsTr("Moon"), qsTr("Mercury"), qsTr("Venus"), qsTr("Mars"),
                         qsTr("Jupiter"), qsTr("Saturn"), qsTr("Uranus"), qsTr("Neptune"), qsTr("Pluto"),
