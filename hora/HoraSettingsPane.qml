@@ -9,7 +9,7 @@ SettingsGroupFixed {
     property var aspectTitles: [
         qsTr("Conjunction"), qsTr("Opposition"), qsTr("Trigon"), qsTr("Quadrat"),
         qsTr("Quintile"), qsTr("Sextile"), qsTr("Semi-sextile"), qsTr("Quincunx"),
-        qsTr("Semi-quadrat"), qsTr("Sesqui-quadrat"), qsTr("Biquintile"), qsTr("Before house cusps")
+        qsTr("Semi-quadrat"), qsTr("Sesqui-quadrat"), qsTr("Biquintile")
     ]
     SettingsGroupLink {
         title: qsTr("Aspect connections")
@@ -44,7 +44,17 @@ SettingsGroupFixed {
                 OrbisSettingsGroup {
                     title: aspectTitles[index]
                     aspectConfig: config_item
+                    elementNames: [
+                        qsTr("Sun"), qsTr("Moon"), qsTr("Mercury"), qsTr("Venus"), qsTr("Mars"),
+                        qsTr("Jupiter"), qsTr("Saturn"), qsTr("Uranus"), qsTr("Neptune"), qsTr("Pluto"),
+                        qsTr("Asc"), qsTr("MC"), qsTr("Lunar nodes"), qsTr("House cusps")
+                    ]
                 }
+            }
+            OrbisSettingsGroup {
+                title: qsTr("Before house cusps")
+                aspectConfig: HoraConfig.house_cusp_orbis
+                elementNames: [ qsTr("Asc"), qsTr("Dsc"), qsTr("MC"), qsTr("IC"), qsTr("Other") ]
             }
         }
     }

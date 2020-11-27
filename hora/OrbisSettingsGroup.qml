@@ -8,11 +8,7 @@ SettingsGroupLink {
 
     property ConfigNode aspectConfig: null
 
-    property var planets: [
-        qsTr("Sun"), qsTr("Moon"), qsTr("Mercury"), qsTr("Venus"), qsTr("Mars"),
-        qsTr("Jupiter"), qsTr("Saturn"), qsTr("Uranus"), qsTr("Neptune"), qsTr("Pluto"),
-        qsTr("Asc"), qsTr("MC"), qsTr("Lunar nodes"), qsTr("House cusps")
-    ]
+    property var elementNames: []
 
     settingsPane: SettingsPane {
         title: orbisGroup.title
@@ -20,7 +16,7 @@ SettingsGroupLink {
             model: aspectConfig
             OrbisSettingsItem {
                 id: orbisSetting
-                text: planets[index]
+                text: elementNames[index]
                 aspectConfig: config_item
             }
         }

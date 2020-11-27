@@ -6,10 +6,10 @@ QHoraConfig::QHoraConfig(QObject* parent)
     : QConfigNode(parent)
 {
     QSettings settings;
-    aspects()->loadFromSettings(&settings);
-    orbis()->loadFromSettings(&settings);
-    fixstars()->loadFromSettings(&settings);
-    karma()->loadFromSettings(&settings);
+    for (int c = 0; c < subConfigCount(); ++c)
+    {
+        subConfig(c)->loadFromSettings(&settings);
+    }
 
     mAspectTypes[hor::conjunction] = aspects()->conjunctionNode();
     mAspectTypes[hor::opposition] = aspects()->oppositionNode();
@@ -28,8 +28,8 @@ QHoraConfig::QHoraConfig(QObject* parent)
 QHoraConfig::~QHoraConfig()
 {
     QSettings settings;
-    aspects()->saveToSettings(&settings);
-    orbis()->saveToSettings(&settings);
-    fixstars()->saveToSettings(&settings);
-    karma()->saveToSettings(&settings);
+    for (int c = 0; c < subConfigCount(); ++c)
+    {
+        subConfig(c)->saveToSettings(&settings);
+    }
 }

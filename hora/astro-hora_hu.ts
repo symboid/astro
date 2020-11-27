@@ -65,7 +65,79 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="12"/>
+        <location filename="HoraSettingsPane.qml" line="48"/>
+        <source>Sun</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="48"/>
+        <source>Moon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="48"/>
+        <source>Mercury</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="48"/>
+        <source>Venus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="48"/>
+        <source>Mars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="49"/>
+        <source>Jupiter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="49"/>
+        <source>Saturn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="49"/>
+        <source>Uranus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="49"/>
+        <source>Neptune</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="49"/>
+        <source>Pluto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="50"/>
+        <location filename="HoraSettingsPane.qml" line="57"/>
+        <source>Asc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="50"/>
+        <location filename="HoraSettingsPane.qml" line="57"/>
+        <source>MC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="50"/>
+        <source>Lunar nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="50"/>
+        <source>House cusps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="55"/>
         <source>Before house cusps</source>
         <translation type="unfinished"></translation>
     </message>
@@ -97,27 +169,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="52"/>
+        <location filename="HoraSettingsPane.qml" line="57"/>
+        <source>Dsc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="57"/>
+        <source>IC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="57"/>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="62"/>
         <source>Karmic points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="55"/>
+        <location filename="HoraSettingsPane.qml" line="65"/>
         <source>Dragon Head</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="60"/>
+        <location filename="HoraSettingsPane.qml" line="70"/>
         <source>Dragon Tail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="71"/>
+        <location filename="HoraSettingsPane.qml" line="81"/>
         <source>Lilith</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="75"/>
+        <location filename="HoraSettingsPane.qml" line="85"/>
         <source>Axis on lunar nodes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -131,79 +218,9 @@
 <context>
     <name>OrbisSettingsGroup</name>
     <message>
-        <location filename="OrbisSettingsGroup.qml" line="12"/>
-        <source>Sun</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="12"/>
-        <source>Moon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="12"/>
-        <source>Mercury</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="12"/>
-        <source>Venus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="12"/>
-        <source>Mars</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="13"/>
-        <source>Jupiter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="13"/>
-        <source>Saturn</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="13"/>
-        <source>Uranus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="13"/>
-        <source>Neptune</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="13"/>
-        <source>Pluto</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="OrbisSettingsGroup.qml" line="14"/>
         <source></source>
         <translation></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="14"/>
-        <source>Asc</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="14"/>
-        <source>MC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="14"/>
-        <source>Lunar nodes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="OrbisSettingsGroup.qml" line="14"/>
-        <source>House cusps</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

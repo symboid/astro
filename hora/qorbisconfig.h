@@ -50,22 +50,6 @@ Q_ORBIS_CONFIG_NOD1(Semiquadrat, 1.0)
 Q_ORBIS_CONFIG_NOD1(Sesquiquadrat, 1.0)
 Q_ORBIS_CONFIG_NOD1(Biquintile,  1.0)
 
-class ASTRO_HORA_API QHouseCuspOrbisConfigNode : public QConfigNode
-{
-    Q_OBJECT
-public:
-    QHouseCuspOrbisConfigNode(const QString& id, QConfigNode* parentNode, const char* parentSignal)
-        : QConfigNode(id, parentNode, parentSignal)
-    {
-    }
-
-    Q_CONFIG_PROPERTY(double, asc, 2.0)
-    Q_CONFIG_PROPERTY(double, dsc, 2.0)
-    Q_CONFIG_PROPERTY(double, mc,  2.0)
-    Q_CONFIG_PROPERTY(double, ic,  2.0)
-    Q_CONFIG_PROPERTY(double, other, 2.0)
-};
-
 class ASTRO_HORA_API QOrbisConfig : public QConfigNode
 {
     Q_OBJECT
@@ -87,8 +71,6 @@ public:
     Q_CONFIG_NODE(QSemiquadratOrbisConfigNode, semi_quadrat)
     Q_CONFIG_NODE(QSesquiquadratOrbisConfigNode, sesqui_quadrat)
     Q_CONFIG_NODE(QBiquintileOrbisConfigNode, biquintile)
-
-    Q_CONFIG_NODE(QHouseCuspOrbisConfigNode, house_cusp)
 };
 
 class ASTRO_HORA_API OrbisConfig : public hor::a_orbis_config
