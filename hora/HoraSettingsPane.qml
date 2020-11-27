@@ -17,9 +17,9 @@ SettingsGroupFixed {
             title: qsTr("Aspect connections")
             Repeater {
                 model: HoraConfig.aspects
-                SettingsSwitch {
+                AspectSettingsGroup {
                     text: aspectTitles[index]
-                    configNode: config_item
+                    aspectConfig: config_item
                 }
             }
         }
@@ -39,18 +39,6 @@ SettingsGroupFixed {
         settingsPane: SettingsPane {
             title: qsTr("Orbis")
             id: orbisSettingsPane
-            Repeater {
-                model: HoraConfig.orbis
-                OrbisSettingsGroup {
-                    title: aspectTitles[index]
-                    aspectConfig: config_item.orbis
-                    elementNames: [
-                        qsTr("Sun"), qsTr("Moon"), qsTr("Mercury"), qsTr("Venus"), qsTr("Mars"),
-                        qsTr("Jupiter"), qsTr("Saturn"), qsTr("Uranus"), qsTr("Neptune"), qsTr("Pluto"),
-                        qsTr("Asc"), qsTr("MC"), qsTr("Lunar nodes"), qsTr("House cusps")
-                    ]
-                }
-            }
             OrbisSettingsGroup {
                 title: qsTr("Before house cusps")
                 aspectConfig: HoraConfig.house_cusp_orbis

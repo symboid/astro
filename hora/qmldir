@@ -2,6 +2,7 @@ module Symboid.Astro.Controls
 HoraTableView 1.0 HoraTableView.qml
 HoraTableLine 1.0 HoraTableLine.qml
 HoraSettingsPane 1.0 HoraSettingsPane.qml
+AspectSettingsGroup 1.0 AspectSettingsGroup.qml
 OrbisSettingsGroup 1.0 OrbisSettingsGroup.qml
 OrbisSettingsItem 1.0 OrbisSettingsItem.qml
 HoraPanel 1.0 HoraPanel.qml

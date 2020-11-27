@@ -11,18 +11,18 @@ QHoraConfig::QHoraConfig(QObject* parent)
         subConfig(c)->loadFromSettings(&settings);
     }
 
-    mAspectTypes[hor::conjunction] = aspects()->conjunctionNode();
-    mAspectTypes[hor::opposition] = aspects()->oppositionNode();
-    mAspectTypes[hor::trigon] = aspects()->trigonNode();
-    mAspectTypes[hor::quadrat] = aspects()->quadratNode();
-    mAspectTypes[hor::quintile] = aspects()->quintileNode();
-    mAspectTypes[hor::sextile] = aspects()->sextileNode();
+    mAspectTypes[hor::conjunction] = aspects()->conjunction();
+    mAspectTypes[hor::opposition] = aspects()->opposition();
+    mAspectTypes[hor::trigon] = aspects()->trigon();
+    mAspectTypes[hor::quadrat] = aspects()->quadrat();
+    mAspectTypes[hor::quintile] = aspects()->quintile();
+    mAspectTypes[hor::sextile] = aspects()->sextile();
 
-    mAspectTypes[hor::semi_sextile] = aspects()->semi_sextileNode();
-    mAspectTypes[hor::quincunx] = aspects()->quincunxNode();
-    mAspectTypes[hor::semi_quadrat] = aspects()->semi_quadratNode();
-    mAspectTypes[hor::sesqui_quadrat] = aspects()->sesqui_quadratNode();
-    mAspectTypes[hor::biquintile] = aspects()->biquintileNode();
+    mAspectTypes[hor::semi_sextile] = aspects()->semi_sextile();
+    mAspectTypes[hor::quincunx] = aspects()->quincunx();
+    mAspectTypes[hor::semi_quadrat] = aspects()->semi_quadrat();
+    mAspectTypes[hor::sesqui_quadrat] = aspects()->sesqui_quadrat();
+    mAspectTypes[hor::biquintile] = aspects()->biquintile();
 }
 
 QHoraConfig::~QHoraConfig()

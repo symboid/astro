@@ -7,7 +7,6 @@
 #include "astro/calculo/hora.h"
 #include "sdk/hosting/qconfig.h"
 #include "astro/hora/qaspectconfig.h"
-#include "astro/hora/qorbisconfig.h"
 #include "astro/db/qfixstarconfig.h"
 #include <QList>
 #include <QMap>
@@ -55,11 +54,10 @@ public:
 public:
     typedef QList<hor::planet> Planets;
     Planets mPlanets;
-    typedef QMap<hor::aspect_type, QConfigNode*> AspectTypes;
+    typedef QMap<hor::aspect_type, QAspectConfigNode*> AspectTypes;
     AspectTypes mAspectTypes;
 
     Q_CONFIG_NODE(QAspectConfig, aspects)
-    Q_CONFIG_NODE(QOrbisConfig, orbis)
     Q_CONFIG_NODE(QFixstarConfig, fixstars)
     Q_CONFIG_NODE(QKarmaConfig, karma)
     Q_CONFIG_NODE(QHouseCuspOrbisConfigNode, house_cusp_orbis)

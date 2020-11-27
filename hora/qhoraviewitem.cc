@@ -487,7 +487,7 @@ void QHoraViewItem::paint(QPainter* painter)
             {
                 hor::aspect_type aspect_conn = planet->aspect_conn(*planet2);
                 QHoraConfig::AspectTypes::ConstIterator aspect = mHoraConfig->mAspectTypes.find(aspect_conn);
-                if (aspect != mHoraConfig->mAspectTypes.end() && aspect.value()->value().toBool())
+                if (aspect != mHoraConfig->mAspectTypes.end() && (*aspect)->enabled())
                 {
                     QPointF leftPoint(horaPoint(planetPos._M_lont, ASPECT_DIST));
                     QPointF rightPoint(horaPoint(planet2->pos()._M_lont, ASPECT_DIST));
