@@ -6,7 +6,7 @@ import Symboid.Sdk.Hosting 1.0
 
 SettingsItem {
     property alias text: objectTitle.text
-    property ConfigNode aspectConfig: null
+    property ConfigNode orbisConfig: null
     setting: Row {
 
         leftPadding: 20
@@ -21,10 +21,10 @@ SettingsItem {
             id: orbisValue
             from: 0
             to: 100
-            value: aspectConfig.value * 10
+            value: orbisConfig.value * 10
             onValueChanged: {
-                aspectConfig.value = Number(value)/10
-                value = Qt.binding(function(){return aspectConfig.value*10})
+                orbisConfig.value = Number(value)/10
+                value = Qt.binding(function(){return orbisConfig.value*10})
             }
 
             textFromValue: function(value, locale) {

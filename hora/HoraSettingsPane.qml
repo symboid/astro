@@ -38,11 +38,19 @@ SettingsGroupFixed {
 
         settingsPane: SettingsPane {
             title: qsTr("Orbis")
-            id: orbisSettingsPane
-            OrbisSettingsGroup {
+            SettingsGroupLink {
                 title: qsTr("Before house cusps")
-                aspectConfig: HoraConfig.house_cusp_orbis
-                elementNames: [ qsTr("Asc"), qsTr("Dsc"), qsTr("MC"), qsTr("IC"), qsTr("Other") ]
+                settingsPane: SettingsPane {
+                    title: qsTr("Before house cusps")
+                    Repeater {
+                        model: HoraConfig.house_cusp_orbis
+                        OrbisSettingsItem {
+                            property var elementNames: [ qsTr("Asc"), qsTr("Dsc"), qsTr("MC"), qsTr("IC"), qsTr("Other") ]
+                            text: elementNames[index]
+                            orbisConfig: config_item
+                        }
+                    }
+                }
             }
         }
     }

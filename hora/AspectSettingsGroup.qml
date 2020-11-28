@@ -37,7 +37,7 @@ SettingsSwitch {
             OrbisSettingsItem {
                 id: orbisSetting
                 text: elementNames[index]
-                aspectConfig: config_item
+                orbisConfig: config_item
             }
         }
     }
