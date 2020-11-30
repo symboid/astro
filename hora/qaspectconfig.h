@@ -31,10 +31,13 @@ public:
     Q_CONFIG_PROPERTY(double, ura, mOrbisDefaults[7])
     Q_CONFIG_PROPERTY(double, nep, mOrbisDefaults[8])
     Q_CONFIG_PROPERTY(double, plu, mOrbisDefaults[9])
+
     Q_CONFIG_PROPERTY(double, asc, 0.1)
     Q_CONFIG_PROPERTY(double, mc,  0.1)
-    Q_CONFIG_PROPERTY(double, node, 0.5)
     Q_CONFIG_PROPERTY(double, cusp, 0.1)
+
+    Q_CONFIG_PROPERTY(double, nod, 1.0)
+    Q_CONFIG_PROPERTY(double, lil, 1.0)
 };
 
 #define Q_ORBIS_CONFIG_NODE(orbisDefaults) \
@@ -98,7 +101,8 @@ public:
 class ASTRO_HORA_API OrbisConfig : public hor::a_orbis_config
 {
 public:
-    OrbisConfig(QAspectConfig* aspectConfig, int index);
+    typedef QConfigNode*(QOrbisConfigNode::*PlanetNodeFn)() const;
+    OrbisConfig(QAspectConfig* aspectConfig, PlanetNodeFn planetNodeFn);
 private:
     QConfigNode* mAspectConfigs[hor::aspect_type_count];
 public:

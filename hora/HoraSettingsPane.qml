@@ -20,6 +20,7 @@ SettingsGroupFixed {
                 AspectSettingsGroup {
                     text: aspectTitles[index]
                     aspectConfig: config_item
+                    withSeparator: index == 5
                 }
             }
         }

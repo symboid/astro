@@ -2,21 +2,21 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qaspectconfig.h"
 
-OrbisConfig::OrbisConfig(QAspectConfig* aspectConfig, int index)
+OrbisConfig::OrbisConfig(QAspectConfig* aspectConfig, PlanetNodeFn planetNodeFn)
 {
     mAspectConfigs[hor::none_aspect] = nullptr;
-    mAspectConfigs[hor::conjunction] = aspectConfig->conjunction()->orbis()->subConfig(index);
-    mAspectConfigs[hor::opposition] = aspectConfig->opposition()->orbis()->subConfig(index);
-    mAspectConfigs[hor::trigon] = aspectConfig->trigon()->orbis()->subConfig(index);
-    mAspectConfigs[hor::quadrat] = aspectConfig->quadrat()->orbis()->subConfig(index);
-    mAspectConfigs[hor::quintile] = aspectConfig->quintile()->orbis()->subConfig(index);
-    mAspectConfigs[hor::sextile] = aspectConfig->sextile()->orbis()->subConfig(index);
+    mAspectConfigs[hor::conjunction] = (aspectConfig->conjunction()->orbis()->*planetNodeFn)();
+    mAspectConfigs[hor::opposition] = (aspectConfig->opposition()->orbis()->*planetNodeFn)();
+    mAspectConfigs[hor::trigon] = (aspectConfig->trigon()->orbis()->*planetNodeFn)();
+    mAspectConfigs[hor::quadrat] = (aspectConfig->quadrat()->orbis()->*planetNodeFn)();
+    mAspectConfigs[hor::quintile] = (aspectConfig->quintile()->orbis()->*planetNodeFn)();
+    mAspectConfigs[hor::sextile] = (aspectConfig->sextile()->orbis()->*planetNodeFn)();
 
-    mAspectConfigs[hor::semi_sextile] = aspectConfig->semi_sextile()->orbis()->subConfig(index);
-    mAspectConfigs[hor::quincunx] = aspectConfig->quincunx()->orbis()->subConfig(index);
-    mAspectConfigs[hor::semi_quadrat] = aspectConfig->semi_quadrat()->orbis()->subConfig(index);
-    mAspectConfigs[hor::sesqui_quadrat] = aspectConfig->sesqui_quadrat()->orbis()->subConfig(index);
-    mAspectConfigs[hor::biquintile] = aspectConfig->biquintile()->orbis()->subConfig(index);
+    mAspectConfigs[hor::semi_sextile] = (aspectConfig->semi_sextile()->orbis()->*planetNodeFn)();
+    mAspectConfigs[hor::quincunx] = (aspectConfig->quincunx()->orbis()->*planetNodeFn)();
+    mAspectConfigs[hor::semi_quadrat] = (aspectConfig->semi_quadrat()->orbis()->*planetNodeFn)();
+    mAspectConfigs[hor::sesqui_quadrat] = (aspectConfig->sesqui_quadrat()->orbis()->*planetNodeFn)();
+    mAspectConfigs[hor::biquintile] = (aspectConfig->biquintile()->orbis()->*planetNodeFn)();
 }
 
 hor::orbis OrbisConfig::aspect_orbis(hor::aspect_type _aspect_type) const

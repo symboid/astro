@@ -27,7 +27,7 @@ SettingsSwitch {
     property var elementNames: [
         qsTr("Sun"), qsTr("Moon"), qsTr("Mercury"), qsTr("Venus"), qsTr("Mars"),
         qsTr("Jupiter"), qsTr("Saturn"), qsTr("Uranus"), qsTr("Neptune"), qsTr("Pluto"),
-        qsTr("Asc"), qsTr("MC"), qsTr("Lunar nodes"), qsTr("House cusps")
+        qsTr("Asc"), qsTr("MC"), qsTr("House cusps"), qsTr("Lunar nodes"), qsTr("Lilith")
     ]
 
     property Component settingsPane: SettingsPane {
@@ -38,6 +38,7 @@ SettingsSwitch {
                 id: orbisSetting
                 text: elementNames[index]
                 orbisConfig: config_item
+                withSeparator: index === 9 || index === 12
             }
         }
     }

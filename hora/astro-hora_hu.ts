@@ -73,6 +73,11 @@
         <source>House cusps</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="AspectSettingsGroup.qml" line="30"/>
+        <source>Lilith</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HoraSettingsPane</name>
@@ -138,18 +143,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="48"/>
+        <location filename="HoraSettingsPane.qml" line="49"/>
         <source>Asc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="48"/>
+        <location filename="HoraSettingsPane.qml" line="49"/>
         <source>MC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="42"/>
-        <location filename="HoraSettingsPane.qml" line="44"/>
+        <location filename="HoraSettingsPane.qml" line="43"/>
+        <location filename="HoraSettingsPane.qml" line="45"/>
         <source>Before house cusps</source>
         <translation type="unfinished"></translation>
     </message>
@@ -165,63 +170,63 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="28"/>
+        <location filename="HoraSettingsPane.qml" line="29"/>
         <source>Fixed stars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="32"/>
+        <location filename="HoraSettingsPane.qml" line="33"/>
         <source>Include fixed stars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="37"/>
-        <location filename="HoraSettingsPane.qml" line="40"/>
+        <location filename="HoraSettingsPane.qml" line="38"/>
+        <location filename="HoraSettingsPane.qml" line="41"/>
         <source>Orbis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="48"/>
+        <location filename="HoraSettingsPane.qml" line="49"/>
         <source>Dsc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="48"/>
+        <location filename="HoraSettingsPane.qml" line="49"/>
         <source>IC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="48"/>
+        <location filename="HoraSettingsPane.qml" line="49"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="58"/>
+        <location filename="HoraSettingsPane.qml" line="59"/>
         <source>Karmic points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="61"/>
+        <location filename="HoraSettingsPane.qml" line="62"/>
         <source>Dragon Head</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="66"/>
+        <location filename="HoraSettingsPane.qml" line="67"/>
         <source>Dragon Tail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="77"/>
+        <location filename="HoraSettingsPane.qml" line="78"/>
         <source>Lilith</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="81"/>
+        <location filename="HoraSettingsPane.qml" line="82"/>
         <source>Axis on lunar nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="33"/>
+        <location filename="HoraSettingsPane.qml" line="34"/>
         <source>Fixed stars in conjuction with planets will be denoted.</source>
         <oldsource>Only fixed start in conjuction with some planets is shown.</oldsource>
         <translation type="unfinished"></translation>
