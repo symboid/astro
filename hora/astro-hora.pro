@@ -7,6 +7,7 @@ include($${BUILD_ROOT}/sdk/build/qmake/qt-module.pri)
 SOURCES += \
     init.cc \
     qforecastmodel.cc \
+    qhora.cc \
     qhoraconfig.cc \
     qhoraitemsmodel.cc \
     qhoraobject.cc \

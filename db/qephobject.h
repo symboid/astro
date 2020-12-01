@@ -28,6 +28,7 @@ public:
 private:
     const QString mId;
 
+public:
     QEclPos eclPos() const;
     bool isEclPosValid() const;
 protected:
