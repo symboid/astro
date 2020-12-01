@@ -40,6 +40,8 @@ struct ASTRO_DB_API proxy
     {
         enum index
         {
+            undef = SE_ECL_NUT,
+
             sun = SE_SUN,
             moon = SE_MOON,
             mercury = SE_MERCURY,

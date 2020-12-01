@@ -18,6 +18,7 @@ SOURCES += \
     fixstars.cc \
     geocoord.cc \
     init.cc \
+    qephobject.cc \
     qgeonamesrestclient.cc \
     qgeonamestablemodel.cc \
     sweph/src/swedate.c \
@@ -38,6 +39,7 @@ HEADERS += \
     fixstars.h \
     geocoord.h \
     init.h \
+    qephobject.h \
     qfixstarconfig.h \
     setup.h \
     qgeonamesmodel.h \
