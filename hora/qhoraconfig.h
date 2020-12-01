@@ -54,8 +54,6 @@ public:
 public:
     typedef QList<hor::planet> Planets;
     Planets mPlanets;
-    typedef QMap<hor::aspect_type, QAspectConfigNode*> AspectTypes;
-    AspectTypes mAspectTypes;
 
     Q_CONFIG_NODE(QAspectConfig, aspects)
     Q_CONFIG_NODE(QFixstarConfig, fixstars)
