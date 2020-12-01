@@ -5,6 +5,12 @@
 QHora::QHora(QObject* parent)
     : QObject(parent)
 {
+    for (int h = 0; h < QHouseSystem::HOUSE_COUNT; ++h)
+    {
+        mHouseCusps[h] = new QHouseCusp(this, &mHouseSystem, h + 1);
+    }
+    mHouseCusps[QHouseSystem::HOUSE_COUNT] = nullptr;
+
     mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::sunNode));
     mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::monNode));
     mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::merNode));
@@ -20,16 +26,51 @@ QHora::QHora(QObject* parent)
     mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::lilNode));
 }
 
-bool QHora::calc(const QHoraCoords& horaCoords)
+QHouseCusp*const* QHora::housesBegin() const
+{
+    return & mHouseCusps[0];
+}
+
+QHouseCusp*const* QHora::housesEnd() const
+{
+    return & mHouseCusps[QHouseSystem::HOUSE_COUNT];
+}
+
+QHora::Planets::ConstIterator QHora::planetsBegin() const
+{
+    return mPlanets.begin();
+}
+
+QHora::Planets::ConstIterator QHora::planetsEnd() const
+{
+    return mPlanets.end();
+}
+
+QHora::ConjunctingFixstars::ConstIterator QHora::fixstarsBegin() const
+{
+    return mConjunctingFixstars.begin();
+}
+
+QHora::ConjunctingFixstars::ConstIterator QHora::fixstarsEnd() const
+{
+    return mConjunctingFixstars.end();
+}
+
+bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType)
 {
     // hora time corrected with time zone data
-    eph::basic_time_point<eph_proxy> horaTime =
-            eph::basic_calendar<eph_proxy>::time(horaCoords.mCalendarCoords);
+    QEphTime horaTime = eph::basic_calendar<eph_proxy>::time(horaCoords.mCalendarCoords);
     horaTime -= horaCoords.mTimeZoneDiff;
 
     bool calcResult = true;
 
     // getting house cusp positions
+    mHouseSystem.mType = houseSystemType;
+    calcResult = mHouseSystem.calc(horaTime, horaCoords.mGeoLont, horaCoords.mGeoLatt);
+    for (int h = 0; h < QHouseSystem::HOUSE_COUNT; ++h)
+    {
+        mHouseCusps[h]->calc(horaTime);
+    }
 
     // getting planet positions
     for (Planets::iterator planet = mPlanets.begin(), end = mPlanets.end(); calcResult && planet < end; ++planet)

@@ -12,6 +12,7 @@ SOURCES += \
     qhoraitemsmodel.cc \
     qhoraobject.cc \
     qhoraviewitem.cc \
+    qhousecusp.cc \
     qplanet.cc
 
 HEADERS += \
@@ -25,6 +26,7 @@ HEADERS += \
     qhoraobject.h \
     qhorastellium.h \
     qhoraviewitem.h \
+    qhousecusp.h \
     qplanet.h \
     setup.h
 
