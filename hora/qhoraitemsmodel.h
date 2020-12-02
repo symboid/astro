@@ -3,27 +3,23 @@
 #define __SYMBOID_ASTRO_HORA_QHORAITEMSMODEL_H__
 
 #include "astro/hora/defs.h"
-#include "astro/calculo/hora.h"
+#include "astro/hora/qhora.h"
 #include <QAbstractTableModel>
 #include "astro/controls/qastrofont.h"
-
-hor_ns_begin
-typedef basic_hora<eph_proxy> hora;
-hor_ns_end
 
 class ASTRO_HORA_API QHoraTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    QHoraTableModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
+    QHoraTableModel(const QHora* hora, QObject* parent = Q_NULLPTR);
 
 public:
-    Q_PROPERTY(const hor::hora* hora MEMBER mHora WRITE setHora NOTIFY horaChanged)
+    Q_PROPERTY(const QHora* hora MEMBER mHora WRITE setHora NOTIFY horaChanged)
 protected:
-    const hor::hora* mHora;
+    const QHora* mHora;
 public:
-    void setHora(const hor::hora* hora);
+    void setHora(const QHora* hora);
 signals:
     void horaChanged();
 
@@ -52,7 +48,7 @@ class ASTRO_HORA_API QEclipticTableModel : public QHoraTableModel
     Q_OBJECT
 
 public:
-    QEclipticTableModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
+    QEclipticTableModel(const QHora* hora, QObject* parent = Q_NULLPTR);
 
 protected:
     enum {

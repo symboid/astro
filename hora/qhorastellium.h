@@ -4,7 +4,7 @@
 
 #include "astro/hora/defs.h"
 #include <QList>
-#include "astro/calculo/planet.h"
+#include "astro/hora/qplanet.h"
 
 template <class Object>
 struct Stellium : QList<Object>
@@ -18,12 +18,12 @@ struct Stellium : QList<Object>
 
     eph::ecl_pos realBegin() const
     {
-        return this->front().pos();
+        return this->front()->eclPos();
     }
 
     eph::ecl_pos realEnd() const
     {
-        return this->back().pos();
+        return this->back()->eclPos();
     }
 
     eph::ecl_lont realWidth() const
@@ -106,7 +106,7 @@ struct Stellium : QList<Object>
                 ++thisIt;
                 ++rhsIt;
             }
-            else if (rhsIt->pos().dist_to(thisIt->pos()) >= 0)
+            else if ((*rhsIt)->eclPos().dist_to((*thisIt)->eclPos()) >= 0)
             {
                 thisIt = this->insert(thisIt, *rhsIt);
                 ++thisIt;
@@ -152,6 +152,6 @@ public:
     };
 };
 
-typedef Stellium<hor::planet> QHoraStellium;
+typedef Stellium<QPlanet*> QHoraStellium;
 
 #endif // __SYMBOID_ASTRO_HORA_QHORASTELLIUM_H__

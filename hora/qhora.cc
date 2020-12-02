@@ -36,6 +36,11 @@ QHouseCusp*const* QHora::housesEnd() const
     return & mHouseCusps[QHouseSystem::HOUSE_COUNT];
 }
 
+const QHouseCusp* QHora::house(int index) const
+{
+    return mHouseCusps[index];
+}
+
 QHora::Planets::ConstIterator QHora::planetsBegin() const
 {
     return mPlanets.begin();
@@ -44,6 +49,16 @@ QHora::Planets::ConstIterator QHora::planetsBegin() const
 QHora::Planets::ConstIterator QHora::planetsEnd() const
 {
     return mPlanets.end();
+}
+
+int QHora::planetCount() const
+{
+    return mPlanets.size();
+}
+
+const QPlanet* QHora::planet(int index) const
+{
+    return mPlanets.at(index);
 }
 
 QHora::ConjunctingFixstars::ConstIterator QHora::fixstarsBegin() const
@@ -94,7 +109,7 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
                 {
                     bool conjuncting = false;
                     const eph::ecl_pos fixstarPos = fixstar.pos();
-                    const hor::orbis fixstarOrbis = (*fixstarData)->orbis();
+                    const QOrbisValue fixstarOrbis = (*fixstarData)->orbis();
                     for (Planets::ConstIterator planet = mPlanets.begin(), pEnd = mPlanets.end();
                             !conjuncting && planet != pEnd; ++planet)
                     {

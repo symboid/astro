@@ -68,6 +68,10 @@ public:
         }
         return result;
     }
+// FIXME: QFixstar refactor
+ecl_pos eclPos() const { return basic_object<_EphProxy>::_M_ecl_pos; }
+const basic_fixstar<_EphProxy>* operator->() const { return this; }
+basic_fixstar<_EphProxy>* operator->() { return this; }
 };
 
 eph_ns_end

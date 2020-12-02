@@ -6,7 +6,7 @@
 #include <QFont>
 #include "astro/eph/ecliptic.h"
 #include "sdk/arch/mainobject.h"
-#include "astro/calculo/planet.h"
+#include "astro/hora/qplanet.h"
 #include <QMap>
 
 class ASTRO_CONTROLS_API QAstroFont : public QFont
@@ -17,7 +17,7 @@ protected:
 
 public:
     virtual QString zodLetter(eph::zod zodSign) = 0;
-    virtual QString objectLetter(hor::planet::index planetIndex) = 0;
+    virtual QString objectLetter(QPlanet::Index planetIndex) = 0;
 //    virtual QString aspectLetter(Aspect::Type aspectType);
     virtual QString retrogradLetter() = 0;
 };
@@ -47,7 +47,7 @@ class ASTRO_CONTROLS_API QNonAstroFont : public QAstroFont
 public:
     QNonAstroFont() : QAstroFont("") {}
     QString zodLetter(eph::zod) override { return "z"; }
-    QString objectLetter(hor::planet::index) override { return "p"; }
+    QString objectLetter(QPlanet::Index) override { return "p"; }
     QString retrogradLetter() override { return "r"; }
 };
 
@@ -58,7 +58,7 @@ public:
 
 public:
     QString zodLetter(eph::zod zodSign) override;
-    QString objectLetter(hor::planet::index planetIndex) override;
+    QString objectLetter(QPlanet::Index planetIndex) override;
 //    virtual QString objectLetter(ObjectId objectId);
 //    virtual QString aspectLetter(Aspect::Type aspectType);
     QString retrogradLetter() override;

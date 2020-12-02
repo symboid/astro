@@ -4,7 +4,7 @@
 
 #include "astro/hora/defs.h"
 #include "sdk/hosting/qconfig.h"
-#include "astro/calculo/planet.h"
+#include "astro/eph/ecliptic.h"
 #include <QColor>
 
 class ASTRO_HORA_API QOrbisConfigNode : public QConfigNode
@@ -124,6 +124,8 @@ public:
         QAspectConfigNode* _M_##name = new QAspectConfigNode(#name,this,SIGNAL(name##Changed()), \
                 QAspectProperties(isMain,dist,lineColor,lineWidth), enabledDefault, name##OrbisDefaults ); \
 
+class QHoraObject;
+
 class ASTRO_HORA_API QAspectConfig : public QConfigNode
 {
     Q_OBJECT
@@ -169,24 +171,7 @@ public:
                                          false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
 
 public:
-    const QAspectConfigNode* findConnection(const hor::planet& leftPlanet, const hor::planet& rightPlanet) const
-    {
-        const QAspectConfigNode* aspectConnection = nullptr;
-        hor::orbis dist = leftPlanet.pos().dist_abs(rightPlanet.pos()).to_arc_degree();
-        for (int a = 0, aCount = subConfigCount(); aspectConnection == nullptr && a < aCount; ++a)
-        {
-            const QConfigNode* aspectConfig = subConfig(a);
-            double aspectDist = aspectConfig->property("dist").toDouble();
-            hor::orbis aspectOrbis = 5.0;
-            hor::orbis distMin = dist - aspectOrbis, distMax = dist + aspectOrbis;
-            if (distMin < aspectDist && aspectDist < distMax)
-            {
-                aspectConnection = dynamic_cast<const QAspectConfigNode*>(aspectConfig);
-            }
-
-        }
-        return aspectConnection;
-    }
+    const QAspectConfigNode* findConnection(const QHoraObject* leftObject, const QHoraObject* rightObject) const;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QORBISCONFIG_H__

@@ -14,51 +14,51 @@ QPlanet::Index QPlanet::resolveIndex(const QString& id)
     QPlanet::Index planetIndex(eph_proxy::object::undef);
     if (id == "sun")
     {
-        planetIndex = eph_proxy::object::sun;
+        planetIndex = SUN;
     }
     else if (id == "mon")
     {
-        planetIndex = eph_proxy::object::moon;
+        planetIndex = MOON;
     }
     else if (id == "mer")
     {
-        planetIndex = eph_proxy::object::mercury;
+        planetIndex = MERCURY;
     }
     else if (id == "ven")
     {
-        planetIndex = eph_proxy::object::venus;
+        planetIndex = VENUS;
     }
     else if (id == "mar")
     {
-        planetIndex = eph_proxy::object::mars;
+        planetIndex = MARS;
     }
     else if (id == "jup")
     {
-        planetIndex = eph_proxy::object::jupiter;
+        planetIndex = JUPITER;
     }
     else if (id == "sat")
     {
-        planetIndex = eph_proxy::object::saturn;
+        planetIndex = SATURN;
     }
     else if (id == "ura")
     {
-        planetIndex = eph_proxy::object::uranus;
+        planetIndex = URANUS;
     }
     else if (id == "nep")
     {
-        planetIndex = eph_proxy::object::neptune;
+        planetIndex = NEPTUNE;
     }
     else if (id == "plu")
     {
-        planetIndex = eph_proxy::object::pluto;
+        planetIndex = PLUTO;
     }
     else if (id == "nod")
     {
-        planetIndex = eph_proxy::object::dragon_head;
+        planetIndex = DRAGON_HEAD;
     }
     else if (id == "lil")
     {
-        planetIndex = eph_proxy::object::lilith;
+        planetIndex = LILITH;
     }
     return planetIndex;
 }
@@ -81,4 +81,9 @@ bool QPlanet::calc(const QEphTime& ephTime)
         setEclSpeed(eclSpeed);
     }
     return isSuccess;
+}
+
+bool QPlanet::isRetrograd() const
+{
+    return eclSpeed()._M_lont < 0.0;
 }

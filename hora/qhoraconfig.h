@@ -4,7 +4,6 @@
 
 #include "astro/hora/defs.h"
 #include "sdk/arch/mainobject.h"
-#include "astro/calculo/hora.h"
 #include "sdk/hosting/qconfig.h"
 #include "astro/hora/qaspectconfig.h"
 #include "astro/db/qfixstarconfig.h"
@@ -52,9 +51,6 @@ public:
     ~QHoraConfig();
 
 public:
-    typedef QList<hor::planet> Planets;
-    Planets mPlanets;
-
     Q_CONFIG_NODE(QAspectConfig, aspects)
     Q_CONFIG_NODE(QFixstarConfig, fixstars)
     Q_CONFIG_NODE(QKarmaConfig, karma)

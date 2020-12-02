@@ -34,16 +34,21 @@ private:
 public:
     QHouseCusp*const* housesBegin() const;
     QHouseCusp*const* housesEnd() const;
+    const QHouseCusp* house(int index) const;
 
+public:
+    typedef QVector<QPlanet*> Planets;
 private:
-    typedef QList<QPlanet*> Planets;
     Planets mPlanets;
 public:
     Planets::ConstIterator planetsBegin() const;
     Planets::ConstIterator planetsEnd() const;
+    int planetCount() const;
+    const QPlanet* planet(int index) const;
 
-private:
+public:
     typedef QList<eph::basic_fixstar<eph_proxy>> ConjunctingFixstars;
+private:
     ConjunctingFixstars mConjunctingFixstars;
     arh::main_object<Fixstars> mAllFixstars;
 public:

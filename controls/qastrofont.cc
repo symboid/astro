@@ -47,21 +47,21 @@ QString QSymboidFont::zodLetter(eph::zod zodSign)
     return QString('a' + char(zodSign) - char(eph::zod::ARI));
 }
 
-QString QSymboidFont::objectLetter(hor::planet::index planetIndex)
+QString QSymboidFont::objectLetter(QPlanet::Index planetIndex)
 {
-    if (hor::planet::sun <= planetIndex && planetIndex <= hor::planet::pluto)
+    if (QPlanet::SUN <= planetIndex && planetIndex <= QPlanet::PLUTO)
     {
         return QChar('m' + int(planetIndex));
     }
-    else if (planetIndex == hor::planet::chiron)
+    else if (planetIndex == QPlanet::CHIRON)
     {
         return QChar('K');
     }
-    else if (planetIndex == hor::planet::lilith)
+    else if (planetIndex == QPlanet::LILITH)
     {
         return QChar('A');
     }
-    else if (planetIndex == hor::planet::dragon_head)
+    else if (planetIndex == QPlanet::DRAGON_HEAD)
     {
         return QChar('w');
     }

@@ -243,13 +243,13 @@
 <context>
     <name>QHoraHousesModel</name>
     <message>
-        <location filename="qhoraviewitem.cc" line="107"/>
-        <location filename="qhoraviewitem.cc" line="111"/>
+        <location filename="qhoraviewitem.cc" line="98"/>
+        <location filename="qhoraviewitem.cc" line="102"/>
         <source>Ecliptic longitude</source>
         <translation>Ekliptikai hosszúság</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="107"/>
+        <location filename="qhoraviewitem.cc" line="98"/>
         <source>Speed (°/h)</source>
         <translation>Sebesség (°/ó)</translation>
     </message>
