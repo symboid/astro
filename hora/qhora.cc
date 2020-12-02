@@ -38,7 +38,7 @@ QHouseCusp*const* QHora::housesEnd() const
 
 const QHouseCusp* QHora::house(int index) const
 {
-    return mHouseCusps[index];
+    return index > 0 && index <= 12 ? mHouseCusps[index - 1] : nullptr;
 }
 
 QHora::Planets::ConstIterator QHora::planetsBegin() const

@@ -5,7 +5,7 @@
 #include "astro/hora/qhorastellium.h"
 #include <QFontMetrics>
 
-QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
+QHoraPlanetsModel::QHoraPlanetsModel(const QHora* hora, QObject* parent)
     : QEclipticTableModel(hora, parent)
 {
 }
@@ -13,7 +13,7 @@ QHoraPlanetsModel::QHoraPlanetsModel(const hor::hora* hora, QObject* parent)
 int QHoraPlanetsModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
-    return mHora ? int(mHora->planet_count()) : 0;
+    return mHora ? int(mHora->planetCount()) : 0;
 }
 
 QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
@@ -31,12 +31,12 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
             case 3: role = EclSpeedRole; break;
             }
         }
-        const hor::planet& planet = mHora->planet(index.row());
+        const QPlanet* planet = mHora->planet(index.row());
         switch (role) {
-        case SymbolRole: planetData = mAstroFont->objectLetter(planet.get_index()); break;
-        case EclLontRole: planetData = planet.pos()._M_lont.to_arc_degree(); break;
-        case EclLattRole: planetData = planet.pos()._M_latt; break;
-        case EclSpeedRole: planetData = planet.speed()._M_lont; break;
+        case SymbolRole: planetData = mAstroFont->objectLetter(planet->mIndex); break;
+        case EclLontRole: planetData = planet->eclPos()._M_lont.to_arc_degree(); break;
+        case EclLattRole: planetData = planet->eclPos()._M_latt; break;
+        case EclSpeedRole: planetData = planet->eclSpeed()._M_lont; break;
         }
     }
     return planetData;
@@ -54,7 +54,7 @@ QStringList QHoraPlanetsModel::headerModel() const
     }
 }
 
-QHoraHousesModel::QHoraHousesModel(const hor::hora* hora, QObject* parent)
+QHoraHousesModel::QHoraHousesModel(const QHora* hora, QObject* parent)
     : QEclipticTableModel(hora, parent)
 {
 }
@@ -62,7 +62,7 @@ QHoraHousesModel::QHoraHousesModel(const hor::hora* hora, QObject* parent)
 int QHoraHousesModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
-    return mHora ? int(eph::house_system_horizon::house_count) : 0;
+    return mHora ? QHouseSystem::HOUSE_COUNT : 0;
 }
 
 QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
@@ -79,22 +79,13 @@ QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
             case 2: role = EclSpeedRole; break;
             }
         }
-        std::size_t houseIndex = std::size_t(index.row() + 1);
-        const eph::house_cusp house = mHora->houses().size() > houseIndex ? mHora->houses().at(houseIndex) : eph::house_cusp();
+        int houseIndex = index.row() + 1;
+        const QHouseCusp* house = mHora->house(houseIndex);
         switch (role) {
-        case SymbolRole: {
-            switch (houseIndex) {
-            case 1: houseData = "I."; break;
-            case 4: houseData = "IV."; break;
-            case 7: houseData = "VII."; break;
-            case 10: houseData = "X."; break;
-            default: houseData = QString::number(houseIndex) + "."; break;
-            }
-            break;
-        }
-        case EclLontRole: houseData = house.pos()._M_lont.to_arc_degree(); break;
+        case SymbolRole: houseData = house->id(); break;
+        case EclLontRole: houseData = house->eclPos()._M_lont.to_arc_degree(); break;
         case EclLattRole: houseData = 0; break;
-        case EclSpeedRole: houseData = house.speed().lont_coord().arc_pos(); break;
+        case EclSpeedRole: houseData = house->eclSpeed().lont_coord().arc_pos(); break;
         }
     }
     return houseData;
@@ -114,20 +105,16 @@ QStringList QHoraHousesModel::headerModel() const
 
 QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     : QQuickPaintedItem(parent)
+    , mHora(new QHora(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
     , mIsInteractive(false)
-    , mPlanetsModel(new QHoraPlanetsModel(& mHora, this))
-    , mHousesModel(new QHoraHousesModel(& mHora, this))
+    , mPlanetsModel(new QHoraPlanetsModel(mHora, this))
+    , mHousesModel(new QHoraHousesModel(mHora, this))
 {
     setFlag(QQuickItem::ItemHasContents);
     setRenderTarget(QQuickPaintedItem::Image);
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
-
-    for (hor::planet planet : mHoraConfig->mPlanets)
-    {
-        mHora.add_planet(planet);
-    }
 
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
 }
@@ -162,10 +149,11 @@ qreal QHoraViewItem::oneDegree() const
 
 eph::ecl_lont QHoraViewItem::mandalaLeft() const
 {
-    return mHora.houses().size() > 1 ? mHora.houses()[1].pos()._M_lont : eph::ecl_lont(0.0);
+    const QHouseCusp* firstHouse = *mHora->housesBegin();
+    return firstHouse ? firstHouse->eclPos()._M_lont : eph::ecl_lont(0.0);
 }
 
-QBrush QHoraViewItem::planetBrush(hor::planet::index planetIndex, qreal alpha)
+QBrush QHoraViewItem::planetBrush(QPlanet::Index planetIndex, qreal alpha)
 {
     QBrush brush;
     // style = solid
@@ -174,31 +162,33 @@ QBrush QHoraViewItem::planetBrush(hor::planet::index planetIndex, qreal alpha)
     QColor objectColor(0x80,0x80,0x80);
     switch (planetIndex)
     {
-    case hor::planet::sun: objectColor = QColor(0xF0,0xE0,0x00); break;
-    case hor::planet::moon: objectColor = QColor(0xC4,0xCA,0xCE); break;
-    case hor::planet::mercury: objectColor = QColor(0xBF,0x93,0x39); break;
-    case hor::planet::venus: objectColor = QColor(0x00,0x80,0x40); break;
-    case hor::planet::mars: objectColor = QColor(0xB0,0x00,0x00); break;
-    case hor::planet::jupiter: objectColor = QColor(0xC0,0x20,0xC0); break;
-    case hor::planet::saturn: objectColor = QColor(0x20,0x20,0x20); break;
+    case QPlanet::SUN: objectColor = QColor(0xF0,0xE0,0x00); break;
+    case QPlanet::MOON: objectColor = QColor(0xC4,0xCA,0xCE); break;
+    case QPlanet::MERCURY: objectColor = QColor(0xBF,0x93,0x39); break;
+    case QPlanet::VENUS: objectColor = QColor(0x00,0x80,0x40); break;
+    case QPlanet::MARS: objectColor = QColor(0xB0,0x00,0x00); break;
+    case QPlanet::JUPITER: objectColor = QColor(0xC0,0x20,0xC0); break;
+    case QPlanet::SATURN: objectColor = QColor(0x20,0x20,0x20); break;
 
-    case hor::planet::uranus: objectColor = QColor(0x84,0x87,0x89); break;
-    case hor::planet::neptune: objectColor = QColor(0x20,0x20,0xC0); break;
-    case hor::planet::pluto: objectColor = QColor(0x80,0x20,0x20); break;
+    case QPlanet::URANUS: objectColor = QColor(0x84,0x87,0x89); break;
+    case QPlanet::NEPTUNE: objectColor = QColor(0x20,0x20,0xC0); break;
+    case QPlanet::PLUTO: objectColor = QColor(0x80,0x20,0x20); break;
 
-    case hor::planet::dragon_head: objectColor = Qt::black; break;
-    case hor::planet::lilith: objectColor = Qt::black; break;
-    case hor::planet::chiron: objectColor = Qt::black; break;
+    case QPlanet::DRAGON_HEAD: objectColor = Qt::black; break;
+    case QPlanet::LILITH: objectColor = Qt::black; break;
+    case QPlanet::CHIRON: objectColor = Qt::black; break;
+
+    case QPlanet::UNDEF: objectColor = Qt::black; break;
     }
     objectColor.setAlphaF(alpha);
     brush.setColor(objectColor);
     return brush;
 }
 
-QHoraViewItem::Rank QHoraViewItem::planetRank(const hor::planet& planet) const
+QHoraViewItem::Rank QHoraViewItem::planetRank(const QPlanet* planet) const
 {
-    int planetIndex = int(planet.get_index() - hor::planet::sun);
-    eph::zod zodSign = planet.pos().zod_coords()._M_sign;
+    int planetIndex = int(planet->mIndex - QPlanet::SUN);
+    eph::zod zodSign = planet->eclPos().zod_coords()._M_sign;
     int zodIndex = int(zodSign) - int(eph::zod::ARI);
     static constexpr int PLANET_COUNT = 10;
     static const enum Rank PLANET_RANK[PLANET_COUNT][12] =
@@ -247,7 +237,7 @@ QHoraViewItem::Rank QHoraViewItem::planetRank(const hor::planet& planet) const
     return 0 <= planetIndex && planetIndex < PLANET_COUNT && 0 <= zodIndex && zodIndex < 12 ? PLANET_RANK[planetIndex][zodIndex] : Rank::PERG;
 }
 
-void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& planet, const eph::ecl_pos& displayPos)
+void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const eph::ecl_pos& displayPos)
 {
     Rank rank = planetRank(planet);
 
@@ -284,11 +274,11 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const hor::planet& plane
     }
 
     // planet sign text
-    QString planetText = QString(mAstroFont->objectLetter(planet.get_index()));
+    QString planetText = QString(mAstroFont->objectLetter(planet->mIndex));
     QSize textSize = planetFontMetrics.size(0, planetText);
     QRectF planetSignRect(planetSignPoint - QPointF(textSize.width() / 2 - 1, textSize.height() / 2),
                           planetSignPoint + QPointF(textSize.width() / 2,   textSize.height() / 2));
-    if (planet.is_retrograd())
+    if (planet->isRetrograd())
     {
         QString retrogradText = mAstroFont->retrogradLetter();
         planetText += retrogradText;
@@ -324,8 +314,8 @@ void QHoraViewItem::paint(QPainter* painter)
     //        qreal fixstarRadius = eclipticRadius() * 1.15;
     //        painter->drawEllipse(mMandalaCenter, fixstarRadius, fixstarRadius);
 
-            for (hor::hora::fixstar_const_it fs = mHora.fixstars_begin(),
-                 fsEnd = mHora.fixstars_end(); fs != fsEnd; fs++)
+            for (QHora::ConjunctingFixstars::ConstIterator fs = mHora->fixstarsBegin(),
+                 fsEnd = mHora->fixstarsEnd(); fs != fsEnd; fs++)
             {
                 fixstarStelliums.add(*fs);
             }
@@ -383,10 +373,9 @@ void QHoraViewItem::paint(QPainter* painter)
         zodiacFont.setPixelSize(oneDegree() * 4);
         painter->setFont(zodiacFont);
         QFontMetrics fontMetrics(*mAstroFont);
-        for (std::size_t z = 1; z <= eph::house_system_mundan::house_count; ++z)
+        for (int z = 1; z <= 12; ++z)
         {
-            const eph::zod_sign_cusp zodSignCusp(z, eph::house_system_mundan::house_names[z]);
-            eph::ecl_lont zodSignLont = zodSignCusp.pos()._M_lont;
+            eph::ecl_lont zodSignLont = (z - 1)* 30;
             painter->drawLine(horaPoint(zodSignLont, 1.0),
                               horaPoint(zodSignLont, mHoraConfig->fixstars()->enabled() ? 1.10 : 1.15));
 
@@ -406,20 +395,19 @@ void QHoraViewItem::paint(QPainter* painter)
         housesFont.setPixelSize(oneDegree() * 3);
         painter->setFont(housesFont);
 
-        const std::vector<eph::house_cusp>& houses = mHora.houses();
-        for (std::size_t h = 1; h < houses.size(); ++h)
+        for (std::size_t h = 1; h <= QHouseSystem::HOUSE_COUNT; ++h)
         {
-            const eph::house_cusp& houseCusp = houses[h];
+            const QHouseCusp* houseCusp = mHora->house(h);
             bool isAxis = h % 3 == 1;
             QPen housePen;
             housePen.setWidthF(isAxis ? 2.5 : 1.0);
             housePen.setColor(isAxis ? QColor(0x80,0x0,0x00) : QColor(0x0,0x0,0x80));
             painter->setPen(housePen);
-            painter->drawLine(horaPoint(houseCusp.pos()._M_lont, isAxis ? 1.15 : 1.0), horaPoint(houseCusp.pos()._M_lont, EARTH_DIST));
+            painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, isAxis ? 1.15 : 1.0), horaPoint(houseCusp->eclPos()._M_lont, EARTH_DIST));
             if (h == 1 || h == 10)
             {
-                painter->drawLine(horaPoint(houseCusp.pos()._M_lont, 1.17), horaPoint(houseCusp.pos()._M_lont - 0.7, 1.10));
-                painter->drawLine(horaPoint(houseCusp.pos()._M_lont, 1.17), horaPoint(houseCusp.pos()._M_lont + 0.7, 1.10));
+                painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, 1.17), horaPoint(houseCusp->eclPos()._M_lont - 0.7, 1.10));
+                painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, 1.17), horaPoint(houseCusp->eclPos()._M_lont + 0.7, 1.10));
             }
 
             housePen.setColor(QColor(0x0,0x0,0x00));
@@ -432,7 +420,7 @@ void QHoraViewItem::paint(QPainter* painter)
             case 10: houseSign = "X."; break;
             default: houseSign = QString::number(h) + ".";
             }
-            eph::ecl_lont houseSignLont = houseCusp.pos()._M_lont;
+            eph::ecl_lont houseSignLont = houseCusp->eclPos()._M_lont;
             QPointF houseSignPoint(horaPoint(houseSignLont + 8.0, EARTH_DIST + 0.04));
             QSize textSize = fontMetrics.size(0, houseSign);
             QRectF houseSignRect(houseSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
@@ -448,8 +436,8 @@ void QHoraViewItem::paint(QPainter* painter)
 
 
         // stelliums
-        Stellium<hor::planet>::List stelliums(8.0);
-        hor::hora::planet_it_const planet = mHora.planetsBegin(), pEnd = mHora.planetsEnd();
+        QHoraStellium::List stelliums(8.0);
+        QHora::Planets::ConstIterator planet = mHora->planetsBegin(), pEnd = mHora->planetsEnd();
         while (planet != pEnd)
         {
             stelliums.add(*planet);
@@ -461,27 +449,27 @@ void QHoraViewItem::paint(QPainter* painter)
         for (QHoraStellium stellium : stelliums)
         {
             int p = 0;
-            for (hor::planet planet : stellium)
+            for (QPlanet* planet : stellium)
             {
                 eph::ecl_pos planetPos = stellium.displayPos(p++);
                 drawPlanetSymbol(painter, planet, planetPos);
 
                 painter->setPen(QPen(QBrush(QColor(0x80,0x80,0x80)), 1.0));
-                painter->drawLine(horaPoint(planet.pos()._M_lont, ASPECT_DIST), horaPoint(planetPos._M_lont, ASPECT_DIST + 0.05));
+                painter->drawLine(horaPoint(planet->eclPos()._M_lont, ASPECT_DIST), horaPoint(planetPos._M_lont, ASPECT_DIST + 0.05));
 
                 painter->setPen(QPen(QBrush(QColor(0x00,0x00,0x00)), 3.0));
-                painter->drawLine(horaPoint(planet.pos()._M_lont, ASPECT_DIST - 0.004), horaPoint(planet.pos()._M_lont, ASPECT_DIST + 0.004));
+                painter->drawLine(horaPoint(planet->eclPos()._M_lont, ASPECT_DIST - 0.004), horaPoint(planet->eclPos()._M_lont, ASPECT_DIST + 0.004));
             }
         }
 
         // aspect connections
-        planet = mHora.planetsBegin();
-        pEnd = mHora.planetsEnd();
+        planet = mHora->planetsBegin();
+        pEnd = mHora->planetsEnd();
         while (planet != pEnd)
         {
-            const eph::ecl_pos planetPos = planet->pos();
+            const eph::ecl_pos planetPos = (*planet)->eclPos();
 
-            hor::hora::planet_it_const planet2 = planet;
+            QHora::Planets::ConstIterator planet2 = planet;
             while (++planet2 != pEnd)
             {
                 const QAspectConfigNode* aspect = mHoraConfig->aspects()->findConnection(*planet, *planet2);
@@ -492,7 +480,7 @@ void QHoraViewItem::paint(QPainter* painter)
                     painter->setPen(aspectPen);
 
                     QPointF leftPoint(horaPoint(planetPos._M_lont, ASPECT_DIST));
-                    QPointF rightPoint(horaPoint(planet2->pos()._M_lont, ASPECT_DIST));
+                    QPointF rightPoint(horaPoint((*planet2)->eclPos()._M_lont, ASPECT_DIST));
                     painter->drawLine(leftPoint, rightPoint);
                 }
             }
@@ -655,41 +643,40 @@ void QHoraViewItem::onInteractiveChanged()
 
 void QHoraViewItem::recalc()
 {
-    hor::hora_coords horaCoords;
-    horaCoords._M_calendar_coords._M_year = mYear;
-    horaCoords._M_calendar_coords._M_month = mMonth;
-    horaCoords._M_calendar_coords._M_day = mDay;
-    horaCoords._M_calendar_coords._M_hour = mHour;
-    horaCoords._M_calendar_coords._M_minute = mMinute;
-    horaCoords._M_calendar_coords._M_second = mSecond;
-    horaCoords._M_calendar_coords._M_calendar_type = mCalendarIsJulian ? eph::calendar_type::JULIAN : eph::calendar_type::GREGORIAN;
-    horaCoords._M_time_zone_diff = std::chrono::minutes(int(60.0 * mTzDiff));
-    horaCoords._M_geo_latt = mGeoLatt;
-    horaCoords._M_geo_lont = mGeoLont;
+    QHoraCoords horaCoords;
+    horaCoords.mCalendarCoords._M_year = mYear;
+    horaCoords.mCalendarCoords._M_month = mMonth;
+    horaCoords.mCalendarCoords._M_day = mDay;
+    horaCoords.mCalendarCoords._M_hour = mHour;
+    horaCoords.mCalendarCoords._M_minute = mMinute;
+    horaCoords.mCalendarCoords._M_second = mSecond;
+    horaCoords.mCalendarCoords._M_calendar_type = mCalendarIsJulian ? eph::calendar_type::JULIAN : eph::calendar_type::GREGORIAN;
+    horaCoords.mTimeZoneDiff = std::chrono::minutes(int(60.0 * mTzDiff));
+    horaCoords.mGeoLatt = mGeoLatt;
+    horaCoords.mGeoLont = mGeoLont;
     mPlanetsModel->beginResetModel();
     mHousesModel->beginResetModel();
     emit startCalc();
     if (mHousesType == "koch")
     {
-        mHora.calc<eph::house_system_koch>(horaCoords);
+        mHora->calc(horaCoords, QHouseSystem::KOCH);
     }
     else if (mHousesType == "regiomontanus")
     {
-        mHora.calc<eph::house_system_regiomontanus>(horaCoords);
+        mHora->calc(horaCoords, QHouseSystem::REGIOMONTANUS);
     }
     else if (mHousesType == "campanus")
     {
-        mHora.calc<eph::house_system_campanus>(horaCoords);
+        mHora->calc(horaCoords, QHouseSystem::CAMPANUS);
     }
     else if (mHousesType == "equal")
     {
-        mHora.calc<eph::house_system_equal>(horaCoords);
+        mHora->calc(horaCoords, QHouseSystem::EQUAL);
     }
     else
     {
-        mHora.calc<eph::house_system_placidus>(horaCoords);
+        mHora->calc(horaCoords, QHouseSystem::PLACIDUS);
     }
-    mHora.calc_fixstars(horaCoords, *mFixstars.get());
 
     mPlanetsModel->endResetModel();
     mHousesModel->endResetModel();

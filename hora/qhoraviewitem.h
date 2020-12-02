@@ -5,7 +5,7 @@
 #include "astro/hora/defs.h"
 #include <QQuickPaintedItem>
 #include "astro/eph/ecliptic.h"
-#include "astro/calculo/hora.h"
+#include "astro/hora/qhora.h"
 #include "astro/controls/qastrofont.h"
 #include "astro/hora/qhoraitemsmodel.h"
 #include "astro/eph/constellation.h"
@@ -17,7 +17,7 @@ class ASTRO_HORA_API QHoraPlanetsModel : public QEclipticTableModel
     Q_OBJECT
 
 public:
-    QHoraPlanetsModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
+    QHoraPlanetsModel(const QHora* hora, QObject* parent = Q_NULLPTR);
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -32,7 +32,7 @@ class ASTRO_HORA_API QHoraHousesModel : public QEclipticTableModel
     Q_OBJECT
 
 public:
-    QHoraHousesModel(const hor::hora* hora, QObject* parent = Q_NULLPTR);
+    QHoraHousesModel(const QHora* hora, QObject* parent = Q_NULLPTR);
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -57,7 +57,7 @@ private:
     static constexpr qreal PLANET_DIST = 0.875;
     static constexpr qreal ASPECT_DIST = 1.0 - 2.0 * (1.0 - PLANET_DIST);
 
-    QBrush planetBrush(hor::planet::index planetIndex, qreal alpha);
+    QBrush planetBrush(QPlanet::Index planetIndex, qreal alpha);
     enum Rank
     {
         PERG = 0x00, // peregrin
@@ -68,8 +68,8 @@ private:
         ELEV = 0x0C, // eroben
         FALL = 0x04, // esesben
     };
-    Rank planetRank(const hor::planet& planet) const;
-    void drawPlanetSymbol(QPainter* painter, const hor::planet& planet, const eph::ecl_pos& displayPos);
+    Rank planetRank(const QPlanet* planet) const;
+    void drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const eph::ecl_pos& displayPos);
 //    void drawConstellation(QPainter* painter, const eph::constellation* constellation);
     void paint(QPainter* painter) override;
 private:
@@ -78,11 +78,11 @@ private:
 private:
     QPointF mMandalaCenter;
     qreal mMandalaRadius;
-    hor::hora mHora;
+    QHora* mHora;
 
-    Q_PROPERTY(const hor::hora* hora READ hora CONSTANT)
+    Q_PROPERTY(const QHora* hora READ hora CONSTANT)
 private:
-    const hor::hora* hora() const { return & mHora; }
+    const QHora* hora() const { return mHora; }
 //    QList<eph::constellation*> mConstellations;
 
 private:
