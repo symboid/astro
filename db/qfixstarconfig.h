@@ -9,7 +9,7 @@ class ASTRO_DB_API QFixstarConfig : public QConfigNode
 {
     Q_OBJECT
 public:
-    QFixstarConfig(const QString& id, QConfigNode* parentNode, const char* parentSignal)
+    QFixstarConfig(const QString& id, QAbstractConfig* parentNode, const char* parentSignal)
         : QConfigNode(id, parentNode, parentSignal)
     {
     }

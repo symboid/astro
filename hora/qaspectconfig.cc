@@ -9,7 +9,7 @@ const QAspectConfigNode* QAspectConfig::findConnection(const QHoraObject* leftOb
     QOrbisValue dist = leftObject->eclPos().dist_abs(rightObject->eclPos()).to_arc_degree();
     for (int a = 0, aCount = subConfigCount(); aspectConnection == nullptr && a < aCount; ++a)
     {
-        if (const QAspectConfigNode* aspectConfig = dynamic_cast<const QAspectConfigNode*>(subConfig(a)))
+        if (const QAspectConfigNode* aspectConfig = mSubConfigs[a])
         {
             double aspectDist = aspectConfig->dist();
             QOrbisValue aspectOrbis = leftObject->aspectOrbis(aspectConfig) + rightObject->aspectOrbis(aspectConfig);
