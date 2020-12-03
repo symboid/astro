@@ -12,11 +12,7 @@ class ASTRO_HORA_API QOrbisConfigNode : public QConfigNode
     Q_OBJECT
 public:
     QOrbisConfigNode(const QString& id, QAbstractConfig* parent, const char* parentSignal,
-            const double* orbisDefaults)
-        : QConfigNode(id, parent, parentSignal)
-        , mOrbisDefaults(orbisDefaults)
-    {
-    }
+            const double* orbisDefaults);
 
 private:
     const double* mOrbisDefaults;
@@ -43,21 +39,11 @@ public:
 
 typedef QAbstractConfig*(QOrbisConfigNode::*QOrbisConfigNodeGetter)() const;
 
-#define Q_ORBIS_CONFIG_NODE(orbisDefaults) \
-    Q_CONFIG_NODE_INTERFACE(QOrbisConfigNode,orbis)\
-    private: \
-        QOrbisConfigNode* _M_orbis = createConfig<QOrbisConfigNode>("orbis", \
-                this,SIGNAL(orbisChanged()), orbisDefaults );
-
+#define Q_ORBIS_CONFIG_NODE(orbisDefaults) Q_CONFIG_NODE(QOrbisConfigNode,orbis,orbisDefaults)
 
 struct ASTRO_HORA_API QAspectProperties
 {
-    QAspectProperties(bool isMain, eph::ecl_pos::dist dist, const QColor& lineColor, double lineWidth)
-      : mIsMain(isMain)
-      , mDist(dist)
-      , mLineColor(lineColor)
-      , mLineWidth(lineWidth)
-    {}
+    QAspectProperties(bool isMain, eph::ecl_pos::dist dist, const QColor& lineColor, double lineWidth);
     const bool mIsMain;
     eph::ecl_pos::dist mDist;
     QColor mLineColor;
@@ -70,12 +56,8 @@ class ASTRO_HORA_API QAspectDrawConfig : public QConfigNode
 
 public:
     QAspectDrawConfig(const QString& id, QAbstractConfig* parent, const char* parentSignal,
-            double lineWidth, const QColor& lineColor)
-        : QConfigNode(id, parent, parentSignal)
-        , mLineWidthDefault(lineWidth)
-        , mLineColorDefault(lineColor)
-    {
-    }
+            double lineWidth, const QColor& lineColor);
+
 private:
     const double mLineWidthDefault;
     const QColor mLineColorDefault;
@@ -85,24 +67,15 @@ public:
     Q_CONFIG_PROPERTY(QColor, lineColor, mLineColorDefault)
 };
 
-#define Q_ASPECT_DRAW_CONFIG_NODE(aspectProperties) \
-    Q_CONFIG_NODE_INTERFACE(QAspectDrawConfig,draw) \
-    private: \
-        QAspectDrawConfig* _M_draw = createConfig<QAspectDrawConfig>("draw",this,SIGNAL(drawChanged()), \
-                aspectProperties.mLineWidth, aspectProperties.mLineColor); \
+#define Q_ASPECT_DRAW_CONFIG_NODE(aspectProperties) Q_CONFIG_NODE(QAspectDrawConfig,draw,\
+        aspectProperties.mLineWidth,aspectProperties.mLineColor)
 
 class ASTRO_HORA_API QAspectConfigNode : public QConfigNode
 {
     Q_OBJECT
 public:
     QAspectConfigNode(const QString& id, QAbstractConfig* parent, const char* parentSignal,
-            const QAspectProperties& properties, bool enabledDefault, const double* orbisDefaults)
-        : QConfigNode(id, parent, parentSignal)
-        , mProperties(properties)
-        , mEnabledDefault(enabledDefault)
-        , mOrbisDefaults(orbisDefaults)
-    {
-    }
+            const QAspectProperties& properties, bool enabledDefault, const double* orbisDefaults);
 
 private:
     const QAspectProperties mProperties;
@@ -117,12 +90,13 @@ public:
     Q_ASPECT_DRAW_CONFIG_NODE(mProperties);
 };
 
+
 #define Q_ASPECT_CONFIG_NODE(name,dist,isMain,lineColor,lineWidth,enabledDefault,...) \
     Q_CONFIG_NODE_INTERFACE(QAspectConfigNode,name) \
     private: \
         const double name##OrbisDefaults[10] = { __VA_ARGS__ }; \
-        QAspectConfigNode* _M_##name = createConfig<QAspectConfigNode>(#name,this,SIGNAL(name##Changed()), \
-                QAspectProperties(isMain,dist,lineColor,lineWidth), enabledDefault, name##OrbisDefaults ); \
+    Q_CONFIG_NODE_MEMBER(QAspectConfigNode, name, QAspectProperties(isMain,dist,lineColor,lineWidth), \
+            enabledDefault, name##OrbisDefaults)
 
 class QHoraObject;
 
@@ -130,10 +104,7 @@ class ASTRO_HORA_API QAspectConfig : public QConfigContainer<QAspectConfigNode>
 {
     Q_OBJECT
 public:
-    QAspectConfig(const QString& id, QAbstractConfig* parentNode, const char* parentSignal)
-        : QConfigContainer<QAspectConfigNode>(id, parentNode, parentSignal)
-    {
-    }
+    QAspectConfig(const QString& id, QAbstractConfig* parentNode, const char* parentSignal);
 
     Q_ASPECT_CONFIG_NODE(conjunction,      0.0, true, "black", 1.0,
                                           true, 4.0, 4.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 2.5, 2.5)

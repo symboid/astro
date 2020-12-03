@@ -2,6 +2,16 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qhoraconfig.h"
 
+QKarmaConfig::QKarmaConfig(const QString& id, QAbstractConfig* parentNode, const char* parentSignal)
+    : QConfigNode(id, parentNode, parentSignal)
+{
+}
+
+QHouseCuspOrbisConfigNode::QHouseCuspOrbisConfigNode(const QString& id, QAbstractConfig* parentNode, const char* parentSignal)
+    : QConfigNode(id, parentNode, parentSignal)
+{
+}
+
 QHoraConfig::QHoraConfig(QObject* parent)
     : QConfigNode(parent)
 {

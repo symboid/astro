@@ -14,10 +14,7 @@ class ASTRO_HORA_API QKarmaConfig : public QConfigNode
 {
     Q_OBJECT
 public:
-    QKarmaConfig(const QString& id, QAbstractConfig* parentNode, const char* parentSignal)
-        : QConfigNode(id, parentNode, parentSignal)
-    {
-    }
+    QKarmaConfig(const QString& id, QAbstractConfig* parentNode, const char* parentSignal);
 
     Q_CONFIG_PROPERTY(bool, dragon_head, true)
     Q_CONFIG_PROPERTY(bool, dragon_tail, false)
@@ -29,10 +26,7 @@ class ASTRO_HORA_API QHouseCuspOrbisConfigNode : public QConfigNode
 {
     Q_OBJECT
 public:
-    QHouseCuspOrbisConfigNode(const QString& id, QAbstractConfig* parentNode, const char* parentSignal)
-        : QConfigNode(id, parentNode, parentSignal)
-    {
-    }
+    QHouseCuspOrbisConfigNode(const QString& id, QAbstractConfig* parentNode, const char* parentSignal);
 
     Q_CONFIG_PROPERTY(double, asc, 2.0)
     Q_CONFIG_PROPERTY(double, dsc, 2.0)
