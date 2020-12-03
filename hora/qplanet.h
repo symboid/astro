@@ -5,7 +5,7 @@
 #include "astro/hora/defs.h"
 #include "astro/hora/qhoraobject.h"
 
-class QPlanet : public QHoraObject
+class ASTRO_HORA_API QPlanet : public QHoraObject
 {
     Q_OBJECT
 

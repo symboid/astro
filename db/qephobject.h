@@ -13,7 +13,7 @@ typedef eph::basic_time_point<eph_proxy> QEphTime;
 typedef eph::ecl_pos QEclPos;
 typedef eph::ecl_speed QEclSpeed;
 
-class QEphObject : public QObject
+class ASTRO_DB_API QEphObject : public QObject
 {
     Q_OBJECT
 

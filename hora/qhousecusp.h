@@ -7,7 +7,7 @@
 
 typedef eph::ecl_lont QEclLont;
 
-struct QHouseSystem
+struct ASTRO_HORA_API QHouseSystem
 {
     enum Type
     {
@@ -26,7 +26,7 @@ struct QHouseSystem
     bool calc(eph::basic_time_point<eph_proxy> horaTime, eph::arc_degree geoLont, eph::arc_degree geoLatt);
 };
 
-class QHouseCusp : public QHoraObject
+class ASTRO_HORA_API QHouseCusp : public QHoraObject
 {
     Q_OBJECT
 

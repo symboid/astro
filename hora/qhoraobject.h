@@ -8,7 +8,7 @@
 
 typedef eph::ecl_coords::dist QOrbisValue;
 
-class QHoraObject : public QEphObject
+class ASTRO_HORA_API QHoraObject : public QEphObject
 {
     Q_OBJECT
 
