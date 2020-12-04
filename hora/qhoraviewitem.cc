@@ -469,28 +469,39 @@ void QHoraViewItem::paint(QPainter* painter)
         pEnd = mHora->planetsEnd();
         while (planet != pEnd)
         {
-            const eph::ecl_pos planetPos = (*planet)->eclPos();
-
             QHora::Planets::ConstIterator planet2 = planet;
             while (++planet2 != pEnd)
             {
-                const QAspectConfigNode* aspect =
-                        (*planet)->mIndex == QLunarNode::DRAGON_HEAD && (*planet2)->mIndex == QLunarNode::DRAGON_TAIL ? nullptr :
-                        mHoraConfig->aspects()->findConnection(*planet, *planet2);
-                if (aspect != nullptr && aspect->enabled())
+                if ((*planet)->mIndex != QLunarNode::DRAGON_HEAD || (*planet2)->mIndex != QLunarNode::DRAGON_TAIL)
                 {
-                    QPen aspectPen(aspect->draw()->lineColor(), oneDegree() * aspect->draw()->lineWidth(),
-                                   aspect->isMain() ? Qt::SolidLine : Qt::DashLine);
-                    painter->setPen(aspectPen);
-
-                    QPointF leftPoint(horaPoint(planetPos._M_lont, ASPECT_DIST));
-                    QPointF rightPoint(horaPoint((*planet2)->eclPos()._M_lont, ASPECT_DIST));
-                    painter->drawLine(leftPoint, rightPoint);
+                    drawAspectConnection(painter, *planet, *planet2);
                 }
             }
+
+            drawAspectConnection(painter, *planet, mHora->house(1));
+            drawAspectConnection(painter, *planet, mHora->house(4));
+            drawAspectConnection(painter, *planet, mHora->house(7));
+            drawAspectConnection(painter, *planet, mHora->house(10));
+
             ++planet;
         }
     }
+}
+
+void QHoraViewItem::drawAspectConnection(QPainter* painter, const QPlanet* planet, const QHoraObject* object)
+{
+    const QAspectConfigNode* aspect = mHoraConfig->aspects()->findConnection(planet, object);
+    if (aspect != nullptr && aspect->enabled())
+    {
+        QPen aspectPen(aspect->draw()->lineColor(), oneDegree() * aspect->draw()->lineWidth(),
+                       aspect->isMain() ? Qt::SolidLine : Qt::DashLine);
+        painter->setPen(aspectPen);
+
+        QPointF leftPoint(horaPoint(planet->eclPos()._M_lont, ASPECT_DIST));
+        QPointF rightPoint(horaPoint(object->eclPos()._M_lont, ASPECT_DIST));
+        painter->drawLine(leftPoint, rightPoint);
+    }
+
 }
 
 QPointF QHoraViewItem::horaPoint(eph::ecl_lont horaLont, qreal dist) const

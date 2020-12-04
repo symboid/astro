@@ -27,7 +27,7 @@ SettingsSwitch {
     property var elementNames: [
         qsTr("Sun"), qsTr("Moon"), qsTr("Mercury"), qsTr("Venus"), qsTr("Mars"),
         qsTr("Jupiter"), qsTr("Saturn"), qsTr("Uranus"), qsTr("Neptune"), qsTr("Pluto"),
-        qsTr("Asc"), qsTr("MC"), qsTr("House cusps"), qsTr("Lunar nodes"), qsTr("Lilith")
+        qsTr("Asc/Dsc"), qsTr("MC/IC"), qsTr("House cusps"), qsTr("Lunar nodes"), qsTr("Lilith")
     ]
 
     property Component settingsPane: SettingsPane {
