@@ -55,12 +55,13 @@
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="30"/>
-        <source>Asc</source>
+        <source>Asc/Dsc</source>
+        <oldsource>Asc</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="30"/>
-        <source>MC</source>
+        <source>MC/IC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
