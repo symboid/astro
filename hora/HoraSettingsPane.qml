@@ -58,21 +58,12 @@ SettingsGroupFixed {
     SettingsGroupExpanding {
         title: qsTr("Karmic points")
         SettingsSwitch {
-            id: dragonHeadCheck
             text: qsTr("Dragon Head")
             configNode: HoraConfig.karma.dragon_head_node
         }
         SettingsSwitch {
-            id: dragonTailCheck
             text: qsTr("Dragon Tail")
             configNode: HoraConfig.karma.dragon_tail_node
-            enabled: dragonHeadCheck.checked
-            onEnabledChanged: {
-                if (!enabled)
-                {
-                    checked = false
-                }
-            }
         }
         SettingsSwitch {
             text: qsTr("Lilith")
@@ -81,13 +72,6 @@ SettingsGroupFixed {
         SettingsSwitch {
             text: qsTr("Axis on lunar nodes")
             configNode: HoraConfig.karma.draw_axis_node
-            enabled: dragonTailCheck.checked
-            onEnabledChanged: {
-                if (!enabled)
-                {
-                    checked = false
-                }
-            }
         }
     }
 }

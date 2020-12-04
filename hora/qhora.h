@@ -45,6 +45,10 @@ public:
     Planets::ConstIterator planetsEnd() const;
     int planetCount() const;
     const QPlanet* planet(int index) const;
+private slots:
+    void updatePlanets();
+signals:
+    void planetsUpdated();
 
 public:
     typedef QList<eph::basic_fixstar<eph_proxy>> ConjunctingFixstars;

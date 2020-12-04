@@ -84,7 +84,6 @@
     <message>
         <location filename="HoraSettingsPane.qml" line="8"/>
         <source>Horoscope</source>
-        <oldsource>Horoscope elements</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -143,22 +142,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="49"/>
-        <source>Asc</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="49"/>
-        <source>MC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="43"/>
-        <location filename="HoraSettingsPane.qml" line="45"/>
-        <source>Before house cusps</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="HoraSettingsPane.qml" line="13"/>
         <source></source>
         <translation></translation>
@@ -180,14 +163,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="HoraSettingsPane.qml" line="34"/>
+        <source>Fixed stars in conjuction with planets will be denoted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="HoraSettingsPane.qml" line="38"/>
         <location filename="HoraSettingsPane.qml" line="41"/>
         <source>Orbis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="HoraSettingsPane.qml" line="43"/>
+        <location filename="HoraSettingsPane.qml" line="45"/>
+        <source>Before house cusps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="49"/>
+        <source>Asc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="HoraSettingsPane.qml" line="49"/>
         <source>Dsc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="49"/>
+        <source>MC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -206,29 +210,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="62"/>
+        <location filename="HoraSettingsPane.qml" line="61"/>
         <source>Dragon Head</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="67"/>
+        <location filename="HoraSettingsPane.qml" line="65"/>
         <source>Dragon Tail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="78"/>
+        <location filename="HoraSettingsPane.qml" line="69"/>
         <source>Lilith</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="HoraSettingsPane.qml" line="82"/>
+        <location filename="HoraSettingsPane.qml" line="73"/>
         <source>Axis on lunar nodes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="HoraSettingsPane.qml" line="34"/>
-        <source>Fixed stars in conjuction with planets will be denoted.</source>
-        <oldsource>Only fixed start in conjuction with some planets is shown.</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>

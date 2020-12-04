@@ -117,6 +117,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
 
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
+    connect(mHora, SIGNAL(planetsUpdated()), this, SLOT(recalc()));
 }
 
 void QHoraViewItem::calcMandalaGeometry()
@@ -174,7 +175,8 @@ QBrush QHoraViewItem::planetBrush(QPlanet::Index planetIndex, qreal alpha)
     case QPlanet::NEPTUNE: objectColor = QColor(0x20,0x20,0xC0); break;
     case QPlanet::PLUTO: objectColor = QColor(0x80,0x20,0x20); break;
 
-    case QPlanet::DRAGON_HEAD: objectColor = Qt::black; break;
+    case QLunarNode::DRAGON_HEAD: objectColor = Qt::black; break;
+    case QLunarNode::DRAGON_TAIL: objectColor = Qt::black; break;
     case QPlanet::LILITH: objectColor = Qt::black; break;
     case QPlanet::CHIRON: objectColor = Qt::black; break;
 
@@ -472,7 +474,9 @@ void QHoraViewItem::paint(QPainter* painter)
             QHora::Planets::ConstIterator planet2 = planet;
             while (++planet2 != pEnd)
             {
-                const QAspectConfigNode* aspect = mHoraConfig->aspects()->findConnection(*planet, *planet2);
+                const QAspectConfigNode* aspect =
+                        (*planet)->mIndex == QLunarNode::DRAGON_HEAD && (*planet2)->mIndex == QLunarNode::DRAGON_TAIL ? nullptr :
+                        mHoraConfig->aspects()->findConnection(*planet, *planet2);
                 if (aspect != nullptr && aspect->enabled())
                 {
                     QPen aspectPen(aspect->draw()->lineColor(), oneDegree() * aspect->draw()->lineWidth(),

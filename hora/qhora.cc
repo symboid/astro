@@ -11,19 +11,8 @@ QHora::QHora(QObject* parent)
     }
     mHouseCusps[QHouseSystem::HOUSE_COUNT] = nullptr;
 
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::sunNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::monNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::merNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::venNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::marNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::jupNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::satNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::uraNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::nepNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::pluNode));
-
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::nodNode));
-    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::lilNode));
+    connect(mHoraConfig->karma(), SIGNAL(changed()), this, SLOT(updatePlanets()));
+    updatePlanets();
 }
 
 QHouseCusp*const* QHora::housesBegin() const
@@ -59,6 +48,36 @@ int QHora::planetCount() const
 const QPlanet* QHora::planet(int index) const
 {
     return mPlanets.at(index);
+}
+
+void QHora::updatePlanets()
+{
+    mPlanets.clear();
+
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::sunNode));
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::monNode));
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::merNode));
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::venNode));
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::marNode));
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::jupNode));
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::satNode));
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::uraNode));
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::nepNode));
+    mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::pluNode));
+
+    if (mHoraConfig->karma()->dragon_head())
+    {
+        mPlanets.push_back(new QLunarNode(this, QLunarNode::DRAGON_HEAD));
+    }
+    if (mHoraConfig->karma()->dragon_tail())
+    {
+        mPlanets.push_back(new QLunarNode(this, QLunarNode::DRAGON_TAIL));
+    }
+    if (mHoraConfig->karma()->lilith())
+    {
+        mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::lilNode));
+    }
+    emit planetsUpdated();
 }
 
 QHora::ConjunctingFixstars::ConstIterator QHora::fixstarsBegin() const

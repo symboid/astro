@@ -61,9 +61,13 @@ QString QSymboidFont::objectLetter(QPlanet::Index planetIndex)
     {
         return QChar('A');
     }
-    else if (planetIndex == QPlanet::DRAGON_HEAD)
+    else if (planetIndex == QLunarNode::DRAGON_HEAD)
     {
         return QChar('w');
+    }
+    else if (planetIndex == QLunarNode::DRAGON_TAIL)
+    {
+        return QChar('x');
     }
     else
     {

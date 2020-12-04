@@ -52,15 +52,17 @@ QPlanet::Index QPlanet::resolveIndex(const QString& id)
     {
         planetIndex = PLUTO;
     }
-    else if (id == "nod")
-    {
-        planetIndex = DRAGON_HEAD;
-    }
     else if (id == "lil")
     {
         planetIndex = LILITH;
     }
     return planetIndex;
+}
+
+QPlanet::QPlanet(QObject* parent, const QString& id, Index index, QOrbisConfigNodeGetter orbisGetter)
+    : QHoraObject(parent, id, orbisGetter)
+    , mIndex(index)
+{
 }
 
 QPlanet::QPlanet(QObject* parent, QOrbisConfigNodeGetter orbisGetter)
@@ -86,4 +88,26 @@ bool QPlanet::calc(const QEphTime& ephTime)
 bool QPlanet::isRetrograd() const
 {
     return eclSpeed()._M_lont < 0.0;
+}
+
+QLunarNode::QLunarNode(QObject* parent, Index index)
+    : QPlanet(parent, index == DRAGON_HEAD ? "dragon_head" : "dragon_tail", index, &QOrbisConfigNode::nodNode)
+{
+}
+
+bool QLunarNode::calc(const QEphTime& ephTime)
+{
+    QEclPos eclPos;
+    QEclSpeed eclSpeed;
+    bool isSuccess = (eph_proxy::object::calc_pos(MEAN_NODE, ephTime, eclPos, eclSpeed) == eph::calc_result::SUCCESS);
+    if (isSuccess)
+    {
+        if (mIndex == DRAGON_TAIL)
+        {
+            eclPos = QEclPos(eclPos._M_lont + 180.0, eclPos._M_latt, eclPos._M_dist);
+        }
+        setEclPos(eclPos);
+        setEclSpeed(eclSpeed);
+    }
+    return isSuccess;
 }

@@ -54,7 +54,7 @@ struct ASTRO_DB_API proxy
             pluto = SE_PLUTO,
             chiron = SE_CHIRON,
 
-            dragon_head = SE_MEAN_NODE,
+            mean_node = SE_MEAN_NODE,
             lilith = SE_MEAN_APOG,
         };
         static eph::calc_result calc_pos(index _object_index, clock::time_point _time,

@@ -19,7 +19,7 @@ public:
     Q_CONFIG_PROPERTY(bool, dragon_head, true)
     Q_CONFIG_PROPERTY(bool, dragon_tail, false)
     Q_CONFIG_PROPERTY(bool, lilith, false)
-    Q_CONFIG_PROPERTY(bool, draw_axis, true)
+    Q_CONFIG_PROPERTY(bool, draw_axis, false)
 };
 
 class ASTRO_HORA_API QHouseCuspOrbisConfigNode : public QConfigNode

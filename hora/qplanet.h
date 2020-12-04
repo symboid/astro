@@ -10,11 +10,11 @@ class ASTRO_HORA_API QPlanet : public QHoraObject
     Q_OBJECT
 
 public:
+    typedef typename eph_proxy::object::index Index;
+    QPlanet(QObject* parent, const QString& id, Index index, QOrbisConfigNodeGetter orbisGetter);
+
     static QString resolveId(QOrbisConfigNodeGetter orbisGetter);
     QPlanet(QObject* parent, QOrbisConfigNodeGetter orbisGetter);
-
-public:
-    typedef typename eph_proxy::object::index Index;
 
     static constexpr const Index UNDEF = eph_proxy::object::undef;
 
@@ -31,7 +31,7 @@ public:
 
     static constexpr const Index CHIRON = eph_proxy::object::chiron;
 
-    static constexpr const Index DRAGON_HEAD = eph_proxy::object::dragon_head;
+    static constexpr const Index MEAN_NODE = eph_proxy::object::mean_node;
     static constexpr const Index LILITH = eph_proxy::object::lilith;
 
 private:
@@ -44,6 +44,20 @@ public:
 
 public:
     bool isRetrograd() const;
+};
+
+class ASTRO_HORA_API QLunarNode : public QPlanet
+{
+    Q_OBJECT
+public:
+    static constexpr const Index DRAGON_HEAD = Index(1000);
+    static constexpr const Index DRAGON_TAIL = Index(1001);
+
+public:
+    QLunarNode(QObject* parent, Index index);
+
+public:
+    bool calc(const QEphTime& ephTime) override;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QPLANET_H__
