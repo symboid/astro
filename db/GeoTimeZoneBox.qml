@@ -10,12 +10,6 @@ Row {
     Label {
         anchors.verticalCenter: parent.verticalCenter
         text: qsTr("Time zone diff:")
-        BusyIndicator {
-            id: busyIndicator
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right
-            running: false
-        }
     }
 
     readonly property string displaySuffix: qsTr("h")
@@ -53,6 +47,9 @@ Row {
         tzDiffBox.box(0).value = hour * 2
     }
 
+    signal queryFinished
+    signal queryAborted
+
     property double geoNameLatt: 0.0
     property double geoNameLont: 0.0
     property int currentUnixTime: 0
@@ -71,15 +68,15 @@ Row {
                    "&time="+currentUnixTime+
                    "&lat="+geoNameLatt+
                    "&lng="+geoNameLont
-        onModelAboutToBeReset: busyIndicator.running = true
-        onModelReset: busyIndicator.running = false
         onSuccessfullyFinished: {
             setHour(restObject.gmtOffset / 3600)
             prevLatt = geoNameLatt
             prevLont = geoNameLont
+            queryFinished()
         }
         onNetworkError: {
             setHour(0)
+            queryAborted()
         }
     }
     function search()

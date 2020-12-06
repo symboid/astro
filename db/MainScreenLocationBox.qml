@@ -46,6 +46,11 @@ MainScreenParamBox {
         geoNameLatt: geoLatt.arcDegree
         geoNameLont: geoLont.arcDegree
         currentUnixTime: dateTimeParams.unixTime
+        onQueryFinished: busyPopup.close()
+        onQueryAborted: {
+            busyPopup.close()
+            errorPopup.show(qsTr("Getting time zone information has been failed!"))
+        }
     }
     GeoNameDialog {
         id: geoNameDialog
@@ -56,6 +61,9 @@ MainScreenParamBox {
         geoLattBox: geoLatt
         geoLontBox: geoLont
         opacity: 0.875
-        onGeoNameChanged: timeZoneBox.search()
+        onGeoNameChanged: {
+            busyPopup.show("Getting time zone information...")
+            timeZoneBox.search()
+        }
     }
 }

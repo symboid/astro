@@ -25,6 +25,10 @@
         <source>Location</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Getting time zone information has been failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QGeoLattSectionCalc</name>
