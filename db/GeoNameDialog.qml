@@ -31,6 +31,7 @@ Drawer {
             ListElement {
                 iconSource: "/icons/zoom_icon&32.png"
                 withTextInput: true
+                toolAction: function() {}
             }
         }
         onTextInputClicked: {
