@@ -44,7 +44,7 @@ QSymboidFont::QSymboidFont(const QString& familyName)
 
 QString QSymboidFont::zodLetter(eph::zod zodSign)
 {
-    return QString('a' + char(zodSign) - char(eph::zod::ARI));
+    return QString(QChar('a' + char(zodSign) - char(eph::zod::ARI)));
 }
 
 QString QSymboidFont::objectLetter(QPlanet::Index planetIndex)

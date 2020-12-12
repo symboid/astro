@@ -38,7 +38,7 @@ public:
 class ASTRO_HORA_API QHoraConfig : public QConfigNode
 {
     Q_OBJECT
-    QML_SINGLETON(HoraConfig)
+    QML_SINGLETON_OBJECT(HoraConfig)
 
 public:
     QHoraConfig(QObject* parent = Q_NULLPTR);

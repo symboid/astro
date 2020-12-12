@@ -9,7 +9,7 @@
 class ASTRO_DB_API QGeoNamesRestClient : public QRestClient
 {
     Q_OBJECT
-    QML_SINGLETON(GeoNamesRestClient)
+    QML_SINGLETON_OBJECT(GeoNamesRestClient)
 
 public:
     QGeoNamesRestClient(QObject* parent = Q_NULLPTR);

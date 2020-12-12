@@ -1,5 +1,5 @@
 
-import QtQuick 2.12
+import QtQuick 2.14
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
 import Symboid.Sdk.Network 1.0
@@ -31,8 +31,8 @@ Row {
                     var valueString = (suffixPos !== 0) ? String(text).substring(0, suffixPos) : text
                     return Number(valueString) * 2
                 }
-                validator: RegExpValidator {
-                    regExp: new RegExp("-?1?[0-9](\\" + "." + "[05])?" + displaySuffix)
+                validator: RegularExpressionValidator {
+                    regularExpression: new RegExp("-?1?[0-9](\\" + "." + "[05])?" + displaySuffix)
                 }
             }
         }
