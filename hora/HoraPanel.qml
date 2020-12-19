@@ -124,7 +124,7 @@ Item {
 
         Connections {
             target: HoraConfig.fixstars
-            onEnabledChanged: { horaFlickable.zoomToDefault()
+            onEnabledChanged: horaFlickable.zoomToDefault()
         }
     }
 }
