@@ -18,6 +18,8 @@ Drawer {
 
     property int rowWidth: width
 
+    interactive: opened
+
     LoadListToolBar {
         id: toolBar
         listView: geoListView
@@ -45,10 +47,24 @@ Drawer {
             top: toolBar.bottom
             left: parent.left
             right: parent.right
-            bottom: parent.bottom
+            bottom: labelPane.top
         }
 
-        model: restTableModel
+        model: RestTableModel {
+            id: restTableModel
+            restClient: GeoNamesRestClient
+            operation: "searchJSON?q="+toolBar.textInput+
+                       "&lang="+Qt.locale().name.substring(0,2)+
+                       "&maxRows=10"+
+                       "&username=symboid"
+            columnNames: ["name", "countryName", "adminName1", "population", "lng", "lat"]
+
+            onModelAboutToBeReset: busyPopup.show(qsTr("Querying geographic data..."))
+            onModelReset: busyPopup.close()
+
+            onSuccessfullyFinished: toolBar.textInputShow(false)
+            onNetworkError: errorPopup.show(qsTr("Netrwork error!"))
+        }
 
         delegate: LoadListItem {
             itemTitle: name +
@@ -74,54 +90,64 @@ Drawer {
                 close()
             }
         }
-
-        BusyIndicator {
-            id: busyIndicator
-            anchors.centerIn: parent
-            running: false
-        }
     }
 
-    property int maxRows: 10
-    readonly property string apiUser: "symboid"
-    RestTableModel {
-        id: restTableModel
-        restClient: GeoNamesRestClient
-        operation: "searchJSON?q="+toolBar.textInput+
-                   "&lang="+Qt.locale().name.substring(0,2)+
-                   "&maxRows="+maxRows+
-                   "&username="+apiUser
-        columnNames: ["name", "countryName", "adminName1", "population", "lng", "lat"]
-
-        onModelAboutToBeReset: busyIndicator.running = true
-        onModelReset: busyIndicator.running = false
-        onSuccessfullyFinished: {
-            toolBar.textInputClose()
+    Pane {
+        id: labelPane
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: currentLocation.top
         }
-
-        onNetworkError: {
-            networkStatusDialog.message = qsTr("Netwok error!")
-            networkStatusDialog.open()
-        }
-    }
-
-
-    Dialog {
-        id: networkStatusDialog
-        anchors.centerIn: parent
-        width: 150
-        onOpened: networkStatusTimer.start()
-        property alias message: messageLabel.text
         Label {
-            anchors.centerIn: parent
-            id: messageLabel
-            font.bold: true
-            color: "red"
+            text: qsTr("Current location:")
+            font.italic: true
         }
-        Timer {
-            id: networkStatusTimer
-            interval: 2000
-            onTriggered: networkStatusDialog.close()
+    }
+
+    LoadListItem {
+        id: currentLocation
+        itemTitle: findLocation.name + " (" + findLocation.adminName +")\n" + findLocation.countryName
+        itemWidth: rowWidth
+        editable: false
+        revertedLayout: true
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+        PositionSource {
+            id: pos
+            updateInterval: 1000
+            active: true
+            readonly property real lng: position.coordinate.longitude
+            readonly property real lat: position.coordinate.latitude
+            onPositionChanged: {
+                findLocation.runOperation()
+                active = false
+            }
+        }
+        RestTableModel {
+            id: findLocation
+            restClient: GeoNamesRestClient
+            operation: "findNearbyJSON"+
+                       "?lat="+pos.lat+
+                       "&lng="+pos.lng+
+                       "&featureClass=P"+
+                       "&lang="+Qt.locale().name.substring(0,2)+
+                       "&maxRows=10"+
+                       "&username=symboid"
+            columnNames: ["name", "countryName", "adminName1"]
+            readonly property string name: objectCount > 0 ? firstObject.name : "???"
+            readonly property string adminName: objectCount > 0 ? firstObject.adminName1 : "???"
+            readonly property string countryName: objectCount > 0 ? firstObject.countryName : "???"
+        }
+        onButtonClicked: {
+            geoNameBox.text = findLocation.name
+            geoLattBox.arcDegree = pos.lat
+            geoLontBox.arcDegree = pos.lng
+            geoNameChanged()
+            close()
         }
     }
 }

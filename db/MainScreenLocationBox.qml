@@ -55,7 +55,7 @@ MainScreenParamBox {
     GeoNameDialog {
         id: geoNameDialog
         width: Math.min(400,metrics.screenWidth)
-        height: Screen.height
+        height: metrics.screenHeight
         edge: Qt.RightEdge
         geoNameBox: geoName.item
         geoLattBox: geoLatt

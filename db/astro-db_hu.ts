@@ -4,8 +4,16 @@
 <context>
     <name>GeoNameDialog</name>
     <message>
-        <source>Netwok error!</source>
-        <translation type="unfinished">Hálózati hiba!</translation>
+        <source>Netrwork error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Querying geographic data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current location:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
