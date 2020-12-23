@@ -40,6 +40,10 @@ Drawer {
             restTableModel.runOperation()
         }
     }
+    onOpened: {
+        toolBar.textInputIndex = 0
+        toolBar.textInputShow(true)
+    }
 
     LoadListView {
         id: geoListView
