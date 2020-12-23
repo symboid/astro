@@ -56,7 +56,7 @@ SettingsGroupFixed {
         }
     }
     SettingsGroupExpanding {
-        title: qsTr("Karmic points")
+        title: qsTr("Other horoscope elements")
         SettingsSwitch {
             text: qsTr("Dragon Head")
             configNode: HoraConfig.karma.dragon_head_node

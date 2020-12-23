@@ -5,30 +5,30 @@
     <name>GeoListView</name>
     <message>
         <source>Querying geographic data...</source>
-        <translation type="unfinished"></translation>
+        <translation>Földrajzi adatok lekérdezése...</translation>
     </message>
     <message>
         <source>Netrwork error!</source>
-        <translation type="unfinished"></translation>
+        <translation>Hálózati hiba!</translation>
     </message>
 </context>
 <context>
     <name>GeoNameDialog</name>
     <message>
         <source>Database search</source>
-        <translation type="unfinished"></translation>
+        <translation>Keresés az adatbázisban</translation>
     </message>
     <message>
         <source>Query via internet</source>
-        <translation type="unfinished"></translation>
+        <translation>Lekérdezés az internetről</translation>
     </message>
     <message>
         <source>Surrounding locations</source>
-        <translation type="unfinished"></translation>
+        <translation>Környező helységek</translation>
     </message>
     <message>
         <source>Execute query</source>
-        <translation type="unfinished"></translation>
+        <translation>Lekérdezés végrehajtása</translation>
     </message>
 </context>
 <context>
@@ -46,33 +46,33 @@
     <name>MainScreenLocationBox</name>
     <message>
         <source>Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Földrajzi helység</translation>
     </message>
     <message>
         <source>Getting time zone information has been failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Az időzóna-adatok lekérdezése nem sikerült!</translation>
     </message>
 </context>
 <context>
     <name>QGeoLattSectionCalc</name>
     <message>
         <source>N</source>
-        <translation type="unfinished"></translation>
+        <translation>É</translation>
     </message>
     <message>
         <source>S</source>
-        <translation type="unfinished"></translation>
+        <translation>D</translation>
     </message>
 </context>
 <context>
     <name>QGeoLontSectionCalc</name>
     <message>
         <source>E</source>
-        <translation type="unfinished"></translation>
+        <translation>K</translation>
     </message>
     <message>
         <source>W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ny</translation>
     </message>
 </context>
 </TS>

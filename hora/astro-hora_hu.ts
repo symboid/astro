@@ -6,78 +6,78 @@
     <message>
         <location filename="AspectSettingsGroup.qml" line="28"/>
         <source>Sun</source>
-        <translation type="unfinished"></translation>
+        <translation>Nap</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="28"/>
         <source>Moon</source>
-        <translation type="unfinished"></translation>
+        <translation>Hold</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="28"/>
         <source>Mercury</source>
-        <translation type="unfinished"></translation>
+        <translation>Merkúr</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="28"/>
         <source>Venus</source>
-        <translation type="unfinished"></translation>
+        <translation>Vénusz</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="28"/>
         <source>Mars</source>
-        <translation type="unfinished"></translation>
+        <translation>Mars</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="29"/>
         <source>Jupiter</source>
-        <translation type="unfinished"></translation>
+        <translation>Jupiter</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="29"/>
         <source>Saturn</source>
-        <translation type="unfinished"></translation>
+        <translation>Szaturnusz</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="29"/>
         <source>Uranus</source>
-        <translation type="unfinished"></translation>
+        <translation>Uránusz</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="29"/>
         <source>Neptune</source>
-        <translation type="unfinished"></translation>
+        <translation>Neptunusz</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="29"/>
         <source>Pluto</source>
-        <translation type="unfinished"></translation>
+        <translation>Plútó</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="30"/>
         <source>Asc/Dsc</source>
         <oldsource>Asc</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Asc/Dsc</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="30"/>
         <source>MC/IC</source>
-        <translation type="unfinished"></translation>
+        <translation>MC/IC</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="30"/>
         <source>Lunar nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Holdcsomópontok</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="30"/>
         <source>House cusps</source>
-        <translation type="unfinished"></translation>
+        <translation>Házcsúcsok</translation>
     </message>
     <message>
         <location filename="AspectSettingsGroup.qml" line="30"/>
         <source>Lilith</source>
-        <translation type="unfinished"></translation>
+        <translation>Lilith</translation>
     </message>
 </context>
 <context>
@@ -85,62 +85,62 @@
     <message>
         <location filename="HoraSettingsPane.qml" line="8"/>
         <source>Horoscope</source>
-        <translation type="unfinished"></translation>
+        <translation>Horoszkóp</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="10"/>
         <source>Conjunction</source>
-        <translation type="unfinished"></translation>
+        <translation>Együttállás</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="10"/>
         <source>Opposition</source>
-        <translation type="unfinished"></translation>
+        <translation>Szembenállás</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="10"/>
         <source>Trigon</source>
-        <translation type="unfinished"></translation>
+        <translation>Trigon</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="10"/>
         <source>Quadrat</source>
-        <translation type="unfinished"></translation>
+        <translation>Kvadrát</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="11"/>
         <source>Quintile</source>
-        <translation type="unfinished"></translation>
+        <translation>Kvintil</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="11"/>
         <source>Sextile</source>
-        <translation type="unfinished"></translation>
+        <translation>Szextil</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="11"/>
         <source>Semi-sextile</source>
-        <translation type="unfinished"></translation>
+        <translation>Szemi-szextil</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="11"/>
         <source>Quincunx</source>
-        <translation type="unfinished"></translation>
+        <translation>Kvinkunksz</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="12"/>
         <source>Semi-quadrat</source>
-        <translation type="unfinished"></translation>
+        <translation>Szemi-kvadrát</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="12"/>
         <source>Sesqui-quadrat</source>
-        <translation type="unfinished"></translation>
+        <translation>Szeszki-kvadrát</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="12"/>
         <source>Biquintile</source>
-        <translation type="unfinished"></translation>
+        <translation>Bikvintil</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="13"/>
@@ -151,84 +151,84 @@
         <location filename="HoraSettingsPane.qml" line="15"/>
         <location filename="HoraSettingsPane.qml" line="17"/>
         <source>Aspect connections</source>
-        <translation type="unfinished"></translation>
+        <translation>Fényszögkapcsolatok</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="29"/>
         <source>Fixed stars</source>
-        <translation type="unfinished"></translation>
+        <translation>Állócsillagok</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="33"/>
         <source>Include fixed stars</source>
-        <translation type="unfinished"></translation>
+        <translation>Állócsillagok megjelenítése</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="34"/>
         <source>Fixed stars in conjuction with planets will be denoted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelölve vannak azok az állócsillagok, amelyek valamely bolygóval együttállnak.</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="38"/>
         <location filename="HoraSettingsPane.qml" line="41"/>
         <source>Orbis</source>
-        <translation type="unfinished"></translation>
+        <translation>Orbiszok</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="43"/>
         <location filename="HoraSettingsPane.qml" line="45"/>
         <source>Before house cusps</source>
-        <translation type="unfinished"></translation>
+        <translation>Házcsúcs előtt</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="49"/>
         <source>Asc</source>
-        <translation type="unfinished"></translation>
+        <translation>Asc</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="49"/>
         <source>Dsc</source>
-        <translation type="unfinished"></translation>
+        <translation>Dsc</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="49"/>
         <source>MC</source>
-        <translation type="unfinished"></translation>
+        <translation>MC</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="49"/>
         <source>IC</source>
-        <translation type="unfinished"></translation>
+        <translation>IC</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="49"/>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyéb</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="59"/>
-        <source>Karmic points</source>
-        <translation type="unfinished"></translation>
+        <source>Other horoscope elements</source>
+        <translation>Egyéb horoszkópelemek</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="61"/>
         <source>Dragon Head</source>
-        <translation type="unfinished"></translation>
+        <translation>Sárkányfej</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="65"/>
         <source>Dragon Tail</source>
-        <translation type="unfinished"></translation>
+        <translation>Sárkányfarok</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="69"/>
         <source>Lilith</source>
-        <translation type="unfinished"></translation>
+        <translation>Lilith</translation>
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="73"/>
         <source>Axis on lunar nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Tengely a holdcsomópontokon</translation>
     </message>
 </context>
 <context>
