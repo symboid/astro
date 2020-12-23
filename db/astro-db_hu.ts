@@ -52,6 +52,10 @@
         <source>Getting time zone information has been failed!</source>
         <translation>Az időzóna-adatok lekérdezése nem sikerült!</translation>
     </message>
+    <message>
+        <source>Getting time zone information...</source>
+        <translation>Időzóna-adatok lekérése...</translation>
+    </message>
 </context>
 <context>
     <name>QGeoLattSectionCalc</name>

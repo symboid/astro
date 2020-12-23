@@ -62,7 +62,7 @@ MainScreenParamBox {
         geoLontBox: geoLont
         opacity: 0.875
         onGeoNameChanged: {
-            busyPopup.show("Getting time zone information...")
+            busyPopup.show(qsTr("Getting time zone information..."))
             timeZoneBox.search()
         }
     }
