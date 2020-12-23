@@ -7,7 +7,6 @@ import Symboid.Astro.Controls 1.0
 import QtPositioning 5.12
 import Symboid.Astro.Db 1.0
 import Symboid.Sdk.Network 1.0
-import QtQuick.Controls.Material 2.3
 
 Drawer {
     property TextField geoNameBox: null
@@ -20,138 +19,148 @@ Drawer {
 
     interactive: opened
 
-    LoadListToolBar {
-        id: toolBar
-        listView: geoListView
+    ToolBar {
+        id: pageBar
         anchors {
             top: parent.top
             left: parent.left
             right: parent.right
         }
-
-        toolModel: ListModel {
-            ListElement {
-                iconSource: "/icons/zoom_icon&32.png"
-                withTextInput: true
-                toolAction: function() {}
+        Column {
+            anchors.horizontalCenter: parent.horizontalCenter
+            PageIndicator {
+                id: pageSelector
+                anchors.horizontalCenter: parent.horizontalCenter
+                interactive: true
+                count: 3
+                delegate: ToolButton {
+                    checkable: pageSelector.currentIndex !== index
+                    checked: pageSelector.currentIndex === index
+                    icon.source: {
+                        switch (index)
+                        {
+                        case 0: return "/icons/db_icon&32.png"
+                        case 1: return "/icons/server_icon&32.png"
+                        case 2: return "/icons/home_icon&32.png"
+                        default: return ""
+                        }
+                    }
+                    onClicked: pageSelector.currentIndex = index
+                }
+            }
+            Pane {
+                anchors.horizontalCenter: parent.horizontalCenter
+                background: null
+                Label {
+                    text: {
+                        switch(pageSelector.currentIndex)
+                        {
+                        case 0: return qsTr("Database search")
+                        case 1: return qsTr("Query via internet")
+                        case 2: return qsTr("Surrounding locations")
+                        default: return ""
+                        }
+                    }
+                    font.italic: true
+                }
             }
         }
-        onTextInputClicked: {
-            restTableModel.runOperation()
-        }
-    }
-    onOpened: {
-        toolBar.textInputIndex = 0
-        toolBar.textInputShow(true)
-    }
+   }
 
-    LoadListView {
-        id: geoListView
+    StackLayout {
         anchors {
-            top: toolBar.bottom
-            left: parent.left
-            right: parent.right
-            bottom: labelPane.top
-        }
-
-        model: RestTableModel {
-            id: restTableModel
-            restClient: GeoNamesRestClient
-            operation: "searchJSON?q="+toolBar.textInput+
-                       "&lang="+Qt.locale().name.substring(0,2)+
-                       "&maxRows=10"+
-                       "&username=symboid"
-            columnNames: ["name", "countryName", "adminName1", "population", "lng", "lat"]
-
-            onModelAboutToBeReset: busyPopup.show(qsTr("Querying geographic data..."))
-            onModelReset: busyPopup.close()
-
-            onSuccessfullyFinished: toolBar.textInputShow(false)
-            onNetworkError: errorPopup.show(qsTr("Netrwork error!"))
-        }
-
-        delegate: LoadListItem {
-            itemTitle: name +
-                       (adminName1 !== "" ? " (" +adminName1 + ")" : "") +
-                       "\n" + countryName
-            anchors.left: parent.left
-            anchors.right: parent.right
-            itemWidth: rowWidth
-            editable: false
-            revertedLayout: true
-            selectable: index === geoListView.currentIndex
-            selectIndicator: Image {
-                anchors.verticalCenter: parent.verticalCenter
-                source: parent.checked ? "/icons/pin_map_down_icon&16.png" : "/icons/pin_map_icon&16.png"
-                verticalAlignment: Image.AlignVCenter
-            }
-            onItemClicked: geoListView.currentIndex = index
-            onButtonClicked: {
-                geoNameBox.text = name
-                geoLattBox.arcDegree = lat
-                geoLontBox.arcDegree = lng
-                geoNameChanged()
-                close()
-            }
-        }
-    }
-
-    Pane {
-        id: labelPane
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: currentLocation.top
-        }
-        Label {
-            text: qsTr("Current location:")
-            font.italic: true
-        }
-    }
-
-    LoadListItem {
-        id: currentLocation
-        itemTitle: findLocation.name + " (" + findLocation.adminName +")\n" + findLocation.countryName
-        itemWidth: rowWidth
-        editable: false
-        revertedLayout: true
-        anchors {
+            top: pageBar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
-        PositionSource {
-            id: pos
-            updateInterval: 1000
-            active: true
-            readonly property real lng: position.coordinate.longitude
-            readonly property real lat: position.coordinate.latitude
-            onPositionChanged: {
-                findLocation.runOperation()
-                active = false
+        currentIndex: pageSelector.currentIndex
+        Item {
+
+        }
+        Item {
+            LoadListItem {
+                id: onlineSearchInput
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
+                }
+                centeredWithSelector: false
+                itemWidth: width
+                loadIconSource: "/icons/zoom_icon&32.png"
+                lineColor: pageBar.background.color
+                onEditAccepted: onlineSearchView.runQuery()
+                onButtonClicked: onlineSearchView.runQuery()
+            }
+            GeoListView {
+                id: onlineSearchView
+                anchors {
+                    top: onlineSearchInput.bottom
+                    left: parent.left
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+                queryOperation: "searchJSON?q="+onlineSearchInput.itemTitle
+                onLoadButtonClicked: {
+                    geoNameBox.text = geoName
+                    geoLattBox.arcDegree = geoLat
+                    geoLontBox.arcDegree = geoLng
+                    geoNameChanged()
+                    close()
+                }
             }
         }
-        RestTableModel {
-            id: findLocation
-            restClient: GeoNamesRestClient
-            operation: "findNearbyJSON"+
-                       "?lat="+pos.lat+
-                       "&lng="+pos.lng+
-                       "&featureClass=P"+
-                       "&lang="+Qt.locale().name.substring(0,2)+
-                       "&maxRows=10"+
-                       "&username=symboid"
-            columnNames: ["name", "countryName", "adminName1"]
-            readonly property string name: objectCount > 0 ? firstObject.name : "???"
-            readonly property string adminName: objectCount > 0 ? firstObject.adminName1 : "???"
-            readonly property string countryName: objectCount > 0 ? firstObject.countryName : "???"
-        }
-        onButtonClicked: {
-            geoNameBox.text = findLocation.name
-            geoLattBox.arcDegree = pos.lat
-            geoLontBox.arcDegree = pos.lng
-            geoNameChanged()
-            close()
+        Item {
+            Pane {
+                id: currentLocationsPane
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
+                }
+                background: null
+                Button {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    text: qsTr("Execute query")
+                    onClicked: {
+                        currentLocationsView.runQuery()
+                    }
+                }
+            }
+            GeoListView {
+                id: currentLocationsView
+                anchors {
+                    top: currentLocationsPane.bottom
+                    left: parent.left
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+                queryOperation: "findNearbyJSON"+
+                           "?lat="+pos.lat+
+                           "&lng="+pos.lng+
+                           "&featureCode=PPL"+
+                           "&radius=10"
+
+                onLoadButtonClicked: {
+                    geoNameBox.text = geoName
+                    geoLattBox.arcDegree = geoLat
+                    geoLontBox.arcDegree = geoLng
+                    geoNameChanged()
+                    close()
+                }
+                PositionSource {
+                    id: pos
+                    updateInterval: 1000
+                    active: true
+                    readonly property real lng: position.coordinate.longitude
+                    readonly property real lat: position.coordinate.latitude
+                    onPositionChanged: {
+                        active = false
+                    }
+                }
+            }
         }
     }
 }

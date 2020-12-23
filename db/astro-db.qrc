@@ -4,6 +4,7 @@
         <file>GeoNameDialog.qml</file>
         <file>GeoTimeZoneBox.qml</file>
         <file>MainScreenLocationBox.qml</file>
+        <file>GeoListView.qml</file>
     </qresource>
     <qresource prefix="/tr">
         <file>astro-db_hu.qm</file>
@@ -12,5 +13,8 @@
         <file>icons/zoom_icon&amp;32.png</file>
         <file>icons/pin_map_down_icon&amp;16.png</file>
         <file>icons/pin_map_icon&amp;16.png</file>
+        <file>icons/db_icon&amp;32.png</file>
+        <file>icons/home_icon&amp;32.png</file>
+        <file>icons/server_icon&amp;32.png</file>
     </qresource>
 </RCC>

@@ -2,17 +2,32 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu_HU">
 <context>
-    <name>GeoNameDialog</name>
-    <message>
-        <source>Netrwork error!</source>
-        <translation type="unfinished"></translation>
-    </message>
+    <name>GeoListView</name>
     <message>
         <source>Querying geographic data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Current location:</source>
+        <source>Netrwork error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GeoNameDialog</name>
+    <message>
+        <source>Database search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Query via internet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surrounding locations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Execute query</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
