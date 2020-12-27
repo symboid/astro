@@ -2,7 +2,7 @@
 TARGET = astro-eph
 BUILD_ROOT=../..
 COMPONENT_NAME=astro
-include($${BUILD_ROOT}/sdk/build/qmake/component.pri)
+include($${BUILD_ROOT}/build/qmake/component.pri)
 TEMPLATE = aux
 
 SOURCES += \

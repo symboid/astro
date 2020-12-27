@@ -2,7 +2,7 @@
 TARGET = astro-demo-qml
 BUILD_ROOT=../..
 COMPONENT_NAME=astro
-include($${BUILD_ROOT}/sdk/build/qmake/application.pri)
+include($${BUILD_ROOT}/build/qmake/application.pri)
 
 SOURCES += \
     main.cc

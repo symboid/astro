@@ -2,7 +2,7 @@
 TARGET = astro-controls
 BUILD_ROOT=../..
 COMPONENT_NAME=astro
-include($${BUILD_ROOT}/sdk/build/qmake/qt-module.pri)
+include($${BUILD_ROOT}/build/qmake/qt-module.pri)
 
 SOURCES += \
     arccoord.cc \

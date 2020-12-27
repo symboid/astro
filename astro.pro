@@ -1,5 +1,5 @@
 
-include (../sdk/build/qmake/deps.pri)
+include (../build/qmake/deps.pri)
 
 SUBDIRS = \
     $$module_dep(sdk,arch) \

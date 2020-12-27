@@ -2,7 +2,7 @@
 TARGET = astro-db
 BUILD_ROOT=../..
 COMPONENT_NAME=astro
-include($${BUILD_ROOT}/sdk/build/qmake/qt-module.pri)
+include($${BUILD_ROOT}/build/qmake/qt-module.pri)
 
 msvc {
 #    DEFINES += _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS
