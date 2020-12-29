@@ -11,7 +11,7 @@ SUBDIRS += \
 
 SUBDIRS += \
     $$module_dep(astro,eph) \
-    $$module_dep(astro,db) \
     $$module_dep(astro,controls) \
+    $$module_dep(astro,db) \
     $$module_dep(astro,hora) \
     $$module_dep(astro,demo-qml)
