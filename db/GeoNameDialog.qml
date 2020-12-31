@@ -47,6 +47,7 @@ Drawer {
                     }
                     onClicked: pageSelector.currentIndex = index
                 }
+                Component.onCompleted: currentIndex = 1
             }
             Pane {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -88,6 +89,7 @@ Drawer {
                 }
                 itemWidth: width
                 loadIconSource: "/icons/zoom_icon&32.png"
+                selectorVisible: false
                 lineColor: pageBar.background.color
                 onEditAccepted: onlineSearchView.runQuery()
                 onButtonClicked: onlineSearchView.runQuery()

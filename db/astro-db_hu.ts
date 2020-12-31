@@ -58,7 +58,7 @@
     </message>
     <message>
         <source>Use globe button!</source>
-        <translation type="unfinished"></translation>
+        <translation>Használd a földgömböt!</translation>
     </message>
 </context>
 <context>

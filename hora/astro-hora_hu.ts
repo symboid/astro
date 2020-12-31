@@ -244,33 +244,33 @@
     <message>
         <location filename="qhoraviewitem.cc" line="98"/>
         <location filename="qhoraviewitem.cc" line="102"/>
-        <source>Ecliptic longitude</source>
-        <translation>Ekliptikai hosszúság</translation>
+        <source>Ecl. lng.</source>
+        <translation>Ekl. hossz.</translation>
     </message>
     <message>
         <location filename="qhoraviewitem.cc" line="98"/>
-        <source>Speed (°/h)</source>
-        <translation>Sebesség (°/ó)</translation>
+        <source>Speed(°/h)</source>
+        <translation>Sebesség(°/h)</translation>
     </message>
 </context>
 <context>
     <name>QHoraPlanetsModel</name>
     <message>
         <location filename="qhoraviewitem.cc" line="49"/>
-        <location filename="qhoraviewitem.cc" line="53"/>
-        <source>Ecliptic longitude</source>
-        <translation>Ekliptikai hosszúság</translation>
-    </message>
-    <message>
-        <location filename="qhoraviewitem.cc" line="49"/>
-        <location filename="qhoraviewitem.cc" line="53"/>
-        <source>Ecliptic lattitude</source>
-        <translation>Ekliptikai szélesség</translation>
-    </message>
-    <message>
-        <location filename="qhoraviewitem.cc" line="49"/>
         <source>Speed</source>
         <translation>Sebesség</translation>
+    </message>
+    <message>
+        <location filename="qhoraviewitem.cc" line="49"/>
+        <location filename="qhoraviewitem.cc" line="53"/>
+        <source>Ecl. lng.</source>
+        <translation>Ekl. hossz.</translation>
+    </message>
+    <message>
+        <location filename="qhoraviewitem.cc" line="49"/>
+        <location filename="qhoraviewitem.cc" line="53"/>
+        <source>Ecl. lat.</source>
+        <translation>Ekl. szél.</translation>
     </message>
 </context>
 </TS>

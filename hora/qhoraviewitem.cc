@@ -46,11 +46,11 @@ QStringList QHoraPlanetsModel::headerModel() const
 {
     if (mWithSpeed)
     {
-        return { "", tr("Ecliptic longitude"), tr("Ecliptic lattitude"), tr("Speed") };
+        return { "", tr("Ecl. lng."), tr("Ecl. lat."), tr("Speed") };
     }
     else
     {
-        return { "", tr("Ecliptic longitude"), tr("Ecliptic lattitude") };
+        return { "", tr("Ecl. lng."), tr("Ecl. lat.") };
     }
 }
 
@@ -95,11 +95,11 @@ QStringList QHoraHousesModel::headerModel() const
 {
     if (mWithSpeed)
     {
-        return { "", tr("Ecliptic longitude"), tr("Speed (°/h)") };
+        return { "", tr("Ecl. lng."), tr("Speed(°/h)") };
     }
     else
     {
-        return { "", tr("Ecliptic longitude") };
+        return { "", tr("Ecl. lng.") };
     }
 }
 
