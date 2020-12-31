@@ -86,7 +86,6 @@ Drawer {
                     left: parent.left
                     right: parent.right
                 }
-                centeredWithSelector: false
                 itemWidth: width
                 loadIconSource: "/icons/zoom_icon&32.png"
                 lineColor: pageBar.background.color
