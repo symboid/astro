@@ -56,6 +56,10 @@
         <source>Getting time zone information...</source>
         <translation>Időzóna-adatok lekérése...</translation>
     </message>
+    <message>
+        <source>Use globe button!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QGeoLattSectionCalc</name>
