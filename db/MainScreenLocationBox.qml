@@ -18,6 +18,7 @@ MainScreenParamBox {
 
     MainScreenTextField {
         id: geoName
+        placeholderText: qsTr("Use globe button!") + " >>"
         button: RoundButton {
             display: RoundButton.IconOnly
             padding: 0

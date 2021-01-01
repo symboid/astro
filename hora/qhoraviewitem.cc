@@ -46,11 +46,11 @@ QStringList QHoraPlanetsModel::headerModel() const
 {
     if (mWithSpeed)
     {
-        return { "", tr("Ecliptic longitude"), tr("Ecliptic lattitude"), tr("Speed") };
+        return { "", tr("Ecl. lng."), tr("Ecl. lat."), tr("°/day") };
     }
     else
     {
-        return { "", tr("Ecliptic longitude"), tr("Ecliptic lattitude") };
+        return { "", tr("Ecl. lng."), tr("Ecl. lat.") };
     }
 }
 
@@ -95,11 +95,11 @@ QStringList QHoraHousesModel::headerModel() const
 {
     if (mWithSpeed)
     {
-        return { "", tr("Ecliptic longitude"), tr("Speed (°/h)") };
+        return { "", tr("Ecl. lng."), tr("°/hour") };
     }
     else
     {
-        return { "", tr("Ecliptic longitude") };
+        return { "", tr("Ecl. lng.") };
     }
 }
 
@@ -130,12 +130,12 @@ void QHoraViewItem::calcMandalaGeometry()
 
 qreal QHoraViewItem::defaultZoom() const
 {
-    return eclipticRatio() + 0.15;
+    return eclipticRatio() + 0.2;
 }
 
 qreal QHoraViewItem::eclipticRatio() const
 {
-    return mHoraConfig->fixstars()->enabled() ? 0.55 : 0.85;
+    return mHoraConfig->fixstars()->enabled() ? 0.55 : 0.8;
 }
 
 qreal QHoraViewItem::eclipticRadius() const
@@ -297,6 +297,7 @@ void QHoraViewItem::paint(QPainter* painter)
         // eclipitic radius
         painter->setPen(QPen(QColor(0,0,0), 1.5));
         painter->drawEllipse(mMandalaCenter, eclipticRadius(), eclipticRadius());
+        painter->drawEllipse(mMandalaCenter, eclipticRadius() * 1.15, eclipticRadius() * 1.15);
 
         // planet aspects radius
         painter->setPen(QPen(QColor(0x80,0x80,0x80), 1.0));
@@ -331,10 +332,10 @@ void QHoraViewItem::paint(QPainter* painter)
                     eph::ecl_pos displayPos = fss.displayPos(p++);
 
                     painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 2.0));
-                    painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, 1.15), 1.0, 1.0);
+                    painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, 1.2), 1.0, 1.0);
 
                     painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 0.5));
-                    painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.15),
+                    painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.2),
                                       horaPoint(fixstar.pos()._M_lont, 1.25));
                     painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.25),
                                       horaPoint(displayPos._M_lont, 1.35));
@@ -379,7 +380,7 @@ void QHoraViewItem::paint(QPainter* painter)
         {
             eph::ecl_lont zodSignLont = (z - 1)* 30;
             painter->drawLine(horaPoint(zodSignLont, 1.0),
-                              horaPoint(zodSignLont, mHoraConfig->fixstars()->enabled() ? 1.10 : 1.15));
+                              horaPoint(zodSignLont, 1.15));
 
             QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.07));
             QSize textSize = fontMetrics.size(0, mAstroFont->zodLetter(eph::zod(z)));
@@ -405,11 +406,11 @@ void QHoraViewItem::paint(QPainter* painter)
             housePen.setWidthF(isAxis ? 2.5 : 1.0);
             housePen.setColor(isAxis ? QColor(0x80,0x0,0x00) : QColor(0x0,0x0,0x80));
             painter->setPen(housePen);
-            painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, isAxis ? 1.15 : 1.0), horaPoint(houseCusp->eclPos()._M_lont, EARTH_DIST));
+            painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, isAxis ? 1.20 : 1.0), horaPoint(houseCusp->eclPos()._M_lont, EARTH_DIST));
             if (h == 1 || h == 10)
             {
-                painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, 1.17), horaPoint(houseCusp->eclPos()._M_lont - 0.7, 1.10));
-                painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, 1.17), horaPoint(houseCusp->eclPos()._M_lont + 0.7, 1.10));
+                painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, 1.20), horaPoint(houseCusp->eclPos()._M_lont - 0.7, 1.10));
+                painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, 1.20), horaPoint(houseCusp->eclPos()._M_lont + 0.7, 1.10));
             }
 
             housePen.setColor(QColor(0x0,0x0,0x00));

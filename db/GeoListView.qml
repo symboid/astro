@@ -26,15 +26,15 @@ LoadListView {
         onModelAboutToBeReset: busyPopup.show(qsTr("Querying geographic data..."))
         onModelReset: busyPopup.close()
 
-        onNetworkError: errorPopup.show(qsTr("Netrwork error!"))
+        onNetworkError: errorPopup.show(qsTr("Network error!"))
     }
 
     delegate: LoadListItem {
         itemTitle: name +
                    (adminName1 !== "" ? " (" +adminName1 + ")" : "") +
                    "\n" + countryName
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors.left: parent !== null ? parent.left : undefined
+        anchors.right: parent !== null ? parent.right : undefined
         itemWidth: rowWidth
         editable: false
         revertedLayout: true

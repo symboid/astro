@@ -47,6 +47,7 @@ Drawer {
                     }
                     onClicked: pageSelector.currentIndex = index
                 }
+                Component.onCompleted: currentIndex = 1
             }
             Pane {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -86,9 +87,9 @@ Drawer {
                     left: parent.left
                     right: parent.right
                 }
-                centeredWithSelector: false
                 itemWidth: width
                 loadIconSource: "/icons/zoom_icon&32.png"
+                selectorVisible: false
                 lineColor: pageBar.background.color
                 onEditAccepted: onlineSearchView.runQuery()
                 onButtonClicked: onlineSearchView.runQuery()
@@ -122,11 +123,9 @@ Drawer {
                 background: null
                 Button {
                     anchors.top: parent.top
-                    anchors.right: parent.right
+                    anchors.horizontalCenter: parent.horizontalCenter
                     text: qsTr("Execute query")
-                    onClicked: {
-                        currentLocationsView.runQuery()
-                    }
+                    onClicked: currentLocationsView.runQuery()
                 }
             }
             GeoListView {

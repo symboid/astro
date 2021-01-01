@@ -8,7 +8,7 @@
         <translation>Földrajzi adatok lekérdezése...</translation>
     </message>
     <message>
-        <source>Netrwork error!</source>
+        <source>Network error!</source>
         <translation>Hálózati hiba!</translation>
     </message>
 </context>
@@ -55,6 +55,10 @@
     <message>
         <source>Getting time zone information...</source>
         <translation>Időzóna-adatok lekérése...</translation>
+    </message>
+    <message>
+        <source>Use globe button!</source>
+        <translation>Használd a földgömböt!</translation>
     </message>
 </context>
 <context>
