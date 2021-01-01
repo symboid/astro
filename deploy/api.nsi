@@ -6,5 +6,4 @@
 !insertmacro ModuleApi db
 !insertmacro ModuleApi controls
 !insertmacro ModuleApi hora
-!insertmacro FolderApi db\sweph\ephe sefstars.txt
-!insertmacro FolderApi db\sweph\ephe *.se1
+!insertmacro FolderApi db\sweph\ephe *.*
