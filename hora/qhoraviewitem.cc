@@ -46,7 +46,7 @@ QStringList QHoraPlanetsModel::headerModel() const
 {
     if (mWithSpeed)
     {
-        return { "", tr("Ecl. lng."), tr("Ecl. lat."), tr("Speed") };
+        return { "", tr("Ecl. lng."), tr("Ecl. lat."), tr("°/day") };
     }
     else
     {
@@ -95,7 +95,7 @@ QStringList QHoraHousesModel::headerModel() const
 {
     if (mWithSpeed)
     {
-        return { "", tr("Ecl. lng."), tr("Speed(°/h)") };
+        return { "", tr("Ecl. lng."), tr("°/hour") };
     }
     else
     {

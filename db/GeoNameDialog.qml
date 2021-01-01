@@ -123,11 +123,9 @@ Drawer {
                 background: null
                 Button {
                     anchors.top: parent.top
-                    anchors.right: parent.right
+                    anchors.horizontalCenter: parent.horizontalCenter
                     text: qsTr("Execute query")
-                    onClicked: {
-                        currentLocationsView.runQuery()
-                    }
+                    onClicked: currentLocationsView.runQuery()
                 }
             }
             GeoListView {

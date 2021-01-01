@@ -249,17 +249,12 @@
     </message>
     <message>
         <location filename="qhoraviewitem.cc" line="98"/>
-        <source>Speed(°/h)</source>
-        <translation>Sebesség(°/h)</translation>
+        <source>°/hour</source>
+        <translation>°/óra</translation>
     </message>
 </context>
 <context>
     <name>QHoraPlanetsModel</name>
-    <message>
-        <location filename="qhoraviewitem.cc" line="49"/>
-        <source>Speed</source>
-        <translation>Sebesség</translation>
-    </message>
     <message>
         <location filename="qhoraviewitem.cc" line="49"/>
         <location filename="qhoraviewitem.cc" line="53"/>
@@ -271,6 +266,11 @@
         <location filename="qhoraviewitem.cc" line="53"/>
         <source>Ecl. lat.</source>
         <translation>Ekl. szél.</translation>
+    </message>
+    <message>
+        <location filename="qhoraviewitem.cc" line="49"/>
+        <source>°/day</source>
+        <translation>°/nap</translation>
     </message>
 </context>
 </TS>

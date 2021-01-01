@@ -36,7 +36,7 @@ Item {
     readonly property int horizontalHeaderWidth: displayWidth - verticalHeaderWidth - lineWidth
 
     property int rowHeight: 50
-    readonly property int tableHeight: rowHeight * verticalHeader.count
+    readonly property int tableHeight: rowHeight * (verticalHeader.count + 1) + 2 * lineWidth
     readonly property int displayHeight: Math.min(tableHeight, height)
     readonly property int verticalHeaderHeight: displayHeight - horizontalHeader.height - 2 * lineWidth
     readonly property int horizontalHeaderHeight: rowHeight
