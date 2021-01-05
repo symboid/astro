@@ -69,9 +69,10 @@ SettingsGroupFixed {
             text: qsTr("Lilith")
             configNode: HoraConfig.karma.lilith_node
         }
-//        SettingsSwitch {
-//            text: qsTr("Axis on lunar nodes")
-//            configNode: HoraConfig.karma.draw_axis_node
-//        }
+        SettingsSwitch {
+            text: qsTr("Axis on lunar nodes")
+            configNode: HoraConfig.karma.draw_axis_node
+            enabled: false
+        }
     }
 }

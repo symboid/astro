@@ -75,7 +75,6 @@ Item {
                 var newContentY = contentY + (zoomRatio - 1) * zoomPointY
                 contentX = newContentX < 0.0 ? 0.0 : newContentX
                 contentY = newContentY < 0.0 ? 0.0 : newContentY
-    //                            console.log("contentCorner = ("+contentX+","+contentY+"), zoom=("+zoomDelta+","+zoomRatio+")")
             }
             else
             {
@@ -92,9 +91,6 @@ Item {
                 var zoomDelta = (wheel.angleDelta.y/500.0) * horaSize
                 horaFlickable.zoomTo(wheel.x, wheel.y, zoomDelta)
             }
-            onClicked: {
-    //                            console.log("contentCorner = ("+contentX+","+contentY+")")
-            }
 
             onDoubleClicked: horaFlickable.zoomToDefault()
         }
@@ -108,8 +104,8 @@ Item {
 
         HoraView {
             id: horaView
-            width: horaSize
-            height: horaSize
+            width: horaSize * Math.max(horaFlickable.width / horaFlickable.height, 1.0)
+            height: horaSize * Math.max(horaFlickable.height / horaFlickable.width, 1.0)
 
             BusyIndicator {
                 id: horaCalcIndicator
