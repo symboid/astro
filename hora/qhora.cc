@@ -114,7 +114,7 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
 
     // getting fixstar data (if enabled)
     mConjunctingFixstars.clear();
-    if (mHoraConfig->fixstars()->enabled())
+    if (mHoraConfig->fixstars()->included())
     {
         typedef typename Fixstars::Container::iterator Iterator;
         for (Iterator fixstarData = mAllFixstars->begin(), fEnd = mAllFixstars->end();

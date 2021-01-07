@@ -14,7 +14,7 @@ public:
     {
     }
 
-    Q_CONFIG_PROPERTY(bool, enabled, false)
+    Q_CONFIG_PROPERTY(bool, included, false)
 };
 
 #endif // __SYMBOID_ASTRO_DB_QFIXSTARCONFIG_H__

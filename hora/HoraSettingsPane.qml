@@ -29,7 +29,7 @@ SettingsGroupFixed {
         title: qsTr("Fixed stars")
 
         SettingsCheckBox {
-            configNode: HoraConfig.fixstars.enabled_node
+            configNode: HoraConfig.fixstars.included_node
             text: qsTr("Include fixed stars")
             hint: qsTr("Fixed stars in conjuction with planets will be denoted.")
         }

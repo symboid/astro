@@ -135,7 +135,7 @@ qreal QHoraViewItem::defaultZoom() const
 
 qreal QHoraViewItem::eclipticRatio() const
 {
-    return mHoraConfig->fixstars()->enabled() ? 0.55 : 0.8;
+    return mHoraConfig->fixstars()->included() ? 0.55 : 0.8;
 }
 
 qreal QHoraViewItem::eclipticRadius() const
@@ -311,7 +311,7 @@ void QHoraViewItem::paint(QPainter* painter)
         painter->drawEllipse(mMandalaCenter, earthRadius, earthRadius);
 
         // fixstars
-        if (mHoraConfig->fixstars()->enabled())
+        if (mHoraConfig->fixstars()->included())
         {
             Stellium<eph::basic_fixstar<eph_proxy>>::List fixstarStelliums(4.0);
     //        qreal fixstarRadius = eclipticRadius() * 1.15;
