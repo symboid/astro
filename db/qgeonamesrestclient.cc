@@ -5,6 +5,7 @@
 QGeoNamesRestClient::QGeoNamesRestClient(QObject* parent)
     : QRestClient(parent)
 {
-    setApiAddress(QUrl("http://api.geonames.org"));
+    setApiAddress("api.geonames.org");
+    setSecure(false);
     setAuthUser("symboid");
 }

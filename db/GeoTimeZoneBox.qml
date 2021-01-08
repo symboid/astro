@@ -3,6 +3,7 @@ import QtQuick 2.14
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
 import Symboid.Sdk.Network 1.0
+import Symboid.Sdk.Hosting 1.0
 
 Row {
 
@@ -58,7 +59,8 @@ Row {
     RestObjectModel {
         id: timeZoneModel
         restClient: RestClient {
-            apiAddress: "http://api.timezonedb.com"
+            apiAddress: "api.timezonedb.com"
+            secure: AppConfig.software.ssl_supported
             authUser: "symboid"
         }
         operation: "v2.1/get-time-zone"+
