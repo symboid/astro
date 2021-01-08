@@ -35,7 +35,7 @@ LoadListView {
                    "\n" + countryName
         anchors.left: parent !== null ? parent.left : undefined
         anchors.right: parent !== null ? parent.right : undefined
-        itemWidth: rowWidth
+        itemWidth: geoListView.width
         editable: false
         revertedLayout: true
         selectable: index === geoListView.currentIndex
