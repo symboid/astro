@@ -13,13 +13,11 @@ MainScreenParamBox {
     property alias geoLont: geoLont.arcDegree
     property alias geoTzDiff: timeZoneBox.diffHours
     property bool showDetails: false
-    property bool editable: false
 
     title: qsTr("Location")
 
     MainScreenTextField {
         id: geoName
-        enabled: editable
         placeholderText: qsTr("Use globe button!") + " >>"
         button: RoundButton {
             display: RoundButton.IconOnly
