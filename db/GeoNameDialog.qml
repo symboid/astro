@@ -80,7 +80,7 @@ Drawer {
 
         }
         Item {
-            LoadListItem {
+            LoadListInputItem {
                 id: onlineSearchInput
                 anchors {
                     top: parent.top
@@ -89,7 +89,6 @@ Drawer {
                 }
                 itemWidth: width
                 loadIconSource: "/icons/zoom_icon&32.png"
-                selectorVisible: false
                 lineColor: pageBar.background.color
                 onEditAccepted: onlineSearchView.runQuery()
                 onButtonClicked: onlineSearchView.runQuery()
@@ -102,7 +101,7 @@ Drawer {
                     right: parent.right
                     bottom: parent.bottom
                 }
-                queryOperation: "searchJSON?q="+onlineSearchInput.itemTitle
+                queryOperation: "searchJSON?q="+onlineSearchInput.editText
                 onLoadButtonClicked: {
                     geoNameBox.text = geoName
                     geoLattBox.arcDegree = geoLat

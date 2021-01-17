@@ -29,14 +29,13 @@ LoadListView {
         onNetworkError: errorPopup.show(qsTr("Network error!"))
     }
 
-    delegate: LoadListItem {
+    delegate: LoadListCheckItem {
         itemTitle: name +
                    (adminName1 !== "" ? " (" +adminName1 + ")" : "") +
                    "\n" + countryName
         anchors.left: parent !== null ? parent.left : undefined
         anchors.right: parent !== null ? parent.right : undefined
         itemWidth: geoListView.width
-        editable: false
         revertedLayout: true
         selectable: index === geoListView.currentIndex
         selectIndicator: Image {
