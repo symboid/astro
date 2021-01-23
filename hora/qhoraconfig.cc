@@ -15,18 +15,22 @@ QHouseCuspOrbisConfigNode::QHouseCuspOrbisConfigNode(const QString& id, QAbstrac
 QHoraConfig::QHoraConfig(QObject* parent)
     : QConfigNode(parent)
 {
+#ifndef Q_OS_WASM
     QSettings settings;
     for (int c = 0; c < subConfigCount(); ++c)
     {
         subConfig(c)->loadFromSettings(&settings);
     }
+#endif
 }
 
 QHoraConfig::~QHoraConfig()
 {
+#ifndef Q_OS_WASM
     QSettings settings;
     for (int c = 0; c < subConfigCount(); ++c)
     {
         subConfig(c)->saveToSettings(&settings);
     }
+#endif
 }
