@@ -17,8 +17,8 @@ public:
     QKarmaConfig(const QString& id, QAbstractConfig* parentNode, const char* parentSignal);
 
     Q_CONFIG_PROPERTY(bool, dragon_head, true)
-    Q_CONFIG_PROPERTY(bool, dragon_tail, false)
-    Q_CONFIG_PROPERTY(bool, lilith, false)
+    Q_CONFIG_PROPERTY(bool, dragon_tail, true)
+    Q_CONFIG_PROPERTY(bool, lilith, true)
     Q_CONFIG_PROPERTY(bool, draw_axis, false)
 };
 

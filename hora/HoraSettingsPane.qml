@@ -36,7 +36,7 @@ SettingsGroupFixed {
     }
     SettingsGroupLink {
         title: qsTr("Orbis")
-
+visible:false
         settingsPane: SettingsPane {
             title: qsTr("Orbis")
             SettingsGroupLink {
