@@ -5,7 +5,6 @@
 #include "astro/hora/defs.h"
 #include "sdk/arch/modqt.h"
 #include "sdk/controls/init.h"
-#include "sdk/network/init.h"
 #include "sdk/hosting/init.h"
 #include "astro/controls/init.h"
 #include "astro/db/init.h"
@@ -24,7 +23,6 @@ struct ASTRO_HORA_API mod_astro_hora : arh::mod_qt<mod_astro_hora>
     mod_astro_hora();
     ~mod_astro_hora();
 
-    arh::mod_init<mod_sdk_network> _M_mod_sdk_network;
     arh::mod_init<mod_sdk_controls> _M_mod_sdk_controls;
     arh::mod_init<mod_sdk_hosting> _M_mod_sdk_hosting;
     arh::mod_init<mod_astro_controls> _M_mod_astro_controls;

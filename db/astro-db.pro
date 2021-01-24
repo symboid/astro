@@ -62,7 +62,6 @@ RESOURCES += \
     astro-db.qrc
 
 LIBS += $$moduleDep(astro,controls)
-LIBS += $$moduleDep(sdk,hosting)
 LIBS += $$moduleDep(sdk,controls)
 LIBS += $$moduleDep(sdk,network)
 LIBS += $$moduleDep(sdk,arch)

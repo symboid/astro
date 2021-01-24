@@ -5,8 +5,6 @@
 #include "astro/controls/defs.h"
 #include "sdk/arch/modqt.h"
 #include "sdk/controls/init.h"
-#include "sdk/network/init.h"
-#include "sdk/hosting/init.h"
 #include "astro/controls/arccoord.h"
 #include "astro/controls/qastrofont.h"
 
@@ -21,9 +19,7 @@ struct ASTRO_CONTROLS_API mod_astro_controls : arh::mod_qt<mod_astro_controls>
     mod_astro_controls();
     ~mod_astro_controls();
 
-    arh::mod_init<mod_sdk_network> _M_mod_sdk_network;
     arh::mod_init<mod_sdk_controls> _M_mod_sdk_controls;
-    arh::mod_init<mod_sdk_hosting> _M_mod_sdk_hosting;
 
     qml_type_register<QArcCoord> _reg_arc_coord;
     qml_type_register<QNoneSectionCalc> _none_section_calc;

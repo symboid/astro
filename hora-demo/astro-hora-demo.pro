@@ -18,6 +18,8 @@ RESOURCES += \
 
 LIBS += $$moduleDep(astro,hora)
 LIBS += $$moduleDep(astro,db)
+LIBS += $$moduleDep(astro,controls)
 LIBS += $$moduleDep(sdk,hosting)
+LIBS += $$moduleDep(sdk,network)
 LIBS += $$moduleDep(sdk,controls)
 LIBS += $$moduleDep(sdk,arch)
