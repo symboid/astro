@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>main.qml</file>
-        <file>CoordsDemoPage.qml</file>
-        <file>GeoNamesDemoPage.qml</file>
-        <file>HoraViewDemoPage.qml</file>
-        <file>DocumentsDemoPage.qml</file>
-    </qresource>
-</RCC>

@@ -1,10 +1,11 @@
 
-TARGET = astro-demo-qml
+TARGET = astro-hora-demo
 BUILD_ROOT=../..
 COMPONENT_NAME=astro
 include($${BUILD_ROOT}/build/qmake/application.pri)
 
 SOURCES += \
+    init.cc \
     main.cc
 
 HEADERS += \
@@ -13,11 +14,10 @@ HEADERS += \
     setup.h
 
 RESOURCES += \
-    astro-demo-qml.qrc
+    astro-hora-demo.qrc
 
-LIBS += $$moduleDep(astro,controls)
+LIBS += $$moduleDep(astro,hora)
 LIBS += $$moduleDep(astro,db)
-LIBS += $$moduleDep(sdk,dox)
+LIBS += $$moduleDep(sdk,hosting)
 LIBS += $$moduleDep(sdk,controls)
-LIBS += $$moduleDep(sdk,network)
 LIBS += $$moduleDep(sdk,arch)
