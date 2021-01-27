@@ -16,7 +16,6 @@ clang|gcc {
 
 SOURCES += \
     fixstars.cc \
-    geocoord.cc \
     init.cc \
     qephobject.cc \
     qgeonamesrestclient.cc \
@@ -37,7 +36,6 @@ SOURCES += \
 HEADERS += \
     defs.h \
     fixstars.h \
-    geocoord.h \
     init.h \
     qephobject.h \
     qfixstarconfig.h \
@@ -62,6 +60,7 @@ RESOURCES += \
     astro-db.qrc
 
 LIBS += $$moduleDep(astro,controls)
+LIBS += $$moduleDep(sdk,hosting)
 LIBS += $$moduleDep(sdk,controls)
 LIBS += $$moduleDep(sdk,network)
 LIBS += $$moduleDep(sdk,arch)

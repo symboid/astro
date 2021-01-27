@@ -61,26 +61,4 @@
         <translation>Használd a földgömböt!</translation>
     </message>
 </context>
-<context>
-    <name>QGeoLattSectionCalc</name>
-    <message>
-        <source>N</source>
-        <translation>É</translation>
-    </message>
-    <message>
-        <source>S</source>
-        <translation>D</translation>
-    </message>
-</context>
-<context>
-    <name>QGeoLontSectionCalc</name>
-    <message>
-        <source>E</source>
-        <translation>K</translation>
-    </message>
-    <message>
-        <source>W</source>
-        <translation>Ny</translation>
-    </message>
-</context>
 </TS>

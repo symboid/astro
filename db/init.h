@@ -9,7 +9,6 @@
 #include "sdk/hosting/init.h"
 #include "astro/db/qgeonamesrestclient.h"
 #include "astro/db/fixstars.h"
-#include "astro/db/geocoord.h"
 
 struct ASTRO_DB_API mod_astro_db : arh::mod_qt<mod_astro_db>
 {
@@ -28,9 +27,6 @@ struct ASTRO_DB_API mod_astro_db : arh::mod_qt<mod_astro_db>
 
     qml_singleton_init<QGeoNamesRestClient> _M_geo_names_rest_client;
     arh::main_object_init<Fixstars> _M_fixstars;
-
-    qml_type_register<QGeoLattSectionCalc> _geo_latt_section_calc;
-    qml_type_register<QGeoLontSectionCalc> _geo_lont_section_calc;
 };
 
 
