@@ -122,5 +122,7 @@ Item {
             target: HoraConfig.fixstars
             function onIncludedChanged() { horaFlickable.zoomToDefault() }
         }
+
+        Component.onCompleted: zoomToDefault()
     }
 }
