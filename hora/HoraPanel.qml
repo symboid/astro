@@ -6,12 +6,13 @@ import Symboid.Astro.Hora 1.0
 Item {
     property bool isLandscape: true
     property alias view: horaView
+    property bool withSeparator: false
 
     Rectangle {
         height: isLandscape ? parent.height : 1
         width: isLandscape ? 1 : parent.width
         color: "lightgray"
-        visible: minHoraSize !== horaSize
+        visible: withSeparator && minHoraSize !== horaSize
     }
 
     Rectangle {
@@ -20,7 +21,7 @@ Item {
         height: isLandscape ? parent.height : 1
         width: isLandscape ? 1 : parent.width
         color: "lightgray"
-        visible: minHoraSize !== horaSize
+        visible: withSeparator && minHoraSize !== horaSize
     }
 
     property int minHoraSize: 100

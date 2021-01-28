@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu_HU">
 <context>
-    <name>main</name>
+    <name>DemoScreen</name>
     <message>
         <source>Geographic position</source>
         <translation type="unfinished"></translation>
