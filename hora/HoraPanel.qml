@@ -107,16 +107,6 @@ Item {
             id: horaView
             width: horaSize * Math.max(horaFlickable.width / horaFlickable.height, 1.0)
             height: horaSize * Math.max(horaFlickable.height / horaFlickable.width, 1.0)
-
-            BusyIndicator {
-                id: horaCalcIndicator
-                width: 100
-                height: 100
-                anchors.centerIn: parent
-                running: false
-            }
-            onStartCalc: horaCalcIndicator.running = true
-            onStopCalc: horaCalcIndicator.running = false
         }
 
         Connections {
