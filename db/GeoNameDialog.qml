@@ -88,6 +88,7 @@ Drawer {
                     right: parent.right
                 }
                 itemWidth: width
+                indented: true
                 loadIconSource: "/icons/zoom_icon&32.png"
                 lineColor: pageBar.background.color
                 onEditAccepted: onlineSearchView.runQuery()

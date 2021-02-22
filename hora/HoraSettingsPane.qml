@@ -58,19 +58,19 @@ visible:false
     SettingsGroupExpanding {
         title: qsTr("Other horoscope elements")
         SettingsSwitch {
-            text: qsTr("Dragon Head")
+            itemTitle: qsTr("Dragon Head")
             configNode: HoraConfig.karma.dragon_head_node
         }
         SettingsSwitch {
-            text: qsTr("Dragon Tail")
+            itemTitle: qsTr("Dragon Tail")
             configNode: HoraConfig.karma.dragon_tail_node
         }
         SettingsSwitch {
-            text: qsTr("Lilith")
+            itemTitle: qsTr("Lilith")
             configNode: HoraConfig.karma.lilith_node
         }
         SettingsSwitch {
-            text: qsTr("Axis on lunar nodes")
+            itemTitle: qsTr("Axis on lunar nodes")
             configNode: HoraConfig.karma.draw_axis_node
             enabled: false
         }

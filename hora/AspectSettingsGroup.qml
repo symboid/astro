@@ -3,24 +3,35 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Hosting 1.0
 
-SettingsSwitch {
-    id: group
+SettingsItem {
+    property alias text: label.text
     property ConfigNode aspectConfig: null
-    configNode: aspectConfig.enabled_node
+    property ConfigNode configNode: aspectConfig.enabled_node
 
-    rightItem: Item {
-        width: defaultItemHeight
-        height: defaultItemHeight
+    setting: Label {
+        id: label
+    }
+    rightItem: Row {
+        Switch {
+            id: switchButton
+            anchors.verticalCenter: parent.verticalCenter
+            checked: configNode.value
+            onCheckedChanged: {
+                configNode.value = checked
+                checked = Qt.binding(function(){return configNode.value})
+            }
+        }
         RoundButton {
             id: expandButton
-            anchors.centerIn: parent
+            anchors.verticalCenter: parent.verticalCenter
             icon.source: "/icons/br_next_icon&24.png"
-            visible: group.checked
-            onClicked: {
-                if (settingsPane !== null) {
-                    settingsView.push(settingsPane.createObject(settingsView,{}))
-                }
-            }
+            visible: switchButton.checked
+            onClicked: settingsView.loadPane(settingsPane)
+        }
+        Item {
+            width: expandButton.width
+            height: expandButton.height
+            visible: !expandButton.visible
         }
     }
 

@@ -4,78 +4,78 @@
 <context>
     <name>AspectSettingsGroup</name>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="28"/>
+        <location filename="AspectSettingsGroup.qml" line="39"/>
         <source>Sun</source>
         <translation>Nap</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="28"/>
+        <location filename="AspectSettingsGroup.qml" line="39"/>
         <source>Moon</source>
         <translation>Hold</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="28"/>
+        <location filename="AspectSettingsGroup.qml" line="39"/>
         <source>Mercury</source>
         <translation>Merkúr</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="28"/>
+        <location filename="AspectSettingsGroup.qml" line="39"/>
         <source>Venus</source>
         <translation>Vénusz</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="28"/>
+        <location filename="AspectSettingsGroup.qml" line="39"/>
         <source>Mars</source>
         <translation>Mars</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="29"/>
+        <location filename="AspectSettingsGroup.qml" line="40"/>
         <source>Jupiter</source>
         <translation>Jupiter</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="29"/>
+        <location filename="AspectSettingsGroup.qml" line="40"/>
         <source>Saturn</source>
         <translation>Szaturnusz</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="29"/>
+        <location filename="AspectSettingsGroup.qml" line="40"/>
         <source>Uranus</source>
         <translation>Uránusz</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="29"/>
+        <location filename="AspectSettingsGroup.qml" line="40"/>
         <source>Neptune</source>
         <translation>Neptunusz</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="29"/>
+        <location filename="AspectSettingsGroup.qml" line="40"/>
         <source>Pluto</source>
         <translation>Plútó</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="30"/>
+        <location filename="AspectSettingsGroup.qml" line="41"/>
         <source>Asc/Dsc</source>
         <oldsource>Asc</oldsource>
         <translation>Asc/Dsc</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="30"/>
+        <location filename="AspectSettingsGroup.qml" line="41"/>
         <source>MC/IC</source>
         <translation>MC/IC</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="30"/>
+        <location filename="AspectSettingsGroup.qml" line="41"/>
         <source>Lunar nodes</source>
         <translation>Holdcsomópontok</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="30"/>
+        <location filename="AspectSettingsGroup.qml" line="41"/>
         <source>House cusps</source>
         <translation>Házcsúcsok</translation>
     </message>
     <message>
-        <location filename="AspectSettingsGroup.qml" line="30"/>
+        <location filename="AspectSettingsGroup.qml" line="41"/>
         <source>Lilith</source>
         <translation>Lilith</translation>
     </message>
