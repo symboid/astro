@@ -1,19 +1,20 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import Symboid.Sdk.Controls 1.0
 import Symboid.Sdk.Hosting 1.0
 import Symboid.Astro.Hora 1.0
 
-SettingsGroupFixed {
+FolderGroupFixed {
     title: qsTr("Horoscope")
     property var aspectTitles: [
         qsTr("Conjunction"), qsTr("Opposition"), qsTr("Trigon"), qsTr("Quadrat"),
         qsTr("Quintile"), qsTr("Sextile"), qsTr("Semi-sextile"), qsTr("Quincunx"),
         qsTr("Semi-quadrat"), qsTr("Sesqui-quadrat"), qsTr("Biquintile")
     ]
-    SettingsGroupLink {
+    FolderGroupLink {
         title: qsTr("Aspect connections")
-        settingsPane: SettingsPane {
+        folderPane: FolderPane {
             title: qsTr("Aspect connections")
             Repeater {
                 model: HoraConfig.aspects
@@ -25,7 +26,7 @@ SettingsGroupFixed {
             }
         }
     }
-    SettingsGroupExpanding {
+    FolderGroupExpanding {
         title: qsTr("Fixed stars")
 
         SettingsCheckBox {
@@ -34,14 +35,14 @@ SettingsGroupFixed {
             hint: qsTr("Fixed stars in conjuction with planets will be denoted.")
         }
     }
-    SettingsGroupLink {
+    FolderGroupLink {
         title: qsTr("Orbis")
 visible:false
-        settingsPane: SettingsPane {
+        folderPane: FolderPane {
             title: qsTr("Orbis")
-            SettingsGroupLink {
+            FolderGroupLink {
                 title: qsTr("Before house cusps")
-                settingsPane: SettingsPane {
+                folderPane: FolderPane {
                     title: qsTr("Before house cusps")
                     Repeater {
                         model: HoraConfig.house_cusp_orbis
@@ -55,7 +56,7 @@ visible:false
             }
         }
     }
-    SettingsGroupExpanding {
+    FolderGroupExpanding {
         title: qsTr("Other horoscope elements")
         SettingsSwitch {
             title: qsTr("Dragon Head")

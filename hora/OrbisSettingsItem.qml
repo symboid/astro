@@ -4,10 +4,10 @@ import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
 import Symboid.Sdk.Hosting 1.0
 
-SettingsItem {
+FolderItem {
     property alias text: objectTitle.text
     property ConfigNode orbisConfig: null
-    setting: Row {
+    mainItem: Row {
 
         leftPadding: 20
         rightPadding: 20

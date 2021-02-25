@@ -1,14 +1,15 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import Symboid.Sdk.Controls 1.0
 import Symboid.Sdk.Hosting 1.0
 
-SettingsItem {
+FolderItem {
     property alias text: label.text
     property ConfigNode aspectConfig: null
     property ConfigNode configNode: aspectConfig.enabled_node
 
-    setting: Label {
+    mainItem: Label {
         id: label
     }
     rightItem: Row {
@@ -26,7 +27,7 @@ SettingsItem {
             anchors.verticalCenter: parent.verticalCenter
             icon.source: "/icons/br_next_icon&24.png"
             visible: switchButton.checked
-            onClicked: settingsView.loadPane(settingsPane)
+            onClicked: settingsView.loadPane(folderPane)
         }
         Item {
             width: expandButton.width
@@ -41,7 +42,7 @@ SettingsItem {
         qsTr("Asc/Dsc"), qsTr("MC/IC"), qsTr("House cusps"), qsTr("Lunar nodes"), qsTr("Lilith")
     ]
 
-    property Component settingsPane: SettingsPane {
+    property Component folderPane: FolderPane {
         title: text
         Repeater {
             model: aspectConfig.orbis
