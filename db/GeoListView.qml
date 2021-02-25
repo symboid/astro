@@ -30,12 +30,12 @@ LoadListView {
     }
 
     delegate: LoadListCheckItem {
-        itemTitle: name +
+        title: name +
                    (adminName1 !== "" ? " (" +adminName1 + ")" : "") +
                    "\n" + countryName
         anchors.left: parent !== null ? parent.left : undefined
         anchors.right: parent !== null ? parent.right : undefined
-        itemWidth: geoListView.width
+        cellWidth: geoListView.width
         revertedLayout: true
         selectable: index === geoListView.currentIndex
         selectIndicator: Image {
@@ -43,7 +43,6 @@ LoadListView {
             source: parent.checked ? "/icons/pin_map_down_icon&16.png" : "/icons/pin_map_icon&16.png"
             verticalAlignment: Image.AlignVCenter
         }
-        onItemClicked: geoListView.currentIndex = index
         onButtonClicked: loadButtonClicked(name, lat, lng)
     }
 }

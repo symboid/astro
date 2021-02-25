@@ -87,7 +87,7 @@ Drawer {
                     left: parent.left
                     right: parent.right
                 }
-                itemWidth: width
+                cellWidth: width
                 indented: true
                 loadIconSource: "/icons/zoom_icon&32.png"
                 lineColor: pageBar.background.color
