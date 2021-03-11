@@ -2,7 +2,7 @@
 #ifndef __SYMBOID_ASTRO_EPH_DEFS_H__
 #define __SYMBOID_ASTRO_EPH_DEFS_H__
 
-#include "sdk/defs.h"
+#include "sdk/arch/defs.h"
 
 #define eph_ns_begin sy_ns_begin(eph)
 #define eph_ns_end sy_ns_end
