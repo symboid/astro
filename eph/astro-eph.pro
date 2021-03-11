@@ -17,3 +17,12 @@ HEADERS += \
     proxy.h \
     object.h \
     ecliptic.h
+
+api_headers.files = $$shell_path($$absolute_path($$_PRO_FILE_PWD_)/*.h)
+api_headers.path = /include/astro/eph
+INSTALLS += api_headers
+
+CONFIG(component_api) {
+    INCLUDEPATH += $$INSTALL_ROOT/include
+}
+

@@ -66,3 +66,13 @@ LIBS += $$moduleDep(sdk,network)
 LIBS += $$moduleDep(sdk,arch)
 
 QMAKE_EXTRA_TARGETS += $$object_dep_on_component_header(init)
+
+swe_headers.files = $$shell_path($$absolute_path($$_PRO_FILE_PWD_)/sweph/src/*.h)
+swe_headers.path = /include/astro/db/sweph/src
+INSTALLS += swe_headers
+
+swe_ephe.files = $$shell_path($$absolute_path($$_PRO_FILE_PWD_)/sweph/ephe/sefstars.txt)
+swe_ephe.files += $$shell_path($$absolute_path($$_PRO_FILE_PWD_)/sweph/ephe/*.se1)
+swe_ephe.path = /assets/ephe
+INSTALLS += swe_ephe
+
