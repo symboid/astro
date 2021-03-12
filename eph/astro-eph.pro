@@ -23,6 +23,6 @@ api_headers.path = /include/astro/eph
 INSTALLS += api_headers
 
 CONFIG(component_api) {
-    INCLUDEPATH += $$DEP_ROOT/include
+    INCLUDEPATH += $$(DEP_ROOT)/include
 }
 
