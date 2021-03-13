@@ -60,10 +60,10 @@ RESOURCES += \
     astro-db.qrc
 
 LIBS += $$moduleDep(astro,controls)
-LIBS += $$moduleDep(sdk,hosting)
-LIBS += $$moduleDep(sdk,controls)
-LIBS += $$moduleDep(sdk,network)
-LIBS += $$moduleDep(sdk,arch)
+LIBS += $$externDep(sdk,hosting)
+LIBS += $$externDep(sdk,controls)
+LIBS += $$externDep(sdk,network)
+LIBS += $$externDep(sdk,arch)
 
 QMAKE_EXTRA_TARGETS += $$object_dep_on_component_header(init)
 

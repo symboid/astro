@@ -19,5 +19,5 @@ HEADERS += \
 RESOURCES += \
     astro-controls.qrc
 
-LIBS += $$moduleDep(sdk,controls)
-LIBS += $$moduleDep(sdk,arch)
+LIBS += $$externDep(sdk,controls)
+LIBS += $$externDep(sdk,arch)
