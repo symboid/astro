@@ -50,6 +50,8 @@ mod_astro_db::mod_astro_db()
         }
         log_info << "Ephemeris files deployed.";
     }
+#elif defined Q_OS_IOS
+    QDir epheDir("ephe");
 #else
     QDir epheDir(".");
 #endif
