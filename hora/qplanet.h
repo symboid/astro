@@ -40,7 +40,12 @@ public:
     const Index mIndex;
 
 public:
-    bool calc(const QEphTime& ephTime) override;
+    QEclPos eclPos() const override;
+    QEclSpeed eclSpeed() const override;
+    virtual bool calc(const QEphTime& ephTime);
+protected:
+    QEclPos mEclPos;
+    QEclSpeed mEclSpeed;
 
 public:
     bool isRetrograd() const;

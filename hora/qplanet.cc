@@ -72,6 +72,16 @@ QPlanet::QPlanet(QObject* parent, QOrbisConfigNodeGetter orbisGetter)
 
 }
 
+QEclPos QPlanet::eclPos() const
+{
+    return mEclPos;
+}
+
+QEclSpeed QPlanet::eclSpeed() const
+{
+    return mEclSpeed;
+}
+
 bool QPlanet::calc(const QEphTime& ephTime)
 {
     QEclPos eclPos;
@@ -79,8 +89,10 @@ bool QPlanet::calc(const QEphTime& ephTime)
     bool isSuccess = (eph_proxy::object::calc_pos(mIndex, ephTime, eclPos, eclSpeed) == eph::calc_result::SUCCESS);
     if (isSuccess)
     {
-        setEclPos(eclPos);
-        setEclSpeed(eclSpeed);
+        mEclPos = eclPos;
+        emit eclPosChanged();
+        mEclSpeed = eclSpeed;
+        emit eclSpeedChanged();
     }
     return isSuccess;
 }
@@ -106,8 +118,10 @@ bool QLunarNode::calc(const QEphTime& ephTime)
         {
             eclPos = QEclPos(eclPos._M_lont + 180.0, eclPos._M_latt, eclPos._M_dist);
         }
-        setEclPos(eclPos);
-        setEclSpeed(eclSpeed);
+        mEclPos = eclPos;
+        emit eclPosChanged();
+        mEclSpeed = eclSpeed;
+        emit eclSpeedChanged();
     }
     return isSuccess;
 }

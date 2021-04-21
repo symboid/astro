@@ -4,10 +4,11 @@
 
 QHora::QHora(QObject* parent)
     : QObject(parent)
+    , mHouseSystem(new QHouseSystem(this))
 {
     for (int h = 0; h < QHouseSystem::HOUSE_COUNT; ++h)
     {
-        mHouseCusps[h] = new QHouseCusp(this, &mHouseSystem, h + 1);
+        mHouseCusps[h] = new QHouseCusp(this, mHouseSystem, h + 1);
     }
     mHouseCusps[QHouseSystem::HOUSE_COUNT] = nullptr;
 
@@ -99,12 +100,8 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
     bool calcResult = true;
 
     // getting house cusp positions
-    mHouseSystem.mType = houseSystemType;
-    calcResult = mHouseSystem.calc(horaTime, horaCoords.mGeoLont, horaCoords.mGeoLatt);
-    for (int h = 0; h < QHouseSystem::HOUSE_COUNT; ++h)
-    {
-        mHouseCusps[h]->calc(horaTime);
-    }
+    mHouseSystem->mType = houseSystemType;
+    calcResult = mHouseSystem->calc(horaTime, horaCoords.mGeoLont, horaCoords.mGeoLatt);
 
     // getting planet positions
     for (Planets::iterator planet = mPlanets.begin(), end = mPlanets.end(); calcResult && planet < end; ++planet)

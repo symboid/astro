@@ -7,8 +7,12 @@
 
 typedef eph::ecl_lont QEclLont;
 
-struct ASTRO_HORA_API QHouseSystem
+class ASTRO_HORA_API QHouseSystem : public QObject
 {
+    Q_OBJECT
+public:
+    QHouseSystem(QObject* parent);
+
     enum Type
     {
         PLACIDUS = int(eph_proxy::houses::type::placidus),
@@ -24,6 +28,8 @@ struct ASTRO_HORA_API QHouseSystem
     QEclSpeed mEclSpeed[HOUSE_COUNT + 1];
 
     bool calc(eph::basic_time_point<eph_proxy> horaTime, eph::arc_degree geoLont, eph::arc_degree geoLatt);
+signals:
+    void recalculated();
 };
 
 class ASTRO_HORA_API QHouseCusp : public QHoraObject
@@ -41,7 +47,8 @@ private:
     const int mHouseIndex;
 
 public:
-    bool calc(const QEphTime& ephTime) override;
+    QEclPos eclPos() const override;
+    QEclSpeed eclSpeed() const override;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHOUSECUSP_H__

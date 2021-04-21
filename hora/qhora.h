@@ -29,7 +29,7 @@ private:
     arh::main_object<QHoraConfig> mHoraConfig;
 
 private:
-    QHouseSystem mHouseSystem;
+    QHouseSystem* mHouseSystem;
     QHouseCusp* mHouseCusps[QHouseSystem::HOUSE_COUNT + 1];
 public:
     QHouseCusp*const* housesBegin() const;

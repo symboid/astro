@@ -2,6 +2,11 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qhousecusp.h"
 
+QHouseSystem::QHouseSystem(QObject* parent)
+    : QObject(parent)
+{
+}
+
 bool QHouseSystem::calc(eph::basic_time_point<eph_proxy> horaTime, eph::arc_degree geoLont, eph::arc_degree geoLatt)
 {
     bool calcResult(false);
@@ -19,6 +24,7 @@ bool QHouseSystem::calc(eph::basic_time_point<eph_proxy> horaTime, eph::arc_degr
             mEclSpeed[h] = QEclSpeed(degPerHour, 0.0);
         }
         calcResult = true;
+        emit  recalculated();
     }
     return calcResult;
 }
@@ -50,17 +56,16 @@ QHouseCusp::QHouseCusp(QObject* parent, const QHouseSystem* houseSystem, int hou
     , mHouseSystem(houseSystem)
     , mHouseIndex(houseIndex)
 {
+    connect(houseSystem, SIGNAL(recalculated()), this, SIGNAL(eclPosChanged()));
+    connect(houseSystem, SIGNAL(recalculated()), this, SIGNAL(eclSpeedChanged()));
 }
 
-bool QHouseCusp::calc(const QEphTime& ephTime)
+QEclPos QHouseCusp::eclPos() const
 {
-    Q_UNUSED(ephTime)
-    bool calcResult(false);
-    if (mHouseSystem != nullptr)
-    {
-        setEclPos(mHouseSystem->mEclLonts[mHouseIndex]);
-        setEclSpeed(mHouseSystem->mEclSpeed[mHouseIndex]);
-        calcResult = true;
-    }
-    return calcResult;
+    return mHouseSystem ? mHouseSystem->mEclLonts[mHouseIndex] : QEclPos();
+}
+
+QEclSpeed QHouseCusp::eclSpeed() const
+{
+    return mHouseSystem ? mHouseSystem->mEclSpeed[mHouseIndex] : QEclSpeed();
 }

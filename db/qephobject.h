@@ -21,32 +21,18 @@ public:
     QEphObject(QObject* parent, const QString& id);
     ~QEphObject();
 
-    virtual bool calc(const QEphTime& ephTime) = 0;
-
 public:
     virtual QString id() const;
 private:
     const QString mId;
 
 public:
-    QEclPos eclPos() const;
-    bool isEclPosValid() const;
-protected:
-    void setEclPos(const QEclPos& eclPos);
-private:
-    bool mIsEclPosValid = false;
-    QEclPos mEclPos;
+    virtual QEclPos eclPos() const = 0;
 signals:
     void eclPosChanged();
 
 public:
-    QEclSpeed eclSpeed() const;
-    bool isEclSpeedValid() const;
-protected:
-    void setEclSpeed(const QEclSpeed& eclSpeed);
-private:
-    bool mIsEclSpeedValid = false;
-    QEclSpeed mEclSpeed;
+    virtual QEclSpeed eclSpeed() const = 0;
 signals:
     void eclSpeedChanged();
 };
