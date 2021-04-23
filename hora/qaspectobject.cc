@@ -27,5 +27,10 @@ QOrbisValue QAspectObject::orbis() const
 
 QString QAspectObject::symbol(const QAstroFont* font) const
 {
-    return font->aspectLetter(mAspect->dist()) + mPlanet->symbol(font);
+    return font->aspectLetter(int(mAspect->dist())) + mPlanet->symbol(font);
+}
+
+QColor QAspectObject::drawColor() const
+{
+    return mAspect->draw()->lineColor();
 }

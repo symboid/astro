@@ -72,5 +72,11 @@ QEclSpeed QHouseCusp::eclSpeed() const
 
 QString QHouseCusp::symbol(const QAstroFont *font) const
 {
+    Q_UNUSED(font)
     return id();
+}
+
+QColor QHouseCusp::drawColor() const
+{
+    return Qt::gray;
 }

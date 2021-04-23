@@ -107,6 +107,11 @@ QString QPlanet::symbol(const QAstroFont* font) const
     return font->planetLetter(mIndex);
 }
 
+QColor QPlanet::drawColor() const
+{
+    return Qt::black;
+}
+
 QLunarNode::QLunarNode(QObject* parent, Index index)
     : QPlanet(parent, index == DRAGON_HEAD ? "dragon_head" : "dragon_tail", index, &QOrbisConfigNode::nodNode)
 {
@@ -135,4 +140,3 @@ QString QLunarNode::symbol(const QAstroFont* font) const
 {
     return mIndex == DRAGON_TAIL ? font->dragonTailLetter() : font->dragonHeadLetter();
 }
-

@@ -17,7 +17,7 @@ public:
 
 public:
     virtual QString symbol(const QAstroFont* font) const = 0;
-//    virtual QColor drawColor() const = 0;
+    virtual QColor drawColor() const = 0;
 
 public:
     virtual QOrbisValue orbis() const = 0;

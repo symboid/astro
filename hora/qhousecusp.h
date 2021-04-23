@@ -50,6 +50,7 @@ public:
     QEclPos eclPos() const override;
     QEclSpeed eclSpeed() const override;
     QString symbol(const QAstroFont* font) const override;
+    QColor drawColor() const override;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHOUSECUSP_H__

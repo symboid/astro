@@ -25,6 +25,7 @@ public:
 public:
     QOrbisValue orbis() const override;
     QString symbol(const QAstroFont* font) const override;
+    QColor drawColor() const override;
 };
 
 

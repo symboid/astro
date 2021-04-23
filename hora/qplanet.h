@@ -52,6 +52,7 @@ public:
 
 public:
     QString symbol(const QAstroFont* font) const override;
+    QColor drawColor() const override;
 };
 
 class ASTRO_HORA_API QLunarNode : public QPlanet
