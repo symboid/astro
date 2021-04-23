@@ -1,6 +1,7 @@
 
 #include "astro/hora/setup.h"
 #include "astro/hora/qhora.h"
+#include "astro/hora/qaspectobject.h"
 
 QHora::QHora(QObject* parent)
     : QObject(parent)
@@ -53,6 +54,10 @@ const QPlanet* QHora::planet(int index) const
 
 void QHora::updatePlanets()
 {
+    for (QPlanet* planet : mPlanets)
+    {
+        planet->deleteLater();
+    }
     mPlanets.clear();
 
     mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::sunNode));
@@ -78,6 +83,30 @@ void QHora::updatePlanets()
     {
         mPlanets.push_back(new QPlanet(this, &QOrbisConfigNode::lilNode));
     }
+
+    QAspectConfig* aspects = mHoraConfig->aspects();
+    for (QAspectObject* aspectObject : mAspectObjects)
+    {
+        aspectObject->deleteLater();
+    }
+    mAspectObjects.clear();
+    for (QPlanet* planet : mPlanets)
+    {
+        for (int a = 0, aCount = aspects->subConfigCount(); a < aCount; ++a)
+        {
+            QAspectConfigNode* aspect = aspects->mSubConfigs[a];
+            if (aspect->dist() == 0.0 || aspect->dist() == 180.0)
+            {
+                mAspectObjects.push_back(new QAspectObject(planet, aspect));
+            }
+            else
+            {
+                mAspectObjects.push_back(new QLowerAspectObject(planet, aspect));
+                mAspectObjects.push_back(new QUpperAspectObject(planet, aspect));
+            }
+        }
+    }
+
     emit planetsUpdated();
 }
 
@@ -144,5 +173,28 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
             }
         }
     }
+
+    mMagObjects.clear();
+    for (QPlanet* planet : mPlanets)
+    {
+        mMagObjects.insertMagObject(planet);
+    }
+    for (QAspectObject* aspectObject : mAspectObjects)
+    {
+        if (aspectObject->mAspect->enabled())
+        {
+            mMagObjects.insertMagObject(aspectObject);
+        }
+    }
+    for (QHouseCusp* houseCusp : mHouseCusps)
+    {
+        mMagObjects.insertMagObject(houseCusp);
+    }
+
     return calcResult;
+}
+
+const QMagObjectList& QHora::magObjects() const
+{
+    return mMagObjects;
 }

@@ -8,6 +8,7 @@
 #include <QList>
 #include "astro/hora/qhousecusp.h"
 #include "astro/hora/qplanet.h"
+#include "astro/hora/qaspectobject.h"
 #include "astro/db/fixstars.h"
 
 struct QHoraCoords
@@ -40,6 +41,7 @@ public:
     typedef QVector<QPlanet*> Planets;
 private:
     Planets mPlanets;
+    QList<QAspectObject*> mAspectObjects;
 public:
     Planets::ConstIterator planetsBegin() const;
     Planets::ConstIterator planetsEnd() const;
@@ -58,6 +60,11 @@ private:
 public:
     ConjunctingFixstars::ConstIterator fixstarsBegin() const;
     ConjunctingFixstars::ConstIterator fixstarsEnd() const;
+
+public:
+    const QMagObjectList& magObjects() const;
+private:
+    QMagObjectList mMagObjects;
 
 public:
     bool calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType);

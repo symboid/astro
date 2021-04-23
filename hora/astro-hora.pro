@@ -7,6 +7,7 @@ include($${BUILD_ROOT}/build/qmake/qt-module.pri)
 SOURCES += \
     init.cc \
     qaspectconfig.cc \
+    qaspectobject.cc \
     qforecastmodel.cc \
     qhora.cc \
     qhoraconfig.cc \
@@ -14,12 +15,14 @@ SOURCES += \
     qhoraobject.cc \
     qhoraviewitem.cc \
     qhousecusp.cc \
+    qmagobject.cc \
     qplanet.cc
 
 HEADERS += \
     defs.h \
     init.h \
     qaspectconfig.h \
+    qaspectobject.h \
     qhora.h \
     qhoraconfig.h \
     qforecastmodel.h \
@@ -28,6 +31,7 @@ HEADERS += \
     qhorastellium.h \
     qhoraviewitem.h \
     qhousecusp.h \
+    qmagobject.h \
     qplanet.h \
     setup.h
 
