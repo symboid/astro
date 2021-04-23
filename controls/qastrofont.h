@@ -6,20 +6,24 @@
 #include <QFont>
 #include "astro/eph/ecliptic.h"
 #include "sdk/arch/mainobject.h"
-#include "astro/hora/qplanet.h"
+#include "astro/eph/proxy.h"
 #include <QMap>
 
 class ASTRO_CONTROLS_API QAstroFont : public QFont
 {
 protected:
     QAstroFont(const QString& familyName);
-    virtual ~QAstroFont() = default;
+    virtual ~QAstroFont();// = default;
 
 public:
-    virtual QString zodLetter(eph::zod zodSign) = 0;
-    virtual QString objectLetter(QPlanet::Index planetIndex) = 0;
-//    virtual QString aspectLetter(Aspect::Type aspectType);
-    virtual QString retrogradLetter() = 0;
+    virtual QString zodLetter(eph::zod zodSign) const = 0;
+    virtual QString planetLetter(eph_proxy::object::index planetIndex) const = 0;
+    virtual QString aspectLetter(int aspectDist) const = 0;
+    virtual QString chironLetter() const = 0;
+    virtual QString lilithLetter() const = 0;
+    virtual QString dragonHeadLetter() const = 0;
+    virtual QString dragonTailLetter() const = 0;
+    virtual QString retrogradLetter() const = 0;
 };
 
 class ASTRO_CONTROLS_API QAstroFontRepo
@@ -46,9 +50,14 @@ class ASTRO_CONTROLS_API QNonAstroFont : public QAstroFont
 {
 public:
     QNonAstroFont() : QAstroFont("") {}
-    QString zodLetter(eph::zod) override { return "z"; }
-    QString objectLetter(QPlanet::Index) override { return "p"; }
-    QString retrogradLetter() override { return "r"; }
+    QString zodLetter(eph::zod) const override { return "z"; }
+    QString planetLetter(eph_proxy::object::index) const override { return "p"; }
+    QString aspectLetter(int) const override { return "a"; }
+    QString chironLetter() const override { return "c"; }
+    QString lilithLetter() const override { return "l"; }
+    QString dragonHeadLetter() const override { return "h"; }
+    QString dragonTailLetter() const override { return "t"; }
+    QString retrogradLetter() const override { return "r"; }
 };
 
 class ASTRO_CONTROLS_API QSymboidFont : public QAstroFont
@@ -57,11 +66,14 @@ public:
     QSymboidFont(const QString& familyName);
 
 public:
-    QString zodLetter(eph::zod zodSign) override;
-    QString objectLetter(QPlanet::Index planetIndex) override;
-//    virtual QString objectLetter(ObjectId objectId);
-//    virtual QString aspectLetter(Aspect::Type aspectType);
-    QString retrogradLetter() override;
+    QString zodLetter(eph::zod zodSign) const override;
+    QString planetLetter(eph_proxy::object::index planetIndex) const override;
+    QString aspectLetter(int aspectDist) const override;
+    QString chironLetter() const override;
+    QString lilithLetter() const override;
+    QString dragonHeadLetter() const override;
+    QString dragonTailLetter() const override;
+    QString retrogradLetter() const override;
 };
 
 #endif // __SYMBOID_ASTRO_CONTROLS_QASTROFONT_H__

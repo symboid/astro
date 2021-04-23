@@ -138,8 +138,8 @@ public:
     Q_ASPECT_CONFIG_NODE(sesqui_quadrat, 135.0, false, "darkred", 0.125,
                                          false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
 
-    Q_ASPECT_CONFIG_NODE(biquintile,     144.0, false, "blue", 0.125,
-                                         false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
+//    Q_ASPECT_CONFIG_NODE(biquintile,     144.0, false, "blue", 0.125,
+//                                         false, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
 
 public:
     const QAspectConfigNode* findConnection(const QHoraObject* leftObject, const QHoraObject* rightObject) const;

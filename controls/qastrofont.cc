@@ -10,6 +10,11 @@ QAstroFont::QAstroFont(const QString& familyName)
 {
 }
 
+QAstroFont::~QAstroFont()
+{
+
+}
+
 QAstroFontRepo::QAstroFontRepo()
 {
     installFont<QSymboidFont>("Symboid", ":font/symboid.ttf");
@@ -42,40 +47,55 @@ QSymboidFont::QSymboidFont(const QString& familyName)
 {
 }
 
-QString QSymboidFont::zodLetter(eph::zod zodSign)
+QString QSymboidFont::zodLetter(eph::zod zodSign) const
 {
     return QString(QChar('a' + char(zodSign) - char(eph::zod::ARI)));
 }
 
-QString QSymboidFont::objectLetter(QPlanet::Index planetIndex)
+QString QSymboidFont::planetLetter(eph_proxy::object::index planetIndex) const
 {
-    if (QPlanet::SUN <= planetIndex && planetIndex <= QPlanet::PLUTO)
+    return planetIndex == eph_proxy::object::lilith ? QChar('A') : QChar('m' + int(planetIndex));
+}
+
+QString QSymboidFont::aspectLetter(int aspectDist) const
+{
+    switch (aspectDist)
     {
-        return QChar('m' + int(planetIndex));
-    }
-    else if (planetIndex == QPlanet::CHIRON)
-    {
-        return QChar('K');
-    }
-    else if (planetIndex == QPlanet::LILITH)
-    {
-        return QChar('A');
-    }
-    else if (planetIndex == QLunarNode::DRAGON_HEAD)
-    {
-        return QChar('w');
-    }
-    else if (planetIndex == QLunarNode::DRAGON_TAIL)
-    {
-        return QChar('x');
-    }
-    else
-    {
-        return QChar('Z');
+    case 0: return QChar('[');
+    case 180: return QChar('\\');
+    case 120: return QChar(']');
+    case 90: return QChar('^');
+    case 72: return QChar('\63');
+    case 60: return QChar('`');
+
+    case 30: return QChar('{');
+    case 150: return QChar('}');
+    case 45: return QChar('z');
+    case 135: return QChar('y');
     }
 }
 
-QString QSymboidFont::retrogradLetter()
+QString QSymboidFont::chironLetter() const
+{
+    return QChar('K');
+}
+
+QString QSymboidFont::lilithLetter() const
+{
+    return QChar('A');
+}
+
+QString QSymboidFont::dragonHeadLetter() const
+{
+    return QChar('w');
+}
+
+QString QSymboidFont::dragonTailLetter() const
+{
+    return QChar('x');
+}
+
+QString QSymboidFont::retrogradLetter() const
 {
     return QString('~');
 }
