@@ -33,7 +33,7 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
         }
         const QPlanet* planet = mHora->planet(index.row());
         switch (role) {
-        case SymbolRole: planetData = mAstroFont->objectLetter(planet->mIndex); break;
+        case SymbolRole: planetData = planet->symbol(mAstroFont.get()); break;
         case EclLontRole: planetData = planet->eclPos()._M_lont.to_arc_degree(); break;
         case EclLattRole: planetData = planet->eclPos()._M_latt; break;
         case EclSpeedRole: planetData = planet->eclSpeed()._M_lont; break;
@@ -82,7 +82,7 @@ QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
         int houseIndex = index.row() + 1;
         const QHouseCusp* house = mHora->house(houseIndex);
         switch (role) {
-        case SymbolRole: houseData = house->id(); break;
+        case SymbolRole: houseData = house->symbol(mAstroFont.get()); break;
         case EclLontRole: houseData = house->eclPos()._M_lont.to_arc_degree(); break;
         case EclLattRole: houseData = 0; break;
         case EclSpeedRole: houseData = house->eclSpeed().lont_coord().arc_pos(); break;
@@ -287,7 +287,8 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const QPlanet* planet, c
     }
 
     // planet sign text
-    QString planetText = QString(mAstroFont->objectLetter(planet->mIndex));
+//    QString planetText = QString(mAstroFont->objectLetter(planet->mIndex));
+    QString planetText = planet->symbol(mAstroFont.get());
     QSize textSize = planetFontMetrics.size(0, planetText);
     QRectF planetSignRect(planetSignPoint - QPointF(textSize.width() / 2 - 1, textSize.height() / 2),
                           planetSignPoint + QPointF(textSize.width() / 2,   textSize.height() / 2));
@@ -426,14 +427,7 @@ void QHoraViewItem::paint(QPainter* painter)
 
             housePen.setColor(QColor(0x0,0x0,0x00));
             painter->setPen(housePen);
-            QString houseSign;
-            switch (h) {
-            case 1: houseSign = "I."; break;
-            case 4: houseSign = "IV."; break;
-            case 7: houseSign = "VII."; break;
-            case 10: houseSign = "X."; break;
-            default: houseSign = QString::number(h) + ".";
-            }
+            QString houseSign = houseCusp->symbol(mAstroFont.get());
             eph::ecl_lont houseSignLont = houseCusp->eclPos()._M_lont;
             QPointF houseSignPoint(horaPoint(houseSignLont + 8.0, EARTH_DIST + 0.04));
             QSize textSize = fontMetrics.size(0, houseSign);

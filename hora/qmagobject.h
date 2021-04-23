@@ -4,6 +4,7 @@
 
 #include "astro/hora/defs.h"
 #include "astro/db/qephobject.h"
+#include "astro/controls/qastrofont.h"
 
 typedef eph::ecl_coords::dist QOrbisValue;
 
@@ -13,6 +14,10 @@ class QMagObject : public QEphObject
 
 public:
     QMagObject(QObject* parent, const QString& id);
+
+public:
+    virtual QString symbol(const QAstroFont* font) const = 0;
+//    virtual QColor drawColor() const = 0;
 
 public:
     virtual QOrbisValue orbis() const = 0;

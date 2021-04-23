@@ -49,6 +49,9 @@ protected:
 
 public:
     bool isRetrograd() const;
+
+public:
+    QString symbol(const QAstroFont* font) const override;
 };
 
 class ASTRO_HORA_API QLunarNode : public QPlanet
@@ -63,6 +66,7 @@ public:
 
 public:
     bool calc(const QEphTime& ephTime) override;
+    QString symbol(const QAstroFont* font) const override;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QPLANET_H__

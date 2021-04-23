@@ -102,6 +102,11 @@ bool QPlanet::isRetrograd() const
     return eclSpeed()._M_lont < 0.0;
 }
 
+QString QPlanet::symbol(const QAstroFont* font) const
+{
+    return font->planetLetter(mIndex);
+}
+
 QLunarNode::QLunarNode(QObject* parent, Index index)
     : QPlanet(parent, index == DRAGON_HEAD ? "dragon_head" : "dragon_tail", index, &QOrbisConfigNode::nodNode)
 {
@@ -125,3 +130,9 @@ bool QLunarNode::calc(const QEphTime& ephTime)
     }
     return isSuccess;
 }
+
+QString QLunarNode::symbol(const QAstroFont* font) const
+{
+    return mIndex == DRAGON_TAIL ? font->dragonTailLetter() : font->dragonHeadLetter();
+}
+

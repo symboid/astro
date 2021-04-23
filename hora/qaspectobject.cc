@@ -24,3 +24,8 @@ QOrbisValue QAspectObject::orbis() const
 {
     return mPlanet->aspectOrbis(mAspect);
 }
+
+QString QAspectObject::symbol(const QAstroFont* font) const
+{
+    return font->aspectLetter(mAspect->dist()) + mPlanet->symbol(font);
+}
