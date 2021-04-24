@@ -75,5 +75,10 @@ visible:false
             configNode: HoraConfig.karma.draw_axis_node
             enabled: false
         }
+        SettingsCheckBox {
+            configNode: HoraConfig.basic_aspects_node
+            text: qsTr("Include basic aspects")
+            hint: qsTr("Planet aspects with basic distances will be denoted.")
+        }
     }
 }

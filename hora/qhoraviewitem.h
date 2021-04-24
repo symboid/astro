@@ -72,6 +72,7 @@ private:
     void drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const eph::ecl_pos& displayPos);
 //    void drawConstellation(QPainter* painter, const eph::constellation* constellation);
     void drawAspectConnection(QPainter* painter, const QPlanet* planet, const QHoraObject* object);
+    void drawRadialText(QPainter* painter, const QString& text, const QEclLont& lont, qreal dist);
     void paint(QPainter* painter) override;
 private:
     QPointF horaPoint(eph::ecl_lont horaLont, qreal dist) const;

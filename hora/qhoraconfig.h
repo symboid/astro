@@ -49,6 +49,7 @@ public:
     Q_CONFIG_NODE(QFixstarConfig, fixstars)
     Q_CONFIG_NODE(QKarmaConfig, karma)
     Q_CONFIG_NODE(QHouseCuspOrbisConfigNode, house_cusp_orbis)
+    Q_CONFIG_PROPERTY(bool, basic_aspects, false)
 };
 
 

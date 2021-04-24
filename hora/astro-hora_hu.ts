@@ -230,6 +230,16 @@
         <source>Axis on lunar nodes</source>
         <translation>Tengely a holdcsomópontokon</translation>
     </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="80"/>
+        <source>Include basic aspects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="HoraSettingsPane.qml" line="81"/>
+        <source>Planet aspects with basic distance will be denoted.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OrbisSettingsGroup</name>
