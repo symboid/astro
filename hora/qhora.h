@@ -63,8 +63,10 @@ public:
 
 public:
     const QMagObjectList& magObjects() const;
+    const QMagObjectList& regularAspectObjects() const;
 private:
     QMagObjectList mMagObjects;
+    QMagObjectList mRegularAspectObjects;
 
 public:
     bool calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType);

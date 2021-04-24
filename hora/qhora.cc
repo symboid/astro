@@ -175,6 +175,7 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
     }
 
     mMagObjects.clear();
+    mRegularAspectObjects.clear();
     for (QPlanet* planet : mPlanets)
     {
         mMagObjects.insertMagObject(planet);
@@ -185,6 +186,11 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
         {
             mMagObjects.insertMagObject(aspectObject);
         }
+        switch(int(aspectObject->mAspect->dist()))
+        {
+        case 180: case 120: case 90: case 60: mRegularAspectObjects.insertMagObject(aspectObject);
+        }
+
     }
     for (QHouseCusp* houseCusp : mHouseCusps)
     {
@@ -197,4 +203,9 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
 const QMagObjectList& QHora::magObjects() const
 {
     return mMagObjects;
+}
+
+const QMagObjectList& QHora::regularAspectObjects() const
+{
+    return mRegularAspectObjects;
 }

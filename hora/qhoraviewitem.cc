@@ -491,6 +491,38 @@ void QHoraViewItem::paint(QPainter* painter)
 
             ++planet;
         }
+
+        // regular planet aspects
+        painter->setFont(*mAstroFont);
+        for (QMagObject* aspectObject : mHora->regularAspectObjects())
+        {
+            eph::ecl_lont aspectLont = aspectObject->eclPos()._M_lont;
+            painter->setPen(aspectObject->drawColor());
+            painter->drawLine(horaPoint(aspectLont, 1.15),
+                              horaPoint(aspectLont, 1.20));
+
+            painter->save();
+            painter->translate(boundingRect().center());
+
+            const QString name(aspectObject->symbol(mAstroFont.get()));
+            const QRectF textBoundingRect(QFontMetrics(painter->font(), painter->device()).boundingRect(name));
+            qreal displayLont = mandalaLeft() - aspectLont;
+            qreal baseAngle;
+            qreal translateX;
+            if (displayLont < 90.0 || 270.0 < displayLont)
+            {
+                baseAngle = displayLont;
+                translateX = -eclipticRadius() * 1.20 - textBoundingRect.width();
+            }
+            else
+            {
+                baseAngle = displayLont + 180.0;
+                translateX = eclipticRadius() * 1.20;
+            }
+            painter->rotate(baseAngle);
+            painter->drawText(textBoundingRect.translated(translateX, 0.0), Qt::TextSingleLine, name);
+            painter->restore();
+        }
     }
 }
 
