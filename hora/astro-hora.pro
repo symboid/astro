@@ -8,9 +8,11 @@ SOURCES += \
     init.cc \
     qaspectconfig.cc \
     qaspectobject.cc \
-    qforcast.cc \
+    qdirexmodel.cc \
+    qforecast.cc \
     qforecastevent.cc \
     qforecastitemmodel.cc \
+    qforecastmodel.cc \
     qhora.cc \
     qhoraconfig.cc \
     qhoraitemsmodel.cc \
@@ -25,9 +27,11 @@ HEADERS += \
     init.h \
     qaspectconfig.h \
     qaspectobject.h \
-    qforcast.h \
+    qdirexmodel.h \
+    qforecast.h \
     qforecastevent.h \
     qforecastitemmodel.h \
+    qforecastmodel.h \
     qhora.h \
     qhoraconfig.h \
     qhoraitemsmodel.h \

@@ -33,28 +33,28 @@ QStringList QForecastItemModel::headerModel() const
 
 QDateTime QForecastItemModel::periodBegin() const
 {
-    return mPeriodBegin;
+    return mForecast.periodBegin();
 }
 
 QDateTime QForecastItemModel::periodEnd() const
 {
-    return mPeriodBegin;
+    return mForecast.periodEnd();
 }
 
 void QForecastItemModel::setPeriodBegin(const QDateTime& periodBegin)
 {
-    if (mPeriodBegin != periodBegin)
+    if (mForecast.periodBegin() != periodBegin)
     {
-        mPeriodBegin = periodBegin;
+        mForecast.setPeriodBegin(periodBegin);
         emit periodBeginChanged();
     }
 }
 
 void QForecastItemModel::setPeriodEnd(const QDateTime& periodEnd)
 {
-    if (mPeriodEnd != periodEnd)
+    if (mForecast.periodEnd() != periodEnd)
     {
-        mPeriodEnd = periodEnd;
+        mForecast.setPeriodEnd(periodEnd);
         emit periodEndChanged();
     }
 }
@@ -64,4 +64,18 @@ void QForecastItemModel::recalc()
     const QMagObjectList& magObjects = mHora->magObjects();
     const QSigtor* sigtor = mHora->planet(0);
     QEclLont sigtorLont = sigtor->eclPos()._M_lont;
+}
+
+QForecastModel* QForecastItemModel::forecastModel() const
+{
+    return mForecast.model();
+}
+
+void QForecastItemModel::setForecastModel(QForecastModel* forecastModel)
+{
+    if (mForecast.model() != forecastModel)
+    {
+        mForecast.setModel(forecastModel);
+        emit forecastModelChanged();
+    }
 }

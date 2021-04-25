@@ -5,13 +5,14 @@
 #include "astro/hora/defs.h"
 #include "astro/hora/qhoraitemsmodel.h"
 #include "astro/hora/qforecastevent.h"
+#include "astro/hora/qforecast.h"
 #include <QDateTime>
 
 class ASTRO_HORA_API QForecastItemModel : public QHoraTableModel
 {
     Q_OBJECT
 public:
-    static constexpr const char* qml_name = "ForecastModel";
+    static constexpr const char* qml_name = "ForecastItemModel";
 
 public:
     QForecastItemModel(QObject* parent = Q_NULLPTR);
@@ -31,13 +32,20 @@ public:
     QDateTime periodEnd() const;
     void setPeriodBegin(const QDateTime& periodBegin);
     void setPeriodEnd(const QDateTime& periodEnd);
-private:
-    QDateTime mPeriodBegin;
-    QDateTime mPeriodEnd;
 signals:
     void periodBeginChanged();
     void periodEndChanged();
 
+public:
+    Q_PROPERTY(QForecastModel* forecastModel READ forecastModel WRITE setForecastModel NOTIFY forecastModelChanged)
+private:
+    QForecastModel* forecastModel() const;
+    void setForecastModel(QForecastModel* forecastModel);
+signals:
+    void forecastModelChanged();
+
+private:
+    QForecast mForecast;
 private slots:
     void recalc();
 };
