@@ -9,5 +9,14 @@ QMagObject::QMagObject(QObject* parent, const QString& id)
 
 void QMagObjectList::insertMagObject(QMagObject* magObject)
 {
-    push_back(magObject);
+    if (magObject)
+    {
+        const QEclPos objectPos = magObject->eclPos();
+        iterator insertPos = begin(), oEnd = end();
+        while (insertPos != oEnd && objectPos < (*insertPos)->eclPos())
+        {
+            ++insertPos;
+        }
+        insert(insertPos, magObject);
+    }
 }

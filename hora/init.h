@@ -10,7 +10,7 @@
 #include "astro/db/init.h"
 #include "astro/hora/qhoraconfig.h"
 #include "astro/hora/qhoraviewitem.h"
-#include "astro/hora/qforecastmodel.h"
+#include "astro/hora/qforecastitemmodel.h"
 
 struct ASTRO_HORA_API mod_astro_hora : arh::mod_qt<mod_astro_hora>
 {
@@ -30,7 +30,7 @@ struct ASTRO_HORA_API mod_astro_hora : arh::mod_qt<mod_astro_hora>
 
     qml_type_register<QHoraViewItem> _M_reg_hora_view;
     qml_singleton_init<QHoraConfig> _M_reg_hora_config;
-    qml_type_register<QForecastModel> _M_reg_forecast_model;
+    qml_type_register<QForecastItemModel> _M_reg_forecast_model;
 };
 
 

@@ -237,7 +237,8 @@
     </message>
     <message>
         <location filename="HoraSettingsPane.qml" line="81"/>
-        <source>Planet aspects with basic distance will be denoted.</source>
+        <source>Planet aspects with basic distances will be denoted.</source>
+        <oldsource>Planet aspects with basic distance will be denoted.</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>

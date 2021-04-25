@@ -7,9 +7,6 @@ import Symboid.Astro.Hora 1.0
 HoraTableView {
     anchors.margins: 20
     property HoraView horaView: null
-    tableModel: ForecastModel {
-        hora: horaView !== null ? horaView.hora : null
-    }
     headerModel: tableModel.headerModel
     property bool showSeconds: false
     columnComponents: [
