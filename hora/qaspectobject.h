@@ -12,10 +12,13 @@ class QAspectObject : public QMagObject
 
 public:
     QAspectObject(QPlanet* planet, QAspectConfigNode* aspect, bool isUpper = false);
+    QMagObject* clone() const override;
 
 public:
-    const QPlanet* const mPlanet;
-    const QAspectConfigNode* const mAspect;
+    const QAspectConfigNode* aspect() const;
+private:
+    QPlanet* mPlanet;
+    QAspectConfigNode* mAspect;
     const bool mIsUpper;
 
 public:

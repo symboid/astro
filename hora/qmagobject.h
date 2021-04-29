@@ -14,6 +14,7 @@ class QMagObject : public QEphObject
 
 public:
     QMagObject(QObject* parent, const QString& id);
+    virtual QMagObject* clone() const = 0;
 
 public:
     virtual QString symbol(const QAstroFont* font) const = 0;
@@ -27,6 +28,13 @@ class QMagObjectList : public QList<QMagObject*>
 {
 public:
     void insertMagObject(QMagObject* magObject);
+
+    struct Siblings
+    {
+        QMagObject* mPrec = nullptr;
+        QMagObject* mSucc = nullptr;
+    };
+    Siblings find(const QMagObject* magObject);
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QMAGOBJECT_H__

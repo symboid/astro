@@ -182,11 +182,11 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
     }
     for (QAspectObject* aspectObject : mAspectObjects)
     {
-        if (aspectObject->mAspect->enabled())
+        if (aspectObject->aspect()->enabled())
         {
             mMagObjects.insertMagObject(aspectObject);
         }
-        switch(int(aspectObject->mAspect->dist()))
+        switch(int(aspectObject->aspect()->dist()))
         {
         case 180: case 120: case 90: case 60: mRegularAspectObjects.insertMagObject(aspectObject);
         }

@@ -10,6 +10,16 @@ QAspectObject::QAspectObject(QPlanet* planet, QAspectConfigNode* aspect, bool is
 {
 }
 
+const QAspectConfigNode* QAspectObject::aspect() const
+{
+    return mAspect;
+}
+
+QMagObject* QAspectObject::clone() const
+{
+    return new QAspectObject(mPlanet, mAspect, mIsUpper);
+}
+
 QEclPos QAspectObject::eclPos() const
 {
     return mPlanet->eclPos()._M_lont + (mIsUpper ? -1 : 1) * mAspect->dist();

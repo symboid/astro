@@ -22,7 +22,7 @@ private:
 
 public:
     QOrbisValue aspectOrbis(const QAspectConfigNode* aspectConfig) const;
-private:
+protected:
     QOrbisConfigNodeGetter mObjectOrbisGetter;
 };
 

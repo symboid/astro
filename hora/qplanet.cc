@@ -72,6 +72,11 @@ QPlanet::QPlanet(QObject* parent, QOrbisConfigNodeGetter orbisGetter)
 
 }
 
+QMagObject* QPlanet::clone() const
+{
+    return new QPlanet(parent(), id(), mIndex, mObjectOrbisGetter);
+}
+
 QEclPos QPlanet::eclPos() const
 {
     return mEclPos;
@@ -115,6 +120,11 @@ QColor QPlanet::drawColor() const
 QLunarNode::QLunarNode(QObject* parent, Index index)
     : QPlanet(parent, index == DRAGON_HEAD ? "dragon_head" : "dragon_tail", index, &QOrbisConfigNode::nodNode)
 {
+}
+
+QMagObject* QLunarNode::clone() const
+{
+    return new QLunarNode(parent(), mIndex);
 }
 
 bool QLunarNode::calc(const QEphTime& ephTime)
