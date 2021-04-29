@@ -30,11 +30,13 @@ private:
     QForecastModel* mModel;
 
 private:
-    QForecastEvent* createEvent(QSigtor* sigtor, const QDateTime& eventTime);
-public:
+    QForecastEvent* createEvent(const QSigtor* sigtor, const QDateTime& eventTime);
     void initEvents();
 private:
-    QVector<QForecastEvent*> mEventBuffer;
+    QForecastEventBuffer mEventBuffer;
+    QVector<QForecastEvent*> mEvents;
+public:
+    void calc();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECAST_H__

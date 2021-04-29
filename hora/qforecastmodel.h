@@ -26,8 +26,11 @@ signals:
     void horaChanged();
 
 public:
-    virtual QVector<QSigtor*> sigtorList() const = 0;
+    virtual QVector<const QSigtor*> sigtorList() const = 0;
     virtual void initSigtorPos(QSigtor* sigtor, const QDateTime& eventTime) = 0;
+
+public:
+    virtual int estimatedEventCount(const QDateTime& perdioBegin, const QDateTime& periodEnd) const = 0;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECASTMODEL_H__

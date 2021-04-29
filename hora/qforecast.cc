@@ -38,26 +38,46 @@ void QForecast::setModel(QForecastModel* model)
     mModel = model;
 }
 
-QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& eventTime)
+QForecastEvent* QForecast::createEvent(const QSigtor* sigtor, const QDateTime& earliestTime)
 {
-    QForecastEvent* event = new QForecastEvent(this);
-    event->setSigtor(sigtor);
-    event->setEventTime(eventTime);
-    mModel->initSigtorPos(sigtor, eventTime);
+    QSigtor* sigtorCopy = sigtor->clone();
+    mModel->initSigtorPos(sigtorCopy, earliestTime);
+    QForecastEvent* event = new QForecastEvent(this, sigtorCopy);
+
+    event->setEventExact(earliestTime);
     return event;
 }
 
 void QForecast::initEvents()
 {
-    for (QForecastEvent* event : mEventBuffer)
+    mEventBuffer.clear();
+    QVector<const QSigtor*> sigtors = mModel->sigtorList();
+    for (const QSigtor* sigtor : sigtors)
+    {
+        mEventBuffer.insert(createEvent(sigtor, mPeriodBegin));
+    }
+
+    for (QForecastEvent* event : mEvents)
     {
         event->deleteLater();
     }
-    mEventBuffer.clear();
+    mEvents.clear();
+    mEvents.reserve(mModel->estimatedEventCount(mPeriodBegin, mPeriodEnd) * 2);
+}
 
-    QVector<QSigtor*> sigtors = mModel->sigtorList();
-    for (QSigtor* sigtor : sigtors)
+void QForecast::calc()
+{
+    initEvents();
+
+    QDateTime currentTime = mPeriodBegin;
+    while (currentTime < mPeriodEnd)
     {
-        mEventBuffer.push_back(createEvent(sigtor, mPeriodBegin));
+        QForecastEvent* nextEvent = mEventBuffer.pop();
+        if (nextEvent)
+        {
+            QDateTime currentTime = nextEvent->eventExact().addSecs(3600);
+            mEventBuffer.insert(createEvent(nextEvent->sigtor()->clone(), currentTime));
+            mEvents.push_back(nextEvent);
+        }
     }
 }

@@ -15,7 +15,11 @@ public:
     QDirexModel(QObject* parent = nullptr);
 
 public:
-    QVector<QSigtor*> sigtorList() const override;
+    QVector<const QSigtor*> sigtorList() const override;
+    void initSigtorPos(QSigtor* sigtor, const QDateTime& eventTime) override;
+
+public:
+    int estimatedEventCount(const QDateTime& perdioBegin, const QDateTime& periodEnd) const override;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QDIREXMODEL_H__
