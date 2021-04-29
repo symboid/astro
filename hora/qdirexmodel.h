@@ -13,6 +13,9 @@ public:
 
 public:
     QDirexModel(QObject* parent = nullptr);
+
+public:
+    QVector<QSigtor*> sigtorList() const override;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QDIREXMODEL_H__

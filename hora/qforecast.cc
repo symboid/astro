@@ -2,8 +2,9 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qforecast.h"
 
-QForecast::QForecast()
-    : mModel(nullptr)
+QForecast::QForecast(QObject* parent)
+    : QObject(parent)
+    , mModel(nullptr)
 {
 }
 
@@ -35,4 +36,28 @@ QForecastModel* QForecast::model() const
 void QForecast::setModel(QForecastModel* model)
 {
     mModel = model;
+}
+
+QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& eventTime)
+{
+    QForecastEvent* event = new QForecastEvent(this);
+    event->setSigtor(sigtor);
+    event->setEventTime(eventTime);
+    mModel->initSigtorPos(sigtor, eventTime);
+    return event;
+}
+
+void QForecast::initEvents()
+{
+    for (QForecastEvent* event : mEventBuffer)
+    {
+        event->deleteLater();
+    }
+    mEventBuffer.clear();
+
+    QVector<QSigtor*> sigtors = mModel->sigtorList();
+    for (QSigtor* sigtor : sigtors)
+    {
+        mEventBuffer.push_back(createEvent(sigtor, mPeriodBegin));
+    }
 }
