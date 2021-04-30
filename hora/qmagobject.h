@@ -24,17 +24,4 @@ public:
     virtual QOrbisValue orbis() const = 0;
 };
 
-class QMagObjectList : public QList<QMagObject*>
-{
-public:
-    void insertMagObject(QMagObject* magObject);
-
-    struct Siblings
-    {
-        QMagObject* mPrec = nullptr;
-        QMagObject* mSucc = nullptr;
-    };
-    Siblings find(const QMagObject* magObject);
-};
-
 #endif // __SYMBOID_ASTRO_HORA_QMAGOBJECT_H__

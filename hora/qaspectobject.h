@@ -11,13 +11,13 @@ class QAspectObject : public QMagObject
     Q_OBJECT
 
 public:
-    QAspectObject(QPlanet* planet, QAspectConfigNode* aspect, bool isUpper = false);
+    QAspectObject(QHoraObject* horaObject, QAspectConfigNode* aspect, bool isUpper = false);
     QMagObject* clone() const override;
 
 public:
     const QAspectConfigNode* aspect() const;
 private:
-    QPlanet* mPlanet;
+    QHoraObject* mHoraObject;
     QAspectConfigNode* mAspect;
     const bool mIsUpper;
 
@@ -31,7 +31,6 @@ public:
     QColor drawColor() const override;
 };
 
-
 class QUpperAspectObject : public QAspectObject
 {
     Q_OBJECT
@@ -43,7 +42,6 @@ public:
     }
 };
 
-
 class QLowerAspectObject : public QAspectObject
 {
     Q_OBJECT
@@ -54,5 +52,19 @@ public:
     {
     }
 };
+
+class QAspectObjectList : public QList<QAspectObject*>
+{
+public:
+    void insert(QAspectObject* magObject);
+
+    struct Siblings
+    {
+        QAspectObject* mPrec = nullptr;
+        QAspectObject* mSucc = nullptr;
+    };
+    Siblings find(const QAspectObject* magObject);
+};
+
 
 #endif // __SYMBOID_ASTRO_HORA_QASPECTOBJECT_H__

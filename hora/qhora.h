@@ -62,11 +62,11 @@ public:
     ConjunctingFixstars::ConstIterator fixstarsEnd() const;
 
 public:
-    const QMagObjectList& magObjects() const;
-    const QMagObjectList& regularAspectObjects() const;
+    const QAspectObjectList& allAspectObjects() const;
+    const QAspectObjectList& regularAspectObjects() const;
 private:
-    QMagObjectList mMagObjects;
-    QMagObjectList mRegularAspectObjects;
+    QAspectObjectList mAllAspectObjects;
+    QAspectObjectList mRegularAspectObjects;
 
 public:
     bool calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType);
