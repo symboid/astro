@@ -21,10 +21,10 @@ QVariant QForecastItemModel::data(const QModelIndex& index, int role) const
     const QForecastEvent* forecastEvent = mForecast.forecastEvent(index.row());
     switch (index.column())
     {
-    case 0: return forecastEvent->sigtor()->symbol(mAstroFont.get());
-    case 1: return mAstroFont->aspectLetter(90);
-    case 2: return forecastEvent->prmsor()->symbol(mAstroFont.get());
-    case 3: return forecastEvent->eventExact();
+    case 0: return forecastEvent->eventExact();
+    case 1: return forecastEvent->sigtor()->symbol(mAstroFont.get());
+    case 2: return mAstroFont->aspectLetter(90);
+    case 3: return forecastEvent->prmsor()->symbol(mAstroFont.get());
     }
 
     return value;
@@ -42,7 +42,7 @@ QHash<int, QByteArray> QForecastItemModel::roleNames() const
 
 QStringList QForecastItemModel::headerModel() const
 {
-    return { "", "Sigtor", "Aspect", "Prmsor", "Exact" };
+    return { "", "Sigtor", "Aspect", "Prmsor" };
 }
 
 QDateTime QForecastItemModel::periodBegin() const

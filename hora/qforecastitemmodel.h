@@ -20,10 +20,10 @@ public:
 
 private:
     enum {
-        SigtorRole = Qt::UserRole,
+        ExactTimeRole = Qt::UserRole,
+        SigtorRole,
         AspectRole,
         PrmsorRole,
-        ExactTimeRole,
     };
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

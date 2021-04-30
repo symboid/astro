@@ -11,8 +11,7 @@ HoraTableView {
         Component {
             Pane {
                 Label {
-                    text: cellData
-                    font.family: "Symboid"
+                    text: Qt.formatDate(cellData)
                     width: 100
                 }
             }
@@ -39,7 +38,7 @@ HoraTableView {
             Pane {
                 Label {
                     text: cellData
-//                    font.family: "Symboid"
+                    font.family: "Symboid"
                     width: 100
                 }
             }
