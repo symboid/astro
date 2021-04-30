@@ -17,7 +17,7 @@ class ASTRO_HORA_API QHoraPlanetsModel : public QEclipticTableModel
     Q_OBJECT
 
 public:
-    QHoraPlanetsModel(const QHora* hora, QObject* parent = Q_NULLPTR);
+    QHoraPlanetsModel(QHora* hora, QObject* parent = Q_NULLPTR);
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -32,7 +32,7 @@ class ASTRO_HORA_API QHoraHousesModel : public QEclipticTableModel
     Q_OBJECT
 
 public:
-    QHoraHousesModel(const QHora* hora, QObject* parent = Q_NULLPTR);
+    QHoraHousesModel(QHora* hora, QObject* parent = Q_NULLPTR);
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

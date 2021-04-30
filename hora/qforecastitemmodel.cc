@@ -8,15 +8,18 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
 {
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(recalc()));
+    connect(this, SIGNAL(horaRecalculated()), this, SLOT(recalc()));
 }
 
 int QForecastItemModel::rowCount(const QModelIndex& parent) const
 {
+    Q_UNUSED(parent)
     return mForecast.forecastEventCount();
 }
 
 QVariant QForecastItemModel::data(const QModelIndex& index, int role) const
 {
+    Q_UNUSED(role)
     QVariant value;
     const QForecastEvent* forecastEvent = mForecast.forecastEvent(index.row());
     switch (index.column())
@@ -75,7 +78,9 @@ void QForecastItemModel::setPeriodEnd(const QDateTime& periodEnd)
 
 void QForecastItemModel::recalc()
 {
+    beginResetModel();
     mForecast.calc();
+    endResetModel();
 }
 
 QForecastModel* QForecastItemModel::forecastModel() const

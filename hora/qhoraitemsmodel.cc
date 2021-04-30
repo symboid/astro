@@ -2,19 +2,20 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qhoraitemsmodel.h"
 
-QHoraTableModel::QHoraTableModel(const QHora* hora, QObject* parent)
+QHoraTableModel::QHoraTableModel(QHora* hora, QObject* parent)
     : QAbstractTableModel(parent)
     , mHora(hora)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
 {
 }
 
-void QHoraTableModel::setHora(const QHora* hora)
+void QHoraTableModel::setHora(QHora* hora)
 {
     if (mHora != hora)
     {
         mHora = hora;
         emit horaChanged();
+        connect(mHora, SIGNAL(recalculated()), this, SIGNAL(horaRecalculated()));
     }
 }
 
@@ -30,7 +31,7 @@ void QHoraTableModel::update()
     endResetModel();
 }
 
-QEclipticTableModel::QEclipticTableModel(const QHora* hora, QObject* parent)
+QEclipticTableModel::QEclipticTableModel(QHora* hora, QObject* parent)
     : QHoraTableModel(hora, parent)
     , mWithSpeed(true)
 {

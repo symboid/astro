@@ -12,16 +12,17 @@ class ASTRO_HORA_API QHoraTableModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    QHoraTableModel(const QHora* hora, QObject* parent = Q_NULLPTR);
+    QHoraTableModel(QHora* hora, QObject* parent = Q_NULLPTR);
 
 public:
-    Q_PROPERTY(const QHora* hora MEMBER mHora WRITE setHora NOTIFY horaChanged)
+    Q_PROPERTY(QHora* hora MEMBER mHora WRITE setHora NOTIFY horaChanged)
 protected:
-    const QHora* mHora;
+    QHora* mHora;
 public:
-    void setHora(const QHora* hora);
+    void setHora(QHora* hora);
 signals:
     void horaChanged();
+    void horaRecalculated();
 
 protected:
     QSharedPointer<QAstroFont> mAstroFont;
@@ -48,7 +49,7 @@ class ASTRO_HORA_API QEclipticTableModel : public QHoraTableModel
     Q_OBJECT
 
 public:
-    QEclipticTableModel(const QHora* hora, QObject* parent = Q_NULLPTR);
+    QEclipticTableModel(QHora* hora, QObject* parent = Q_NULLPTR);
 
 protected:
     enum {

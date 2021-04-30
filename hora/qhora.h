@@ -70,6 +70,8 @@ private:
 
 public:
     bool calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType);
+signals:
+    void recalculated();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORA_H__

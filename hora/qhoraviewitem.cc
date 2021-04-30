@@ -5,7 +5,7 @@
 #include "astro/hora/qhorastellium.h"
 #include <QFontMetrics>
 
-QHoraPlanetsModel::QHoraPlanetsModel(const QHora* hora, QObject* parent)
+QHoraPlanetsModel::QHoraPlanetsModel(QHora* hora, QObject* parent)
     : QEclipticTableModel(hora, parent)
 {
 }
@@ -54,7 +54,7 @@ QStringList QHoraPlanetsModel::headerModel() const
     }
 }
 
-QHoraHousesModel::QHoraHousesModel(const QHora* hora, QObject* parent)
+QHoraHousesModel::QHoraHousesModel(QHora* hora, QObject* parent)
     : QEclipticTableModel(hora, parent)
 {
 }

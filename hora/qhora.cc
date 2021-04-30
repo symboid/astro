@@ -193,6 +193,8 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
 
     }
 
+    emit recalculated();
+
     return calcResult;
 }
 

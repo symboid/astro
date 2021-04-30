@@ -5,6 +5,7 @@
 QForecast::QForecast(QObject* parent)
     : QObject(parent)
     , mModel(nullptr)
+    , mPrmsorList(nullptr)
 {
 }
 
@@ -35,15 +36,7 @@ QForecastModel* QForecast::model() const
 
 void QForecast::setModel(QForecastModel* model)
 {
-    if (mModel)
-    {
-        disconnect(mModel, SIGNAL(horaChanged()), this, SLOT(calc()));
-    }
     mModel = model;
-    if (mModel)
-    {
-        connect(mModel, SIGNAL(horaChanged()), this, SLOT(calc()));
-    }
 }
 
 int QForecast::forecastEventCount() const
@@ -60,7 +53,10 @@ QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& earlies
 {
     mModel->initSigtorPos(sigtor, earliestTime);
     QForecastEvent* event = new QForecastEvent(this, sigtor);
-//event->setPrmsor(sigtor->clone());
+if (mPrmsorList->size() > 0)
+{
+event->setPrmsor(mPrmsorList->first());
+}
     event->setEventExact(earliestTime);
     return event;
 }
@@ -85,6 +81,7 @@ void QForecast::initEvents()
 void QForecast::calc()
 {
 //    mModel->initCalc();
+    mPrmsorList = & mModel->hora()->allAspectObjects();
     initEvents();
     while (!mEventBuffer.isEmpty()) mEvents.push_back(mEventBuffer.pop());
 return;

@@ -42,6 +42,7 @@ public:
 private:
     QForecastEvent* createEvent(QSigtor* sigtor, const QDateTime& eventTime);
     QVector<QForecastEvent*> mEvents;
+    const QAspectObjectList* mPrmsorList;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECAST_H__
