@@ -10,6 +10,11 @@ QAspectObject::QAspectObject(QHoraObject* horaObject, QAspectConfigNode* aspect,
 {
 }
 
+const QHoraObject* QAspectObject::horaObject() const
+{
+    return mHoraObject;
+}
+
 const QAspectConfigNode* QAspectObject::aspect() const
 {
     return mAspect;

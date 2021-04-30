@@ -14,6 +14,7 @@ public:
     QAspectObject(QHoraObject* horaObject, QAspectConfigNode* aspect, bool isUpper = false);
 
 public:
+    const QHoraObject* horaObject() const;
     const QAspectConfigNode* aspect() const;
 private:
     QHoraObject* mHoraObject;

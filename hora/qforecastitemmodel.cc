@@ -26,8 +26,8 @@ QVariant QForecastItemModel::data(const QModelIndex& index, int role) const
     {
     case 0: return forecastEvent->eventExact();
     case 1: return forecastEvent->sigtor()->symbol(mAstroFont.get());
-    case 2: return mAstroFont->aspectLetter(90);
-    case 3: return forecastEvent->prmsor()->symbol(mAstroFont.get());
+    case 2: return mAstroFont->aspectLetter(int(forecastEvent->prmsor()->aspect()->dist()));
+    case 3: return forecastEvent->prmsor()->horaObject()->symbol(mAstroFont.get());
     }
 
     return value;
