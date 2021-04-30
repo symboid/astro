@@ -7,14 +7,19 @@ QDirexModel::QDirexModel(QObject* parent)
 {
 }
 
-QVector<const QSigtor*> QDirexModel::sigtorList() const
+void QDirexModel::initCalc(const QDateTime& radixTime)
 {
-    QVector<const QSigtor*> sigtors;
+    mRadixTime = radixTime;
+}
+
+QVector<QSigtor*> QDirexModel::sigtorList() const
+{
+    QVector<QSigtor*> sigtors;
     if (mHora)
     {
         for (QHora::Planets::ConstIterator planet = mHora->planetsBegin(); planet != mHora->planetsEnd(); ++planet)
         {
-            sigtors.push_back(*planet);
+            sigtors.push_back(new QPlanetSigtor(*planet));
         }
     }
     return sigtors;
@@ -22,7 +27,10 @@ QVector<const QSigtor*> QDirexModel::sigtorList() const
 
 void QDirexModel::initSigtorPos(QSigtor* sigtor, const QDateTime& eventTime)
 {
-
+    if (sigtor)
+    {
+        QEclLont yearSum = double(mRadixTime.daysTo(eventTime)) / 365.25;
+    }
 }
 
 int QDirexModel::estimatedEventCount(const QDateTime& periodBegin, const QDateTime& periodEnd) const
