@@ -106,6 +106,10 @@ void QHora::updatePlanets()
             }
         }
     }
+    for (int h = 0; h < QHouseSystem::HOUSE_COUNT; ++h)
+    {
+        mAspectObjects.push_back(new QAspectObject(mHouseCusps[h], aspects->conjunction()));
+    }
 
     emit planetsUpdated();
 }
@@ -174,38 +178,30 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
         }
     }
 
-    mMagObjects.clear();
+    mAllAspectObjects.clear();
     mRegularAspectObjects.clear();
-    for (QPlanet* planet : mPlanets)
-    {
-        mMagObjects.insertMagObject(planet);
-    }
     for (QAspectObject* aspectObject : mAspectObjects)
     {
         if (aspectObject->aspect()->enabled())
         {
-            mMagObjects.insertMagObject(aspectObject);
+            mAllAspectObjects.insert(aspectObject);
         }
         switch(int(aspectObject->aspect()->dist()))
         {
-        case 180: case 120: case 90: case 60: mRegularAspectObjects.insertMagObject(aspectObject);
+        case 180: case 120: case 90: case 60: mRegularAspectObjects.insert(aspectObject);
         }
 
-    }
-    for (QHouseCusp* houseCusp : mHouseCusps)
-    {
-        mMagObjects.insertMagObject(houseCusp);
     }
 
     return calcResult;
 }
 
-const QMagObjectList& QHora::magObjects() const
+const QAspectObjectList& QHora::allAspectObjects() const
 {
-    return mMagObjects;
+    return mAllAspectObjects;
 }
 
-const QMagObjectList& QHora::regularAspectObjects() const
+const QAspectObjectList& QHora::regularAspectObjects() const
 {
     return mRegularAspectObjects;
 }
