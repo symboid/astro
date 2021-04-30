@@ -16,8 +16,6 @@ public:
     static QString resolveId(QOrbisConfigNodeGetter orbisGetter);
     QPlanet(QObject* parent, QOrbisConfigNodeGetter orbisGetter);
 
-    QMagObject* clone() const override;
-
     static constexpr const Index UNDEF = eph_proxy::object::undef;
 
     static constexpr const Index SUN = eph_proxy::object::sun;
@@ -66,7 +64,6 @@ public:
 
 public:
     QLunarNode(QObject* parent, Index index);
-    QMagObject* clone() const override;
 
 public:
     bool calc(const QEphTime& ephTime) override;

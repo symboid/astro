@@ -12,7 +12,6 @@ class QAspectObject : public QMagObject
 
 public:
     QAspectObject(QHoraObject* horaObject, QAspectConfigNode* aspect, bool isUpper = false);
-    QMagObject* clone() const override;
 
 public:
     const QAspectConfigNode* aspect() const;

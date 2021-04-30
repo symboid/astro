@@ -5,11 +5,64 @@
 #include "astro/hora/defs.h"
 #include <QObject>
 #include <QDateTime>
+#include "astro/hora/qaspectobject.h"
 #include "astro/hora/qmagobject.h"
-#include "astro/hora/qplanet.h"
+#include "astro/hora/qhousecusp.h"
 
-typedef QMagObject QPrmsor;
-typedef QMagObject QSigtor;
+typedef QAspectObject QPrmsor;
+
+class ASTRO_HORA_API QSigtor : public QMagObject
+{
+    Q_OBJECT
+
+public:
+    QSigtor(QMagObject* origin, const QString& id);
+    virtual QSigtor* clone() const = 0;
+private:
+    QMagObject* mOrigin;
+
+public:
+    QEclPos eclPos() const override;
+    QEclSpeed eclSpeed() const override;
+    void setEclPos(const QEclPos& eclPos);
+    virtual bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLont, eph::arc_degree geoLatt) = 0;
+protected:
+    QEclPos mEclPos;
+    QEclSpeed mEclSpeed;
+
+public:
+    QString symbol(const QAstroFont* font) const override;
+    QColor drawColor() const override;
+    QOrbisValue orbis() const override;
+};
+
+class ASTRO_HORA_API QPlanetSigtor : public QSigtor
+{
+    Q_OBJECT
+
+public:
+    QPlanetSigtor(QPlanet* planetOrigin);
+    QSigtor* clone() const override;
+
+private:
+    QPlanet* mPlanetOrigin;
+public:
+    bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLont, eph::arc_degree geoLatt) override;
+};
+
+class ASTRO_HORA_API QHouseCuspSigtor : public QSigtor
+{
+    Q_OBJECT
+
+public:
+    QHouseCuspSigtor(QHouseCusp* houseCuspOrigin);
+    QSigtor* clone() const override;
+
+private:
+    QHouseCusp* mHouseCuspOrigin;
+public:
+    bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLont, eph::arc_degree geoLatt) override;
+};
 
 class ASTRO_HORA_API QForecastEvent : public QObject
 {
@@ -51,6 +104,7 @@ public:
     void clear();
     void insert(QForecastEvent* event);
     QForecastEvent* pop();
+    using QList<QForecastEvent*>::isEmpty;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECASTOBJECT_H__

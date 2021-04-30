@@ -60,11 +60,6 @@ QHouseCusp::QHouseCusp(QObject* parent, const QHouseSystem* houseSystem, int hou
     connect(houseSystem, SIGNAL(recalculated()), this, SIGNAL(eclSpeedChanged()));
 }
 
-QMagObject* QHouseCusp::clone() const
-{
-    return new QHouseCusp(parent(), mHouseSystem, mHouseIndex);
-}
-
 QEclPos QHouseCusp::eclPos() const
 {
     return mHouseSystem ? mHouseSystem->mEclLonts[mHouseIndex] : QEclPos();

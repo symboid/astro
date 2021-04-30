@@ -14,7 +14,6 @@ class QMagObject : public QEphObject
 
 public:
     QMagObject(QObject* parent, const QString& id);
-    virtual QMagObject* clone() const = 0;
 
 public:
     virtual QString symbol(const QAstroFont* font) const = 0;

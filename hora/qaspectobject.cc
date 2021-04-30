@@ -15,11 +15,6 @@ const QAspectConfigNode* QAspectObject::aspect() const
     return mAspect;
 }
 
-QMagObject* QAspectObject::clone() const
-{
-    return new QAspectObject(mHoraObject, mAspect, mIsUpper);
-}
-
 QEclPos QAspectObject::eclPos() const
 {
     return mHoraObject->eclPos()._M_lont + (mIsUpper ? -1 : 1) * mAspect->dist();

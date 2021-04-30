@@ -41,9 +41,8 @@ private:
     static QOrbisConfigNodeGetter resolveConfigGetter(int houseIndex);
 public:
     QHouseCusp(QObject* parent, const QHouseSystem* houseSystem, int houseIndex);
-    QMagObject* clone() const override;
 
-private:
+public:
     const QHouseSystem* mHouseSystem;
     const int mHouseIndex;
 
