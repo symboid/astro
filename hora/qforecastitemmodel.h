@@ -7,6 +7,7 @@
 #include "astro/hora/qforecastevent.h"
 #include "astro/hora/qforecast.h"
 #include <QDateTime>
+#include "astro/controls/qastrofont.h"
 
 class ASTRO_HORA_API QForecastItemModel : public QHoraTableModel
 {
@@ -17,6 +18,13 @@ public:
 public:
     QForecastItemModel(QObject* parent = Q_NULLPTR);
 
+private:
+    enum {
+        SigtorRole = Qt::UserRole,
+        AspectRole,
+        PrmsorRole,
+        ExactTimeRole,
+    };
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -46,6 +54,7 @@ signals:
 
 private:
     QForecast mForecast;
+    QSharedPointer<QAstroFont> mAstroFont;
 private slots:
     void recalc();
 };

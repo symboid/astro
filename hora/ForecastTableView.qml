@@ -6,39 +6,42 @@ import Symboid.Astro.Hora 1.0
 
 HoraTableView {
     anchors.margins: 20
-    property HoraView horaView: null
     headerModel: tableModel.headerModel
-    property bool showSeconds: false
     columnComponents: [
         Component {
             Pane {
                 Label {
                     text: cellData
                     font.family: "Symboid"
-                    width: 40
+                    width: 100
                 }
             }
         },
         Component {
-            ArcCoordLabel {
-                arcDegree: cellData
-                sectionCalc: ZodiacSectionCalc {}
-                sectionFont.family: "Symboid"
-                showSecond: showSeconds
+            Pane {
+                Label {
+                    text: cellData
+                    font.family: "Symboid"
+                    width: 100
+                }
             }
         },
         Component {
-            ArcCoordLabel {
-                arcDegree: cellData
-                sectionCalc: SignumSectionCalc {}
-                showSecond: showSeconds
+            Pane {
+                Label {
+                    text: cellData
+                    font.family: "Symboid"
+                    width: 100
+                }
             }
         },
         Component {
-            ArcCoordLabel {
-                arcDegree: cellData
-                sectionCalc: SignumSectionCalc {}
-                showSecond: showSeconds
+            Pane {
+                Label {
+                    text: cellData
+//                    font.family: "Symboid"
+                    width: 100
+                }
             }
         }
     ]

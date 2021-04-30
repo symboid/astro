@@ -44,6 +44,7 @@ Item {
     property alias planetsModel: horaView.planetsModel
     property alias housesModel: horaView.housesModel
     property alias interactive: horaView.interactive
+    property alias hora: horaView.hora
 
     Flickable {
         id: horaFlickable

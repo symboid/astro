@@ -4,6 +4,7 @@
 
 QForecastItemModel::QForecastItemModel(QObject* parent)
     : QHoraTableModel(Q_NULLPTR, parent)
+    , mAstroFont(QAstroFontRepo::mo()->defaultFont())
 {
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(recalc()));
@@ -11,24 +12,37 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
 
 int QForecastItemModel::rowCount(const QModelIndex& parent) const
 {
-    return 1;
+    return mForecast.forecastEventCount();
 }
 
 QVariant QForecastItemModel::data(const QModelIndex& index, int role) const
 {
-    QVariant value("23");
+    QVariant value;
+    const QForecastEvent* forecastEvent = mForecast.forecastEvent(index.row());
+    switch (index.column())
+    {
+    case 0: return forecastEvent->sigtor()->symbol(mAstroFont.get());
+    case 1: return mAstroFont->aspectLetter(90);
+    case 2: return forecastEvent->prmsor()->symbol(mAstroFont.get());
+    case 3: return forecastEvent->eventExact();
+    }
+
     return value;
 }
 
 QHash<int, QByteArray> QForecastItemModel::roleNames() const
 {
     QHash<int, QByteArray> roles(QAbstractTableModel::roleNames());
+    roles[SigtorRole] = "sigtor";
+    roles[AspectRole] = "aspect";
+    roles[PrmsorRole] = "prmsor";
+    roles[ExactTimeRole] = "exactTime";
     return roles;
 }
 
 QStringList QForecastItemModel::headerModel() const
 {
-    return { "", "Sgtor house" };
+    return { "", "Sigtor", "Aspect", "Prmsor", "Exact" };
 }
 
 QDateTime QForecastItemModel::periodBegin() const
@@ -61,9 +75,7 @@ void QForecastItemModel::setPeriodEnd(const QDateTime& periodEnd)
 
 void QForecastItemModel::recalc()
 {
-    const QMagObjectList& magObjects = mHora->magObjects();
-    const QSigtor* sigtor = mHora->planet(0);
-    QEclLont sigtorLont = sigtor->eclPos()._M_lont;
+    mForecast.calc();
 }
 
 QForecastModel* QForecastItemModel::forecastModel() const

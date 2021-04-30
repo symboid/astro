@@ -10,9 +10,12 @@ QDirexModel::QDirexModel(QObject* parent)
 QVector<const QSigtor*> QDirexModel::sigtorList() const
 {
     QVector<const QSigtor*> sigtors;
-    for (QHora::Planets::ConstIterator planet = mHora->planetsBegin(); planet != mHora->planetsEnd(); ++planet)
+    if (mHora)
     {
-        sigtors.push_back(*planet);
+        for (QHora::Planets::ConstIterator planet = mHora->planetsBegin(); planet != mHora->planetsEnd(); ++planet)
+        {
+            sigtors.push_back(*planet);
+        }
     }
     return sigtors;
 }
