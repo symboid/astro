@@ -82,9 +82,11 @@ private:
     qreal mMandalaRadius;
     QHora* mHora;
 
-    Q_PROPERTY(const QHora* hora READ hora CONSTANT)
+    Q_PROPERTY(QHora* hora READ hora NOTIFY horaChanged)
 private:
-    const QHora* hora() const { return mHora; }
+    QHora* hora() const { return mHora; }
+signals:
+    void horaChanged();
 //    QList<eph::constellation*> mConstellations;
 
 private:
@@ -185,5 +187,7 @@ private:
     arh::main_object<Fixstars> mFixstars;
     arh::main_object<QHoraConfig> mHoraConfig;
 };
+
+Q_DECLARE_METATYPE(QHora*)
 
 #endif // __SYMBOID_ASTRO_HORA_QHORAVIEWITEM_H__

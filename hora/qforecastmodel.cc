@@ -8,12 +8,12 @@ QForecastModel::QForecastModel(QObject* parent)
 {
 }
 
-const QHora* QForecastModel::hora() const
+QHora* QForecastModel::hora() const
 {
     return mHora;
 }
 
-void QForecastModel::setHora(const QHora* hora)
+void QForecastModel::setHora(QHora* hora)
 {
     if (mHora != hora)
     {

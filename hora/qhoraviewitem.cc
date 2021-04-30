@@ -129,6 +129,8 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
 
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
     connect(mHora, SIGNAL(planetsUpdated()), this, SLOT(recalc()));
+
+    qRegisterMetaType<QHora*>();
 }
 
 void QHoraViewItem::calcMandalaGeometry()
@@ -722,4 +724,5 @@ void QHoraViewItem::recalc()
     mHousesModel->endResetModel();
     update();
     emit stopCalc();
+    emit horaChanged();
 }
