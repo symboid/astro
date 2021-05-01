@@ -8,8 +8,6 @@
 #include "astro/eph/ecliptic.h"
 #include <QObject>
 
-typedef eph::basic_time_point<eph_proxy> QEphTime;
-
 typedef eph::ecl_pos QEclPos;
 typedef eph::ecl_speed QEclSpeed;
 

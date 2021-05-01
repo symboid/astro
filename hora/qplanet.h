@@ -5,6 +5,8 @@
 #include "astro/hora/defs.h"
 #include "astro/hora/qhoraobject.h"
 
+typedef eph::basic_time_point<eph_proxy> QEphTime;
+
 class ASTRO_HORA_API QPlanet : public QHoraObject
 {
     Q_OBJECT

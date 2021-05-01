@@ -63,7 +63,7 @@ public:
         QAspectObject* mPrec = nullptr;
         QAspectObject* mSucc = nullptr;
     };
-    Siblings find(const QAspectObject* magObject);
+    Siblings find(const QEclPos& eclPos) const;
 };
 
 

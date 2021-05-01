@@ -59,27 +59,23 @@ void QAspectObjectList::insert(QAspectObject* aspectObject)
     }
 }
 
-QAspectObjectList::Siblings QAspectObjectList::find(const QAspectObject* aspectObject)
+QAspectObjectList::Siblings QAspectObjectList::find(const QEclPos& eclPos) const
 {
     Siblings siblings;
-    if (aspectObject)
+    const_iterator precObject = begin(), endObject = end();
+    while (precObject != endObject && (*precObject)->eclPos()._M_lont < eclPos._M_lont)
     {
-        const QEclPos objectPos = aspectObject->eclPos();
-        iterator precObject = begin(), endObject = end();
-        while (precObject != endObject && (*precObject)->eclPos()._M_lont < objectPos._M_lont)
-        {
-            precObject++;
-        }
-        if (precObject != endObject && (precObject+1) != endObject)
-        {
-            siblings.mPrec = *precObject;
-            siblings.mSucc = *(precObject+1);
-        }
-        else
-        {
-            siblings.mPrec = *rbegin();
-            siblings.mSucc = *begin();
-        }
+        precObject++;
+    }
+    if (precObject != endObject && (precObject+1) != endObject)
+    {
+        siblings.mPrec = *precObject;
+        siblings.mSucc = *(precObject+1);
+    }
+    else
+    {
+        siblings.mPrec = *rbegin();
+        siblings.mSucc = *begin();
     }
     return siblings;
 }
