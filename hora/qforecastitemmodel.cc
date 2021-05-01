@@ -8,7 +8,6 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
 {
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(recalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(horaRecalculated()), this, SLOT(recalc()));
 }
 
 int QForecastItemModel::rowCount(const QModelIndex& parent) const
@@ -41,6 +40,17 @@ QHash<int, QByteArray> QForecastItemModel::roleNames() const
     roles[PrmsorRole] = "prmsor";
     roles[ExactTimeRole] = "exactTime";
     return roles;
+}
+
+QHora* QForecastItemModel::hora() const
+{
+    return mForecast.model()->hora();
+}
+
+void QForecastItemModel::setHora(QHora* hora)
+{
+    mForecast.model()->setHora(hora);
+    connect(hora, SIGNAL(recalculated()), this, SLOT(recalc()));
 }
 
 QStringList QForecastItemModel::headerModel() const

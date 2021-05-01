@@ -13,13 +13,13 @@ QHoraPlanetsModel::QHoraPlanetsModel(QHora* hora, QObject* parent)
 int QHoraPlanetsModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
-    return mHora ? int(mHora->planetCount()) : 0;
+    return hora() ? int(hora()->planetCount()) : 0;
 }
 
 QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
 {
     QVariant planetData;
-    if (mHora != Q_NULLPTR)
+    if (hora() != Q_NULLPTR)
     {
         if (role == Qt::DisplayRole)
         {
@@ -31,7 +31,7 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
             case 3: role = EclSpeedRole; break;
             }
         }
-        const QPlanet* planet = mHora->planet(index.row());
+        const QPlanet* planet = hora()->planet(index.row());
         switch (role) {
         case SymbolRole: planetData = planet->symbol(mAstroFont.get()); break;
         case EclLontRole: planetData = planet->eclPos()._M_lont.to_arc_degree(); break;
@@ -62,13 +62,13 @@ QHoraHousesModel::QHoraHousesModel(QHora* hora, QObject* parent)
 int QHoraHousesModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
-    return mHora ? QHouseSystem::HOUSE_COUNT : 0;
+    return hora() ? QHouseSystem::HOUSE_COUNT : 0;
 }
 
 QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
 {
     QVariant houseData;
-    if (mHora != Q_NULLPTR)
+    if (hora() != Q_NULLPTR)
     {
         if (role == Qt::DisplayRole)
         {
@@ -80,7 +80,7 @@ QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
             }
         }
         int houseIndex = index.row() + 1;
-        const QHouseCusp* house = mHora->house(houseIndex);
+        const QHouseCusp* house = hora()->house(houseIndex);
         switch (role) {
         case SymbolRole: houseData = house->symbol(mAstroFont.get()); break;
         case EclLontRole: houseData = house->eclPos()._M_lont.to_arc_degree(); break;

@@ -15,11 +15,12 @@ public:
     QHoraTableModel(QHora* hora, QObject* parent = Q_NULLPTR);
 
 public:
-    Q_PROPERTY(QHora* hora MEMBER mHora WRITE setHora NOTIFY horaChanged)
-protected:
+    Q_PROPERTY(QHora* hora READ hora WRITE setHora NOTIFY horaChanged)
+private:
     QHora* mHora;
 public:
-    void setHora(QHora* hora);
+    virtual QHora* hora() const;
+    virtual void setHora(QHora* hora);
 signals:
     void horaChanged();
     void horaRecalculated();

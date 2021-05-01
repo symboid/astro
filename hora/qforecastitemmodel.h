@@ -33,6 +33,10 @@ public:
 public:
     QStringList headerModel() const override;
 
+public:
+    virtual QHora* hora() const override;
+    virtual void setHora(QHora* hora) override;
+
     Q_PROPERTY(QDateTime periodBegin READ periodBegin WRITE setPeriodBegin NOTIFY periodBeginChanged)
     Q_PROPERTY(QDateTime periodEnd READ periodEnd WRITE setPeriodEnd NOTIFY periodEndChanged)
 public:

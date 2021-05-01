@@ -9,6 +9,11 @@ QHoraTableModel::QHoraTableModel(QHora* hora, QObject* parent)
 {
 }
 
+QHora* QHoraTableModel::hora() const
+{
+    return mHora;
+}
+
 void QHoraTableModel::setHora(QHora* hora)
 {
     if (mHora != hora)

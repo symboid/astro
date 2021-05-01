@@ -17,7 +17,6 @@ public:
     QForecastModel(QObject* parent = nullptr);
 
 public:
-    Q_PROPERTY(QHora* hora MEMBER mHora WRITE setHora NOTIFY horaChanged)
     QHora* hora() const;
     void setHora(QHora* hora);
 protected:
