@@ -4,20 +4,13 @@
 
 #include "astro/hora/defs.h"
 #include <QObject>
+#include "astro/hora/qhoracoords.h"
 #include "astro/hora/qhoraconfig.h"
 #include <QList>
 #include "astro/hora/qhousecusp.h"
 #include "astro/hora/qplanet.h"
 #include "astro/hora/qaspectobject.h"
 #include "astro/db/fixstars.h"
-
-struct QHoraCoords
-{
-    eph::calendar_coords mCalendarCoords;
-    std::chrono::minutes mTimeZoneDiff;
-    eph::arc_degree mGeoLont;
-    eph::arc_degree mGeoLatt;
-};
 
 class QHora : public QObject
 {

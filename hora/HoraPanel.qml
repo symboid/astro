@@ -27,17 +27,7 @@ Item {
     property int minHoraSize: 100
     property int horaSize: minHoraSize
 
-    property alias year: horaView.year
-    property alias month: horaView.month
-    property alias day: horaView.day
-    property alias hour: horaView.hour
-    property alias minute: horaView.minute
-    property alias second: horaView.second
-
-    property alias geoLatt: horaView.geoLatt
-    property alias geoLont: horaView.geoLont
-    property alias tzDiff: horaView.tzDiff
-
+    property alias horaCoords: horaView.coords
     property alias housesType: horaView.housesType
     property alias withJulianCalendar: horaView.withJulianCalendar
 

@@ -108,15 +108,6 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     , mHora(new QHora(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
     , mIsInteractive(false)
-    , mYear(1)
-    , mMonth(1)
-    , mDay(1)
-    , mHour(0)
-    , mMinute(0)
-    , mSecond(0)
-    , mGeoLont(0.0)
-    , mGeoLatt(0.0)
-    , mTzDiff(0.0)
     , mHousesType("placidus")
     , mCalendarIsJulian(false)
     , mPlanetsModel(new QHoraPlanetsModel(mHora, this))
@@ -130,6 +121,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
     connect(mHora, SIGNAL(planetsUpdated()), this, SLOT(recalc()));
 
+    qRegisterMetaType<QHoraCoords*>();
     qRegisterMetaType<QHora*>();
 }
 
@@ -540,84 +532,17 @@ QPointF QHoraViewItem::horaPoint(eph::ecl_lont horaLont, qreal dist) const
     return point;
 }
 
-void QHoraViewItem::setYear(int year)
+void QHoraViewItem::setCoords(QHoraCoords* coords)
 {
-    if (mYear != year)
+    if (mCoords != coords)
     {
-        mYear = year;
-        emit yearChanged();
-    }
-}
-
-void QHoraViewItem::setMonth(int month)
-{
-    if (mMonth != month)
-    {
-        mMonth = month;
-        emit monthChanged();
-    }
-}
-
-void QHoraViewItem::setDay(int day)
-{
-    if (mDay != day)
-    {
-        mDay = day;
-        emit dayChanged();
-    }
-}
-
-void QHoraViewItem::setHour(int hour)
-{
-    if (mHour != hour)
-    {
-        mHour = hour;
-        emit hourChanged();
-    }
-}
-
-void QHoraViewItem::setMinute(int minute)
-{
-    if (mMinute != minute)
-    {
-        mMinute = minute;
-        emit minuteChanged();
-    }
-}
-
-void QHoraViewItem::setSecond(int second)
-{
-    if (mSecond != second)
-    {
-        mSecond = second;
-        emit secondChanged();
-    }
-}
-
-void QHoraViewItem::setGeoLont(qreal geoLont)
-{
-    if (!eph::arc_degree_equals(mGeoLont,geoLont))
-    {
-        mGeoLont = geoLont;
-        emit geoLontChanged();
-    }
-}
-
-void QHoraViewItem::setGeoLatt(qreal geoLatt)
-{
-    if (!eph::arc_degree_equals(mGeoLatt,geoLatt))
-    {
-        mGeoLatt = geoLatt;
-        emit geoLattChanged();
-    }
-}
-
-void QHoraViewItem::setTzDiff(qreal tzDiff)
-{
-    if (!eph::arc_degree_equals(mTzDiff,tzDiff))
-    {
-        mTzDiff = tzDiff;
-        emit tzDiffChanged();
+        if (mCoords)
+        {
+            disconnect(mCoords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
+        }
+        mCoords = coords;
+        connect(mCoords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
+        emit coordsChanged();
     }
 }
 
@@ -652,15 +577,7 @@ void QHoraViewItem::onInteractiveChanged()
 {
     if (mIsInteractive)
     {
-        connect(this, SIGNAL(yearChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(monthChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(dayChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(hourChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(minuteChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(secondChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(geoLattChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(geoLontChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
+        connect(this, SIGNAL(coordsChanged()), this, SLOT(recalc()));
         connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
         connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
         connect(mHoraConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
@@ -668,15 +585,7 @@ void QHoraViewItem::onInteractiveChanged()
     }
     else
     {
-        disconnect(this, SIGNAL(yearChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(monthChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(dayChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(hourChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(minuteChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(secondChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(geoLattChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(geoLontChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(tzDiffChanged()), this, SLOT(recalc()));
+        disconnect(this, SIGNAL(coordsChanged()), this, SLOT(recalc()));
         disconnect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
         disconnect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
         disconnect(mHoraConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
@@ -685,39 +594,28 @@ void QHoraViewItem::onInteractiveChanged()
 
 void QHoraViewItem::recalc()
 {
-    QHoraCoords horaCoords;
-    horaCoords.mCalendarCoords._M_year = mYear;
-    horaCoords.mCalendarCoords._M_month = mMonth;
-    horaCoords.mCalendarCoords._M_day = mDay;
-    horaCoords.mCalendarCoords._M_hour = mHour;
-    horaCoords.mCalendarCoords._M_minute = mMinute;
-    horaCoords.mCalendarCoords._M_second = mSecond;
-    horaCoords.mCalendarCoords._M_calendar_type = mCalendarIsJulian ? eph::calendar_type::JULIAN : eph::calendar_type::GREGORIAN;
-    horaCoords.mTimeZoneDiff = std::chrono::minutes(int(60.0 * mTzDiff));
-    horaCoords.mGeoLatt = mGeoLatt;
-    horaCoords.mGeoLont = mGeoLont;
     mPlanetsModel->beginResetModel();
     mHousesModel->beginResetModel();
     emit startCalc();
     if (mHousesType == "koch")
     {
-        mHora->calc(horaCoords, QHouseSystem::KOCH);
+        mHora->calc(*mCoords, QHouseSystem::KOCH);
     }
     else if (mHousesType == "regiomontanus")
     {
-        mHora->calc(horaCoords, QHouseSystem::REGIOMONTANUS);
+        mHora->calc(*mCoords, QHouseSystem::REGIOMONTANUS);
     }
     else if (mHousesType == "campanus")
     {
-        mHora->calc(horaCoords, QHouseSystem::CAMPANUS);
+        mHora->calc(*mCoords, QHouseSystem::CAMPANUS);
     }
     else if (mHousesType == "equal")
     {
-        mHora->calc(horaCoords, QHouseSystem::EQUAL);
+        mHora->calc(*mCoords, QHouseSystem::EQUAL);
     }
     else
     {
-        mHora->calc(horaCoords, QHouseSystem::PLACIDUS);
+        mHora->calc(*mCoords, QHouseSystem::PLACIDUS);
     }
 
     mPlanetsModel->endResetModel();

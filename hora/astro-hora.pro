@@ -15,6 +15,7 @@ SOURCES += \
     qforecastmodel.cc \
     qhora.cc \
     qhoraconfig.cc \
+    qhoracoords.cc \
     qhoraitemsmodel.cc \
     qhoraobject.cc \
     qhoraviewitem.cc \
@@ -34,6 +35,7 @@ HEADERS += \
     qforecastmodel.h \
     qhora.h \
     qhoraconfig.h \
+    qhoracoords.h \
     qhoraitemsmodel.h \
     qhoraobject.h \
     qhorastellium.h \

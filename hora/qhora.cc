@@ -127,14 +127,13 @@ QHora::ConjunctingFixstars::ConstIterator QHora::fixstarsEnd() const
 bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType)
 {
     // hora time corrected with time zone data
-    QEphTime horaTime = eph::basic_calendar<eph_proxy>::time(horaCoords.mCalendarCoords);
-    horaTime -= horaCoords.mTimeZoneDiff;
+    QEphTime horaTime = horaCoords.ephTime();
 
     bool calcResult = true;
 
     // getting house cusp positions
     mHouseSystem->mType = houseSystemType;
-    calcResult = mHouseSystem->calc(horaTime, horaCoords.mGeoLont, horaCoords.mGeoLatt);
+    calcResult = mHouseSystem->calc(horaTime, horaCoords.geoLont(), horaCoords.geoLatt());
 
     // getting planet positions
     for (Planets::iterator planet = mPlanets.begin(), end = mPlanets.end(); calcResult && planet < end; ++planet)

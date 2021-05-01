@@ -116,51 +116,19 @@ private slots:
     void onInteractiveChanged();
 
 public:
-    Q_PROPERTY(int year MEMBER mYear WRITE setYear NOTIFY yearChanged)
-    Q_PROPERTY(int month MEMBER mMonth WRITE setMonth NOTIFY monthChanged)
-    Q_PROPERTY(int day MEMBER mDay WRITE setDay NOTIFY dayChanged)
-    Q_PROPERTY(int hour MEMBER mHour WRITE setHour NOTIFY hourChanged)
-    Q_PROPERTY(int minute MEMBER mMinute WRITE setMinute NOTIFY minuteChanged)
-    Q_PROPERTY(int second MEMBER mSecond WRITE setSecond NOTIFY secondChanged)
-    Q_PROPERTY(qreal geoLont MEMBER mGeoLont WRITE setGeoLont NOTIFY geoLontChanged)
-    Q_PROPERTY(qreal geoLatt MEMBER mGeoLatt WRITE setGeoLatt NOTIFY geoLattChanged)
-    Q_PROPERTY(qreal tzDiff MEMBER mTzDiff WRITE setTzDiff NOTIFY tzDiffChanged)
+    Q_PROPERTY(QHoraCoords* coords MEMBER mCoords WRITE setCoords NOTIFY coordsChanged)
     Q_PROPERTY(QString housesType MEMBER mHousesType WRITE setHousesType NOTIFY housesTypeChanged)
     Q_PROPERTY(bool withJulianCalendar MEMBER mCalendarIsJulian WRITE setCalendarIsJulian NOTIFY withJulianCalendarChanged)
 public:
-    void setYear(int year);
-    void setMonth(int month);
-    void setDay(int day);
-    void setHour(int hour);
-    void setMinute(int minute);
-    void setSecond(int second);
-    void setGeoLont(qreal geoLont);
-    void setGeoLatt(qreal geoLatt);
-    void setTzDiff(qreal tzDiff);
+    void setCoords(QHoraCoords* coords);
     void setHousesType(const QString& housesType);
     void setCalendarIsJulian(bool calendarIsJulian);
 private:
-    int mYear;
-    int mMonth;
-    int mDay;
-    int mHour;
-    int mMinute;
-    int mSecond;
-    eph::arc_degree mGeoLont;
-    eph::arc_degree mGeoLatt;
-    qreal mTzDiff;
+    QHoraCoords* mCoords;
     QString mHousesType;
     bool mCalendarIsJulian;
 signals:
-    void yearChanged();
-    void monthChanged();
-    void dayChanged();
-    void hourChanged();
-    void minuteChanged();
-    void secondChanged();
-    void geoLontChanged();
-    void geoLattChanged();
-    void tzDiffChanged();
+    void coordsChanged();
     void housesTypeChanged();
     void withJulianCalendarChanged();
     void fontPointSizeChanged();
@@ -188,6 +156,7 @@ private:
     arh::main_object<QHoraConfig> mHoraConfig;
 };
 
+Q_DECLARE_METATYPE(QHoraCoords*)
 Q_DECLARE_METATYPE(QHora*)
 
 #endif // __SYMBOID_ASTRO_HORA_QHORAVIEWITEM_H__
