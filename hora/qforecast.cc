@@ -1,6 +1,7 @@
 
 #include "astro/hora/setup.h"
 #include "astro/hora/qforecast.h"
+#include <QDebug>
 
 QForecast::QForecast(QObject* parent)
     : QObject(parent)
@@ -51,13 +52,18 @@ const QForecastEvent* QForecast::forecastEvent(int eventIndex) const
 
 QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& earliestTime)
 {
-    mModel->initSigtorPos(sigtor, earliestTime);
-    QForecastEvent* event = new QForecastEvent(this, sigtor);
-if (mPrmsorList->size() > 0)
+    QForecastEvent* event = nullptr;
+    QAspectObjectList::Siblings siblings = mPrmsorList->find(sigtor->eclPos());
+if (siblings.mSucc)
 {
-event->setPrmsor(mPrmsorList->first());
+QPrmsor* prmsor = siblings.mSucc;
+mModel->initSigtorPos(sigtor, earliestTime);
+event = new QForecastEvent(this, sigtor);
+event->setPrmsor(prmsor);
+event->setEventExact(earliestTime);
+qDebug() << "SIGTOR POS:" << sigtor->eclPos()._M_lont.to_arc_degree() << ", "
+         << "PRMSOR POS:" << prmsor->eclPos()._M_lont.to_arc_degree();
 }
-    event->setEventExact(earliestTime);
     return event;
 }
 
