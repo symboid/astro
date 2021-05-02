@@ -25,11 +25,12 @@ QVector<QSigtor*> QDirexModel::sigtorList() const
     return sigtors;
 }
 
-void QDirexModel::initSigtorPos(QSigtor* sigtor, const QDateTime& eventTime)
+void QDirexModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords)
 {
     if (sigtor)
     {
-        QEclLont yearSum = double(mRadixTime.daysTo(eventTime)) / 365.25;
+        sigtor->calcEclPos(eventCoords);
+//        QEclLont yearSum = double(mRadixTime.daysTo(eventTime)) / 365.25;
     }
 }
 

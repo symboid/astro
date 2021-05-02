@@ -151,3 +151,23 @@ QEphTime QHoraCoords::ephTime() const
 {
     return eph::basic_calendar<eph_proxy>::time(mCalendarCoords) - mTzDiff;
 }
+
+QDateTime QHoraCoords::dateTime() const
+{
+   QDate date(mCalendarCoords._M_year, mCalendarCoords._M_month, mCalendarCoords._M_day);
+   QTime time(mCalendarCoords._M_hour, mCalendarCoords._M_minute, mCalendarCoords._M_second);
+   return QDateTime(date, time);
+}
+
+void QHoraCoords::setDateTime(const QDateTime &dateTime)
+{
+    const QDate date = dateTime.date();
+    const QTime time = dateTime.time();
+    setYear(date.year());
+    setMonth(date.month());
+    setDay(date.day());
+    setHour(time.hour());
+    setMinute(time.minute());
+    setSecond(time.second());
+
+}

@@ -57,7 +57,12 @@ QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& earlies
 if (siblings.mSucc)
 {
 QPrmsor* prmsor = siblings.mSucc;
-mModel->initSigtorPos(sigtor, earliestTime);
+QHoraCoords initCoords;
+initCoords.setDateTime(earliestTime);
+//initCoords.setGeoLatt(mGeoLatt);
+//initCoords.setGeoLont(mGeoLont);
+//initCoords.setTzDiff(mTzDiff);
+mModel->initSigtorPos(sigtor, initCoords);
 event = new QForecastEvent(this, sigtor);
 event->setPrmsor(prmsor);
 event->setEventExact(earliestTime);

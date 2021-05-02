@@ -5,6 +5,7 @@
 #include "astro/hora/defs.h"
 #include <QObject>
 #include <QDateTime>
+#include "astro/hora/qhoracoords.h"
 #include "astro/hora/qaspectobject.h"
 #include "astro/hora/qmagobject.h"
 #include "astro/hora/qhousecusp.h"
@@ -25,7 +26,7 @@ public:
     QEclPos eclPos() const override;
     QEclSpeed eclSpeed() const override;
     void setEclPos(const QEclPos& eclPos);
-    virtual bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLont, eph::arc_degree geoLatt) = 0;
+    virtual bool calcEclPos(const QHoraCoords& horaCoords) = 0;
 protected:
     QEclPos mEclPos;
     QEclSpeed mEclSpeed;
@@ -47,7 +48,7 @@ public:
 private:
     QPlanet* mPlanetOrigin;
 public:
-    bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLont, eph::arc_degree geoLatt) override;
+    bool calcEclPos(const QHoraCoords& horaCoords) override;
 };
 
 class ASTRO_HORA_API QHouseCuspSigtor : public QSigtor
@@ -61,7 +62,7 @@ public:
 private:
     QHouseCusp* mHouseCuspOrigin;
 public:
-    bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLont, eph::arc_degree geoLatt) override;
+    bool calcEclPos(const QHoraCoords& horaCoords) override;
 };
 
 class ASTRO_HORA_API QForecastEvent : public QObject
@@ -78,7 +79,7 @@ public:
     QDateTime eventBegin() const;
     QDateTime eventExact() const;
     QDateTime eventEnd() const;
-    void setEventExact(const QDateTime& eventTime);
+    void setEventExact(const QDateTime& eventExact);
 private:
     QDateTime mEventExact;
 signals:

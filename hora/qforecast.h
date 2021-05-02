@@ -40,7 +40,7 @@ public:
     int forecastEventCount() const;
     const QForecastEvent* forecastEvent(int eventIndex) const;
 private:
-    QForecastEvent* createEvent(QSigtor* sigtor, const QDateTime& eventTime);
+    QForecastEvent* createEvent(QSigtor* sigtor, const QDateTime& earliestTime);
     QVector<QForecastEvent*> mEvents;
     const QAspectObjectList* mPrmsorList;
 };

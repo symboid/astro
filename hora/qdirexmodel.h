@@ -17,7 +17,7 @@ public:
 public:
     void initCalc(const QDateTime& radixTime) override;
     QVector<QSigtor*> sigtorList() const override;
-    void initSigtorPos(QSigtor* sigtor, const QDateTime& eventTime) override;
+    void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) override;
 
 public:
     int estimatedEventCount(const QDateTime& perdioBegin, const QDateTime& periodEnd) const override;

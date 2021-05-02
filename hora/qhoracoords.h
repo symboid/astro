@@ -7,6 +7,7 @@
 #include "astro/eph/ecliptic.h"
 #include "astro/eph/calendar.h"
 #include "astro/eph/proxy.h"
+#include <QDateTime>
 
 typedef eph::basic_time_point<eph_proxy> QEphTime;
 
@@ -67,6 +68,8 @@ signals:
 
 public:
     QEphTime ephTime() const;
+    QDateTime dateTime() const;
+    void setDateTime(const QDateTime& dateTime);
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORACOORDS_H__
