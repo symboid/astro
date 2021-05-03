@@ -17,6 +17,8 @@ public:
 public:
     QVector<QSigtor*> sigtorList() const override;
     void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) override;
+    QDateTime calcConj(QSigtor* sigtor, const QDateTime& startTime,
+            const QAspectObjectList::Siblings& siblings) override;
 
 public:
     int estimatedEventCount(const QDateTime& perdioBegin, const QDateTime& periodEnd) const override;

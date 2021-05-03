@@ -27,6 +27,8 @@ signals:
 public:
     virtual QVector<QSigtor*> sigtorList() const = 0;
     virtual void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) = 0;
+    virtual QDateTime calcConj(QSigtor* sigtor, const QDateTime& startTime,
+            const QAspectObjectList::Siblings& siblings) = 0;
 
 public:
     virtual int estimatedEventCount(const QDateTime& perdioBegin, const QDateTime& periodEnd) const = 0;

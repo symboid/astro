@@ -58,7 +58,7 @@ bool QPlanetSigtor::calcEclPos(const QHoraCoords& horaCoords)
 {
     QEclPos eclPos;
     QEclSpeed eclSpeed;
-    QPlanet::Index objectIndex = mPlanetOrigin->mIndex == QPlanet::Index(1000) || mPlanetOrigin->mIndex == QPlanet::Index(1001) ?
+    QPlanet::Index objectIndex = mPlanetOrigin->mIndex == QLunarNode::DRAGON_HEAD || mPlanetOrigin->mIndex == QLunarNode::DRAGON_TAIL ?
                 QPlanet::MEAN_NODE : mPlanetOrigin->mIndex;
     bool isSuccess = (eph_proxy::object::calc_pos(objectIndex, horaCoords.ephTime(), eclPos, eclSpeed) == eph::calc_result::SUCCESS);
     if (isSuccess)
@@ -68,9 +68,7 @@ bool QPlanetSigtor::calcEclPos(const QHoraCoords& horaCoords)
             eclPos = QEclPos(eclPos._M_lont + 180.0, eclPos._M_latt, eclPos._M_dist);
         }
         mEclPos = eclPos;
-        emit eclPosChanged();
         mEclSpeed = eclSpeed;
-        emit eclSpeedChanged();
     }
     return isSuccess;
 }
