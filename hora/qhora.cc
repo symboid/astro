@@ -6,6 +6,7 @@
 QHora::QHora(QObject* parent)
     : QObject(parent)
     , mHouseSystem(new QHouseSystem(this))
+    , mRegularAspectObjects(new QAspectObjectList)
 {
     for (int h = 0; h < QHouseSystem::HOUSE_COUNT; ++h)
     {
@@ -124,8 +125,15 @@ QHora::ConjunctingFixstars::ConstIterator QHora::fixstarsEnd() const
     return mConjunctingFixstars.end();
 }
 
+const QHoraCoords& QHora::coords() const
+{
+    return mCoords;
+}
+
 bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType)
 {
+    mCoords = horaCoords;
+
     // hora time corrected with time zone data
     QEphTime horaTime = horaCoords.ephTime();
 
@@ -177,32 +185,29 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
         }
     }
 
-    mAllAspectObjects.clear();
-    mRegularAspectObjects.clear();
-    for (QAspectObject* aspectObject : mAspectObjects)
-    {
-        if (aspectObject->aspect()->enabled())
-        {
-            mAllAspectObjects.insert(aspectObject);
-        }
-        switch(int(aspectObject->aspect()->dist()))
-        {
-        case 180: case 120: case 90: case 60: mRegularAspectObjects.insert(aspectObject);
-        }
-
-    }
+    mRegularAspectObjects->clear();
+    mRegularAspectObjects = fetchAspectObjects({180, 120, 90, 60});
 
     emit recalculated();
 
     return calcResult;
 }
 
-const QAspectObjectList& QHora::allAspectObjects() const
+QSharedPointer<QAspectObjectList> QHora::fetchAspectObjects(const QVector<qreal>& dists) const
 {
-    return mAllAspectObjects;
+    QAspectObjectList* aspectObjects = new QAspectObjectList;
+    for (QAspectObject* aspectObject : mAspectObjects)
+    {
+        if (aspectObject->aspect()->enabled())
+        if (aspectObject->aspect()->enabled() && dists.indexOf(aspectObject->aspect()->dist()) != -1)
+        {
+            aspectObjects->insert(aspectObject);
+        }
+    }
+    return QSharedPointer<QAspectObjectList>(aspectObjects);
 }
 
-const QAspectObjectList& QHora::regularAspectObjects() const
+const QSharedPointer<QAspectObjectList> QHora::regularAspectObjects() const
 {
     return mRegularAspectObjects;
 }

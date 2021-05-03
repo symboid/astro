@@ -19,6 +19,7 @@ public:
 
 public:
     explicit QHoraCoords(QObject *parent = nullptr);
+    QHoraCoords& operator=(const QHoraCoords& src);
 
 public:
     Q_PROPERTY(int year READ year WRITE setYear NOTIFY yearChanged)

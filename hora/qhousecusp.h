@@ -5,8 +5,6 @@
 #include "astro/hora/defs.h"
 #include "astro/hora/qhoraobject.h"
 
-typedef eph::ecl_lont QEclLont;
-
 class ASTRO_HORA_API QHouseSystem : public QObject
 {
     Q_OBJECT

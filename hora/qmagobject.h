@@ -6,6 +6,7 @@
 #include "astro/db/qephobject.h"
 #include "astro/controls/qastrofont.h"
 
+typedef eph::ecl_lont QEclLont;
 typedef eph::ecl_coords::dist QOrbisValue;
 
 class QMagObject : public QEphObject

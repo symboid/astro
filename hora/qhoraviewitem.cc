@@ -494,7 +494,7 @@ void QHoraViewItem::paint(QPainter* painter)
         {
             // basic planet aspects
             painter->setFont(*mAstroFont);
-            for (QMagObject* aspectObject : mHora->regularAspectObjects())
+            for (QMagObject* aspectObject : *mHora->regularAspectObjects())
             {
                 eph::ecl_lont aspectLont = aspectObject->eclPos()._M_lont;
                 painter->setPen(aspectObject->drawColor());

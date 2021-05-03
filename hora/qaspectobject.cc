@@ -54,9 +54,9 @@ void QAspectObjectList::insert(QAspectObject* aspectObject)
 {
     if (aspectObject)
     {
-        const QEclPos objectPos = aspectObject->eclPos();
+        const QEclLont objectLont = aspectObject->eclPos()._M_lont;
         iterator insertPos = begin(), oEnd = end();
-        while (insertPos != oEnd && objectPos < (*insertPos)->eclPos())
+        while (insertPos != oEnd && objectLont > (*insertPos)->eclPos()._M_lont)
         {
             ++insertPos;
         }

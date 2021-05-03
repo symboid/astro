@@ -55,16 +55,18 @@ public:
     ConjunctingFixstars::ConstIterator fixstarsEnd() const;
 
 public:
-    const QAspectObjectList& allAspectObjects() const;
-    const QAspectObjectList& regularAspectObjects() const;
+    QSharedPointer<QAspectObjectList> fetchAspectObjects(const QVector<qreal>& dists) const;
+    const QSharedPointer<QAspectObjectList> regularAspectObjects() const;
 private:
-    QAspectObjectList mAllAspectObjects;
-    QAspectObjectList mRegularAspectObjects;
+    QSharedPointer<QAspectObjectList> mRegularAspectObjects;
 
 public:
+    const QHoraCoords& coords() const;
     bool calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType);
 signals:
     void recalculated();
+private:
+    QHoraCoords mCoords;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORA_H__
