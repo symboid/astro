@@ -106,20 +106,20 @@ QString QPlanet::abbrName() const
 {
     switch (mIndex)
     {
-    case SUN: return "Sun";
-    case MOON: return "Mon";
-    case MERCURY: return "Mer";
-    case VENUS: return "Sun";
-    case MARS: return "Sun";
-    case JUPITER: return "Sun";
-    case SATURN: return "Sun";
-    case URANUS: return "Sun";
-    case NEPTUNE: return "Sun";
-    case PLUTO: return "Sun";
-    case CHIRON: return "Chi";
+    case SUN:       return "Sun";
+    case MOON:      return "Mon";
+    case MERCURY:   return "Mer";
+    case VENUS:     return "Ven";
+    case MARS:      return "Mar";
+    case JUPITER:   return "Jup";
+    case SATURN:    return "Sat";
+    case URANUS:    return "Ura";
+    case NEPTUNE:   return "Nep";
+    case PLUTO:     return "Plu";
+    case CHIRON:    return "Chi";
     case MEAN_NODE: return "Nod";
-    case LILITH: return "Lil";
-    case UNDEF: return "???";
+    case LILITH:    return "Lil";
+    case UNDEF:     return "???";
     }
     return "???";
 }

@@ -37,7 +37,7 @@ QOrbisValue QAspectObject::orbis() const
 
 QString QAspectObject::abbrName() const
 {
-    return mAspect->abbrName() + " " + mHoraObject->abbrName();
+    return mAspect->abbrName() + "-" + mHoraObject->abbrName();
 }
 
 QString QAspectObject::symbol(const QAstroFont* font) const

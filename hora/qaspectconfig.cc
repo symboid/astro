@@ -39,17 +39,17 @@ QString QAspectConfigNode::abbrName() const
 {
     int intDist = int(dist());
     switch (intDist) {
-    case 0:   return "o--";
-    case 180: return "o-o";
-    case 120: return "/\\";
-    case 90:  return " []";
-    case 72:  return "_|_";
-    case 60:  return ">|<";
+    case 0:   return "con";
+    case 180: return "opp";
+    case 120: return "tri";
+    case 90:  return "qad";
+    case 72:  return "qin";
+    case 60:  return "sex";
 
-    case 30:  return "_V_";
-    case 150: return "/|\\";
-    case 45:  return " /_";
-    case 135: return "[,]";
+    case 30:  return "ssx";
+    case 150: return "qkx";
+    case 45:  return "sqa";
+    case 135: return "ssq";
     default: return QString::number(intDist);
     }
 }

@@ -72,7 +72,7 @@ QEclSpeed QHouseCusp::eclSpeed() const
 
 QString QHouseCusp::abbrName() const
 {
-    return id().left(id().length()-2);
+    return id().left(id().length()-1);
 }
 
 QString QHouseCusp::symbol(const QAstroFont *font) const
