@@ -88,6 +88,9 @@ public:
     Q_CONFIG_PROPERTY(bool, enabled, mEnabledDefault);
     Q_ORBIS_CONFIG_NODE(mOrbisDefaults);
     Q_ASPECT_DRAW_CONFIG_NODE(mProperties);
+
+public:
+    QString abbrName() const;
 };
 
 

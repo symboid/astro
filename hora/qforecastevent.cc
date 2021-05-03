@@ -23,6 +23,11 @@ void QSigtor::setEclPos(const QEclPos& eclPos)
     mEclPos = eclPos;
 }
 
+QString QSigtor::abbrName() const
+{
+    return mOrigin->abbrName();
+}
+
 QString QSigtor::symbol(const QAstroFont* font) const
 {
     return mOrigin->symbol(font);
@@ -53,7 +58,9 @@ bool QPlanetSigtor::calcEclPos(const QHoraCoords& horaCoords)
 {
     QEclPos eclPos;
     QEclSpeed eclSpeed;
-    bool isSuccess = (eph_proxy::object::calc_pos(mPlanetOrigin->mIndex, horaCoords.ephTime(), eclPos, eclSpeed) == eph::calc_result::SUCCESS);
+    QPlanet::Index objectIndex = mPlanetOrigin->mIndex == QPlanet::Index(1000) || mPlanetOrigin->mIndex == QPlanet::Index(1001) ?
+                QPlanet::MEAN_NODE : mPlanetOrigin->mIndex;
+    bool isSuccess = (eph_proxy::object::calc_pos(objectIndex, horaCoords.ephTime(), eclPos, eclSpeed) == eph::calc_result::SUCCESS);
     if (isSuccess)
     {
         if (mPlanetOrigin->mIndex == QLunarNode::DRAGON_TAIL)

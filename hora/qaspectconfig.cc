@@ -35,6 +35,25 @@ QAspectConfigNode::QAspectConfigNode(const QString& id, QAbstractConfig* parent,
 {
 }
 
+QString QAspectConfigNode::abbrName() const
+{
+    int intDist = int(dist());
+    switch (intDist) {
+    case 0:   return "o--";
+    case 180: return "o-o";
+    case 120: return "/\\";
+    case 90:  return " []";
+    case 72:  return "_|_";
+    case 60:  return ">|<";
+
+    case 30:  return "_V_";
+    case 150: return "/|\\";
+    case 45:  return " /_";
+    case 135: return "[,]";
+    default: return QString::number(intDist);
+    }
+}
+
 QAspectConfig::QAspectConfig(const QString& id, QAbstractConfig* parentNode, const char* parentSignal)
     : QConfigContainer<QAspectConfigNode>(id, parentNode, parentSignal)
 {

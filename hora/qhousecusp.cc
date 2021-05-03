@@ -70,6 +70,11 @@ QEclSpeed QHouseCusp::eclSpeed() const
     return mHouseSystem ? mHouseSystem->mEclSpeed[mHouseIndex] : QEclSpeed();
 }
 
+QString QHouseCusp::abbrName() const
+{
+    return id().left(id().length()-2);
+}
+
 QString QHouseCusp::symbol(const QAstroFont *font) const
 {
     Q_UNUSED(font)

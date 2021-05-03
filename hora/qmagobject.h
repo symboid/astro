@@ -16,6 +16,7 @@ public:
     QMagObject(QObject* parent, const QString& id);
 
 public:
+    virtual QString abbrName() const = 0;
     virtual QString symbol(const QAstroFont* font) const = 0;
     virtual QColor drawColor() const = 0;
 

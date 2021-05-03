@@ -102,6 +102,28 @@ bool QPlanet::isRetrograd() const
     return eclSpeed()._M_lont < 0.0;
 }
 
+QString QPlanet::abbrName() const
+{
+    switch (mIndex)
+    {
+    case SUN: return "Sun";
+    case MOON: return "Mon";
+    case MERCURY: return "Mer";
+    case VENUS: return "Sun";
+    case MARS: return "Sun";
+    case JUPITER: return "Sun";
+    case SATURN: return "Sun";
+    case URANUS: return "Sun";
+    case NEPTUNE: return "Sun";
+    case PLUTO: return "Sun";
+    case CHIRON: return "Chi";
+    case MEAN_NODE: return "Nod";
+    case LILITH: return "Lil";
+    case UNDEF: return "???";
+    }
+    return "???";
+}
+
 QString QPlanet::symbol(const QAstroFont* font) const
 {
     return font->planetLetter(mIndex);
@@ -134,6 +156,16 @@ bool QLunarNode::calc(const QEphTime& ephTime)
         emit eclSpeedChanged();
     }
     return isSuccess;
+}
+
+QString QLunarNode::abbrName() const
+{
+    switch (mIndex)
+    {
+    case DRAGON_HEAD: return "Hed";
+    case DRAGON_TAIL: return "Tal";
+    default: return "???";
+    }
 }
 
 QString QLunarNode::symbol(const QAstroFont* font) const
