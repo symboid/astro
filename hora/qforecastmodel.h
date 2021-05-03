@@ -25,7 +25,6 @@ signals:
     void horaChanged();
 
 public:
-    virtual void initCalc(const QDateTime& radixTime) = 0;
     virtual QVector<QSigtor*> sigtorList() const = 0;
     virtual void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) = 0;
 

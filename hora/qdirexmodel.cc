@@ -7,11 +7,6 @@ QDirexModel::QDirexModel(QObject* parent)
 {
 }
 
-void QDirexModel::initCalc(const QDateTime& radixTime)
-{
-    mRadixTime = radixTime;
-}
-
 QVector<QSigtor*> QDirexModel::sigtorList() const
 {
     QVector<QSigtor*> sigtors;
@@ -27,10 +22,12 @@ QVector<QSigtor*> QDirexModel::sigtorList() const
 
 void QDirexModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords)
 {
-    if (sigtor)
+    if (mHora && sigtor)
     {
-        sigtor->calcEclPos(eventCoords);
-//        QEclLont yearSum = double(mRadixTime.daysTo(eventTime)) / 365.25;
+        const QHoraCoords& horaCoords = mHora->coords();
+        sigtor->calcEclPos(horaCoords);
+        QEclLont yearSum = double((eventCoords.ephTime() - horaCoords.ephTime()).count()) / 365.25;
+        sigtor->setEclPos(QEclPos(sigtor->eclPos()._M_lont + yearSum, sigtor->eclPos()._M_latt));
     }
 }
 
