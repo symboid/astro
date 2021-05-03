@@ -6,6 +6,9 @@
 QForecast::QForecast(QObject* parent)
     : QObject(parent)
     , mModel(nullptr)
+    , mGeoLatt(0.0)
+    , mGeoLont(0.0)
+    , mTzDiff(0.0)
     , mPrmsorList(nullptr)
 {
 }
@@ -28,6 +31,36 @@ QDateTime QForecast::periodEnd() const
 void QForecast::setPeriodEnd(const QDateTime& periodEnd)
 {
     mPeriodEnd = periodEnd;
+}
+
+qreal QForecast::geoLatt() const
+{
+    return mGeoLatt;
+}
+
+qreal QForecast::geoLont() const
+{
+    return mGeoLont;
+}
+
+qreal QForecast::tzDiff() const
+{
+    return mTzDiff;
+}
+
+void QForecast::setGeoLatt(qreal geoLatt)
+{
+    mGeoLatt = geoLatt;
+}
+
+void QForecast::setGeoLont(qreal geoLont)
+{
+    mGeoLont = geoLont;
+}
+
+void QForecast::setTzDiff(qreal tzDiff)
+{
+    mTzDiff = tzDiff;
 }
 
 QForecastModel* QForecast::model() const
@@ -53,21 +86,23 @@ const QForecastEvent* QForecast::forecastEvent(int eventIndex) const
 QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& earliestTime)
 {
     QForecastEvent* event = nullptr;
+
+    QHoraCoords initCoords;
+    initCoords.setDateTime(earliestTime);
+    initCoords.setGeoLatt(mGeoLatt);
+    initCoords.setGeoLont(mGeoLont);
+    initCoords.setTzDiff(mTzDiff);
+    mModel->initSigtorPos(sigtor, initCoords);
+
     QAspectObjectList::Siblings siblings = mPrmsorList->find(sigtor->eclPos());
 if (siblings.mSucc)
 {
-QPrmsor* prmsor = siblings.mSucc;
-QHoraCoords initCoords;
-initCoords.setDateTime(earliestTime);
-//initCoords.setGeoLatt(mGeoLatt);
-//initCoords.setGeoLont(mGeoLont);
-//initCoords.setTzDiff(mTzDiff);
-mModel->initSigtorPos(sigtor, initCoords);
+QPrmsor* prmsor = siblings.mPrec;
 event = new QForecastEvent(this, sigtor);
 event->setPrmsor(prmsor);
 event->setEventExact(earliestTime);
-qDebug() << "SIGTOR POS:" << sigtor->eclPos()._M_lont.to_arc_degree() << ", "
-         << "PRMSOR POS:" << prmsor->eclPos()._M_lont.to_arc_degree();
+//qDebug() << "SIGTOR POS:" << sigtor->eclPos()._M_lont.to_arc_degree() << ", "
+//         << "PRMSOR POS:" << prmsor->eclPos()._M_lont.to_arc_degree();
 }
     return event;
 }
@@ -92,7 +127,16 @@ void QForecast::initEvents()
 void QForecast::calc()
 {
 //    mModel->initCalc();
-    mPrmsorList = & mModel->hora()->allAspectObjects();
+    mPrmsorList = mModel->hora() ? & mModel->hora()->allAspectObjects() : nullptr;
+    if (mPrmsorList)
+    {
+        qDebug() << "------------------------------------";
+        for (QPrmsor* prmsor : *mPrmsorList)
+        {
+//            qDebug() << "PRMSOR:" << prmsor->abbrName() << "POS:" << prmsor->eclPos()._M_lont.to_arc_degree();
+        }
+        qDebug() << "------------------------------------";
+    }
     initEvents();
     while (!mEventBuffer.isEmpty()) mEvents.push_back(mEventBuffer.pop());
 return;

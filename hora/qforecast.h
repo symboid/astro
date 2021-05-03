@@ -29,6 +29,18 @@ public:
 private:
     QForecastModel* mModel;
 
+public:
+    qreal geoLatt() const;
+    qreal geoLont() const;
+    qreal tzDiff() const;
+    void setGeoLatt(qreal geoLatt);
+    void setGeoLont(qreal geoLont);
+    void setTzDiff(qreal tzDiff);
+private:
+    qreal mGeoLatt;
+    qreal mGeoLont;
+    qreal mTzDiff;
+
 private:
     void initEvents();
 private:
