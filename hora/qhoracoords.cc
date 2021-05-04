@@ -20,6 +20,13 @@ QHoraCoords::QHoraCoords(QObject *parent)
     connect(this, SIGNAL(geoLattChanged()), this, SIGNAL(changed()));
 }
 
+QHoraCoords::QHoraCoords(const QDateTime& dateTime, double tzDiffHours)
+    : QHoraCoords(nullptr)
+{
+    setDateTime(dateTime);
+    setTzDiff(tzDiffHours);
+}
+
 QHoraCoords& QHoraCoords::operator=(const QHoraCoords& src)
 {
     setYear(src.year());

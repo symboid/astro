@@ -21,7 +21,8 @@ SOURCES += \
     qhoraviewitem.cc \
     qhousecusp.cc \
     qmagobject.cc \
-    qplanet.cc
+    qplanet.cc \
+    qtransitmodel.cc
 
 HEADERS += \
     defs.h \
@@ -43,6 +44,7 @@ HEADERS += \
     qhousecusp.h \
     qmagobject.h \
     qplanet.h \
+    qtransitmodel.h \
     setup.h
 
 RESOURCES += \
