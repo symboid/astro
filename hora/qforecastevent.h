@@ -17,10 +17,10 @@ class ASTRO_HORA_API QSigtor : public QMagObject
     Q_OBJECT
 
 public:
-    QSigtor(QMagObject* origin, const QString& id);
+    QSigtor(QObject* parent, const QMagObject* origin, const QString& id);
     virtual QSigtor* clone() const = 0;
 private:
-    QMagObject* mOrigin;
+    const QMagObject* mOrigin;
 
 public:
     QEclPos eclPos() const override;
@@ -43,11 +43,11 @@ class ASTRO_HORA_API QPlanetSigtor : public QSigtor
     Q_OBJECT
 
 public:
-    QPlanetSigtor(QPlanet* planetOrigin);
+    QPlanetSigtor(QObject* parent, const QPlanet* planetOrigin);
     QSigtor* clone() const override;
 
 private:
-    QPlanet* mPlanetOrigin;
+    const QPlanet* mPlanetOrigin;
 public:
     bool calcEclPos(const QHoraCoords& horaCoords) override;
 };
@@ -57,11 +57,11 @@ class ASTRO_HORA_API QHouseCuspSigtor : public QSigtor
     Q_OBJECT
 
 public:
-    QHouseCuspSigtor(QHouseCusp* houseCuspOrigin);
+    QHouseCuspSigtor(QObject* parent, const QHouseCusp* houseCuspOrigin);
     QSigtor* clone() const override;
 
 private:
-    QHouseCusp* mHouseCuspOrigin;
+    const QHouseCusp* mHouseCuspOrigin;
 public:
     bool calcEclPos(const QHoraCoords& horaCoords) override;
 };

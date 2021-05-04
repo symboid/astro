@@ -7,7 +7,7 @@
 #include <QDateTime>
 #include "astro/hora/qforecastevent.h"
 
-class QForecast : public QObject
+class ASTRO_HORA_API QForecast : public QObject
 {
     Q_OBJECT
 

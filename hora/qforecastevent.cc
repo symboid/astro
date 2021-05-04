@@ -2,8 +2,8 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qforecastevent.h"
 
-QSigtor::QSigtor(QMagObject* origin, const QString& id)
-    : QMagObject(origin, id)
+QSigtor::QSigtor(QObject* parent, const QMagObject* origin, const QString& id)
+    : QMagObject(parent, id)
     , mOrigin(origin)
 {
 }
@@ -43,22 +43,22 @@ QOrbisValue QSigtor::orbis() const
     return mOrigin->orbis();
 }
 
-QPlanetSigtor::QPlanetSigtor(QPlanet* planetOrigin)
-    : QSigtor(planetOrigin, planetOrigin->id())
+QPlanetSigtor::QPlanetSigtor(QObject* parent, const QPlanet* planetOrigin)
+    : QSigtor(parent, planetOrigin, planetOrigin->id())
     , mPlanetOrigin(planetOrigin)
 {
 }
 
 QSigtor* QPlanetSigtor::clone() const
 {
-    return new QPlanetSigtor(mPlanetOrigin);
+    return new QPlanetSigtor(parent(), mPlanetOrigin);
 }
 
 bool QPlanetSigtor::calcEclPos(const QHoraCoords& horaCoords)
 {
     QEclPos eclPos;
     QEclSpeed eclSpeed;
-    QPlanet::Index objectIndex = mPlanetOrigin->mIndex == QLunarNode::DRAGON_HEAD || mPlanetOrigin->mIndex == QLunarNode::DRAGON_TAIL ?
+    QPlanet::Index objectIndex = mPlanetOrigin->mIndex == QPlanet::Index(1000) || mPlanetOrigin->mIndex == QPlanet::Index(1001) ?
                 QPlanet::MEAN_NODE : mPlanetOrigin->mIndex;
     bool isSuccess = (eph_proxy::object::calc_pos(objectIndex, horaCoords.ephTime(), eclPos, eclSpeed) == eph::calc_result::SUCCESS);
     if (isSuccess)
@@ -68,13 +68,15 @@ bool QPlanetSigtor::calcEclPos(const QHoraCoords& horaCoords)
             eclPos = QEclPos(eclPos._M_lont + 180.0, eclPos._M_latt, eclPos._M_dist);
         }
         mEclPos = eclPos;
+        emit eclPosChanged();
         mEclSpeed = eclSpeed;
+        emit eclSpeedChanged();
     }
     return isSuccess;
 }
 
-QHouseCuspSigtor::QHouseCuspSigtor(QHouseCusp* houseCuspOrigin)
-    : QSigtor(houseCuspOrigin, houseCuspOrigin->id())
+QHouseCuspSigtor::QHouseCuspSigtor(QObject* parent, const QHouseCusp* houseCuspOrigin)
+    : QSigtor(parent, houseCuspOrigin, houseCuspOrigin->id())
     , mHouseCuspOrigin(houseCuspOrigin)
 {
 }
@@ -102,7 +104,7 @@ bool QHouseCuspSigtor::calcEclPos(const QHoraCoords& horaCoords)
 
 QSigtor* QHouseCuspSigtor::clone() const
 {
-    return new QHouseCuspSigtor(mHouseCuspOrigin);
+    return new QHouseCuspSigtor(parent(), mHouseCuspOrigin);
 }
 
 QForecastEvent::QForecastEvent(QObject* parent, QSigtor* sigtor)

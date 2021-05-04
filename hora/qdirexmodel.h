@@ -5,7 +5,7 @@
 #include "astro/hora/defs.h"
 #include "astro/hora/qforecastmodel.h"
 
-class QDirexModel : public QForecastModel
+class ASTRO_HORA_API QDirexModel : public QForecastModel
 {
     Q_OBJECT
 public:
@@ -15,7 +15,7 @@ public:
     QDirexModel(QObject* parent = nullptr);
 
 public:
-    QVector<QSigtor*> sigtorList() const override;
+    QVector<QSigtor*> sigtorList() override;
     void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) override;
     QDateTime calcConj(QSigtor* sigtor, const QDateTime& startTime,
             const QAspectObjectList::Siblings& siblings) override;
