@@ -142,11 +142,9 @@ void QForecast::calc()
     QDateTime currentTime = mPeriodBegin;
     while (currentTime.isValid() && currentTime < mPeriodEnd)
     {
-        qDebug() << "DIR.TIME:" << currentTime;
         QForecastEvent* nextEvent = mEventBuffer.pop();
         if (nextEvent)
         {
-            qDebug() << "NEXT EVENT=" << nextEvent->eventExact();
             currentTime = nextEvent->eventExact().addSecs(3600);
             mEventBuffer.insert(createEvent(nextEvent->sigtor()->clone(), currentTime));
             mEvents.push_back(nextEvent);

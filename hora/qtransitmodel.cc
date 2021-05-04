@@ -69,27 +69,39 @@ QDateTime QTransitModel::calcTransitTime(QSigtor* sigtor, const QDateTime& start
         QEclPos conjPos = sigtor->eclPos();
         while (conjPos.dist_abs(precPos) > DIST_TOLERANCE && conjPos.dist_abs(succPos) > DIST_TOLERANCE)
         {
+//            qDebug() << "curr pos:" << conjPos._M_lont;
+//            qDebug() << "succ pos:" << succPos._M_lont;
+//            qDebug() << "prec pos:" << precPos._M_lont;
+
             // speed of planet at current position (measured in degrees/day):
-            QEclLont speed = sigtor->eclSpeed()._M_lont;
+            QEclSpeed::lont speed = sigtor->eclSpeed()._M_lont;
+//            qDebug() << "sigtor speed:" << speed;
+
             double estmDays = 1.0;
 
             // approx forward to succeeding pmsor:
             if (speed > 0.0)
             {
                 // distance to succeeding promissor in ecliptic degree:
-                QEclLont succDist = succPos.dist_to(conjPos);
+                QEclLont succDist = conjPos.dist_to(succPos);
 
                 // linear estimation of remaining days of progression:
                 estmDays = succDist / speed;
+
+//                qDebug() << "succ dist:" << succDist;
+//                qDebug() << "estm days:" << estmDays;
             }
 
             // approx backward to preceeding pmsor:
             else
             {
                 // distance to preceding promissor in ecliptic degree:
-                QEclLont precDist = precPos.dist_to(conjPos);
+                QEclLont precDist = conjPos.dist_to(precPos);
 
                 estmDays = precDist / speed;
+
+//                qDebug() << "prec dist:" << precDist;
+//                qDebug() << "estm days:" << estmDays;
             }
 
             if (estmDays > 1.0)
@@ -102,14 +114,11 @@ QDateTime QTransitModel::calcTransitTime(QSigtor* sigtor, const QDateTime& start
             }
 
             // stepping forward in time with estimated amount of days:
-            conjTime = conjTime.addSecs(qint64(estmDays * 86400));
-    /*
-            sy_debug("prsn time: %0.3lf", conjTime->utTime());
-            sy_debug("succ dist: %0.3lf", succPos->distTo(conjPos));
-            sy_debug("prec dist: %0.3lf", precPos->distTo(conjPos));
-            sy_debug("pln speed: %0.3lf", speed);
-            sy_debug("estm days: %0.3lf", estmDays);
-    */
+            conjTime = conjTime.addSecs(qint64(estmDays * 86400.0));
+
+//            qDebug() << "conj time:" << conjTime;
+//            qDebug() << "estm days:" << estmDays;
+
             // recalculation of progression position:
             sigtor->calcEclPos(QHoraCoords(conjTime, mTzDiff));
             conjPos = sigtor->eclPos();
