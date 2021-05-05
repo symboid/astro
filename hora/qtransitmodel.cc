@@ -17,7 +17,7 @@ QVector<QSigtor*> QTransitModel::sigtorList()
         {
             if (planetIsSigtor(*planet))
             {
-                sigtors.push_back(new QPlanetSigtor(this, *planet));
+                sigtors.push_back(new QPlanetSigtor(*planet));
             }
         }
     }

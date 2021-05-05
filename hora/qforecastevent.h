@@ -17,7 +17,7 @@ class ASTRO_HORA_API QSigtor : public QMagObject
     Q_OBJECT
 
 public:
-    QSigtor(QObject* parent, const QMagObject* origin, const QString& id);
+    QSigtor(const QMagObject* origin, const QString& id);
     virtual QSigtor* clone() const = 0;
 private:
     const QMagObject* mOrigin;
@@ -43,7 +43,7 @@ class ASTRO_HORA_API QPlanetSigtor : public QSigtor
     Q_OBJECT
 
 public:
-    QPlanetSigtor(QObject* parent, const QPlanet* planetOrigin);
+    QPlanetSigtor(const QPlanet* planetOrigin);
     QSigtor* clone() const override;
 
 private:
@@ -57,7 +57,7 @@ class ASTRO_HORA_API QHouseCuspSigtor : public QSigtor
     Q_OBJECT
 
 public:
-    QHouseCuspSigtor(QObject* parent, const QHouseCusp* houseCuspOrigin);
+    QHouseCuspSigtor(const QHouseCusp* houseCuspOrigin);
     QSigtor* clone() const override;
 
 private:
@@ -71,7 +71,7 @@ class ASTRO_HORA_API QForecastEvent : public QObject
     Q_OBJECT
 
 public:
-    QForecastEvent(QObject* parent, QSigtor* sigtor = nullptr);
+    QForecastEvent(QSigtor* sigtor = nullptr);
 
 public:
     Q_PROPERTY(QDateTime eventBegin READ eventBegin NOTIFY eventBeginChanged)

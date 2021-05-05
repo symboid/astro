@@ -14,12 +14,12 @@ QVector<QSigtor*> QDirexModel::sigtorList()
     {
         for (QHora::Planets::ConstIterator planet = mHora->planetsBegin(); planet != mHora->planetsEnd(); ++planet)
         {
-            sigtors.push_back(new QPlanetSigtor(this, *planet));
+            sigtors.push_back(new QPlanetSigtor(*planet));
         }
-        sigtors.push_back(new QHouseCuspSigtor(this, mHora->house(1)));
-        sigtors.push_back(new QHouseCuspSigtor(this, mHora->house(4)));
-        sigtors.push_back(new QHouseCuspSigtor(this, mHora->house(7)));
-        sigtors.push_back(new QHouseCuspSigtor(this, mHora->house(10)));
+        sigtors.push_back(new QHouseCuspSigtor(mHora->house(1)));
+        sigtors.push_back(new QHouseCuspSigtor(mHora->house(4)));
+        sigtors.push_back(new QHouseCuspSigtor(mHora->house(7)));
+        sigtors.push_back(new QHouseCuspSigtor(mHora->house(10)));
     }
     return sigtors;
 }
@@ -42,7 +42,7 @@ QDateTime QDirexModel::calcConj(QSigtor* sigtor, const QDateTime& startTime,
     if (sigtor && siblings.mSucc)
     {
         qreal yearDist = sigtor->eclPos().dist_to(siblings.mSucc->eclPos());
-        conjTime = startTime.addSecs(yearDist * 365.25 * 86400.0);
+        conjTime = startTime.addSecs(qint64(yearDist * 365.25 * 86400.0));
         sigtor->setEclPos(siblings.mSucc->eclPos());
     }
     return conjTime;
@@ -51,7 +51,7 @@ QDateTime QDirexModel::calcConj(QSigtor* sigtor, const QDateTime& startTime,
 int QDirexModel::estimatedEventCount(const QDateTime& periodBegin, const QDateTime& periodEnd) const
 {
     static constexpr double AVG_DIREX_COUNT_PER_MONTH = 2.0;
-    double lengthInDays = periodBegin.daysTo(periodEnd);
+    double lengthInDays = double(periodBegin.daysTo(periodEnd));
     double lengthInMonths = lengthInDays < 30.0 ? 1.0 : lengthInDays / 30.0;
-    return lengthInMonths * AVG_DIREX_COUNT_PER_MONTH;
+    return int(lengthInMonths * AVG_DIREX_COUNT_PER_MONTH);
 }

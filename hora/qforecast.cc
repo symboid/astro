@@ -98,7 +98,7 @@ QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& earlies
     QAspectObjectList::Siblings siblings = mPrmsorList->find(sigtor->eclPos());
     if (siblings.mPrec && siblings.mSucc)
     {
-        event = new QForecastEvent(this, sigtor);
+        event = new QForecastEvent(sigtor);
         QDateTime exactTime = mModel->calcConj(sigtor, earliestTime, siblings);
         event->setEventExact(exactTime);
 

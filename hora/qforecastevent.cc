@@ -2,8 +2,8 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qforecastevent.h"
 
-QSigtor::QSigtor(QObject* parent, const QMagObject* origin, const QString& id)
-    : QMagObject(parent, id)
+QSigtor::QSigtor(const QMagObject* origin, const QString& id)
+    : QMagObject(nullptr, id)
     , mOrigin(origin)
 {
 }
@@ -43,15 +43,15 @@ QOrbisValue QSigtor::orbis() const
     return mOrigin->orbis();
 }
 
-QPlanetSigtor::QPlanetSigtor(QObject* parent, const QPlanet* planetOrigin)
-    : QSigtor(parent, planetOrigin, planetOrigin->id())
+QPlanetSigtor::QPlanetSigtor(const QPlanet* planetOrigin)
+    : QSigtor(planetOrigin, planetOrigin->id())
     , mPlanetOrigin(planetOrigin)
 {
 }
 
 QSigtor* QPlanetSigtor::clone() const
 {
-    return new QPlanetSigtor(parent(), mPlanetOrigin);
+    return new QPlanetSigtor(mPlanetOrigin);
 }
 
 bool QPlanetSigtor::calcEclPos(const QHoraCoords& horaCoords)
@@ -75,8 +75,8 @@ bool QPlanetSigtor::calcEclPos(const QHoraCoords& horaCoords)
     return isSuccess;
 }
 
-QHouseCuspSigtor::QHouseCuspSigtor(QObject* parent, const QHouseCusp* houseCuspOrigin)
-    : QSigtor(parent, houseCuspOrigin, houseCuspOrigin->id())
+QHouseCuspSigtor::QHouseCuspSigtor(const QHouseCusp* houseCuspOrigin)
+    : QSigtor(houseCuspOrigin, houseCuspOrigin->id())
     , mHouseCuspOrigin(houseCuspOrigin)
 {
 }
@@ -104,11 +104,11 @@ bool QHouseCuspSigtor::calcEclPos(const QHoraCoords& horaCoords)
 
 QSigtor* QHouseCuspSigtor::clone() const
 {
-    return new QHouseCuspSigtor(parent(), mHouseCuspOrigin);
+    return new QHouseCuspSigtor(mHouseCuspOrigin);
 }
 
-QForecastEvent::QForecastEvent(QObject* parent, QSigtor* sigtor)
-    : QObject(parent)
+QForecastEvent::QForecastEvent(QSigtor* sigtor)
+    : QObject(nullptr)
     , mSigtor(sigtor)
 {
 }
