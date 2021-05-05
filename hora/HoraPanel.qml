@@ -29,7 +29,6 @@ Item {
 
     property alias horaCoords: horaView.coords
     property alias housesType: horaView.housesType
-    property alias withJulianCalendar: horaView.withJulianCalendar
 
     property alias planetsModel: horaView.planetsModel
     property alias housesModel: horaView.housesModel

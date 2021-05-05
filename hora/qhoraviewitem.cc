@@ -110,7 +110,6 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     , mIsInteractive(false)
     , mCoords(nullptr)
     , mHousesType("placidus")
-    , mCalendarIsJulian(false)
     , mPlanetsModel(new QHoraPlanetsModel(mHora, this))
     , mHousesModel(new QHoraHousesModel(mHora, this))
 {
@@ -556,15 +555,6 @@ void QHoraViewItem::setHousesType(const QString& housesType)
     }
 }
 
-void QHoraViewItem::setCalendarIsJulian(bool calendarIsJulian)
-{
-    if (mCalendarIsJulian != calendarIsJulian)
-    {
-        mCalendarIsJulian = calendarIsJulian;
-        emit withJulianCalendarChanged();
-    }
-}
-
 void QHoraViewItem::setInteractive(bool isInteractive)
 {
     if (mIsInteractive != isInteractive)
@@ -580,7 +570,6 @@ void QHoraViewItem::onInteractiveChanged()
     {
         connect(this, SIGNAL(coordsChanged()), this, SLOT(recalc()));
         connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
         connect(mHoraConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
         recalc();
     }
@@ -588,7 +577,6 @@ void QHoraViewItem::onInteractiveChanged()
     {
         disconnect(this, SIGNAL(coordsChanged()), this, SLOT(recalc()));
         disconnect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(withJulianCalendarChanged()), this, SLOT(recalc()));
         disconnect(mHoraConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
     }
 }

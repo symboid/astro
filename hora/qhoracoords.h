@@ -32,6 +32,7 @@ public:
     Q_PROPERTY(qreal tzDiff READ tzDiff WRITE setTzDiff NOTIFY tzDiffChanged)
     Q_PROPERTY(qreal geoLont MEMBER mGeoLont WRITE setGeoLont NOTIFY geoLontChanged)
     Q_PROPERTY(qreal geoLatt MEMBER mGeoLatt WRITE setGeoLatt NOTIFY geoLattChanged)
+    Q_PROPERTY(bool withJulianCalendar READ calendarIsJulian WRITE setCalendarIsJulian NOTIFY withJulianCalendarChanged)
 public:
     int year() const;
     int month() const;
@@ -42,6 +43,7 @@ public:
     qreal tzDiff() const;
     qreal geoLont() const;
     qreal geoLatt() const;
+    bool calendarIsJulian() const;
     void setYear(int year);
     void setMonth(int month);
     void setDay(int day);
@@ -51,6 +53,7 @@ public:
     void setTzDiff(qreal tzDiff);
     void setGeoLont(qreal geoLont);
     void setGeoLatt(qreal geoLatt);
+    void setCalendarIsJulian(bool calendarIsJulian);
 private:
     eph::calendar_coords mCalendarCoords;
     std::chrono::minutes mTzDiff;
@@ -67,6 +70,7 @@ signals:
     void geoLontChanged();
     void geoLattChanged();
     void changed();
+    void withJulianCalendarChanged();
 
 public:
     QEphTime ephTime() const;

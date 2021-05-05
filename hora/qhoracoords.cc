@@ -4,7 +4,7 @@
 
 QHoraCoords::QHoraCoords(QObject *parent)
     : QObject(parent)
-    , mCalendarCoords({1,1,1,0,0,0})
+    , mCalendarCoords({1,1,1,0,0,0,eph::calendar_type::GREGORIAN})
     , mTzDiff(0)
     , mGeoLont(0.0)
     , mGeoLatt(0.0)
@@ -18,12 +18,14 @@ QHoraCoords::QHoraCoords(QObject *parent)
     connect(this, SIGNAL(tzDiffChanged()), this, SIGNAL(changed()));
     connect(this, SIGNAL(geoLontChanged()), this, SIGNAL(changed()));
     connect(this, SIGNAL(geoLattChanged()), this, SIGNAL(changed()));
+    connect(this, SIGNAL(withJulianCalendarChanged()), this, SIGNAL(changed()));
 }
 
 QHoraCoords::QHoraCoords(const QDateTime& dateTime, double tzDiffHours)
     : QHoraCoords(nullptr)
 {
     setDateTime(dateTime);
+    setCalendarIsJulian(false);
     setTzDiff(tzDiffHours);
 }
 
@@ -40,6 +42,8 @@ QHoraCoords& QHoraCoords::operator=(const QHoraCoords& src)
     setTzDiff(src.tzDiff());
     setGeoLont(src.geoLont());
     setGeoLatt(src.geoLatt());
+
+    setCalendarIsJulian(src.calendarIsJulian());
 
     return *this;
 }
@@ -87,6 +91,11 @@ qreal QHoraCoords::geoLont() const
 qreal QHoraCoords::geoLatt() const
 {
     return mGeoLatt;
+}
+
+bool QHoraCoords::calendarIsJulian() const
+{
+    return  mCalendarCoords._M_calendar_type == eph::calendar_type::JULIAN;
 }
 
 void QHoraCoords::setYear(int year)
@@ -168,6 +177,15 @@ void QHoraCoords::setTzDiff(qreal tzDiffHours)
     {
         mTzDiff = tzDiff;
         emit tzDiffChanged();
+    }
+}
+
+void QHoraCoords::setCalendarIsJulian(bool isJulian)
+{
+    if (isJulian != calendarIsJulian())
+    {
+        mCalendarCoords._M_calendar_type = isJulian ? eph::calendar_type::JULIAN : eph::calendar_type::GREGORIAN;
+        emit withJulianCalendarChanged();
     }
 }
 

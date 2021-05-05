@@ -115,19 +115,15 @@ private slots:
 public:
     Q_PROPERTY(QHoraCoords* coords MEMBER mCoords WRITE setCoords NOTIFY coordsChanged)
     Q_PROPERTY(QString housesType MEMBER mHousesType WRITE setHousesType NOTIFY housesTypeChanged)
-    Q_PROPERTY(bool withJulianCalendar MEMBER mCalendarIsJulian WRITE setCalendarIsJulian NOTIFY withJulianCalendarChanged)
 public:
     void setCoords(QHoraCoords* coords);
     void setHousesType(const QString& housesType);
-    void setCalendarIsJulian(bool calendarIsJulian);
 private:
     QHoraCoords* mCoords;
     QString mHousesType;
-    bool mCalendarIsJulian;
 signals:
     void coordsChanged();
     void housesTypeChanged();
-    void withJulianCalendarChanged();
     void fontPointSizeChanged();
 
 private slots:
