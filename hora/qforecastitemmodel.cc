@@ -1,6 +1,7 @@
 
 #include "astro/hora/setup.h"
 #include "astro/hora/qforecastitemmodel.h"
+#include <QtConcurrent>
 
 QForecastItemModel::QForecastItemModel(QObject* parent)
     : QHoraTableModel(Q_NULLPTR, parent)
@@ -10,7 +11,7 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
 {
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(invokeRecalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(invokeRecalc()));
-
+    connect(this, SIGNAL(recalculated()), this, SLOT(onRecalculated()));
 }
 
 int QForecastItemModel::rowCount(const QModelIndex& parent) const
@@ -126,8 +127,15 @@ void QForecastItemModel::invokeRecalc()
 void QForecastItemModel::recalc()
 {
     beginResetModel();
-    mForecast.calc();
-    setValid(true);
+    QtConcurrent::run([this]{
+        mForecast.calc();
+        setValid(true);
+        emit recalculated();
+    });
+}
+
+void QForecastItemModel::onRecalculated()
+{
     endResetModel();
 }
 

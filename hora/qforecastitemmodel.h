@@ -70,10 +70,12 @@ private:
 signals:
     void autoRecalcChanged();
     void validChanged();
+    void recalculated();
 public slots:
-   Q_INVOKABLE void recalc();
+    Q_INVOKABLE void recalc();
 private slots:
     void invokeRecalc();
+    void onRecalculated();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECASTITEMMODEL_H__
