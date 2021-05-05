@@ -41,18 +41,21 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         contentItem: Row {
             spacing: 10
-            Button {
-                text: qsTr("Recalculate")
+            RoundButton {
+                radius: 5
+                icon.source: "/icons/refresh_icon&24.png"
                 anchors.verticalCenter: parent.verticalCenter
                 enabled: !autoRecalcButton.checked
                 highlighted: !forecastItemModel.valid
                 onClicked: forecastItemModel.recalc()
             }
-            Switch {
+            RoundButton {
                 id: autoRecalcButton
                 anchors.verticalCenter: parent.verticalCenter
                 checkable: true
-                text: qsTr("Automated")
+                radius: 5
+                display: RoundButton.IconOnly
+                icon.source: checked ? "/icons/connect_icon&24.png" : "/icons/not_connected_icon&24.png"
             }
         }
     }
