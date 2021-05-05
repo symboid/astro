@@ -10,14 +10,12 @@ Item {
     property alias hora: forecastItemModel.hora
     property alias forecastModel: forecastItemModel.forecastModel
     property alias autoRecalc: autoRecalcButton.checked
-    signal startCalc
-    signal stopCalc
 
     ForecastItemModel {
         id: forecastItemModel
         autoRecalc: autoRecalcButton.checked
-        onModelAboutToBeReset: startCalc()
-        onModelReset: stopCalc()
+        onModelAboutToBeReset: calcIndicator.running = true
+        onModelReset: calcIndicator.running = false
     }
     ForecastTableView {
         anchors.top: parent.top
@@ -25,8 +23,14 @@ Item {
         anchors.right: parent.right
         anchors.bottom: buttonRow.top
         tableModel: forecastItemModel
-        opacity: forecastItemModel.valid ? 1.0 : 0.5
+        opacity: forecastItemModel.valid && !calcIndicator.running ? 1.0 : 0.5
     }
+    BusyIndicator {
+        id: calcIndicator
+        anchors.centerIn: parent
+        running: false
+    }
+
     Label {
         anchors.centerIn: parent
         visible: !forecastItemModel.valid
