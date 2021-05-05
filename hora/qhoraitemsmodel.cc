@@ -20,7 +20,6 @@ void QHoraTableModel::setHora(QHora* hora)
     {
         mHora = hora;
         emit horaChanged();
-        connect(mHora, SIGNAL(recalculated()), this, SIGNAL(horaRecalculated()));
     }
 }
 

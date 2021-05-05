@@ -623,5 +623,4 @@ void QHoraViewItem::recalc()
     mHousesModel->endResetModel();
     update();
     emit stopCalc();
-    emit horaChanged();
 }

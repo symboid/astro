@@ -82,12 +82,9 @@ private:
     qreal mMandalaRadius;
     QHora* mHora;
 
-    Q_PROPERTY(QHora* hora READ hora NOTIFY horaChanged)
+    Q_PROPERTY(QHora* hora READ hora CONSTANT)
 private:
     QHora* hora() const { return mHora; }
-signals:
-    void horaChanged();
-//    QList<eph::constellation*> mConstellations;
 
 private:
     eph::ecl_lont mandalaLeft() const;

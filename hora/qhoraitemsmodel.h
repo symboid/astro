@@ -23,7 +23,6 @@ public:
     virtual void setHora(QHora* hora);
 signals:
     void horaChanged();
-    void horaRecalculated();
 
 protected:
     QSharedPointer<QAstroFont> mAstroFont;
