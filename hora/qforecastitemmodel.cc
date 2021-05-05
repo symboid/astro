@@ -5,9 +5,12 @@
 QForecastItemModel::QForecastItemModel(QObject* parent)
     : QHoraTableModel(Q_NULLPTR, parent)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
+    , mAutoRecalc(false)
+    , mIsValid(false)
 {
-    connect(this, SIGNAL(periodBeginChanged()), this, SLOT(recalc()));
-    connect(this, SIGNAL(periodEndChanged()), this, SLOT(recalc()));
+    connect(this, SIGNAL(periodBeginChanged()), this, SLOT(invokeRecalc()));
+    connect(this, SIGNAL(periodEndChanged()), this, SLOT(invokeRecalc()));
+
 }
 
 int QForecastItemModel::rowCount(const QModelIndex& parent) const
@@ -50,7 +53,7 @@ QHora* QForecastItemModel::hora() const
 void QForecastItemModel::setHora(QHora* hora)
 {
     mForecast.model()->setHora(hora);
-    connect(hora, SIGNAL(recalculated()), this, SLOT(recalc()));
+    connect(hora, SIGNAL(recalculated()), this, SLOT(invokeRecalc()));
 }
 
 QStringList QForecastItemModel::headerModel() const
@@ -86,10 +89,45 @@ void QForecastItemModel::setPeriodEnd(const QDateTime& periodEnd)
     }
 }
 
+void QForecastItemModel::setAutoRecalc(bool autoRecalc)
+{
+    if (mAutoRecalc != autoRecalc)
+    {
+        mAutoRecalc = autoRecalc;
+        emit autoRecalcChanged();
+        if (mAutoRecalc && !mIsValid)
+        {
+            recalc();
+        }
+    }
+}
+
+void QForecastItemModel::setValid(bool isValid)
+{
+    if (mIsValid != isValid)
+    {
+        mIsValid = isValid;
+        emit validChanged();
+    }
+}
+
+void QForecastItemModel::invokeRecalc()
+{
+    if (mAutoRecalc)
+    {
+        recalc();
+    }
+    else
+    {
+        setValid(false);
+    }
+}
+
 void QForecastItemModel::recalc()
 {
     beginResetModel();
     mForecast.calc();
+    setValid(true);
     endResetModel();
 }
 

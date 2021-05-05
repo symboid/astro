@@ -59,8 +59,21 @@ signals:
 private:
     QForecast mForecast;
     QSharedPointer<QAstroFont> mAstroFont;
+
+    Q_PROPERTY(bool autoRecalc MEMBER mAutoRecalc WRITE setAutoRecalc NOTIFY autoRecalcChanged)
+    Q_PROPERTY(bool valid MEMBER mIsValid WRITE setValid NOTIFY validChanged)
+private:
+    bool mAutoRecalc;
+    bool mIsValid;
+    void setAutoRecalc(bool autoRecalc);
+    void setValid(bool isValid);
+signals:
+    void autoRecalcChanged();
+    void validChanged();
+public slots:
+   Q_INVOKABLE void recalc();
 private slots:
-    void recalc();
+    void invokeRecalc();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECASTITEMMODEL_H__

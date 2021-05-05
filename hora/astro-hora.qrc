@@ -10,6 +10,7 @@
         <file>HousesTableView.qml</file>
         <file>ForecastTableView.qml</file>
         <file>AspectSettingsGroup.qml</file>
+        <file>ForecastTablePane.qml</file>
     </qresource>
     <qresource prefix="/tr">
         <file>astro-hora_hu.qm</file>

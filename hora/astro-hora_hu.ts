@@ -81,6 +81,25 @@
     </message>
 </context>
 <context>
+    <name>ForecastTablePane</name>
+    <message>
+        <location filename="ForecastTablePane.qml" line="33"/>
+        <source>Parameters has changed.
+Table must be recalculated!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ForecastTablePane.qml" line="45"/>
+        <source>Recalculate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ForecastTablePane.qml" line="55"/>
+        <source>Automated</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>HoraSettingsPane</name>
     <message>
         <location filename="HoraSettingsPane.qml" line="9"/>
