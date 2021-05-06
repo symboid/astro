@@ -21,6 +21,12 @@ QHoraCoords::QHoraCoords(QObject *parent)
     connect(this, SIGNAL(withJulianCalendarChanged()), this, SIGNAL(changed()));
 }
 
+QHoraCoords::QHoraCoords(const QEphTime& ephTime)
+    : QHoraCoords(nullptr)
+{
+    setEphTime(ephTime);
+}
+
 QHoraCoords::QHoraCoords(const QDateTime& dateTime, double tzDiffHours)
     : QHoraCoords(nullptr)
 {
@@ -192,6 +198,11 @@ void QHoraCoords::setCalendarIsJulian(bool isJulian)
 QEphTime QHoraCoords::ephTime() const
 {
     return eph::basic_calendar<eph_proxy>::time(mCalendarCoords) - mTzDiff;
+}
+
+void QHoraCoords::setEphTime(const QEphTime& ephTime)
+{
+    mCalendarCoords = eph::basic_calendar<eph_proxy>::coords(ephTime + mTzDiff);
 }
 
 QDateTime QHoraCoords::dateTime() const

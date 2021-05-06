@@ -21,6 +21,10 @@ struct basic_calendar
     {
         return clock::time(_calendar_coords);
     }
+    static calendar_coords coords(const time_point& _time_point)
+    {
+        return clock::coords(_time_point);
+    }
 };
 
 template <class _EphProxy>

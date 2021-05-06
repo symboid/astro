@@ -24,6 +24,7 @@ struct ASTRO_DB_API proxy
         typedef typename duration::period period;
         typedef typename std::chrono::time_point<clock> time_point;
         static time_point time(const eph::calendar_coords& _calendar_coords);
+        static eph::calendar_coords coords(const time_point& _time_point);
     };
 
     enum class calc_type

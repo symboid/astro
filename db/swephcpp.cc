@@ -36,6 +36,20 @@ proxy::clock::time_point proxy::clock::time(const eph::calendar_coords& _calenda
     return time_point(duration(swe_julday(_calendar_coords._M_year, _calendar_coords._M_month, _calendar_coords._M_day, hours, gregFlag)));
 }
 
+eph::calendar_coords proxy::clock::coords(const time_point& _time_point)
+{
+    eph::calendar_coords coords;
+    coords._M_calendar_type = eph::calendar_type::GREGORIAN;
+    rep hours(0.0);
+    swe_revjul(_time_point.time_since_epoch().count(), SE_GREG_CAL, &coords._M_year, &coords._M_month, &coords._M_day, &hours);
+    coords._M_hour = int(std::floor(hours));
+    rep frac_hours = hours - rep(coords._M_hour);
+    coords._M_minute = int(std::floor(60.0 * frac_hours));
+    rep frac_minutes = 60.0 * frac_hours - rep(coords._M_minute);
+    coords._M_second = int(std::floor(60.0 * frac_minutes));
+    return coords;
+}
+
 static proxy::calc_type _G_calc_type = proxy::calc_type::DEFAULT;
 
 void proxy::set_calc_type(proxy::calc_type _calc_type)
