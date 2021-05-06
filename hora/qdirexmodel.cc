@@ -38,6 +38,7 @@ void QDirexModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords)
 QDateTime QDirexModel::calcConj(QSigtor* sigtor, const QDateTime& startTime,
         const QAspectObjectList::Siblings& siblings)
 {
+    Q_ASSERT(startTime.timeSpec() == Qt::UTC);
     QDateTime conjTime;
     if (sigtor && siblings.mSucc)
     {
@@ -45,11 +46,14 @@ QDateTime QDirexModel::calcConj(QSigtor* sigtor, const QDateTime& startTime,
         conjTime = startTime.addSecs(qint64(yearDist * 365.25 * 86400.0));
         sigtor->setEclPos(siblings.mSucc->eclPos());
     }
+    Q_ASSERT(conjTime.timeSpec() == Qt::UTC);
     return conjTime;
 }
 
 int QDirexModel::estimatedEventCount(const QDateTime& periodBegin, const QDateTime& periodEnd) const
 {
+    Q_ASSERT(periodBegin.timeSpec() == Qt::UTC && periodEnd.timeSpec() == Qt::UTC);
+
     static constexpr double AVG_DIREX_COUNT_PER_MONTH = 2.0;
     double lengthInDays = double(periodBegin.daysTo(periodEnd));
     double lengthInMonths = lengthInDays < 30.0 ? 1.0 : lengthInDays / 30.0;

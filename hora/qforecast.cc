@@ -21,7 +21,7 @@ QDateTime QForecast::periodBegin() const
 
 void QForecast::setPeriodBegin(const QDateTime& periodBegin)
 {
-    mPeriodBegin = periodBegin;
+    mPeriodBegin = periodBegin.toUTC();
 }
 
 QDateTime QForecast::periodEnd() const
@@ -31,7 +31,7 @@ QDateTime QForecast::periodEnd() const
 
 void QForecast::setPeriodEnd(const QDateTime& periodEnd)
 {
-    mPeriodEnd = periodEnd;
+    mPeriodEnd = periodEnd.toUTC();
 }
 
 qreal QForecast::geoLatt() const
@@ -86,6 +86,8 @@ const QForecastEvent* QForecast::forecastEvent(int eventIndex) const
 
 QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& earliestTime)
 {
+    Q_ASSERT(earliestTime.timeSpec() == Qt::UTC);
+
     QForecastEvent* event = nullptr;
 
     QHoraCoords initCoords;
@@ -100,6 +102,8 @@ QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& earlies
     {
         event = new QForecastEvent(sigtor);
         QDateTime exactTime = mModel->calcConj(sigtor, earliestTime, siblings);
+        Q_ASSERT(exactTime.timeSpec() == Qt::UTC);
+
         event->setEventExact(exactTime);
 
         QEclPos sigtorPos = sigtor->eclPos();

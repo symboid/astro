@@ -40,6 +40,8 @@ QDateTime QTransitModel::calcConj(QSigtor* sigtor, const QDateTime& startTime,
 
 int QTransitModel::estimatedEventCount(const QDateTime& periodBegin, const QDateTime& periodEnd) const
 {
+    Q_ASSERT(periodBegin.timeSpec() == Qt::UTC && periodEnd.timeSpec() == Qt::UTC);
+
     static constexpr double AVG_DIREX_COUNT_PER_MONTH = 2.0;
     double lengthInDays = periodBegin.daysTo(periodEnd);
     double lengthInMonths = lengthInDays < 30.0 ? 1.0 : lengthInDays / 30.0;
@@ -59,6 +61,8 @@ void QTransitModel::setTzDiff(double tzDiff)
 QDateTime QTransitModel::calcTransitTime(QSigtor* sigtor, const QDateTime& startTime,
         const QEclPos& precPos, const QEclPos& succPos)
 {
+    Q_ASSERT(startTime.timeSpec() == Qt::UTC);
+
     QDateTime conjTime = startTime;
 
     if (sigtor)
@@ -124,6 +128,8 @@ QDateTime QTransitModel::calcTransitTime(QSigtor* sigtor, const QDateTime& start
             conjPos = sigtor->eclPos();
         }
     }
+
+    Q_ASSERT(conjTime.timeSpec() == Qt::UTC);
 
     return conjTime;
 }
