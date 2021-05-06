@@ -32,18 +32,16 @@ void QTransitModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoord
     }
 }
 
-QDateTime QTransitModel::calcConj(QSigtor* sigtor, const QDateTime& startTime,
+QHoraCoords* QTransitModel::calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
         const QAspectObjectList::Siblings& siblings)
 {
-    return calcTransitTime(sigtor, startTime, siblings.mPrec->eclPos(), siblings.mSucc->eclPos());
+    return calcTransitCoords(sigtor, startTime, siblings.mPrec->eclPos(), siblings.mSucc->eclPos());
 }
 
-int QTransitModel::estimatedEventCount(const QDateTime& periodBegin, const QDateTime& periodEnd) const
+int QTransitModel::estimatedEventCount(const QHoraCoords* periodBegin, const QHoraCoords* periodEnd) const
 {
-    Q_ASSERT(periodBegin.timeSpec() == Qt::UTC && periodEnd.timeSpec() == Qt::UTC);
-
     static constexpr double AVG_DIREX_COUNT_PER_MONTH = 2.0;
-    double lengthInDays = periodBegin.daysTo(periodEnd);
+    double lengthInDays = (periodEnd->ephTime()-periodBegin->ephTime()).count();
     double lengthInMonths = lengthInDays < 30.0 ? 1.0 : lengthInDays / 30.0;
     return lengthInMonths * AVG_DIREX_COUNT_PER_MONTH;
 }
@@ -58,18 +56,19 @@ void QTransitModel::setTzDiff(double tzDiff)
     mTzDiff = tzDiff;
 }
 
-QDateTime QTransitModel::calcTransitTime(QSigtor* sigtor, const QDateTime& startTime,
+QHoraCoords* QTransitModel::calcTransitCoords(QSigtor* sigtor, const QHoraCoords* startTime,
         const QEclPos& precPos, const QEclPos& succPos)
 {
-    Q_ASSERT(startTime.timeSpec() == Qt::UTC);
-
-    QDateTime conjTime = startTime;
+    QEphTime conjTime = startTime->ephTime();
+    const eph::arc_degree geoLatt = startTime->geoLatt();
+    const eph::arc_degree geoLont = startTime->geoLont();
+    const double tzDiff = startTime->tzDiff();
 
     if (sigtor)
     {
         double DIST_TOLERANCE = 1.0 / 3600.0;
 
-        sigtor->calcEclPos(QHoraCoords(startTime, mTzDiff));
+        sigtor->calcEclPos(*startTime);
         QEclPos conjPos = sigtor->eclPos();
         while (conjPos.dist_abs(precPos) > DIST_TOLERANCE && conjPos.dist_abs(succPos) > DIST_TOLERANCE)
         {
@@ -118,18 +117,20 @@ QDateTime QTransitModel::calcTransitTime(QSigtor* sigtor, const QDateTime& start
             }
 
             // stepping forward in time with estimated amount of days:
-            conjTime = conjTime.addSecs(qint64(estmDays * 86400.0));
+            conjTime += eph::basic_calendar<eph_proxy>::days(estmDays);
 
 //            qDebug() << "conj time:" << conjTime;
 //            qDebug() << "estm days:" << estmDays;
 
             // recalculation of progression position:
-            sigtor->calcEclPos(QHoraCoords(conjTime, mTzDiff));
+            sigtor->calcEclPos(conjTime, geoLatt, geoLont);
             conjPos = sigtor->eclPos();
         }
     }
 
-    Q_ASSERT(conjTime.timeSpec() == Qt::UTC);
-
-    return conjTime;
+    QHoraCoords* conjCoords = new QHoraCoords(conjTime);
+    conjCoords->setGeoLatt(geoLatt);
+    conjCoords->setGeoLont(geoLont);
+    conjCoords->setTzDiff(tzDiff);
+    return conjCoords;
 }

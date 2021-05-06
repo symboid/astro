@@ -14,24 +14,24 @@ QForecast::QForecast(QObject* parent)
 {
 }
 
-QDateTime QForecast::periodBegin() const
+QHoraCoords* QForecast::periodBegin() const
 {
     return mPeriodBegin;
 }
 
-void QForecast::setPeriodBegin(const QDateTime& periodBegin)
+void QForecast::setPeriodBegin(QHoraCoords* periodBegin)
 {
-    mPeriodBegin = periodBegin.toUTC();
+    mPeriodBegin = periodBegin;
 }
 
-QDateTime QForecast::periodEnd() const
+QHoraCoords* QForecast::periodEnd() const
 {
     return mPeriodEnd;
 }
 
-void QForecast::setPeriodEnd(const QDateTime& periodEnd)
+void QForecast::setPeriodEnd(QHoraCoords* periodEnd)
 {
-    mPeriodEnd = periodEnd.toUTC();
+    mPeriodEnd = periodEnd;
 }
 
 qreal QForecast::geoLatt() const
@@ -84,27 +84,19 @@ const QForecastEvent* QForecast::forecastEvent(int eventIndex) const
     return mEvents.at(eventIndex);
 }
 
-QForecastEvent* QForecast::createEvent(QSigtor* sigtor, const QDateTime& earliestTime)
+QForecastEvent* QForecast::createEvent(QSigtor* sigtor, QHoraCoords* earliestTime)
 {
-    Q_ASSERT(earliestTime.timeSpec() == Qt::UTC);
-
     QForecastEvent* event = nullptr;
 
-    QHoraCoords initCoords;
-    initCoords.setDateTime(earliestTime);
-    initCoords.setGeoLatt(mGeoLatt);
-    initCoords.setGeoLont(mGeoLont);
-    initCoords.setTzDiff(mTzDiff);
-    mModel->initSigtorPos(sigtor, initCoords);
+    mModel->initSigtorPos(sigtor, *earliestTime);
 
     QAspectObjectList::Siblings siblings = mPrmsorList->find(sigtor->eclPos());
     if (siblings.mPrec && siblings.mSucc)
     {
         event = new QForecastEvent(sigtor);
-        QDateTime exactTime = mModel->calcConj(sigtor, earliestTime, siblings);
-        Q_ASSERT(exactTime.timeSpec() == Qt::UTC);
+        QHoraCoords* exactCoords = mModel->calcConj(sigtor, earliestTime, siblings);
 
-        event->setEventExact(exactTime);
+        event->setEventExact(exactCoords);
 
         QEclPos sigtorPos = sigtor->eclPos();
         bool precIsCloser = sigtorPos.dist_abs(siblings.mPrec->eclPos()) <
@@ -143,14 +135,16 @@ void QForecast::calc()
 
     initEvents();
 
-    QDateTime currentTime = mPeriodBegin;
-    while (currentTime.isValid() && currentTime < mPeriodEnd)
+    QHoraCoords currentTime;
+    currentTime = *mPeriodBegin;
+
+    while (currentTime.ephTime() < mPeriodEnd->ephTime())
     {
         QForecastEvent* nextEvent = mEventBuffer.pop();
         if (nextEvent)
         {
-            currentTime = nextEvent->eventExact().addSecs(3600);
-            mEventBuffer.insert(createEvent(nextEvent->sigtor()->clone(), currentTime));
+            currentTime.setEphTime(nextEvent->eventExact()->ephTime() + eph::basic_calendar<eph_proxy>::days(1.0/24.0));
+            mEventBuffer.insert(createEvent(nextEvent->sigtor()->clone(), &currentTime));
             mEvents.push_back(nextEvent);
         }
         else

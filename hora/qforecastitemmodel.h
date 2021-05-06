@@ -6,7 +6,6 @@
 #include "astro/hora/qhoraitemsmodel.h"
 #include "astro/hora/qforecastevent.h"
 #include "astro/hora/qforecast.h"
-#include <QDateTime>
 #include "astro/controls/qastrofont.h"
 
 class ASTRO_HORA_API QForecastItemModel : public QHoraTableModel
@@ -37,13 +36,13 @@ public:
     virtual QHora* hora() const override;
     virtual void setHora(QHora* hora) override;
 
-    Q_PROPERTY(QDateTime periodBegin READ periodBegin WRITE setPeriodBegin NOTIFY periodBeginChanged)
-    Q_PROPERTY(QDateTime periodEnd READ periodEnd WRITE setPeriodEnd NOTIFY periodEndChanged)
+    Q_PROPERTY(QHoraCoords* periodBegin READ periodBegin WRITE setPeriodBegin NOTIFY periodBeginChanged)
+    Q_PROPERTY(QHoraCoords* periodEnd READ periodEnd WRITE setPeriodEnd NOTIFY periodEndChanged)
 public:
-    QDateTime periodBegin() const;
-    QDateTime periodEnd() const;
-    void setPeriodBegin(const QDateTime& periodBegin);
-    void setPeriodEnd(const QDateTime& periodEnd);
+    QHoraCoords* periodBegin() const;
+    QHoraCoords* periodEnd() const;
+    void setPeriodBegin(QHoraCoords* periodBegin);
+    void setPeriodEnd(QHoraCoords* periodEnd);
 signals:
     void periodBeginChanged();
     void periodEndChanged();

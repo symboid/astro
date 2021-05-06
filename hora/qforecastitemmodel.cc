@@ -27,7 +27,7 @@ QVariant QForecastItemModel::data(const QModelIndex& index, int role) const
     const QForecastEvent* forecastEvent = mForecast.forecastEvent(index.row());
     switch (index.column())
     {
-    case 0: return forecastEvent->eventExact();
+    case 0: return forecastEvent->eventExact()->dateTime();
     case 1: return forecastEvent->sigtor()->symbol(mAstroFont.get());
     case 2: return mAstroFont->aspectLetter(int(forecastEvent->prmsor()->aspect()->dist()));
     case 3: return forecastEvent->prmsor()->horaObject()->symbol(mAstroFont.get());
@@ -62,17 +62,17 @@ QStringList QForecastItemModel::headerModel() const
     return { "", "Sigtor", "Aspect", "Prmsor" };
 }
 
-QDateTime QForecastItemModel::periodBegin() const
+QHoraCoords* QForecastItemModel::periodBegin() const
 {
     return mForecast.periodBegin();
 }
 
-QDateTime QForecastItemModel::periodEnd() const
+QHoraCoords* QForecastItemModel::periodEnd() const
 {
     return mForecast.periodEnd();
 }
 
-void QForecastItemModel::setPeriodBegin(const QDateTime& periodBegin)
+void QForecastItemModel::setPeriodBegin(QHoraCoords* periodBegin)
 {
     if (mForecast.periodBegin() != periodBegin)
     {
@@ -81,7 +81,7 @@ void QForecastItemModel::setPeriodBegin(const QDateTime& periodBegin)
     }
 }
 
-void QForecastItemModel::setPeriodEnd(const QDateTime& periodEnd)
+void QForecastItemModel::setPeriodEnd(QHoraCoords* periodEnd)
 {
     if (mForecast.periodEnd() != periodEnd)
     {

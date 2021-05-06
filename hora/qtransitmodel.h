@@ -17,18 +17,18 @@ public:
 public:
     QVector<QSigtor*> sigtorList() override;
     void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) override;
-    QDateTime calcConj(QSigtor* sigtor, const QDateTime& startTime,
+    QHoraCoords* calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
             const QAspectObjectList::Siblings& siblings) override;
 
 public:
-    int estimatedEventCount(const QDateTime& periodBegin, const QDateTime& periodEnd) const override;
+    int estimatedEventCount(const QHoraCoords* periodBegin, const QHoraCoords* periodEnd) const override;
 
 private:
     virtual bool planetIsSigtor(const QPlanet* planet) const;
 
 public:
     void setTzDiff(double tzDiff);
-    QDateTime calcTransitTime(QSigtor* sigtor, const QDateTime& startTime,
+    QHoraCoords* calcTransitCoords(QSigtor* sigtor, const QHoraCoords* startTime,
             const QEclPos& precPos, const QEclPos& succPos);
 private:
     double mTzDiff;

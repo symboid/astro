@@ -54,13 +54,13 @@ QSigtor* QPlanetSigtor::clone() const
     return new QPlanetSigtor(mPlanetOrigin);
 }
 
-bool QPlanetSigtor::calcEclPos(const QHoraCoords& horaCoords)
+bool QPlanetSigtor::calcEclPos(const QEphTime& ephTime, eph::arc_degree, eph::arc_degree)
 {
     QEclPos eclPos;
     QEclSpeed eclSpeed;
     QPlanet::Index objectIndex = mPlanetOrigin->mIndex == QPlanet::Index(1000) || mPlanetOrigin->mIndex == QPlanet::Index(1001) ?
                 QPlanet::MEAN_NODE : mPlanetOrigin->mIndex;
-    bool isSuccess = (eph_proxy::object::calc_pos(objectIndex, horaCoords.ephTime(), eclPos, eclSpeed) == eph::calc_result::SUCCESS);
+    bool isSuccess = (eph_proxy::object::calc_pos(objectIndex, ephTime, eclPos, eclSpeed) == eph::calc_result::SUCCESS);
     if (isSuccess)
     {
         if (mPlanetOrigin->mIndex == QLunarNode::DRAGON_TAIL)
@@ -81,15 +81,15 @@ QHouseCuspSigtor::QHouseCuspSigtor(const QHouseCusp* houseCuspOrigin)
 {
 }
 
-bool QHouseCuspSigtor::calcEclPos(const QHoraCoords& horaCoords)
+bool QHouseCuspSigtor::calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLatt, eph::arc_degree geoLont)
 {
     bool calcResult(false);
     static constexpr typename eph::basic_calendar<eph_proxy>::days TIME_DIFF(10.0 / 1440.0);
     QEclLont houseCuspLonts[QHouseSystem::HOUSE_COUNT + 1], houseCuspLontsNext[QHouseSystem::HOUSE_COUNT + 1];
     QHouseSystem::Type hsType = mHouseCuspOrigin->mHouseSystem->mType;
 
-    if (eph_proxy::houses::calc(horaCoords.ephTime(), eph_proxy::houses::type(hsType), horaCoords.geoLont(), horaCoords.geoLatt(), houseCuspLonts) == eph::calc_result::SUCCESS &&
-        eph_proxy::houses::calc(horaCoords.ephTime() + TIME_DIFF, eph_proxy::houses::type(hsType), horaCoords.geoLont(), horaCoords.geoLatt(), houseCuspLontsNext) == eph::calc_result::SUCCESS)
+    if (eph_proxy::houses::calc(ephTime, eph_proxy::houses::type(hsType), geoLont, geoLatt, houseCuspLonts) == eph::calc_result::SUCCESS &&
+        eph_proxy::houses::calc(ephTime + TIME_DIFF, eph_proxy::houses::type(hsType), geoLont, geoLatt, houseCuspLontsNext) == eph::calc_result::SUCCESS)
     {
         int h = mHouseCuspOrigin->mHouseIndex;
         QEclLont houseLontDiff = houseCuspLontsNext[h] - houseCuspLonts[h];
@@ -113,22 +113,22 @@ QForecastEvent::QForecastEvent(QSigtor* sigtor)
 {
 }
 
-QDateTime QForecastEvent::eventBegin() const
+QHoraCoords* QForecastEvent::eventBegin() const
 {
     return mEventExact;
 }
 
-QDateTime QForecastEvent::eventExact() const
+QHoraCoords* QForecastEvent::eventExact() const
 {
     return mEventExact;
 }
 
-QDateTime QForecastEvent::eventEnd() const
+QHoraCoords* QForecastEvent::eventEnd() const
 {
     return mEventExact;
 }
 
-void QForecastEvent::setEventExact(const QDateTime& eventExact)
+void QForecastEvent::setEventExact(QHoraCoords* eventExact)
 {
     if (mEventExact != eventExact)
     {
@@ -182,7 +182,7 @@ void QForecastEventBuffer::insert(QForecastEvent* newEvent)
 {
     // insert-sorting based on event's exact time
     iterator insertPos = begin(), eventEnd = end();
-    while (insertPos != eventEnd && (*insertPos)->eventExact() < newEvent->eventExact())
+    while (insertPos != eventEnd && (*insertPos)->eventExact()->ephTime() < newEvent->eventExact()->ephTime())
     {
         insertPos++;
     }

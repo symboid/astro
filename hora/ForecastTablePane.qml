@@ -11,14 +11,40 @@ Item {
     property alias forecastModel: forecastItemModel.forecastModel
     property alias autoRecalc: autoRecalcButton.checked
 
+    Grid {
+        id: periodRow
+        rows: 1
+        columns: 2
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        DateCoordBox {
+            id: periodBeginDate
+            editable: true
+        }
+        DateCoordBox {
+            id: periodEndDate
+            editable: true
+        }
+    }
+
     ForecastItemModel {
         id: forecastItemModel
+        periodBegin: HoraCoords {
+            year: periodBeginDate.year
+            month: periodBeginDate.month
+            day: periodBeginDate.day
+        }
+        periodEnd: HoraCoords {
+            year: periodEndDate.year
+            month: periodEndDate.month
+            day: periodEndDate.day
+        }
         autoRecalc: autoRecalcButton.checked
         onModelAboutToBeReset: calcIndicator.running = true
         onModelReset: calcIndicator.running = false
     }
     ForecastTableView {
-        anchors.top: parent.top
+        anchors.top: periodRow.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: buttonRow.top
@@ -62,5 +88,9 @@ Item {
                 icon.source: checked ? "/icons/connect_icon&24.png" : "/icons/not_connected_icon&24.png"
             }
         }
+    }
+    Component.onCompleted: {
+        periodBeginDate.setCurrent()
+        periodEndDate.setCurrent()
     }
 }

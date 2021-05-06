@@ -4,7 +4,6 @@
 
 #include "astro/hora/defs.h"
 #include "astro/hora/qforecastmodel.h"
-#include <QDateTime>
 #include "astro/hora/qforecastevent.h"
 
 class ASTRO_HORA_API QForecast : public QObject
@@ -15,13 +14,13 @@ public:
     QForecast(QObject* parent = nullptr);
 
 public:
-    QDateTime periodBegin() const;
-    void setPeriodBegin(const QDateTime& periodBegin);
-    QDateTime periodEnd() const;
-    void setPeriodEnd(const QDateTime& periodEnd);
+    QHoraCoords* periodBegin() const;
+    void setPeriodBegin(QHoraCoords* periodBegin);
+    QHoraCoords* periodEnd() const;
+    void setPeriodEnd(QHoraCoords* periodEnd);
 private:
-    QDateTime mPeriodBegin;
-    QDateTime mPeriodEnd;
+    QHoraCoords* mPeriodBegin;
+    QHoraCoords* mPeriodEnd;
 
 public:
     QForecastModel* model() const;
@@ -52,7 +51,7 @@ public:
     int forecastEventCount() const;
     const QForecastEvent* forecastEvent(int eventIndex) const;
 private:
-    QForecastEvent* createEvent(QSigtor* sigtor, const QDateTime& earliestTime);
+    QForecastEvent* createEvent(QSigtor* sigtor, QHoraCoords* earliestTime);
     QVector<QForecastEvent*> mEvents;
     QVector<qreal> mAspectList;
     QSharedPointer<QAspectObjectList> mPrmsorList;

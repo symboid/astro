@@ -4,7 +4,6 @@
 
 #include "astro/hora/defs.h"
 #include <QObject>
-#include <QDateTime>
 #include "astro/hora/qhoracoords.h"
 #include "astro/hora/qaspectobject.h"
 #include "astro/hora/qmagobject.h"
@@ -26,7 +25,11 @@ public:
     QEclPos eclPos() const override;
     QEclSpeed eclSpeed() const override;
     void setEclPos(const QEclPos& eclPos);
-    virtual bool calcEclPos(const QHoraCoords& horaCoords) = 0;
+    virtual bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLatt, eph::arc_degree geoLont) = 0;
+    inline bool calcEclPos(const QHoraCoords& horaCoords)
+    {
+        return calcEclPos(horaCoords.ephTime(), horaCoords.geoLatt(), horaCoords.geoLont());
+    }
 protected:
     QEclPos mEclPos;
     QEclSpeed mEclSpeed;
@@ -49,7 +52,7 @@ public:
 private:
     const QPlanet* mPlanetOrigin;
 public:
-    bool calcEclPos(const QHoraCoords& horaCoords) override;
+    bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLatt, eph::arc_degree geoLont) override;
 };
 
 class ASTRO_HORA_API QHouseCuspSigtor : public QSigtor
@@ -63,7 +66,7 @@ public:
 private:
     const QHouseCusp* mHouseCuspOrigin;
 public:
-    bool calcEclPos(const QHoraCoords& horaCoords) override;
+    bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLatt, eph::arc_degree geoLont) override;
 };
 
 class ASTRO_HORA_API QForecastEvent : public QObject
@@ -74,15 +77,15 @@ public:
     QForecastEvent(QSigtor* sigtor = nullptr);
 
 public:
-    Q_PROPERTY(QDateTime eventBegin READ eventBegin NOTIFY eventBeginChanged)
-    Q_PROPERTY(QDateTime eventExact READ eventExact WRITE setEventExact NOTIFY eventExactChanged)
-    Q_PROPERTY(QDateTime eventEnd READ eventEnd NOTIFY eventEndChanged)
-    QDateTime eventBegin() const;
-    QDateTime eventExact() const;
-    QDateTime eventEnd() const;
-    void setEventExact(const QDateTime& eventExact);
+    Q_PROPERTY(QHoraCoords* eventBegin READ eventBegin NOTIFY eventBeginChanged)
+    Q_PROPERTY(QHoraCoords* eventExact READ eventExact WRITE setEventExact NOTIFY eventExactChanged)
+    Q_PROPERTY(QHoraCoords* eventEnd READ eventEnd NOTIFY eventEndChanged)
+    QHoraCoords* eventBegin() const;
+    QHoraCoords* eventExact() const;
+    QHoraCoords* eventEnd() const;
+    void setEventExact(QHoraCoords* eventExact);
 private:
-    QDateTime mEventExact;
+    QHoraCoords* mEventExact;
 signals:
     void eventBeginChanged();
     void eventExactChanged();

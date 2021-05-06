@@ -35,27 +35,27 @@ void QDirexModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords)
     }
 }
 
-QDateTime QDirexModel::calcConj(QSigtor* sigtor, const QDateTime& startTime,
+QHoraCoords* QDirexModel::calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
         const QAspectObjectList::Siblings& siblings)
 {
-    Q_ASSERT(startTime.timeSpec() == Qt::UTC);
-    QDateTime conjTime;
+    QEphTime conjTime = startTime->ephTime();
     if (sigtor && siblings.mSucc)
     {
         qreal yearDist = sigtor->eclPos().dist_to(siblings.mSucc->eclPos());
-        conjTime = startTime.addSecs(qint64(yearDist * 365.25 * 86400.0));
+        conjTime += eph::basic_calendar<eph_proxy>::days(yearDist * 365.35);
         sigtor->setEclPos(siblings.mSucc->eclPos());
     }
-    Q_ASSERT(conjTime.timeSpec() == Qt::UTC);
-    return conjTime;
+    QHoraCoords* conjCoords = new QHoraCoords(conjTime);
+    conjCoords->setGeoLatt(startTime->geoLatt());
+    conjCoords->setGeoLont(startTime->geoLont());
+    conjCoords->setTzDiff(startTime->tzDiff());
+    return conjCoords;
 }
 
-int QDirexModel::estimatedEventCount(const QDateTime& periodBegin, const QDateTime& periodEnd) const
+int QDirexModel::estimatedEventCount(const QHoraCoords* periodBegin, const QHoraCoords* periodEnd) const
 {
-    Q_ASSERT(periodBegin.timeSpec() == Qt::UTC && periodEnd.timeSpec() == Qt::UTC);
-
     static constexpr double AVG_DIREX_COUNT_PER_MONTH = 2.0;
-    double lengthInDays = double(periodBegin.daysTo(periodEnd));
+    double lengthInDays = (periodEnd->ephTime()-periodBegin->ephTime()).count();
     double lengthInMonths = lengthInDays < 30.0 ? 1.0 : lengthInDays / 30.0;
     return int(lengthInMonths * AVG_DIREX_COUNT_PER_MONTH);
 }

@@ -17,11 +17,11 @@ public:
 public:
     QVector<QSigtor*> sigtorList() override;
     void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) override;
-    QDateTime calcConj(QSigtor* sigtor, const QDateTime& startTime,
+    QHoraCoords* calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
             const QAspectObjectList::Siblings& siblings) override;
 
 public:
-    int estimatedEventCount(const QDateTime& perdioBegin, const QDateTime& periodEnd) const override;
+    int estimatedEventCount(const QHoraCoords* perdioBegin, const QHoraCoords* periodEnd) const override;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QDIREXMODEL_H__
