@@ -38,10 +38,10 @@ Item {
         }
         autoRecalc: autoRecalcButton.checked
         onModelAboutToBeReset: {
-            progressPopup.visible = true
+            progressRunning = true
         }
         onModelReset: {
-            progressPopup.visible = false
+            progressRunning = false
         }
     }
     ForecastTableView {
@@ -53,74 +53,45 @@ Item {
         tableModel: forecastItemModel
         opacity: forecastItemModel.valid ? 1.0 : 0.5
     }
-    /*
-    Pane {
-        id: progressPopup
-        anchors.centerIn: parent
-        contentItem: Frame {
-            contentItem: Pane {
-                contentItem: Column {
-                    spacing: progressPopup.padding
-                    ProgressBar {
-                        id: calcProgress
-                        width: 300
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        value: 0.0
-                    }
-                    RoundButton {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        icon.source: "file:/Users/robert/Munka/icons/black/png/delete_icon&24.png"
-                    }
-                }
-            }
-        }
-    }
-    */
-
     Label {
         anchors.centerIn: parent
-        visible: !forecastItemModel.valid && !progressPopup.visible
+        visible: !forecastItemModel.valid && !progressRunning
         text: qsTr("Parameters has changed.\nTable must be recalculated!")
         horizontalAlignment: Label.AlignHCenter
         font.italic: true
         color: "red"
     }
-    Pane {
+    property bool progressRunning: false;
+    Column {
         id: buttonRow
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        contentItem: Column {
-            Row {
-                id: progressPopup
-                anchors.horizontalCenter: parent.horizontalCenter
-                spacing: buttonRow.padding
-                visible: false
-                ProgressBar {
-                    id: calcProgress
-                    width: forecastTableView.width - cancelCalc.width - 2 * progressPopup.padding
-                    anchors.verticalCenter: parent.verticalCenter
-                    value: forecastItemModel.progress
-                }
-                RoundButton {
-                    id: cancelCalc
-                    anchors.verticalCenter: parent.verticalCenter
-                    icon.source: "file:/Users/robert/Munka/icons/black/png/delete_icon&24.png"
-                }
-            }
-            Row {
-                anchors.horizontalCenter: parent.horizontalCenter
-                spacing: buttonRow.padding
+        ProgressBar {
+            id: calcProgress
+            width: forecastTableView.width
+            visible: progressRunning
+            anchors.horizontalCenter: parent.horizontalCenter
+            value: forecastItemModel.progress
+        }
+        Pane {
+            anchors.horizontalCenter: parent.horizontalCenter
+            contentItem: Row {
+                spacing: parent.padding
                 RoundButton {
                     radius: 5
                     icon.source: "/icons/refresh_icon&24.png"
-                    anchors.verticalCenter: parent.verticalCenter
                     enabled: !autoRecalcButton.checked
+                    visible: !progressRunning
                     highlighted: !forecastItemModel.valid
                     onClicked: forecastItemModel.recalc()
                 }
                 RoundButton {
+                    radius: 5
+                    icon.source: "/icons/delete_icon&24.png"
+                    visible: progressRunning
+                }
+                RoundButton {
                     id: autoRecalcButton
-                    anchors.verticalCenter: parent.verticalCenter
                     checkable: true
                     radius: 5
                     display: RoundButton.IconOnly

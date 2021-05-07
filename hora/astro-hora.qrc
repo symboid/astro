@@ -22,5 +22,6 @@
         <file>icons/connect_icon&amp;24.png</file>
         <file>icons/not_connected_icon&amp;24.png</file>
         <file>icons/refresh_icon&amp;24.png</file>
+        <file>icons/delete_icon&amp;24.png</file>
     </qresource>
 </RCC>
