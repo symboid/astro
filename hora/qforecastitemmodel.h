@@ -75,6 +75,13 @@ public slots:
 private slots:
     void invokeRecalc();
     void onRecalculated();
+
+public:
+    Q_PROPERTY(double progress READ progress NOTIFY progressChanged)
+public:
+    double progress() const;
+signals:
+    void progressChanged();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECASTITEMMODEL_H__

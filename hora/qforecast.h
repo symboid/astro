@@ -40,6 +40,15 @@ private:
     qreal mGeoLont;
     qreal mTzDiff;
 
+    Q_PROPERTY(double progress READ progress NOTIFY progressChanged)
+public:
+    double progress() const;
+private:
+    QEphTime::rep mPeriodPos;
+    QEphTime::rep mPeriodLength;
+signals:
+    void progressChanged();
+
 public slots:
     void calc();
 
@@ -51,6 +60,7 @@ private:
     QVector<QForecastEvent*> mEvents;
     QVector<qreal> mAspectList;
     QSharedPointer<QAspectObjectList> mPrmsorList;
+    QMutex mCalcMutex;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECAST_H__

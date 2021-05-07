@@ -13,6 +13,7 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(invokeRecalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(invokeRecalc()));
     connect(this, SIGNAL(recalculated()), this, SLOT(onRecalculated()));
+    connect(mForecast.get(), SIGNAL(progressChanged()), this, SIGNAL(progressChanged()));
 }
 
 int QForecastItemModel::rowCount(const QModelIndex& parent) const
@@ -144,15 +145,16 @@ void QForecastItemModel::invokeRecalc()
 void QForecastItemModel::recalc()
 {
     beginResetModel();
+    setValid(false);
     QtConcurrent::run([this]{
         mForecast->calc();
-        setValid(true);
         emit recalculated();
     });
 }
 
 void QForecastItemModel::onRecalculated()
 {
+    setValid(true);
     endResetModel();
 }
 
@@ -168,4 +170,9 @@ void QForecastItemModel::setForecastModel(QForecastModel* forecastModel)
         mForecast->setModel(forecastModel);
         emit forecastModelChanged();
     }
+}
+
+double QForecastItemModel::progress() const
+{
+    return mForecast->progress();
 }

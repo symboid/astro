@@ -11,11 +11,8 @@ Item {
     property alias forecastModel: forecastItemModel.forecastModel
     property alias autoRecalc: autoRecalcButton.checked
 
-    Grid {
+    Row {
         id: periodRow
-        rows: 1
-        columns: 2
-        anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         DateCoordBox {
             id: periodBeginDate
@@ -40,26 +37,49 @@ Item {
             day: periodEndDate.day
         }
         autoRecalc: autoRecalcButton.checked
-        onModelAboutToBeReset: calcIndicator.running = true
-        onModelReset: calcIndicator.running = false
+        onModelAboutToBeReset: {
+            progressPopup.visible = true
+        }
+        onModelReset: {
+            progressPopup.visible = false
+        }
     }
     ForecastTableView {
+        id: forecastTableView
         anchors.top: periodRow.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: buttonRow.top
         tableModel: forecastItemModel
-        opacity: forecastItemModel.valid && !calcIndicator.running ? 1.0 : 0.5
+        opacity: forecastItemModel.valid ? 1.0 : 0.5
     }
-    BusyIndicator {
-        id: calcIndicator
+    /*
+    Pane {
+        id: progressPopup
         anchors.centerIn: parent
-        running: false
+        contentItem: Frame {
+            contentItem: Pane {
+                contentItem: Column {
+                    spacing: progressPopup.padding
+                    ProgressBar {
+                        id: calcProgress
+                        width: 300
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        value: 0.0
+                    }
+                    RoundButton {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        icon.source: "file:/Users/robert/Munka/icons/black/png/delete_icon&24.png"
+                    }
+                }
+            }
+        }
     }
+    */
 
     Label {
         anchors.centerIn: parent
-        visible: !forecastItemModel.valid
+        visible: !forecastItemModel.valid && !progressPopup.visible
         text: qsTr("Parameters has changed.\nTable must be recalculated!")
         horizontalAlignment: Label.AlignHCenter
         font.italic: true
@@ -69,23 +89,43 @@ Item {
         id: buttonRow
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        contentItem: Row {
-            spacing: 10
-            RoundButton {
-                radius: 5
-                icon.source: "/icons/refresh_icon&24.png"
-                anchors.verticalCenter: parent.verticalCenter
-                enabled: !autoRecalcButton.checked
-                highlighted: !forecastItemModel.valid
-                onClicked: forecastItemModel.recalc()
+        contentItem: Column {
+            Row {
+                id: progressPopup
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: buttonRow.padding
+                visible: false
+                ProgressBar {
+                    id: calcProgress
+                    width: forecastTableView.width - cancelCalc.width - 2 * progressPopup.padding
+                    anchors.verticalCenter: parent.verticalCenter
+                    value: forecastItemModel.progress
+                }
+                RoundButton {
+                    id: cancelCalc
+                    anchors.verticalCenter: parent.verticalCenter
+                    icon.source: "file:/Users/robert/Munka/icons/black/png/delete_icon&24.png"
+                }
             }
-            RoundButton {
-                id: autoRecalcButton
-                anchors.verticalCenter: parent.verticalCenter
-                checkable: true
-                radius: 5
-                display: RoundButton.IconOnly
-                icon.source: checked ? "/icons/connect_icon&24.png" : "/icons/not_connected_icon&24.png"
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: buttonRow.padding
+                RoundButton {
+                    radius: 5
+                    icon.source: "/icons/refresh_icon&24.png"
+                    anchors.verticalCenter: parent.verticalCenter
+                    enabled: !autoRecalcButton.checked
+                    highlighted: !forecastItemModel.valid
+                    onClicked: forecastItemModel.recalc()
+                }
+                RoundButton {
+                    id: autoRecalcButton
+                    anchors.verticalCenter: parent.verticalCenter
+                    checkable: true
+                    radius: 5
+                    display: RoundButton.IconOnly
+                    icon.source: checked ? "/icons/connect_icon&24.png" : "/icons/not_connected_icon&24.png"
+                }
             }
         }
     }

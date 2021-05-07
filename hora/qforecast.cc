@@ -76,6 +76,11 @@ void QForecast::setModel(QForecastModel* model)
     mModel.reset(model);
 }
 
+double QForecast::progress() const
+{
+    return mPeriodLength != 0.0 ? mPeriodPos / mPeriodLength : 0.0;
+}
+
 int QForecast::forecastEventCount() const
 {
     return mEvents.size();
@@ -119,6 +124,8 @@ QForecastEvent* QForecast::createEvent(const QSigtor* masterSigtor, QHoraCoords*
 
 void QForecast::calc()
 {
+    QMutexLocker calcLocker(&mCalcMutex);
+
     // #1. cleaning up
     for (QForecastEvent* event : mEvents)
     {
@@ -142,6 +149,9 @@ void QForecast::calc()
         // iterating over period
         QHoraCoords currentTime;
         currentTime = *mPeriodBegin;
+        mPeriodLength = (mPeriodEnd->ephTime() - mPeriodBegin->ephTime()).count();
+        mPeriodPos = 0.0;
+        emit progressChanged();
         while (currentTime.ephTime() < mPeriodEnd->ephTime())
         {
             // taking the nearest event
@@ -154,6 +164,8 @@ void QForecast::calc()
 
                 // populating event list
                 mEvents.push_back(nextEvent);
+                mPeriodPos = (nextEvent->eventExact()->ephTime() - mPeriodBegin->ephTime()).count();
+                emit progressChanged();
             }
             else
             {
@@ -161,5 +173,7 @@ void QForecast::calc()
             }
         }
         eventBuffer.clear();
+        mPeriodPos = 0.0;
+        emit progressChanged();
     }
 }
