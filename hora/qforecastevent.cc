@@ -23,6 +23,11 @@ void QSigtor::setEclPos(const QEclPos& eclPos)
     mEclPos = eclPos;
 }
 
+void QSigtor::setEclSpeed(const QEclSpeed& eclSpeed)
+{
+    mEclSpeed = eclSpeed;
+}
+
 QString QSigtor::abbrName() const
 {
     return mOrigin->abbrName();
@@ -51,7 +56,10 @@ QPlanetSigtor::QPlanetSigtor(const QPlanet* planetOrigin)
 
 QSigtor* QPlanetSigtor::clone() const
 {
-    return new QPlanetSigtor(mPlanetOrigin);
+    QSigtor* planetSigtor = new QPlanetSigtor(mPlanetOrigin);
+    planetSigtor->setEclPos(mEclPos);
+    planetSigtor->setEclSpeed(mEclSpeed);
+    return planetSigtor;
 }
 
 bool QPlanetSigtor::calcEclPos(const QEphTime& ephTime, eph::arc_degree, eph::arc_degree)
@@ -104,10 +112,13 @@ bool QHouseCuspSigtor::calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLa
 
 QSigtor* QHouseCuspSigtor::clone() const
 {
-    return new QHouseCuspSigtor(mHouseCuspOrigin);
+    QSigtor* houseCuspSigtor = new QHouseCuspSigtor(mHouseCuspOrigin);
+    houseCuspSigtor->setEclPos(mEclPos);
+    houseCuspSigtor->setEclSpeed(mEclSpeed);
+    return houseCuspSigtor;
 }
 
-QForecastEvent::QForecastEvent(QSigtor* sigtor)
+QForecastEvent::QForecastEvent(const QSigtor* sigtor)
     : QObject(nullptr)
     , mSigtor(sigtor)
 {
@@ -149,24 +160,9 @@ const QSigtor* QForecastEvent::sigtor() const
     return mSigtor;
 }
 
-QPrmsor* QForecastEvent::prmsor()
-{
-    return mPrmsor;
-}
-
-QSigtor* QForecastEvent::sigtor()
-{
-    return mSigtor;
-}
-
-void QForecastEvent::setPrmsor(QPrmsor* prmsor)
+void QForecastEvent::setPrmsor(const QPrmsor* prmsor)
 {
     mPrmsor = prmsor;
-}
-
-void QForecastEvent::setSigtor(QSigtor* sigtor)
-{
-    mSigtor = sigtor;
 }
 
 void QForecastEventBuffer::clear()

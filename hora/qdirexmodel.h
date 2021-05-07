@@ -14,8 +14,10 @@ public:
 public:
     QDirexModel(QObject* parent = nullptr);
 
+private slots:
+    void resetMasterSigtors() override;
+
 public:
-    QVector<QSigtor*> sigtorList() override;
     void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) override;
     QHoraCoords* calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
             const QAspectObjectList::Siblings& siblings) override;

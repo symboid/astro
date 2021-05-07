@@ -7,21 +7,25 @@ QDirexModel::QDirexModel(QObject* parent)
 {
 }
 
-QVector<QSigtor*> QDirexModel::sigtorList()
+void QDirexModel::resetMasterSigtors()
 {
-    QVector<QSigtor*> sigtors;
+    for (QSigtor* sigtor : mMasterSigtors)
+    {
+        sigtor->deleteLater();
+    }
+    mMasterSigtors.clear();
+
     if (mHora)
     {
         for (QHora::Planets::ConstIterator planet = mHora->planetsBegin(); planet != mHora->planetsEnd(); ++planet)
         {
-            sigtors.push_back(new QPlanetSigtor(*planet));
+            mMasterSigtors.push_back(new QPlanetSigtor(*planet));
         }
-        sigtors.push_back(new QHouseCuspSigtor(mHora->house(1)));
-        sigtors.push_back(new QHouseCuspSigtor(mHora->house(4)));
-        sigtors.push_back(new QHouseCuspSigtor(mHora->house(7)));
-        sigtors.push_back(new QHouseCuspSigtor(mHora->house(10)));
+        mMasterSigtors.push_back(new QHouseCuspSigtor(mHora->house(1)));
+        mMasterSigtors.push_back(new QHouseCuspSigtor(mHora->house(4)));
+        mMasterSigtors.push_back(new QHouseCuspSigtor(mHora->house(7)));
+        mMasterSigtors.push_back(new QHouseCuspSigtor(mHora->house(10)));
     }
-    return sigtors;
 }
 
 void QDirexModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords)

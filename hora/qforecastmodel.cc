@@ -6,6 +6,7 @@ QForecastModel::QForecastModel(QObject* parent)
     : QObject(parent)
     , mHora(nullptr)
 {
+    connect(this, SIGNAL(horaChanged()), this, SLOT(resetMasterSigtors()));
 }
 
 QHora* QForecastModel::hora() const

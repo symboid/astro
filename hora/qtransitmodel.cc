@@ -8,20 +8,24 @@ QTransitModel::QTransitModel(QObject* parent)
 {
 }
 
-QVector<QSigtor*> QTransitModel::sigtorList()
+void QTransitModel::resetMasterSigtors()
 {
-    QVector<QSigtor*> sigtors;
+    for (QSigtor* sigtor : mMasterSigtors)
+    {
+        sigtor->deleteLater();
+    }
+    mMasterSigtors.clear();
+
     if (mHora)
     {
         for (QHora::Planets::ConstIterator planet = mHora->planetsBegin(); planet != mHora->planetsEnd(); ++planet)
         {
             if (planetIsSigtor(*planet))
             {
-                sigtors.push_back(new QPlanetSigtor(*planet));
+                mMasterSigtors.push_back(new QPlanetSigtor(*planet));
             }
         }
     }
-    return sigtors;
 }
 
 void QTransitModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords)

@@ -51,7 +51,7 @@ public:
     int forecastEventCount() const;
     const QForecastEvent* forecastEvent(int eventIndex) const;
 private:
-    QForecastEvent* createEvent(QSigtor* sigtor, QHoraCoords* earliestTime);
+    QForecastEvent* createEvent(const QSigtor* sigtor, QHoraCoords* earliestTime);
     QVector<QForecastEvent*> mEvents;
     QVector<qreal> mAspectList;
     QSharedPointer<QAspectObjectList> mPrmsorList;

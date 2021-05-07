@@ -84,9 +84,10 @@ const QForecastEvent* QForecast::forecastEvent(int eventIndex) const
     return mEvents.at(eventIndex);
 }
 
-QForecastEvent* QForecast::createEvent(QSigtor* sigtor, QHoraCoords* earliestTime)
+QForecastEvent* QForecast::createEvent(const QSigtor* masterSigtor, QHoraCoords* earliestTime)
 {
     QForecastEvent* event = nullptr;
+    QSigtor* sigtor = masterSigtor->clone();
 
     mModel->initSigtorPos(sigtor, *earliestTime);
 
@@ -94,6 +95,8 @@ QForecastEvent* QForecast::createEvent(QSigtor* sigtor, QHoraCoords* earliestTim
     if (siblings.mPrec && siblings.mSucc)
     {
         event = new QForecastEvent(sigtor);
+        sigtor->setParent(event);
+
         QHoraCoords* exactCoords = mModel->calcConj(sigtor, earliestTime, siblings);
 
         event->setEventExact(exactCoords);
@@ -115,7 +118,7 @@ QForecastEvent* QForecast::createEvent(QSigtor* sigtor, QHoraCoords* earliestTim
 void QForecast::initEvents()
 {
     mEventBuffer.clear();
-    QVector<QSigtor*> sigtors = mModel->sigtorList();
+    const QVector<QSigtor*>& sigtors = mModel->sigtorList();
     for (QSigtor* sigtor : sigtors)
     {
         mEventBuffer.insert(createEvent(sigtor, mPeriodBegin));
@@ -144,7 +147,7 @@ void QForecast::calc()
         if (nextEvent)
         {
             currentTime.setEphTime(nextEvent->eventExact()->ephTime() + eph::basic_calendar<eph_proxy>::days(1.0/24.0));
-            mEventBuffer.insert(createEvent(nextEvent->sigtor()->clone(), &currentTime));
+            mEventBuffer.insert(createEvent(nextEvent->sigtor(), &currentTime));
             mEvents.push_back(nextEvent);
         }
         else
@@ -152,4 +155,5 @@ void QForecast::calc()
             break;
         }
     }
+    mEventBuffer.clear();
 }

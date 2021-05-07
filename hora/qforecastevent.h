@@ -25,6 +25,7 @@ public:
     QEclPos eclPos() const override;
     QEclSpeed eclSpeed() const override;
     void setEclPos(const QEclPos& eclPos);
+    void setEclSpeed(const QEclSpeed& eclSpeed);
     virtual bool calcEclPos(const QEphTime& ephTime, eph::arc_degree geoLatt, eph::arc_degree geoLont) = 0;
     inline bool calcEclPos(const QHoraCoords& horaCoords)
     {
@@ -74,7 +75,7 @@ class ASTRO_HORA_API QForecastEvent : public QObject
     Q_OBJECT
 
 public:
-    QForecastEvent(QSigtor* sigtor = nullptr);
+    QForecastEvent(const QSigtor* sigtor = nullptr);
 
 public:
     Q_PROPERTY(QHoraCoords* eventBegin READ eventBegin NOTIFY eventBeginChanged)
@@ -94,13 +95,10 @@ signals:
 public:
     const QPrmsor* prmsor() const;
     const QSigtor* sigtor() const;
-    QPrmsor* prmsor();
-    QSigtor* sigtor();
-    void setPrmsor(QPrmsor* prmsor);
-    void setSigtor(QSigtor* sigtor);
+    void setPrmsor(const QPrmsor* prmsor);
 private:
-    QSigtor* mSigtor;
-    QPrmsor* mPrmsor;
+    const QSigtor* mSigtor;
+    const QPrmsor* mPrmsor;
 };
 
 class ASTRO_HORA_API QForecastEventBuffer : QList<QForecastEvent*>

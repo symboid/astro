@@ -24,8 +24,13 @@ protected:
 signals:
     void horaChanged();
 
+protected:
+    QVector<QSigtor*> mMasterSigtors;
+private slots:
+    virtual void resetMasterSigtors() = 0;
+
 public:
-    virtual QVector<QSigtor*> sigtorList() = 0;
+    inline const QVector<QSigtor*>& sigtorList() const { return mMasterSigtors; }
     virtual void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) = 0;
     virtual QHoraCoords* calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
             const QAspectObjectList::Siblings& siblings) = 0;
