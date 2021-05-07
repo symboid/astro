@@ -19,14 +19,14 @@ public:
     QHoraCoords* periodEnd() const;
     void setPeriodEnd(QHoraCoords* periodEnd);
 private:
-    QHoraCoords* mPeriodBegin;
-    QHoraCoords* mPeriodEnd;
+    QScopedPointer<QHoraCoords> mPeriodBegin;
+    QScopedPointer<QHoraCoords> mPeriodEnd;
 
 public:
     QForecastModel* model() const;
     void setModel(QForecastModel* model);
 private:
-    QForecastModel* mModel;
+    QScopedPointer<QForecastModel> mModel;
 
 public:
     qreal geoLatt() const;
@@ -40,10 +40,6 @@ private:
     qreal mGeoLont;
     qreal mTzDiff;
 
-private:
-    void initEvents();
-private:
-    QForecastEventBuffer mEventBuffer;
 public slots:
     void calc();
 

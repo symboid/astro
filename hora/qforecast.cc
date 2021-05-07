@@ -5,6 +5,8 @@
 
 QForecast::QForecast(QObject* parent)
     : QObject(parent)
+    , mPeriodBegin(nullptr)
+    , mPeriodEnd(nullptr)
     , mModel(nullptr)
     , mGeoLatt(0.0)
     , mGeoLont(0.0)
@@ -16,22 +18,22 @@ QForecast::QForecast(QObject* parent)
 
 QHoraCoords* QForecast::periodBegin() const
 {
-    return mPeriodBegin;
+    return mPeriodBegin.get();
 }
 
 void QForecast::setPeriodBegin(QHoraCoords* periodBegin)
 {
-    mPeriodBegin = periodBegin;
+    mPeriodBegin.reset(periodBegin);
 }
 
 QHoraCoords* QForecast::periodEnd() const
 {
-    return mPeriodEnd;
+    return mPeriodEnd.get();
 }
 
 void QForecast::setPeriodEnd(QHoraCoords* periodEnd)
 {
-    mPeriodEnd = periodEnd;
+    mPeriodEnd.reset(periodEnd);
 }
 
 qreal QForecast::geoLatt() const
@@ -66,12 +68,12 @@ void QForecast::setTzDiff(qreal tzDiff)
 
 QForecastModel* QForecast::model() const
 {
-    return mModel;
+    return mModel.get();
 }
 
 void QForecast::setModel(QForecastModel* model)
 {
-    mModel = model;
+    mModel.reset(model);
 }
 
 int QForecast::forecastEventCount() const
@@ -115,45 +117,49 @@ QForecastEvent* QForecast::createEvent(const QSigtor* masterSigtor, QHoraCoords*
     return event;
 }
 
-void QForecast::initEvents()
+void QForecast::calc()
 {
-    mEventBuffer.clear();
-    const QVector<QSigtor*>& sigtors = mModel->sigtorList();
-    for (QSigtor* sigtor : sigtors)
-    {
-        mEventBuffer.insert(createEvent(sigtor, mPeriodBegin));
-    }
-
+    // #1. cleaning up
     for (QForecastEvent* event : mEvents)
     {
         event->deleteLater();
     }
     mEvents.clear();
-    mEvents.reserve(mModel->estimatedEventCount(mPeriodBegin, mPeriodEnd) * 2);
-}
+    mEvents.reserve(mModel->estimatedEventCount(mPeriodBegin.get(), mPeriodEnd.get()) * 2);
 
-void QForecast::calc()
-{
-    mPrmsorList = mModel->hora() ? mModel->hora()->fetchAspectObjects(mAspectList) : nullptr;
-
-    initEvents();
-
-    QHoraCoords currentTime;
-    currentTime = *mPeriodBegin;
-
-    while (currentTime.ephTime() < mPeriodEnd->ephTime())
+    if (mModel && mModel->hora() && mPeriodBegin && mPeriodEnd)
     {
-        QForecastEvent* nextEvent = mEventBuffer.pop();
-        if (nextEvent)
+        // #2. list of promissors
+        mPrmsorList = mModel->hora()->fetchAspectObjects(mAspectList);
+
+        // #3. initial list of events
+        QForecastEventBuffer eventBuffer;
+        for (QSigtor* sigtor : mModel->sigtorList())
         {
-            currentTime.setEphTime(nextEvent->eventExact()->ephTime() + eph::basic_calendar<eph_proxy>::days(1.0/24.0));
-            mEventBuffer.insert(createEvent(nextEvent->sigtor(), &currentTime));
-            mEvents.push_back(nextEvent);
+            eventBuffer.insert(createEvent(sigtor, mPeriodBegin.get()));
         }
-        else
+
+        // iterating over period
+        QHoraCoords currentTime;
+        currentTime = *mPeriodBegin;
+        while (currentTime.ephTime() < mPeriodEnd->ephTime())
         {
-            break;
+            // taking the nearest event
+            QForecastEvent* nextEvent = eventBuffer.pop();
+            if (nextEvent)
+            {
+                // inserting one new event
+                currentTime.setEphTime(nextEvent->eventExact()->ephTime() + eph::basic_calendar<eph_proxy>::days(1.0/24.0));
+                eventBuffer.insert(createEvent(nextEvent->sigtor(), &currentTime));
+
+                // populating event list
+                mEvents.push_back(nextEvent);
+            }
+            else
+            {
+                break;
+            }
         }
+        eventBuffer.clear();
     }
-    mEventBuffer.clear();
 }

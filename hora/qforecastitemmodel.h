@@ -56,7 +56,7 @@ signals:
     void forecastModelChanged();
 
 private:
-    QForecast mForecast;
+    QScopedPointer<QForecast> mForecast;
     QSharedPointer<QAstroFont> mAstroFont;
 
     Q_PROPERTY(bool autoRecalc MEMBER mAutoRecalc WRITE setAutoRecalc NOTIFY autoRecalcChanged)
