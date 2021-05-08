@@ -1,7 +1,7 @@
 
 #include "astro/hora/setup.h"
 #include "astro/hora/qforecast.h"
-#include <QDebug>
+#include <QtConcurrent>
 
 QForecast::QForecast(QObject* parent)
     : QObject(parent)
@@ -122,10 +122,8 @@ QForecastEvent* QForecast::createEvent(const QSigtor* masterSigtor, QHoraCoords*
     return event;
 }
 
-void QForecast::calc()
+void QForecast::run()
 {
-    QMutexLocker calcLocker(&mCalcMutex);
-
     // #1. cleaning up
     for (QForecastEvent* event : mEvents)
     {
@@ -175,5 +173,46 @@ void QForecast::calc()
         eventBuffer.clear();
         mPeriodPos = 0.0;
         emit progressChanged();
+        emit recalculated();
     }
+}
+
+void QForecast::calcAsync()
+{
+    QMutexLocker startLocker(&mStartMutex);
+    QtConcurrent::run([this]{
+        QMutexLocker calcLocker(&mCalcMutex);
+        mStartSync.wakeOne();
+        run();
+    });
+    mStartSync.wait(&mStartMutex);
+}
+
+QCalcThread::QCalcThread(QObject* parent, QRunnable* calcable)
+    : QThread(parent)
+    , mStartCounter(0)
+    , mCalcable(calcable)
+{
+}
+
+void QCalcThread::run()
+{
+    qDebug() << "Waiting for run";
+    QMutexLocker calcLocker(&mCalcMutex);
+    mStartSync.wakeOne();
+    qDebug() << "Started";
+    mCalcable->run();
+    qDebug() << "Finished";
+}
+
+void QCalcThread::startCalc()
+{
+    qDebug() << "Waiting for start...";
+    QMutexLocker startLocker(&mStartMutex);
+    ++mStartCounter;
+    qDebug() << "Starting" << mStartCounter;
+    start();
+    qDebug() << "Waiting for started" << mStartCounter;
+    mStartSync.wait(&mStartMutex);
+    qDebug() << "Started" << mStartCounter;
 }

@@ -1,18 +1,18 @@
 
 #include "astro/hora/setup.h"
 #include "astro/hora/qforecastitemmodel.h"
-#include <QtConcurrent>
 
 QForecastItemModel::QForecastItemModel(QObject* parent)
     : QHoraTableModel(Q_NULLPTR, parent)
     , mForecast(new QForecast(this))
+    , mForecastThread(new QCalcThread(this, mForecast.get()))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
     , mAutoRecalc(false)
     , mIsValid(false)
 {
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(invokeRecalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(invokeRecalc()));
-    connect(this, SIGNAL(recalculated()), this, SLOT(onRecalculated()));
+    connect(mForecast.get(), SIGNAL(recalculated()), this, SLOT(onRecalculated()));
     connect(mForecast.get(), SIGNAL(progressChanged()), this, SIGNAL(progressChanged()));
 }
 
@@ -146,10 +146,8 @@ void QForecastItemModel::recalc()
 {
     beginResetModel();
     setValid(false);
-    QtConcurrent::run([this]{
-        mForecast->calc();
-        emit recalculated();
-    });
+    mForecast->calcAsync();
+//    mForecastThread->startCalc();
 }
 
 void QForecastItemModel::onRecalculated()

@@ -57,6 +57,7 @@ signals:
 
 private:
     QScopedPointer<QForecast> mForecast;
+    QScopedPointer<QCalcThread> mForecastThread;
     QSharedPointer<QAstroFont> mAstroFont;
 
     Q_PROPERTY(bool autoRecalc MEMBER mAutoRecalc WRITE setAutoRecalc NOTIFY autoRecalcChanged)
@@ -69,7 +70,6 @@ private:
 signals:
     void autoRecalcChanged();
     void validChanged();
-    void recalculated();
 public slots:
     Q_INVOKABLE void recalc();
 private slots:
