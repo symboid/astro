@@ -75,11 +75,6 @@ void QForecast::setModel(QForecastModel* model)
     mModel.reset(model);
 }
 
-double QForecast::progress() const
-{
-    return mPeriodLength != 0.0 ? mPeriodPos / mPeriodLength : 0.0;
-}
-
 int QForecast::forecastEventCount() const
 {
     return mEvents.size();
@@ -121,7 +116,7 @@ QForecastEvent* QForecast::createEvent(const QSigtor* masterSigtor, QHoraCoords*
     return event;
 }
 
-void QForecast::run()
+void QForecast::calc()
 {
     // #1. cleaning up
     for (QForecastEvent* event : mEvents)
@@ -146,17 +141,14 @@ void QForecast::run()
         // iterating over period
         QHoraCoords currentTime;
         currentTime = *mPeriodBegin;
-        mPeriodLength = (mPeriodEnd->ephTime() - mPeriodBegin->ephTime()).count();
-        mPeriodPos = 0.0;
-        bool isAborted = false;
-        emit progressChanged();
-        while (!isAborted && currentTime.ephTime() < mPeriodEnd->ephTime())
+        setProgressTotal((mPeriodEnd->ephTime() - mPeriodBegin->ephTime()).count());
+        while (!isAborted() && currentTime.ephTime() < mPeriodEnd->ephTime())
         {
             // taking the nearest event
             QForecastEvent* nextEvent = eventBuffer.pop();
-            if (!nextEvent || QThread::currentThread()->isInterruptionRequested())
+            if (!nextEvent)
             {
-                isAborted = true;
+                break;
             }
             else
             {
@@ -166,21 +158,44 @@ void QForecast::run()
 
                 // populating event list
                 mEvents.push_back(nextEvent);
-                mPeriodPos = (nextEvent->eventExact()->ephTime() - mPeriodBegin->ephTime()).count();
-                emit progressChanged();
+                setProgressPos((nextEvent->eventExact()->ephTime() - mPeriodBegin->ephTime()).count());
             }
         }
         eventBuffer.clear();
-        mPeriodPos = 0.0;
-        emit progressChanged();
-        emit isAborted ? aborted() : recalculated();
     }
 }
 
 QCalcTask::QCalcTask(QObject* parent)
     : QObject(parent)
+    , mExecutionThread(nullptr)
     , mRunning(false)
+    , mProgressPos(00L)
+    , mProgressTotal(00L)
 {
+}
+
+void QCalcTask::run()
+{
+    setRunning(true);
+    setProgressPos(0LL);
+    setProgressTotal(0LL);
+
+    calc();
+
+    setProgressPos(0LL);
+    setProgressTotal(0LL);
+    emit isAborted() ? aborted() : finished();
+    setRunning(false);
+}
+
+void QCalcTask::setExecutionThread(QThread* executionThread)
+{
+    mExecutionThread = executionThread;
+}
+
+QThread* QCalcTask::executionThread() const
+{
+    return mExecutionThread;
 }
 
 bool QCalcTask::running() const
@@ -197,18 +212,45 @@ void QCalcTask::setRunning(bool running)
     }
 }
 
+qreal QCalcTask::progress() const
+{
+    return mProgressTotal != 0LL ? qreal(mProgressPos) / qreal(mProgressTotal) : 0LL;
+}
+
+void QCalcTask::setProgressPos(qint64 progressPos)
+{
+    if (mProgressPos != progressPos)
+    {
+        mProgressPos = progressPos;
+        emit progressChanged();
+    }
+}
+
+void QCalcTask::setProgressTotal(qint64 progressTotal)
+{
+    if (mProgressTotal != progressTotal)
+    {
+        mProgressTotal = progressTotal;
+        emit progressChanged();
+    }
+}
+
+bool QCalcTask::isAborted() const
+{
+    return mExecutionThread->isInterruptionRequested();
+}
+
 QCalcThread::QCalcThread(QObject* parent, QCalcTask* calcTask)
     : QThread(parent)
     , mCalcTask(calcTask)
 {
+    mCalcTask->setExecutionThread(this);
 }
 
 void QCalcThread::run()
 {
     QMutexLocker calcLocker(&mCalcMutex);
-    mCalcTask->setRunning(true);
     mCalcTask->run();
-    mCalcTask->setRunning(false);
 }
 
 void QCalcThread::startCalc()

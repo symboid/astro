@@ -15,7 +15,14 @@ public:
     QCalcTask(QObject* parent);
 
 public:
-    virtual void run() = 0;
+    virtual void calc() = 0;
+    void run();
+
+public:
+    void setExecutionThread(QThread* executionthread);
+    QThread* executionThread() const;
+private:
+    QThread* mExecutionThread;
 
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
 private:
@@ -25,6 +32,24 @@ public:
     void setRunning(bool running);
 signals:
     void runningChanged();
+
+public:
+    Q_PROPERTY(qreal progress READ progress NOTIFY progressChanged)
+    qreal progress() const;
+protected:
+    void setProgressPos(qint64 progressPos);
+    void setProgressTotal(qint64 progressTotal);
+private:
+    qint64 mProgressPos;
+    qint64 mProgressTotal;
+signals:
+    void progressChanged();
+
+public:
+    bool isAborted() const;
+signals:
+    void finished();
+    void aborted();
 };
 
 class ASTRO_HORA_API QCalcThread : public QThread
@@ -78,19 +103,8 @@ private:
     qreal mGeoLont;
     qreal mTzDiff;
 
-    Q_PROPERTY(double progress READ progress NOTIFY progressChanged)
-public:
-    double progress() const;
-private:
-    QEphTime::rep mPeriodPos;
-    QEphTime::rep mPeriodLength;
-signals:
-    void progressChanged();
-    void recalculated();
-    void aborted();
-
 public slots:
-    void run() override;
+    void calc() override;
 
 public:
     int forecastEventCount() const;

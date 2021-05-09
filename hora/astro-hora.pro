@@ -4,8 +4,6 @@ BUILD_ROOT=../..
 COMPONENT_NAME=astro
 include($${BUILD_ROOT}/build/qmake/qt-module.pri)
 
-QT += concurrent
-
 SOURCES += \
     init.cc \
     qaspectconfig.cc \

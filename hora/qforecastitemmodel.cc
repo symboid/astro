@@ -13,7 +13,7 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(invokeRecalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(invokeRecalc()));
     connect(mForecast.get(), SIGNAL(runningChanged()), this, SIGNAL(calculatingChanged()));
-    connect(mForecast.get(), SIGNAL(recalculated()), this, SLOT(onRecalcFinished()));
+    connect(mForecast.get(), SIGNAL(finished()), this, SLOT(onRecalcFinished()));
     connect(mForecast.get(), SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
     connect(mForecast.get(), SIGNAL(progressChanged()), this, SIGNAL(progressChanged()));
 }
