@@ -37,12 +37,6 @@ Item {
             day: periodEndDate.day
         }
         autoRecalc: autoRecalcButton.checked
-        onModelAboutToBeReset: {
-            progressRunning = true
-        }
-        onModelReset: {
-            progressRunning = false
-        }
     }
     ForecastTableView {
         id: forecastTableView
@@ -61,7 +55,7 @@ Item {
         font.italic: true
         color: "red"
     }
-    property bool progressRunning: false;
+    property bool progressRunning: forecastItemModel.calculating;
     Column {
         id: buttonRow
         anchors.bottom: parent.bottom
@@ -80,15 +74,16 @@ Item {
                 RoundButton {
                     radius: 5
                     icon.source: "/icons/refresh_icon&24.png"
-                    enabled: !autoRecalcButton.checked
+                    enabled: !autoRecalcButton.checked || !forecastItemModel.valid
                     visible: !progressRunning
                     highlighted: !forecastItemModel.valid
-                    onClicked: forecastItemModel.recalc()
+                    onClicked: forecastItemModel.startRecalc()
                 }
                 RoundButton {
                     radius: 5
                     icon.source: "/icons/delete_icon&24.png"
                     visible: progressRunning
+                    onClicked: forecastItemModel.abortRecalc()
                 }
                 RoundButton {
                     id: autoRecalcButton

@@ -3,7 +3,7 @@
 #include "astro/hora/qforecast.h"
 
 QForecast::QForecast(QObject* parent)
-    : QObject(parent)
+    : QCalcTask(parent)
     , mPeriodBegin(nullptr)
     , mPeriodEnd(nullptr)
     , mModel(nullptr)
@@ -148,12 +148,17 @@ void QForecast::run()
         currentTime = *mPeriodBegin;
         mPeriodLength = (mPeriodEnd->ephTime() - mPeriodBegin->ephTime()).count();
         mPeriodPos = 0.0;
+        bool isAborted = false;
         emit progressChanged();
-        while (currentTime.ephTime() < mPeriodEnd->ephTime())
+        while (!isAborted && currentTime.ephTime() < mPeriodEnd->ephTime())
         {
             // taking the nearest event
             QForecastEvent* nextEvent = eventBuffer.pop();
-            if (nextEvent)
+            if (!nextEvent || QThread::currentThread()->isInterruptionRequested())
+            {
+                isAborted = true;
+            }
+            else
             {
                 // inserting one new event
                 currentTime.setEphTime(nextEvent->eventExact()->ephTime() + eph::basic_calendar<eph_proxy>::days(1.0/24.0));
@@ -164,15 +169,31 @@ void QForecast::run()
                 mPeriodPos = (nextEvent->eventExact()->ephTime() - mPeriodBegin->ephTime()).count();
                 emit progressChanged();
             }
-            else
-            {
-                break;
-            }
         }
         eventBuffer.clear();
         mPeriodPos = 0.0;
         emit progressChanged();
-        emit recalculated();
+        emit isAborted ? aborted() : recalculated();
+    }
+}
+
+QCalcTask::QCalcTask(QObject* parent)
+    : QObject(parent)
+    , mRunning(false)
+{
+}
+
+bool QCalcTask::running() const
+{
+    return mRunning;
+}
+
+void QCalcTask::setRunning(bool running)
+{
+    if (mRunning != running)
+    {
+        mRunning = running;
+        emit runningChanged();
     }
 }
 
@@ -185,11 +206,17 @@ QCalcThread::QCalcThread(QObject* parent, QCalcTask* calcTask)
 void QCalcThread::run()
 {
     QMutexLocker calcLocker(&mCalcMutex);
+    mCalcTask->setRunning(true);
     mCalcTask->run();
+    mCalcTask->setRunning(false);
 }
 
 void QCalcThread::startCalc()
 {
+    if (isRunning())
+    {
+        requestInterruption();
+    }
     if (wait())
     {
         start();

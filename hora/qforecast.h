@@ -7,10 +7,24 @@
 #include "astro/hora/qforecastevent.h"
 #include <QThread>
 
-class ASTRO_HORA_API QCalcTask
+class ASTRO_HORA_API QCalcTask : public QObject
 {
+    Q_OBJECT
+
+public:
+    QCalcTask(QObject* parent);
+
 public:
     virtual void run() = 0;
+
+    Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
+private:
+    bool mRunning;
+public:
+    bool running() const;
+    void setRunning(bool running);
+signals:
+    void runningChanged();
 };
 
 class ASTRO_HORA_API QCalcThread : public QThread
@@ -30,12 +44,12 @@ private:
 };
 
 
-class ASTRO_HORA_API QForecast : public QObject, public QCalcTask
+class ASTRO_HORA_API QForecast : public QCalcTask
 {
     Q_OBJECT
 
 public:
-    QForecast(QObject* parent = nullptr);
+    QForecast(QObject* parent);
 
 public:
     QHoraCoords* periodBegin() const;
@@ -73,6 +87,7 @@ private:
 signals:
     void progressChanged();
     void recalculated();
+    void aborted();
 
 public slots:
     void run() override;

@@ -12,7 +12,9 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
 {
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(invokeRecalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(invokeRecalc()));
-    connect(mForecast.get(), SIGNAL(recalculated()), this, SLOT(onRecalculated()));
+    connect(mForecast.get(), SIGNAL(runningChanged()), this, SIGNAL(calculatingChanged()));
+    connect(mForecast.get(), SIGNAL(recalculated()), this, SLOT(onRecalcFinished()));
+    connect(mForecast.get(), SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
     connect(mForecast.get(), SIGNAL(progressChanged()), this, SIGNAL(progressChanged()));
 }
 
@@ -116,7 +118,7 @@ void QForecastItemModel::setAutoRecalc(bool autoRecalc)
         emit autoRecalcChanged();
         if (mAutoRecalc && !mIsValid)
         {
-            recalc();
+            startRecalc();
         }
     }
 }
@@ -130,11 +132,16 @@ void QForecastItemModel::setValid(bool isValid)
     }
 }
 
+bool QForecastItemModel::calculating() const
+{
+    return mForecast.get()->running();
+}
+
 void QForecastItemModel::invokeRecalc()
 {
     if (mAutoRecalc)
     {
-        recalc();
+        startRecalc();
     }
     else
     {
@@ -142,16 +149,27 @@ void QForecastItemModel::invokeRecalc()
     }
 }
 
-void QForecastItemModel::recalc()
+void QForecastItemModel::startRecalc()
 {
     beginResetModel();
     setValid(false);
     mForecastThread->startCalc();
 }
 
-void QForecastItemModel::onRecalculated()
+void QForecastItemModel::abortRecalc()
+{
+    mForecastThread->requestInterruption();
+}
+
+void QForecastItemModel::onRecalcFinished()
 {
     setValid(true);
+    endResetModel();
+}
+
+void QForecastItemModel::onRecalcAborted()
+{
+    setValid(false);
     endResetModel();
 }
 

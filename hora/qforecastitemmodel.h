@@ -62,19 +62,24 @@ private:
 
     Q_PROPERTY(bool autoRecalc MEMBER mAutoRecalc WRITE setAutoRecalc NOTIFY autoRecalcChanged)
     Q_PROPERTY(bool valid MEMBER mIsValid WRITE setValid NOTIFY validChanged)
+    Q_PROPERTY(bool calculating READ calculating NOTIFY calculatingChanged)
 private:
     bool mAutoRecalc;
     bool mIsValid;
     void setAutoRecalc(bool autoRecalc);
     void setValid(bool isValid);
+    bool calculating() const;
 signals:
     void autoRecalcChanged();
     void validChanged();
+    void calculatingChanged();
 public slots:
-    Q_INVOKABLE void recalc();
+    Q_INVOKABLE void startRecalc();
+    Q_INVOKABLE void abortRecalc();
 private slots:
     void invokeRecalc();
-    void onRecalculated();
+    void onRecalcFinished();
+    void onRecalcAborted();
 
 public:
     Q_PROPERTY(double progress READ progress NOTIFY progressChanged)
