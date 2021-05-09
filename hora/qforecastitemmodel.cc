@@ -146,8 +146,7 @@ void QForecastItemModel::recalc()
 {
     beginResetModel();
     setValid(false);
-    mForecast->calcAsync();
-//    mForecastThread->startCalc();
+    mForecastThread->startCalc();
 }
 
 void QForecastItemModel::onRecalculated()

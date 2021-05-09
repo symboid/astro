@@ -1,7 +1,6 @@
 
 #include "astro/hora/setup.h"
 #include "astro/hora/qforecast.h"
-#include <QtConcurrent>
 
 QForecast::QForecast(QObject* parent)
     : QObject(parent)
@@ -177,42 +176,22 @@ void QForecast::run()
     }
 }
 
-void QForecast::calcAsync()
-{
-    QMutexLocker startLocker(&mStartMutex);
-    QtConcurrent::run([this]{
-        QMutexLocker calcLocker(&mCalcMutex);
-        mStartSync.wakeOne();
-        run();
-    });
-    mStartSync.wait(&mStartMutex);
-}
-
-QCalcThread::QCalcThread(QObject* parent, QRunnable* calcable)
+QCalcThread::QCalcThread(QObject* parent, QCalcTask* calcTask)
     : QThread(parent)
-    , mStartCounter(0)
-    , mCalcable(calcable)
+    , mCalcTask(calcTask)
 {
 }
 
 void QCalcThread::run()
 {
-    qDebug() << "Waiting for run";
     QMutexLocker calcLocker(&mCalcMutex);
-    mStartSync.wakeOne();
-    qDebug() << "Started";
-    mCalcable->run();
-    qDebug() << "Finished";
+    mCalcTask->run();
 }
 
 void QCalcThread::startCalc()
 {
-    qDebug() << "Waiting for start...";
-    QMutexLocker startLocker(&mStartMutex);
-    ++mStartCounter;
-    qDebug() << "Starting" << mStartCounter;
-    start();
-    qDebug() << "Waiting for started" << mStartCounter;
-    mStartSync.wait(&mStartMutex);
-    qDebug() << "Started" << mStartCounter;
+    if (wait())
+    {
+        start();
+    }
 }

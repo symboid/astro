@@ -5,15 +5,19 @@
 #include "astro/hora/defs.h"
 #include "astro/hora/qforecastmodel.h"
 #include "astro/hora/qforecastevent.h"
-#include <QRunnable>
-#include <QWaitCondition>
 #include <QThread>
+
+class ASTRO_HORA_API QCalcTask
+{
+public:
+    virtual void run() = 0;
+};
 
 class ASTRO_HORA_API QCalcThread : public QThread
 {
     Q_OBJECT
 public:
-    QCalcThread(QObject* parent, QRunnable* calcable);
+    QCalcThread(QObject* parent, QCalcTask* calcTask);
 
 private:
     void run() override;
@@ -21,15 +25,12 @@ public:
     void startCalc();
 
 private:
-    QMutex mStartMutex;
-    QWaitCondition mStartSync;
-    int mStartCounter;
-    QRunnable* mCalcable;
+    QCalcTask* mCalcTask;
     QMutex mCalcMutex;
 };
 
 
-class ASTRO_HORA_API QForecast : public QObject, public QRunnable
+class ASTRO_HORA_API QForecast : public QObject, public QCalcTask
 {
     Q_OBJECT
 
@@ -75,7 +76,6 @@ signals:
 
 public slots:
     void run() override;
-    void calcAsync();
 
 public:
     int forecastEventCount() const;
@@ -85,10 +85,6 @@ private:
     QVector<QForecastEvent*> mEvents;
     QVector<qreal> mAspectList;
     QSharedPointer<QAspectObjectList> mPrmsorList;
-
-    QMutex mStartMutex;
-    QWaitCondition mStartSync;
-    QMutex mCalcMutex;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECAST_H__
