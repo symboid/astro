@@ -76,9 +76,7 @@ bool QPlanetSigtor::calcEclPos(const QEphTime& ephTime, eph::arc_degree, eph::ar
             eclPos = QEclPos(eclPos._M_lont + 180.0, eclPos._M_latt, eclPos._M_dist);
         }
         mEclPos = eclPos;
-        emit eclPosChanged();
         mEclSpeed = eclSpeed;
-        emit eclSpeedChanged();
     }
     return isSuccess;
 }

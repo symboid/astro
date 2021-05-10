@@ -24,7 +24,6 @@ bool QHouseSystem::calc(eph::basic_time_point<eph_proxy> horaTime, eph::arc_degr
             mEclSpeed[h] = QEclSpeed(degPerHour, 0.0);
         }
         calcResult = true;
-        emit  recalculated();
     }
     return calcResult;
 }
@@ -56,8 +55,6 @@ QHouseCusp::QHouseCusp(QObject* parent, const QHouseSystem* houseSystem, int hou
     , mHouseSystem(houseSystem)
     , mHouseIndex(houseIndex)
 {
-    connect(houseSystem, SIGNAL(recalculated()), this, SIGNAL(eclPosChanged()));
-    connect(houseSystem, SIGNAL(recalculated()), this, SIGNAL(eclSpeedChanged()));
 }
 
 QEclPos QHouseCusp::eclPos() const

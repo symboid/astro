@@ -26,13 +26,7 @@ private:
 
 public:
     virtual QEclPos eclPos() const = 0;
-signals:
-    void eclPosChanged();
-
-public:
     virtual QEclSpeed eclSpeed() const = 0;
-signals:
-    void eclSpeedChanged();
 };
 
 #endif // __SYMBOID_ASTRO_DB_QEPHOBJECT_H__

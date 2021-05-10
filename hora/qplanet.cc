@@ -90,9 +90,7 @@ bool QPlanet::calc(const QEphTime& ephTime)
     if (isSuccess)
     {
         mEclPos = eclPos;
-        emit eclPosChanged();
         mEclSpeed = eclSpeed;
-        emit eclSpeedChanged();
     }
     return isSuccess;
 }
@@ -151,9 +149,7 @@ bool QLunarNode::calc(const QEphTime& ephTime)
             eclPos = QEclPos(eclPos._M_lont + 180.0, eclPos._M_latt, eclPos._M_dist);
         }
         mEclPos = eclPos;
-        emit eclPosChanged();
         mEclSpeed = eclSpeed;
-        emit eclSpeedChanged();
     }
     return isSuccess;
 }
