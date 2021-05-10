@@ -142,7 +142,7 @@ void QForecast::calc()
         QHoraCoords currentTime;
         currentTime = *mPeriodBegin;
         setProgressTotal((mPeriodEnd->ephTime() - mPeriodBegin->ephTime()).count());
-        while (!isAborted() && currentTime.ephTime() < mPeriodEnd->ephTime())
+        while (!isAborted() && !restarted() && currentTime.ephTime() < mPeriodEnd->ephTime())
         {
             // taking the nearest event
             QForecastEvent* nextEvent = eventBuffer.pop();
@@ -184,7 +184,10 @@ void QCalcTask::run()
 
     setProgressPos(0LL);
     setProgressTotal(0LL);
-    emit isAborted() ? aborted() : finished();
+    if (!restarted())
+    {
+        emit isAborted() ? aborted() : finished();
+    }
     setRunning(false);
 }
 
@@ -240,6 +243,26 @@ bool QCalcTask::isAborted() const
     return mExecutionThread->isInterruptionRequested();
 }
 
+bool QCalcTask::restarting()
+{
+    QMutexLocker lock(&mRestartMutex);
+    bool isRestarted = mRestartCount > 0;
+    mRestartCount = 0;
+    return isRestarted;
+}
+
+bool QCalcTask::restarted()
+{
+    QMutexLocker lock(&mRestartMutex);
+    return mRestartCount > 0;
+}
+
+void QCalcTask::setRestarted()
+{
+    QMutexLocker lock(&mRestartMutex);
+    mRestartCount++;
+}
+
 QCalcThread::QCalcThread(QObject* parent, QCalcTask* calcTask)
     : QThread(parent)
     , mCalcTask(calcTask)
@@ -251,15 +274,18 @@ void QCalcThread::run()
 {
     QMutexLocker calcLocker(&mCalcMutex);
     mCalcTask->run();
+    while (mCalcTask->restarting())
+    {
+        mCalcTask->run();
+    }
 }
 
 void QCalcThread::startCalc()
 {
     if (isRunning())
     {
-        requestInterruption();
-    }
-    if (wait())
+        mCalcTask->setRestarted();
+    } else
     {
         start();
     }

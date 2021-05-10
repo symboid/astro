@@ -50,6 +50,13 @@ public:
 signals:
     void finished();
     void aborted();
+
+public:
+    bool restarting();
+    bool restarted();
+    void setRestarted();
+    QMutex mRestartMutex;
+    int mRestartCount;
 };
 
 class ASTRO_HORA_API QCalcThread : public QThread
