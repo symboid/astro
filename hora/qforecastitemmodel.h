@@ -7,6 +7,7 @@
 #include "astro/hora/qforecastevent.h"
 #include "astro/hora/qforecast.h"
 #include "astro/controls/qastrofont.h"
+#include "sdk/controls/qcalcthread.h"
 
 class ASTRO_HORA_API QForecastItemModel : public QHoraTableModel
 {

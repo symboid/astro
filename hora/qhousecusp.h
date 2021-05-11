@@ -26,8 +26,6 @@ public:
     QEclSpeed mEclSpeed[HOUSE_COUNT + 1];
 
     bool calc(eph::basic_time_point<eph_proxy> horaTime, eph::arc_degree geoLont, eph::arc_degree geoLatt);
-signals:
-    void recalculated();
 };
 
 class ASTRO_HORA_API QHouseCusp : public QHoraObject
