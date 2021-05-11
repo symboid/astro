@@ -83,7 +83,7 @@
 <context>
     <name>ForecastTablePane</name>
     <message>
-        <location filename="ForecastTablePane.qml" line="62"/>
+        <location filename="ForecastTablePane.qml" line="63"/>
         <source>Parameters has changed.
 Table must be recalculated!</source>
         <translation type="unfinished"></translation>

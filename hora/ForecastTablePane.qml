@@ -14,6 +14,7 @@ CalcPane {
     calculating: forecastItemModel.calculating
     progressPos: forecastItemModel.progress
     contentValid: forecastItemModel.valid
+    indeterminateCalc: false
 
     onStartCalc: forecastItemModel.startRecalc()
     onAbortCalc: forecastItemModel.abortRecalc()

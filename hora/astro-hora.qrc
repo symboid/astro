@@ -11,7 +11,6 @@
         <file>ForecastTableView.qml</file>
         <file>AspectSettingsGroup.qml</file>
         <file>ForecastTablePane.qml</file>
-        <file>CalcPane.qml</file>
     </qresource>
     <qresource prefix="/tr">
         <file>astro-hora_hu.qm</file>
@@ -20,9 +19,5 @@
         <file>icons/br_next_icon&amp;24.png</file>
         <file>icons/br_prev_icon&amp;24.png</file>
         <file>icons/globe_3_icon&amp;48.png</file>
-        <file>icons/connect_icon&amp;24.png</file>
-        <file>icons/not_connected_icon&amp;24.png</file>
-        <file>icons/refresh_icon&amp;24.png</file>
-        <file>icons/delete_icon&amp;24.png</file>
     </qresource>
 </RCC>

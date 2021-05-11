@@ -10,4 +10,3 @@ PlanetsTableView 1.0 PlanetsTableView.qml
 HousesTableView 1.0 HousesTableView.qml
 ForecastTableView 1.0 ForecastTableView.qml
 ForecastTablePane 1.0 ForecastTablePane.qml
-CalcPane 1.0 CalcPane.qml
