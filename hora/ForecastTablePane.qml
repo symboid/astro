@@ -19,7 +19,7 @@ CalcPane {
     onStartCalc: forecastItemModel.startRecalc()
     onAbortCalc: forecastItemModel.abortRecalc()
 
-    Row {
+    parameters: Row {
         id: periodRow
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
@@ -50,20 +50,8 @@ CalcPane {
 
     ForecastTableView {
         id: forecastTableView
-        anchors.top: periodRow.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.fill: parent
         tableModel: forecastItemModel
-        opacity: forecastItemModel.valid ? 1.0 : 0.5
-    }
-    Label {
-        anchors.centerIn: parent
-        visible: !forecastItemModel.valid && !calculating
-        text: qsTr("Parameters has changed.\nTable must be recalculated!")
-        horizontalAlignment: Label.AlignHCenter
-        font.italic: true
-        color: "red"
     }
     Component.onCompleted: {
         periodBeginDate.setCurrent()
