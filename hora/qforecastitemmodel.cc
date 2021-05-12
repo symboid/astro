@@ -5,14 +5,13 @@
 QForecastItemModel::QForecastItemModel(QObject* parent)
     : QHoraTableModel(Q_NULLPTR, parent)
     , mForecast(new QForecast(this))
-    , mForecastThread(new QCalcThread(this, mForecast.get()))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
-    , mAutoRecalc(false)
-    , mIsValid(false)
 {
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(invokeRecalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(invokeRecalc()));
     connect(mForecast.get(), SIGNAL(runningChanged()), this, SIGNAL(calculatingChanged()));
+    connect(mForecast.get(), SIGNAL(validChanged()), this, SIGNAL(validChanged()));
+    connect(mForecast.get(), SIGNAL(autorunChanged()), this, SIGNAL(autoRecalcChanged()));
     connect(mForecast.get(), SIGNAL(finished()), this, SLOT(onRecalcFinished()));
     connect(mForecast.get(), SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
     connect(mForecast.get(), SIGNAL(progressChanged()), this, SIGNAL(progressChanged()));
@@ -110,66 +109,49 @@ void QForecastItemModel::setPeriodEnd(QHoraCoords* periodEnd)
     }
 }
 
-void QForecastItemModel::setAutoRecalc(bool autoRecalc)
+bool QForecastItemModel::autoRecalc() const
 {
-    if (mAutoRecalc != autoRecalc)
-    {
-        mAutoRecalc = autoRecalc;
-        emit autoRecalcChanged();
-        if (mAutoRecalc && !mIsValid)
-        {
-            startRecalc();
-        }
-    }
+    return mForecast->autorun();
 }
 
-void QForecastItemModel::setValid(bool isValid)
+bool QForecastItemModel::valid() const
 {
-    if (mIsValid != isValid)
-    {
-        mIsValid = isValid;
-        emit validChanged();
-    }
+    return mForecast->valid();
+}
+
+void QForecastItemModel::setAutoRecalc(bool autoRecalc)
+{
+    mForecast->setAutorun(autoRecalc);
 }
 
 bool QForecastItemModel::calculating() const
 {
-    return mForecast.get()->running();
+    return mForecast->running();
 }
 
 void QForecastItemModel::invokeRecalc()
 {
-    if (mAutoRecalc)
-    {
-        startRecalc();
-    }
-    else
-    {
-        setValid(false);
-    }
+    mForecast->invoke();
 }
 
 void QForecastItemModel::startRecalc()
 {
     beginResetModel();
-    setValid(false);
-    mForecastThread->startCalc();
+    mForecast->start();
 }
 
 void QForecastItemModel::abortRecalc()
 {
-    mForecastThread->requestInterruption();
+    mForecast->abort();
 }
 
 void QForecastItemModel::onRecalcFinished()
 {
-    setValid(true);
     endResetModel();
 }
 
 void QForecastItemModel::onRecalcAborted()
 {
-    setValid(false);
     endResetModel();
 }
 

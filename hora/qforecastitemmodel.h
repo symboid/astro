@@ -58,17 +58,15 @@ signals:
 
 private:
     QScopedPointer<QForecast> mForecast;
-    QScopedPointer<QCalcThread> mForecastThread;
     QSharedPointer<QAstroFont> mAstroFont;
 
-    Q_PROPERTY(bool autoRecalc MEMBER mAutoRecalc WRITE setAutoRecalc NOTIFY autoRecalcChanged)
-    Q_PROPERTY(bool valid MEMBER mIsValid WRITE setValid NOTIFY validChanged)
+    Q_PROPERTY(bool autoRecalc READ autoRecalc WRITE setAutoRecalc NOTIFY autoRecalcChanged)
+    Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
     Q_PROPERTY(bool calculating READ calculating NOTIFY calculatingChanged)
 private:
-    bool mAutoRecalc;
-    bool mIsValid;
+    bool autoRecalc() const;
+    bool valid() const;
     void setAutoRecalc(bool autoRecalc);
-    void setValid(bool isValid);
     bool calculating() const;
 signals:
     void autoRecalcChanged();
