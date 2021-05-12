@@ -7,7 +7,6 @@
 #include "astro/hora/qforecastevent.h"
 #include "astro/hora/qforecast.h"
 #include "astro/controls/qastrofont.h"
-#include "sdk/controls/qcalcthread.h"
 
 class ASTRO_HORA_API QForecastItemModel : public QHoraTableModel
 {
@@ -60,32 +59,14 @@ private:
     QScopedPointer<QForecast> mForecast;
     QSharedPointer<QAstroFont> mAstroFont;
 
-    Q_PROPERTY(bool autoRecalc READ autoRecalc WRITE setAutoRecalc NOTIFY autoRecalcChanged)
-    Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
-    Q_PROPERTY(bool calculating READ calculating NOTIFY calculatingChanged)
+    Q_PROPERTY(QCalcTask* calcTask READ calcTask CONSTANT)
 private:
-    bool autoRecalc() const;
-    bool valid() const;
-    void setAutoRecalc(bool autoRecalc);
-    bool calculating() const;
-signals:
-    void autoRecalcChanged();
-    void validChanged();
-    void calculatingChanged();
-public slots:
-    Q_INVOKABLE void startRecalc();
-    Q_INVOKABLE void abortRecalc();
+    QCalcTask* calcTask() const;
 private slots:
     void invokeRecalc();
+    void onRecalcStarted();
     void onRecalcFinished();
     void onRecalcAborted();
-
-public:
-    Q_PROPERTY(double progress READ progress NOTIFY progressChanged)
-public:
-    double progress() const;
-signals:
-    void progressChanged();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECASTITEMMODEL_H__

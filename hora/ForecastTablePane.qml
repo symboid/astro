@@ -11,13 +11,9 @@ CalcPane {
     property alias hora: forecastItemModel.hora
     property alias forecastModel: forecastItemModel.forecastModel
 
-    calculating: forecastItemModel.calculating
-    progressPos: forecastItemModel.progress
-    contentValid: forecastItemModel.valid
-    indeterminateCalc: false
+    task: forecastItemModel.calcTask
 
-    onStartCalc: forecastItemModel.startRecalc()
-    onAbortCalc: forecastItemModel.abortRecalc()
+    indeterminateCalc: false
 
     parameters: Row {
         id: periodRow
@@ -45,7 +41,6 @@ CalcPane {
             month: periodEndDate.month
             day: periodEndDate.day
         }
-        autoRecalc: autocalc
     }
 
     ForecastTableView {

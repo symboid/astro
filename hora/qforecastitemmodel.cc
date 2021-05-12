@@ -9,12 +9,9 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
 {
     connect(this, SIGNAL(periodBeginChanged()), this, SLOT(invokeRecalc()));
     connect(this, SIGNAL(periodEndChanged()), this, SLOT(invokeRecalc()));
-    connect(mForecast.get(), SIGNAL(runningChanged()), this, SIGNAL(calculatingChanged()));
-    connect(mForecast.get(), SIGNAL(validChanged()), this, SIGNAL(validChanged()));
-    connect(mForecast.get(), SIGNAL(autorunChanged()), this, SIGNAL(autoRecalcChanged()));
+    connect(mForecast.get(), SIGNAL(started()), this, SLOT(onRecalcStarted()));
     connect(mForecast.get(), SIGNAL(finished()), this, SLOT(onRecalcFinished()));
     connect(mForecast.get(), SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
-    connect(mForecast.get(), SIGNAL(progressChanged()), this, SIGNAL(progressChanged()));
 }
 
 int QForecastItemModel::rowCount(const QModelIndex& parent) const
@@ -109,24 +106,9 @@ void QForecastItemModel::setPeriodEnd(QHoraCoords* periodEnd)
     }
 }
 
-bool QForecastItemModel::autoRecalc() const
+QCalcTask* QForecastItemModel::calcTask() const
 {
-    return mForecast->autorun();
-}
-
-bool QForecastItemModel::valid() const
-{
-    return mForecast->valid();
-}
-
-void QForecastItemModel::setAutoRecalc(bool autoRecalc)
-{
-    mForecast->setAutorun(autoRecalc);
-}
-
-bool QForecastItemModel::calculating() const
-{
-    return mForecast->running();
+    return mForecast.get();
 }
 
 void QForecastItemModel::invokeRecalc()
@@ -134,15 +116,9 @@ void QForecastItemModel::invokeRecalc()
     mForecast->invoke();
 }
 
-void QForecastItemModel::startRecalc()
+void QForecastItemModel::onRecalcStarted()
 {
     beginResetModel();
-    mForecast->start();
-}
-
-void QForecastItemModel::abortRecalc()
-{
-    mForecast->abort();
 }
 
 void QForecastItemModel::onRecalcFinished()
@@ -167,9 +143,4 @@ void QForecastItemModel::setForecastModel(QForecastModel* forecastModel)
         mForecast->setModel(forecastModel);
         emit forecastModelChanged();
     }
-}
-
-double QForecastItemModel::progress() const
-{
-    return mForecast->progress();
 }
