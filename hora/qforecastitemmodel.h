@@ -63,7 +63,6 @@ private:
 private:
     QCalcTask* calcTask() const;
 private slots:
-    void invokeRecalc();
     void onRecalcStarted();
     void onRecalcFinished();
     void onRecalcAborted();

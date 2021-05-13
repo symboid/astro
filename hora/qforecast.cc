@@ -22,7 +22,19 @@ QHoraCoords* QForecast::periodBegin() const
 
 void QForecast::setPeriodBegin(QHoraCoords* periodBegin)
 {
-    mPeriodBegin.reset(periodBegin);
+    if (mPeriodBegin)
+    {
+        disconnect(mPeriodBegin.get(), SIGNAL(changed()), this, SLOT(invoke()));
+    }
+    if (mPeriodBegin.get() != periodBegin)
+    {
+        mPeriodBegin.reset(periodBegin);
+        if (mPeriodBegin)
+        {
+            connect(mPeriodBegin.get(), SIGNAL(changed()), this, SLOT(invoke()));
+        }
+        emit periodBeginChanged();
+    }
 }
 
 QHoraCoords* QForecast::periodEnd() const
@@ -32,7 +44,19 @@ QHoraCoords* QForecast::periodEnd() const
 
 void QForecast::setPeriodEnd(QHoraCoords* periodEnd)
 {
-    mPeriodEnd.reset(periodEnd);
+    if (mPeriodEnd)
+    {
+        disconnect(mPeriodEnd.get(), SIGNAL(changed()), this, SLOT(invoke()));
+    }
+    if (mPeriodEnd.get() != periodEnd)
+    {
+        mPeriodEnd.reset(periodEnd);
+        if (mPeriodEnd)
+        {
+            connect(mPeriodEnd.get(), SIGNAL(changed()), this, SLOT(invoke()));
+        }
+        emit periodEndChanged();
+    }
 }
 
 qreal QForecast::geoLatt() const

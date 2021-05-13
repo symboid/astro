@@ -7,11 +7,11 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
     , mForecast(new QForecast(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
 {
-    connect(this, SIGNAL(periodBeginChanged()), this, SLOT(invokeRecalc()));
-    connect(this, SIGNAL(periodEndChanged()), this, SLOT(invokeRecalc()));
     connect(mForecast.get(), SIGNAL(started()), this, SLOT(onRecalcStarted()));
     connect(mForecast.get(), SIGNAL(finished()), this, SLOT(onRecalcFinished()));
     connect(mForecast.get(), SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
+    connect(mForecast.get(), SIGNAL(periodBeginChanged()), this, SIGNAL(periodBeginChanged()));
+    connect(mForecast.get(), SIGNAL(periodEndChanged()), this, SIGNAL(periodEndChanged()));
 }
 
 int QForecastItemModel::rowCount(const QModelIndex& parent) const
@@ -54,7 +54,7 @@ QHora* QForecastItemModel::hora() const
 void QForecastItemModel::setHora(QHora* hora)
 {
     mForecast->model()->setHora(hora);
-    connect(hora, SIGNAL(recalculated()), this, SLOT(invokeRecalc()));
+    connect(hora, SIGNAL(recalculated()), mForecast.get(), SLOT(invoke()));
 }
 
 QStringList QForecastItemModel::headerModel() const
@@ -74,46 +74,17 @@ QHoraCoords* QForecastItemModel::periodEnd() const
 
 void QForecastItemModel::setPeriodBegin(QHoraCoords* periodBegin)
 {
-    if (mForecast->periodBegin())
-    {
-        disconnect(mForecast->periodBegin(), SIGNAL(changed()), this, SLOT(invokeRecalc()));
-    }
-    if (mForecast->periodBegin() != periodBegin)
-    {
-        mForecast->setPeriodBegin(periodBegin);
-        if (periodBegin)
-        {
-            connect(periodBegin, SIGNAL(changed()), this, SLOT(invokeRecalc()));
-        }
-        emit periodBeginChanged();
-    }
+    mForecast->setPeriodBegin(periodBegin);
 }
 
 void QForecastItemModel::setPeriodEnd(QHoraCoords* periodEnd)
 {
-    if (mForecast->periodEnd())
-    {
-        disconnect(mForecast->periodEnd(), SIGNAL(changed()), this, SLOT(invokeRecalc()));
-    }
-    if (mForecast->periodEnd() != periodEnd)
-    {
-        mForecast->setPeriodEnd(periodEnd);
-        if (periodEnd)
-        {
-            connect(periodEnd, SIGNAL(changed()), this, SLOT(invokeRecalc()));
-        }
-        emit periodEndChanged();
-    }
+    mForecast->setPeriodEnd(periodEnd);
 }
 
 QCalcTask* QForecastItemModel::calcTask() const
 {
     return mForecast.get();
-}
-
-void QForecastItemModel::invokeRecalc()
-{
-    mForecast->invoke();
 }
 
 void QForecastItemModel::onRecalcStarted()

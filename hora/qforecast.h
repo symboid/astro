@@ -22,6 +22,9 @@ public:
 private:
     QScopedPointer<QHoraCoords> mPeriodBegin;
     QScopedPointer<QHoraCoords> mPeriodEnd;
+signals:
+    void periodBeginChanged();
+    void periodEndChanged();
 
 public:
     QForecastModel* model() const;
