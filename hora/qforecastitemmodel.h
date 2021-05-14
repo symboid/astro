@@ -59,10 +59,11 @@ private:
     QScopedPointer<QForecast> mForecast;
     QSharedPointer<QAstroFont> mAstroFont;
 
-    Q_PROPERTY(QCalcTask* calcTask READ calcTask CONSTANT)
+    Q_PROPERTY(QCalcable* calcable READ calcable CONSTANT)
 private:
-    QCalcTask* calcTask() const;
+    QCalcable* calcable() const;
 private slots:
+    void connectForecastSignals();
     void onRecalcStarted();
     void onRecalcFinished();
     void onRecalcAborted();

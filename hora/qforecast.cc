@@ -3,7 +3,7 @@
 #include "astro/hora/qforecast.h"
 
 QForecast::QForecast(QObject* parent)
-    : QCalcTask(parent)
+    : QCalcable(parent)
     , mPeriodBegin(nullptr)
     , mPeriodEnd(nullptr)
     , mModel(nullptr)
@@ -13,6 +13,12 @@ QForecast::QForecast(QObject* parent)
     , mAspectList({0, 180, 120, 90, 60, 150, 30})
     , mPrmsorList(nullptr)
 {
+    connect(this, SIGNAL(calcTaskChanged()), this, SLOT(onCalcTaskChanged()));
+}
+
+QForecast::~QForecast()
+{
+    mModel.reset();
 }
 
 QHoraCoords* QForecast::periodBegin() const
@@ -22,16 +28,12 @@ QHoraCoords* QForecast::periodBegin() const
 
 void QForecast::setPeriodBegin(QHoraCoords* periodBegin)
 {
-    if (mPeriodBegin)
-    {
-        disconnect(mPeriodBegin.get(), SIGNAL(changed()), this, SLOT(invoke()));
-    }
     if (mPeriodBegin.get() != periodBegin)
     {
         mPeriodBegin.reset(periodBegin);
-        if (mPeriodBegin)
+        if (mPeriodBegin && mCalcTask)
         {
-            connect(mPeriodBegin.get(), SIGNAL(changed()), this, SLOT(invoke()));
+            connect(mPeriodBegin.get(), SIGNAL(changed()), mCalcTask, SLOT(invoke()));
         }
         emit periodBeginChanged();
     }
@@ -44,18 +46,29 @@ QHoraCoords* QForecast::periodEnd() const
 
 void QForecast::setPeriodEnd(QHoraCoords* periodEnd)
 {
-    if (mPeriodEnd)
-    {
-        disconnect(mPeriodEnd.get(), SIGNAL(changed()), this, SLOT(invoke()));
-    }
     if (mPeriodEnd.get() != periodEnd)
     {
         mPeriodEnd.reset(periodEnd);
-        if (mPeriodEnd)
+        if (mPeriodEnd && mCalcTask)
         {
-            connect(mPeriodEnd.get(), SIGNAL(changed()), this, SLOT(invoke()));
+            connect(mPeriodEnd.get(), SIGNAL(changed()), mCalcTask, SLOT(invoke()));
         }
         emit periodEndChanged();
+    }
+}
+
+void QForecast::onCalcTaskChanged()
+{
+    if (mCalcTask)
+    {
+        if (mPeriodBegin)
+        {
+            connect(mPeriodBegin.get(), SIGNAL(changed()), mCalcTask, SLOT(invoke()));
+        }
+        if (mPeriodEnd)
+        {
+            connect(mPeriodEnd.get(), SIGNAL(changed()), mCalcTask, SLOT(invoke()));
+        }
     }
 }
 
@@ -150,7 +163,7 @@ void QForecast::calc()
     mEvents.clear();
     mEvents.reserve(mModel->estimatedEventCount(mPeriodBegin.get(), mPeriodEnd.get()) * 2);
 
-    if (mModel && mModel->hora() && mPeriodBegin && mPeriodEnd)
+    if (mCalcTask && mModel && mModel->hora() && mPeriodBegin && mPeriodEnd)
     {
         // #2. list of promissors
         mPrmsorList = mModel->hora()->fetchAspectObjects(mAspectList);
@@ -165,8 +178,8 @@ void QForecast::calc()
         // iterating over period
         QHoraCoords currentTime;
         currentTime = *mPeriodBegin;
-        setProgressTotal((mPeriodEnd->ephTime() - mPeriodBegin->ephTime()).count());
-        while (!isAborted() && !restarted() && currentTime.ephTime() < mPeriodEnd->ephTime())
+        mCalcTask->setProgressTotal((mPeriodEnd->ephTime() - mPeriodBegin->ephTime()).count());
+        while (!mCalcTask->isAborted() && !mCalcTask->restarted() && currentTime.ephTime() < mPeriodEnd->ephTime())
         {
             // taking the nearest event
             QForecastEvent* nextEvent = eventBuffer.pop();
@@ -182,7 +195,7 @@ void QForecast::calc()
 
                 // populating event list
                 mEvents.push_back(nextEvent);
-                setProgressPos((nextEvent->eventExact()->ephTime() - mPeriodBegin->ephTime()).count());
+                mCalcTask->setProgressPos((nextEvent->eventExact()->ephTime() - mPeriodBegin->ephTime()).count());
             }
         }
         eventBuffer.clear();

@@ -7,9 +7,7 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
     , mForecast(new QForecast(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
 {
-    connect(mForecast.get(), SIGNAL(started()), this, SLOT(onRecalcStarted()));
-    connect(mForecast.get(), SIGNAL(finished()), this, SLOT(onRecalcFinished()));
-    connect(mForecast.get(), SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
+    connect(mForecast.get(), SIGNAL(calcTaskChanged()), this, SLOT(connectForecastSignals()));
     connect(mForecast.get(), SIGNAL(periodBeginChanged()), this, SIGNAL(periodBeginChanged()));
     connect(mForecast.get(), SIGNAL(periodEndChanged()), this, SIGNAL(periodEndChanged()));
 }
@@ -54,7 +52,6 @@ QHora* QForecastItemModel::hora() const
 void QForecastItemModel::setHora(QHora* hora)
 {
     mForecast->model()->setHora(hora);
-    connect(hora, SIGNAL(recalculated()), mForecast.get(), SLOT(invoke()));
 }
 
 QStringList QForecastItemModel::headerModel() const
@@ -82,7 +79,7 @@ void QForecastItemModel::setPeriodEnd(QHoraCoords* periodEnd)
     mForecast->setPeriodEnd(periodEnd);
 }
 
-QCalcTask* QForecastItemModel::calcTask() const
+QCalcable* QForecastItemModel::calcable() const
 {
     return mForecast.get();
 }
@@ -113,5 +110,16 @@ void QForecastItemModel::setForecastModel(QForecastModel* forecastModel)
     {
         mForecast->setModel(forecastModel);
         emit forecastModelChanged();
+    }
+}
+
+void QForecastItemModel::connectForecastSignals()
+{
+    if (QCalcTask* forecastCalcTask = mForecast->calcTask())
+    {
+        connect(forecastCalcTask, SIGNAL(started()), this, SLOT(onRecalcStarted()));
+        connect(forecastCalcTask, SIGNAL(finished()), this, SLOT(onRecalcFinished()));
+        connect(forecastCalcTask, SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
+        connect(mForecast->model()->hora(), SIGNAL(recalculated()), forecastCalcTask, SLOT(invoke()));
     }
 }

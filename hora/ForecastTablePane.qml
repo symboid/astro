@@ -11,7 +11,7 @@ CalcPane {
     property alias hora: forecastItemModel.hora
     property alias forecastModel: forecastItemModel.forecastModel
 
-    task: forecastItemModel.calcTask
+    calcable: forecastItemModel.calcable
 
     indeterminateCalc: false
 

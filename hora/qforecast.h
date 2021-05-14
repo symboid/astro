@@ -7,12 +7,13 @@
 #include "astro/hora/qforecastmodel.h"
 #include "astro/hora/qforecastevent.h"
 
-class ASTRO_HORA_API QForecast : public QCalcTask
+class ASTRO_HORA_API QForecast : public QCalcable
 {
     Q_OBJECT
 
 public:
     QForecast(QObject* parent);
+    ~QForecast();
 
 public:
     QHoraCoords* periodBegin() const;
@@ -31,6 +32,9 @@ public:
     void setModel(QForecastModel* model);
 private:
     QScopedPointer<QForecastModel> mModel;
+
+private slots:
+    void onCalcTaskChanged();
 
 public:
     qreal geoLatt() const;
