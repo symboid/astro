@@ -108,7 +108,6 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     , mHora(new QHora(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
     , mIsInteractive(false)
-    , mCoords(nullptr)
     , mHousesType("placidus")
     , mPlanetsModel(new QHoraPlanetsModel(mHora, this))
     , mHousesModel(new QHoraHousesModel(mHora, this))
@@ -120,6 +119,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
 
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
     connect(mHora, SIGNAL(planetsUpdated()), this, SLOT(recalc()));
+    connect(mHora, SIGNAL(coordsChanged()), this, SIGNAL(coordsChanged()));
 
     qRegisterMetaType<QHoraCoords*>();
     qRegisterMetaType<QHora*>();
@@ -532,17 +532,21 @@ QPointF QHoraViewItem::horaPoint(eph::ecl_lont horaLont, qreal dist) const
     return point;
 }
 
+QHoraCoords* QHoraViewItem::coords() const
+{
+    return mHora->coords();
+}
+
 void QHoraViewItem::setCoords(QHoraCoords* coords)
 {
-    if (mCoords != coords)
+    if (QHoraCoords* oldCoords = mHora->coords())
     {
-        if (mCoords)
-        {
-            disconnect(mCoords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
-        }
-        mCoords = coords;
-        connect(mCoords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
-        emit coordsChanged();
+        disconnect(oldCoords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
+    }
+    mHora->setCoords(coords);
+    if (coords)
+    {
+        connect(coords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
     }
 }
 
@@ -588,23 +592,23 @@ void QHoraViewItem::recalc()
     emit startCalc();
     if (mHousesType == "koch")
     {
-        mHora->calc(*mCoords, QHouseSystem::KOCH);
+        mHora->calc(QHouseSystem::KOCH);
     }
     else if (mHousesType == "regiomontanus")
     {
-        mHora->calc(*mCoords, QHouseSystem::REGIOMONTANUS);
+        mHora->calc(QHouseSystem::REGIOMONTANUS);
     }
     else if (mHousesType == "campanus")
     {
-        mHora->calc(*mCoords, QHouseSystem::CAMPANUS);
+        mHora->calc(QHouseSystem::CAMPANUS);
     }
     else if (mHousesType == "equal")
     {
-        mHora->calc(*mCoords, QHouseSystem::EQUAL);
+        mHora->calc(QHouseSystem::EQUAL);
     }
     else
     {
-        mHora->calc(*mCoords, QHouseSystem::PLACIDUS);
+        mHora->calc(QHouseSystem::PLACIDUS);
     }
 
     mPlanetsModel->endResetModel();

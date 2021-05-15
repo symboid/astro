@@ -32,9 +32,9 @@ void QDirexModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords)
 {
     if (mHora && sigtor)
     {
-        const QHoraCoords& horaCoords = mHora->coords();
-        sigtor->calcEclPos(horaCoords);
-        QEclLont yearSum = double((eventCoords.ephTime() - horaCoords.ephTime()).count()) / 365.25;
+        const QHoraCoords* horaCoords = mHora->coords();
+        sigtor->calcEclPos(*horaCoords);
+        QEclLont yearSum = double((eventCoords.ephTime() - horaCoords->ephTime()).count()) / 365.25;
         sigtor->setEclPos(QEclPos(sigtor->eclPos()._M_lont + yearSum, sigtor->eclPos()._M_latt));
     }
 }

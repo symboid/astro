@@ -61,12 +61,15 @@ private:
     QSharedPointer<QAspectObjectList> mRegularAspectObjects;
 
 public:
-    const QHoraCoords& coords() const;
-    bool calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType);
+    QHoraCoords* coords() const;
+    void setCoords(QHoraCoords* coords);
+    bool calc(QHouseSystem::Type houseSystemType);
 signals:
     void recalculated();
 private:
-    QHoraCoords mCoords;
+    QHoraCoords* mCoords;
+signals:
+    void coordsChanged();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORA_H__

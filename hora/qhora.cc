@@ -125,23 +125,29 @@ QHora::ConjunctingFixstars::ConstIterator QHora::fixstarsEnd() const
     return mConjunctingFixstars.end();
 }
 
-const QHoraCoords& QHora::coords() const
+QHoraCoords* QHora::coords() const
 {
     return mCoords;
 }
-
-bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemType)
+void QHora::setCoords(QHoraCoords* coords)
 {
-    mCoords = horaCoords;
+    if (mCoords != coords)
+    {
+        mCoords = coords;
+        emit coordsChanged();
+    }
+}
 
+bool QHora::calc(QHouseSystem::Type houseSystemType)
+{
     // hora time corrected with time zone data
-    QEphTime horaTime = horaCoords.ephTime();
+    QEphTime horaTime = mCoords->ephTime();
 
     bool calcResult = true;
 
     // getting house cusp positions
     mHouseSystem->mType = houseSystemType;
-    calcResult = mHouseSystem->calc(horaTime, horaCoords.geoLont(), horaCoords.geoLatt());
+    calcResult = mHouseSystem->calc(horaTime, mCoords->geoLont(), mCoords->geoLatt());
 
     // getting planet positions
     for (Planets::iterator planet = mPlanets.begin(), end = mPlanets.end(); calcResult && planet < end; ++planet)
@@ -166,7 +172,7 @@ bool QHora::calc(const QHoraCoords& horaCoords, QHouseSystem::Type houseSystemTy
                     bool conjuncting = false;
                     const eph::ecl_pos fixstarPos = fixstar.pos();
                     const QOrbisValue fixstarOrbis = (*fixstarData)->orbis();
-                    for (Planets::ConstIterator planet = mPlanets.begin(), pEnd = mPlanets.end();
+                    for (Planets::Iterator planet = mPlanets.begin(), pEnd = mPlanets.end();
                             !conjuncting && planet != pEnd; ++planet)
                     {
                         conjuncting = ((*planet)->eclPos().dist_abs(fixstarPos) < fixstarOrbis);

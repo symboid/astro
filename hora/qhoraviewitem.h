@@ -113,13 +113,13 @@ private slots:
     void onInteractiveChanged();
 
 public:
-    Q_PROPERTY(QHoraCoords* coords MEMBER mCoords WRITE setCoords NOTIFY coordsChanged)
+    Q_PROPERTY(QHoraCoords* coords READ coords WRITE setCoords NOTIFY coordsChanged)
     Q_PROPERTY(QString housesType MEMBER mHousesType WRITE setHousesType NOTIFY housesTypeChanged)
 public:
+    QHoraCoords* coords() const;
     void setCoords(QHoraCoords* coords);
     void setHousesType(const QString& housesType);
 private:
-    QHoraCoords* mCoords;
     QString mHousesType;
 signals:
     void coordsChanged();
