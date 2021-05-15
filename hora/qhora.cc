@@ -8,6 +8,7 @@ QHora::QHora(QObject* parent)
     , mHouseSystem(new QHouseSystem(this))
     , mRegularAspectObjects(new QAspectObjectList)
 {
+    mHouseSystem->mType = QHouseSystem::PLACIDUS;
     for (int h = 0; h < QHouseSystem::HOUSE_COUNT; ++h)
     {
         mHouseCusps[h] = new QHouseCusp(this, mHouseSystem, h + 1);
@@ -138,7 +139,21 @@ void QHora::setCoords(QHoraCoords* coords)
     }
 }
 
-bool QHora::calc(QHouseSystem::Type houseSystemType)
+QHouseSystem::Type QHora::houseSystemType() const
+{
+    return mHouseSystem->mType;
+}
+
+void QHora::setHouseSystemType(const QHouseSystem::Type& houseSystemType)
+{
+    if (mHouseSystem->mType != houseSystemType)
+    {
+        mHouseSystem->mType = houseSystemType;
+        emit houseSystemTypeChanged();
+    }
+}
+
+bool QHora::calc()
 {
     // hora time corrected with time zone data
     QEphTime horaTime = mCoords->ephTime();
@@ -146,7 +161,6 @@ bool QHora::calc(QHouseSystem::Type houseSystemType)
     bool calcResult = true;
 
     // getting house cusp positions
-    mHouseSystem->mType = houseSystemType;
     calcResult = mHouseSystem->calc(horaTime, mCoords->geoLont(), mCoords->geoLatt());
 
     // getting planet positions

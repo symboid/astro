@@ -108,7 +108,6 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     , mHora(new QHora(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
     , mIsInteractive(false)
-    , mHousesType("placidus")
     , mPlanetsModel(new QHoraPlanetsModel(mHora, this))
     , mHousesModel(new QHoraHousesModel(mHora, this))
 {
@@ -120,6 +119,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
     connect(mHora, SIGNAL(planetsUpdated()), this, SLOT(recalc()));
     connect(mHora, SIGNAL(coordsChanged()), this, SIGNAL(coordsChanged()));
+    connect(mHora, SIGNAL(houseSystemTypeChanged()), this, SIGNAL(housesTypeChanged()));
 
     qRegisterMetaType<QHoraCoords*>();
     qRegisterMetaType<QHora*>();
@@ -550,13 +550,38 @@ void QHoraViewItem::setCoords(QHoraCoords* coords)
     }
 }
 
+QString QHoraViewItem::housesType() const
+{
+    switch(mHora->houseSystemType())
+    {
+    case QHouseSystem::KOCH: return "koch";
+    case QHouseSystem::REGIOMONTANUS: return "regiomontanus";
+    case QHouseSystem::CAMPANUS: return "campanus";
+    case QHouseSystem::EQUAL: return "equal";
+    default: return "placidus";
+    }
+}
+
 void QHoraViewItem::setHousesType(const QString& housesType)
 {
-    if (mHousesType != housesType)
+    QHouseSystem::Type houseSystemType = QHouseSystem::PLACIDUS;
+    if (housesType == "koch")
     {
-        mHousesType = housesType;
-        emit housesTypeChanged();
+        houseSystemType = QHouseSystem::KOCH;
     }
+    else if (housesType == "regiomontanus")
+    {
+        houseSystemType = QHouseSystem::REGIOMONTANUS;
+    }
+    else if (housesType == "campanus")
+    {
+        houseSystemType = QHouseSystem::CAMPANUS;
+    }
+    else if (housesType == "equal")
+    {
+        houseSystemType = QHouseSystem::EQUAL;
+    }
+    mHora->setHouseSystemType(houseSystemType);
 }
 
 void QHoraViewItem::setInteractive(bool isInteractive)
@@ -590,26 +615,8 @@ void QHoraViewItem::recalc()
     mPlanetsModel->beginResetModel();
     mHousesModel->beginResetModel();
     emit startCalc();
-    if (mHousesType == "koch")
-    {
-        mHora->calc(QHouseSystem::KOCH);
-    }
-    else if (mHousesType == "regiomontanus")
-    {
-        mHora->calc(QHouseSystem::REGIOMONTANUS);
-    }
-    else if (mHousesType == "campanus")
-    {
-        mHora->calc(QHouseSystem::CAMPANUS);
-    }
-    else if (mHousesType == "equal")
-    {
-        mHora->calc(QHouseSystem::EQUAL);
-    }
-    else
-    {
-        mHora->calc(QHouseSystem::PLACIDUS);
-    }
+
+    mHora->calc();
 
     mPlanetsModel->endResetModel();
     mHousesModel->endResetModel();

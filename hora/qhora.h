@@ -63,13 +63,16 @@ private:
 public:
     QHoraCoords* coords() const;
     void setCoords(QHoraCoords* coords);
-    bool calc(QHouseSystem::Type houseSystemType);
+    QHouseSystem::Type houseSystemType() const;
+    void setHouseSystemType(const QHouseSystem::Type& houseSystemType);
+    bool calc();
 signals:
     void recalculated();
 private:
     QHoraCoords* mCoords;
 signals:
     void coordsChanged();
+    void houseSystemTypeChanged();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORA_H__
