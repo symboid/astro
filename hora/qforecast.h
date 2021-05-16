@@ -33,9 +33,6 @@ public:
 private:
     QScopedPointer<QForecastModel> mModel;
 
-private slots:
-    void onCalcTaskChanged();
-
 public:
     qreal geoLatt() const;
     qreal geoLont() const;

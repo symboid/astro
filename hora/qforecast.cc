@@ -13,7 +13,6 @@ QForecast::QForecast(QObject* parent)
     , mAspectList({0, 180, 120, 90, 60, 150, 30})
     , mPrmsorList(nullptr)
 {
-    connect(this, SIGNAL(calcTaskChanged()), this, SLOT(onCalcTaskChanged()));
 }
 
 QForecast::~QForecast()
@@ -30,10 +29,14 @@ void QForecast::setPeriodBegin(QHoraCoords* periodBegin)
 {
     if (mPeriodBegin.get() != periodBegin)
     {
-        mPeriodBegin.reset(periodBegin);
-        if (mPeriodBegin && mCalcTask)
+        if (mPeriodBegin)
         {
-            connect(mPeriodBegin.get(), SIGNAL(changed()), mCalcTask, SLOT(invoke()));
+            mPeriodBegin->setCalcable(nullptr);
+        }
+        mPeriodBegin.reset(periodBegin);
+        if (mPeriodBegin)
+        {
+            mPeriodBegin->setCalcable(this);
         }
         emit periodBeginChanged();
     }
@@ -48,27 +51,16 @@ void QForecast::setPeriodEnd(QHoraCoords* periodEnd)
 {
     if (mPeriodEnd.get() != periodEnd)
     {
-        mPeriodEnd.reset(periodEnd);
-        if (mPeriodEnd && mCalcTask)
-        {
-            connect(mPeriodEnd.get(), SIGNAL(changed()), mCalcTask, SLOT(invoke()));
-        }
-        emit periodEndChanged();
-    }
-}
-
-void QForecast::onCalcTaskChanged()
-{
-    if (mCalcTask)
-    {
-        if (mPeriodBegin)
-        {
-            connect(mPeriodBegin.get(), SIGNAL(changed()), mCalcTask, SLOT(invoke()));
-        }
         if (mPeriodEnd)
         {
-            connect(mPeriodEnd.get(), SIGNAL(changed()), mCalcTask, SLOT(invoke()));
+            mPeriodEnd->setCalcable(nullptr);
         }
+        mPeriodEnd.reset(periodEnd);
+        if (mPeriodEnd)
+        {
+            mPeriodEnd->setCalcable(this);
+        }
+        emit periodEndChanged();
     }
 }
 

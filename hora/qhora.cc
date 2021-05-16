@@ -136,12 +136,16 @@ void QHora::setCoords(QHoraCoords* coords)
 {
     if (mCoords != coords)
     {
-        mCoords = coords;
-        emit coordsChanged();
-        if (mCoords && mCalcTask)
+        if (mCoords)
         {
-            connect(mCoords, SIGNAL(changed()), mCalcTask, SLOT(invoke()));
+            mCoords->setCalcable(nullptr);
         }
+        mCoords = coords;
+        if (mCoords)
+        {
+            mCoords->setCalcable(this);
+        }
+        emit coordsChanged();
     }
 }
 
@@ -163,10 +167,6 @@ void QHora::onCalcTaskChanged()
 {
     if (mCalcTask)
     {
-        if (mCoords)
-        {
-            connect(mCoords, SIGNAL(changed()), mCalcTask, SLOT(invoke()));
-        }
         connect(this, SIGNAL(houseSystemTypeChanged()), mCalcTask, SLOT(invoke()));
     }
 }

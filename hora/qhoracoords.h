@@ -3,7 +3,7 @@
 #define __SYMBOID_ASTRO_HORA_QHORACOORDS_H__
 
 #include "astro/hora/defs.h"
-#include <QObject>
+#include "sdk/controls/qcalcobject.h"
 #include "astro/eph/ecliptic.h"
 #include "astro/eph/calendar.h"
 #include "astro/eph/proxy.h"
@@ -11,7 +11,7 @@
 
 typedef eph::basic_time_point<eph_proxy> QEphTime;
 
-class QHoraCoords : public QObject
+class QHoraCoords : public QCalcParam
 {
     Q_OBJECT
 public:
@@ -70,7 +70,7 @@ signals:
     void tzDiffChanged();
     void geoLontChanged();
     void geoLattChanged();
-    void changed();
+//    void changed();
     void withJulianCalendarChanged();
 
 public:
