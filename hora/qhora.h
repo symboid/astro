@@ -11,8 +11,9 @@
 #include "astro/hora/qplanet.h"
 #include "astro/hora/qaspectobject.h"
 #include "astro/db/fixstars.h"
+#include "sdk/controls/qcalctask.h"
 
-class QHora : public QObject
+class QHora : public QCalcable
 {
     Q_OBJECT
 
@@ -65,7 +66,7 @@ public:
     void setCoords(QHoraCoords* coords);
     QHouseSystem::Type houseSystemType() const;
     void setHouseSystemType(const QHouseSystem::Type& houseSystemType);
-    bool calc();
+    void calc() override;
 signals:
     void recalculated();
 private:
@@ -73,6 +74,9 @@ private:
 signals:
     void coordsChanged();
     void houseSystemTypeChanged();
+
+private slots:
+    void onCalcTaskChanged();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORA_H__

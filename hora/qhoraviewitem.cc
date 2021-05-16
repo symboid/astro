@@ -107,7 +107,6 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     : QQuickPaintedItem(parent)
     , mHora(new QHora(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
-    , mIsInteractive(false)
     , mPlanetsModel(new QHoraPlanetsModel(mHora, this))
     , mHousesModel(new QHoraHousesModel(mHora, this))
 {
@@ -116,8 +115,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
 
-    connect(this, SIGNAL(interactiveChanged()), this, SLOT(onInteractiveChanged()));
-    connect(mHora, SIGNAL(planetsUpdated()), this, SLOT(recalc()));
+    connect(mHora, SIGNAL(calcTaskChanged()), this, SLOT(connectHoraSignals()));
     connect(mHora, SIGNAL(coordsChanged()), this, SIGNAL(coordsChanged()));
     connect(mHora, SIGNAL(houseSystemTypeChanged()), this, SIGNAL(housesTypeChanged()));
 
@@ -584,42 +582,25 @@ void QHoraViewItem::setHousesType(const QString& housesType)
     mHora->setHouseSystemType(houseSystemType);
 }
 
-void QHoraViewItem::setInteractive(bool isInteractive)
-{
-    if (mIsInteractive != isInteractive)
-    {
-        mIsInteractive = isInteractive;
-        emit interactiveChanged();
-    }
-}
-
-void QHoraViewItem::onInteractiveChanged()
-{
-    if (mIsInteractive)
-    {
-        connect(this, SIGNAL(coordsChanged()), this, SLOT(recalc()));
-        connect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
-        connect(mHoraConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
-        recalc();
-    }
-    else
-    {
-        disconnect(this, SIGNAL(coordsChanged()), this, SLOT(recalc()));
-        disconnect(this, SIGNAL(housesTypeChanged()), this, SLOT(recalc()));
-        disconnect(mHoraConfig.get(), SIGNAL(changed()), this, SLOT(recalc()));
-    }
-}
-
-void QHoraViewItem::recalc()
+void QHoraViewItem::onRecalcStarted()
 {
     mPlanetsModel->beginResetModel();
     mHousesModel->beginResetModel();
-    emit startCalc();
+}
 
-    mHora->calc();
-
+void QHoraViewItem::onRecalcFinished()
+{
     mPlanetsModel->endResetModel();
     mHousesModel->endResetModel();
     update();
-    emit stopCalc();
+}
+
+void QHoraViewItem::connectHoraSignals()
+{
+    if (QCalcTask* horaCalcTask = mHora->calcTask())
+    {
+        connect(horaCalcTask, SIGNAL(started()), this, SLOT(onRecalcStarted()));
+        connect(horaCalcTask, SIGNAL(finished()), this, SLOT(onRecalcFinished()));
+        connect(horaCalcTask, SIGNAL(aborted()), this, SLOT(onRecalcFinished()));
+    }
 }

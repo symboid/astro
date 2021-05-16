@@ -103,16 +103,6 @@ private:
     QSharedPointer<QAstroFont> mAstroFont;
 
 public:
-    Q_PROPERTY(bool interactive MEMBER mIsInteractive WRITE setInteractive NOTIFY interactiveChanged)
-private:
-    bool mIsInteractive = false;
-    void setInteractive(bool isInteractive);
-signals:
-    void interactiveChanged();
-private slots:
-    void onInteractiveChanged();
-
-public:
     Q_PROPERTY(QHoraCoords* coords READ coords WRITE setCoords NOTIFY coordsChanged)
     Q_PROPERTY(QString housesType READ housesType WRITE setHousesType NOTIFY housesTypeChanged)
 public:
@@ -126,10 +116,9 @@ signals:
     void fontPointSizeChanged();
 
 private slots:
-    void recalc();
-signals:
-    void startCalc();
-    void stopCalc();
+    void onRecalcStarted();
+    void onRecalcFinished();
+    void connectHoraSignals();
 
 public:
     Q_PROPERTY(QEclipticTableModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)

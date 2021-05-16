@@ -4,10 +4,12 @@
 #include "astro/hora/qaspectobject.h"
 
 QHora::QHora(QObject* parent)
-    : QObject(parent)
+    : QCalcable(parent)
     , mHouseSystem(new QHouseSystem(this))
     , mRegularAspectObjects(new QAspectObjectList)
 {
+    connect(this, SIGNAL(calcTaskChanged()), this, SLOT(onCalcTaskChanged()));
+
     mHouseSystem->mType = QHouseSystem::PLACIDUS;
     for (int h = 0; h < QHouseSystem::HOUSE_COUNT; ++h)
     {
@@ -136,6 +138,10 @@ void QHora::setCoords(QHoraCoords* coords)
     {
         mCoords = coords;
         emit coordsChanged();
+        if (mCoords && mCalcTask)
+        {
+            connect(mCoords, SIGNAL(changed()), mCalcTask, SLOT(invoke()));
+        }
     }
 }
 
@@ -153,7 +159,20 @@ void QHora::setHouseSystemType(const QHouseSystem::Type& houseSystemType)
     }
 }
 
-bool QHora::calc()
+void QHora::onCalcTaskChanged()
+{
+    if (mCalcTask)
+    {
+        if (mCoords)
+        {
+            connect(mCoords, SIGNAL(changed()), mCalcTask, SLOT(invoke()));
+        }
+        connect(this, SIGNAL(houseSystemTypeChanged()), mCalcTask, SLOT(invoke()));
+    }
+}
+
+
+void QHora::calc()
 {
     // hora time corrected with time zone data
     QEphTime horaTime = mCoords->ephTime();
@@ -210,7 +229,7 @@ bool QHora::calc()
 
     emit recalculated();
 
-    return calcResult;
+//    return calcResult;
 }
 
 QSharedPointer<QAspectObjectList> QHora::fetchAspectObjects(const QVector<qreal>& dists) const

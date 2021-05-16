@@ -1,9 +1,12 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import Symboid.Sdk.Controls 1.0
 import Symboid.Astro.Hora 1.0
 
-Item {
+CalcPane {
+    calcable: hora
+
     property bool isLandscape: true
     property alias view: horaView
     property bool withSeparator: false
@@ -32,7 +35,6 @@ Item {
 
     property alias planetsModel: horaView.planetsModel
     property alias housesModel: horaView.housesModel
-    property alias interactive: horaView.interactive
     property alias hora: horaView.hora
 
     Flickable {
