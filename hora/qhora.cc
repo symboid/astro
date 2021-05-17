@@ -7,6 +7,7 @@ QHora::QHora(QObject* parent)
     : QCalcable(parent)
     , mHouseSystem(new QHouseSystem(this))
     , mRegularAspectObjects(new QAspectObjectList)
+    , mCoords(nullptr)
 {
     connect(this, SIGNAL(calcTaskChanged()), this, SLOT(onCalcTaskChanged()));
 

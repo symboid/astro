@@ -124,11 +124,6 @@ QForecastEvent* QForecast::createEvent(const QSigtor* masterSigtor, QHoraCoords*
                 sigtorPos.dist_abs(siblings.mSucc->eclPos());
         QPrmsor* prmsor = precIsCloser ? siblings.mPrec : siblings.mSucc;
         event->setPrmsor(prmsor);
-
-//        event->setEventBegin(mModel->calcOrbisTime(sigtor, prmsor, exactTime, true));
-//        event->setEventEnd(mModel->calcOrbisTime(sigtor, prmsor, exactTime, false));
-//qDebug() << "SIGTOR POS:" << sigtor->eclPos()._M_lont.to_arc_degree() << ", "
-//         << "PRMSOR POS:" << prmsor->eclPos()._M_lont.to_arc_degree();
     }
     return event;
 }
