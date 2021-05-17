@@ -221,8 +221,6 @@ void QHora::calc()
     mRegularAspectObjects->clear();
     mRegularAspectObjects = fetchAspectObjects({180, 120, 90, 60});
 
-    emit recalculated();
-
 //    return calcResult;
 }
 

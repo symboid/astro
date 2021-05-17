@@ -67,8 +67,6 @@ public:
     QHouseSystem::Type houseSystemType() const;
     void setHouseSystemType(const QHouseSystem::Type& houseSystemType);
     void calc() override;
-signals:
-    void recalculated();
 private:
     QHoraCoords* mCoords;
 signals:

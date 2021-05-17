@@ -52,6 +52,7 @@ QHora* QForecastItemModel::hora() const
 void QForecastItemModel::setHora(QHora* hora)
 {
     mForecast->model()->setHora(hora);
+    mForecast->addParam(hora);
 }
 
 QStringList QForecastItemModel::headerModel() const
@@ -120,6 +121,5 @@ void QForecastItemModel::connectForecastSignals()
         connect(forecastCalcTask, SIGNAL(started()), this, SLOT(onRecalcStarted()));
         connect(forecastCalcTask, SIGNAL(finished()), this, SLOT(onRecalcFinished()));
         connect(forecastCalcTask, SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
-        connect(mForecast->model()->hora(), SIGNAL(recalculated()), forecastCalcTask, SLOT(invoke()));
     }
 }
