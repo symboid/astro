@@ -11,7 +11,7 @@
 
 typedef eph::basic_time_point<eph_proxy> QEphTime;
 
-class QHoraCoords : public QCalcParam
+class QHoraCoords : public QCalcObject
 {
     Q_OBJECT
 public:

@@ -29,15 +29,9 @@ void QForecast::setPeriodBegin(QHoraCoords* periodBegin)
 {
     if (mPeriodBegin.get() != periodBegin)
     {
-        if (mPeriodBegin)
-        {
-            mPeriodBegin->setCalcable(nullptr);
-        }
+        deleteParam(mPeriodBegin.get());
         mPeriodBegin.reset(periodBegin);
-        if (mPeriodBegin)
-        {
-            mPeriodBegin->setCalcable(this);
-        }
+        addParam(mPeriodBegin.get());
         emit periodBeginChanged();
     }
 }
@@ -51,15 +45,9 @@ void QForecast::setPeriodEnd(QHoraCoords* periodEnd)
 {
     if (mPeriodEnd.get() != periodEnd)
     {
-        if (mPeriodEnd)
-        {
-            mPeriodEnd->setCalcable(nullptr);
-        }
+        deleteParam(mPeriodEnd.get());
         mPeriodEnd.reset(periodEnd);
-        if (mPeriodEnd)
-        {
-            mPeriodEnd->setCalcable(this);
-        }
+        addParam(mPeriodEnd.get());
         emit periodEndChanged();
     }
 }

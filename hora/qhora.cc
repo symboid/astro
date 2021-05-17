@@ -136,15 +136,9 @@ void QHora::setCoords(QHoraCoords* coords)
 {
     if (mCoords != coords)
     {
-        if (mCoords)
-        {
-            mCoords->setCalcable(nullptr);
-        }
+        deleteParam(mCoords);
         mCoords = coords;
-        if (mCoords)
-        {
-            mCoords->setCalcable(this);
-        }
+        addParam(mCoords);
         emit coordsChanged();
     }
 }

@@ -3,7 +3,7 @@
 #include "astro/hora/qhoracoords.h"
 
 QHoraCoords::QHoraCoords(QObject *parent)
-    : QCalcParam(parent)
+    : QCalcObject(parent)
     , mCalendarCoords({1,1,1,0,0,0,eph::calendar_type::GREGORIAN})
     , mTzDiff(0)
     , mGeoLont(0.0)
