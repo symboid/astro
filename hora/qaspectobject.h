@@ -54,18 +54,4 @@ public:
     }
 };
 
-class QAspectObjectList : public QList<QAspectObject*>
-{
-public:
-    void insert(QAspectObject* magObject);
-
-    struct Siblings
-    {
-        QAspectObject* mPrec = nullptr;
-        QAspectObject* mSucc = nullptr;
-    };
-    Siblings find(const QEclPos& eclPos) const;
-};
-
-
 #endif // __SYMBOID_ASTRO_HORA_QASPECTOBJECT_H__

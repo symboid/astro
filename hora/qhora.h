@@ -10,6 +10,7 @@
 #include "astro/hora/qhousecusp.h"
 #include "astro/hora/qplanet.h"
 #include "astro/hora/qaspectobject.h"
+#include "astro/hora/qmagitem.h"
 #include "astro/db/fixstars.h"
 #include "sdk/controls/qcalctask.h"
 
@@ -56,10 +57,10 @@ public:
     ConjunctingFixstars::ConstIterator fixstarsEnd() const;
 
 public:
-    QSharedPointer<QAspectObjectList> fetchAspectObjects(const QVector<qreal>& dists) const;
-    const QSharedPointer<QAspectObjectList> regularAspectObjects() const;
+    QSharedPointer<QMagItemList> fetchAspectItems(const QVector<qreal>& dists) const;
+    const QSharedPointer<QMagItemList> regularAspectItems() const;
 private:
-    QSharedPointer<QAspectObjectList> mRegularAspectObjects;
+    QSharedPointer<QMagItemList> mRegularAspectItems;
 
 public:
     QHoraCoords* coords() const;

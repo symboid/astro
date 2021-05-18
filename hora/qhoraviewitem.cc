@@ -492,14 +492,14 @@ void QHoraViewItem::paint(QPainter* painter)
         {
             // basic planet aspects
             painter->setFont(*mAstroFont);
-            for (QMagObject* aspectObject : *mHora->regularAspectObjects())
+            for (QMagItem* aspectItem : *mHora->regularAspectItems())
             {
-                eph::ecl_lont aspectLont = aspectObject->eclPos()._M_lont;
-                painter->setPen(aspectObject->drawColor());
+                eph::ecl_lont aspectLont = aspectItem->eclPos()._M_lont;
+                painter->setPen(aspectItem->drawColor());
                 painter->drawLine(horaPoint(aspectLont, 1.15),
                                   horaPoint(aspectLont, 1.20));
 
-                drawRadialText(painter, aspectObject->symbol(mAstroFont.get()), aspectLont, 1.20);
+                drawRadialText(painter, aspectItem->symbol(mAstroFont.get()), aspectLont, 1.20);
             }
         }
     }

@@ -20,6 +20,7 @@ SOURCES += \
     qhoraobject.cc \
     qhoraviewitem.cc \
     qhousecusp.cc \
+    qmagitem.cc \
     qmagobject.cc \
     qplanet.cc \
     qtransitmodel.cc
@@ -42,6 +43,7 @@ HEADERS += \
     qhorastellium.h \
     qhoraviewitem.h \
     qhousecusp.h \
+    qmagitem.h \
     qmagobject.h \
     qplanet.h \
     qtransitmodel.h \

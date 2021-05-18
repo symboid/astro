@@ -55,7 +55,7 @@ private:
     QForecastEvent* createEvent(const QSigtor* sigtor, QHoraCoords* earliestTime);
     QVector<QForecastEvent*> mEvents;
     QVector<qreal> mAspectList;
-    QSharedPointer<QAspectObjectList> mPrmsorList;
+    QSharedPointer<QMagItemList> mPrmsorList;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QFORECAST_H__

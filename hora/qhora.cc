@@ -6,7 +6,7 @@
 QHora::QHora(QObject* parent)
     : QCalcable(parent)
     , mHouseSystem(new QHouseSystem(this))
-    , mRegularAspectObjects(new QAspectObjectList)
+    , mRegularAspectItems(new QMagItemList)
     , mCoords(nullptr)
 {
     connect(this, SIGNAL(calcTaskChanged()), this, SLOT(onCalcTaskChanged()));
@@ -219,27 +219,28 @@ void QHora::calc()
         }
     }
 
-    mRegularAspectObjects->clear();
-    mRegularAspectObjects = fetchAspectObjects({180, 120, 90, 60});
+    mRegularAspectItems->clear();
+    mRegularAspectItems = fetchAspectItems({180, 120, 90, 60});
 
 //    return calcResult;
 }
 
-QSharedPointer<QAspectObjectList> QHora::fetchAspectObjects(const QVector<qreal>& dists) const
+QSharedPointer<QMagItemList> QHora::fetchAspectItems(const QVector<qreal>& dists) const
 {
-    QAspectObjectList* aspectObjects = new QAspectObjectList;
+    QSharedPointer<QAstroFont> astroFont(QAstroFontRepo::mo()->defaultFont());
+    QMagItemList* aspectItems = new QMagItemList;
     for (QAspectObject* aspectObject : mAspectObjects)
     {
         if (aspectObject->aspect()->enabled())
         if (aspectObject->aspect()->enabled() && dists.indexOf(aspectObject->aspect()->dist()) != -1)
         {
-            aspectObjects->insert(aspectObject);
+            aspectItems->insert(new QMagItem(nullptr, aspectObject, astroFont.get()));
         }
     }
-    return QSharedPointer<QAspectObjectList>(aspectObjects);
+    return QSharedPointer<QMagItemList>(aspectItems);
 }
 
-const QSharedPointer<QAspectObjectList> QHora::regularAspectObjects() const
+const QSharedPointer<QMagItemList> QHora::regularAspectItems() const
 {
-    return mRegularAspectObjects;
+    return mRegularAspectItems;
 }

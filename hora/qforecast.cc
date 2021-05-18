@@ -109,7 +109,7 @@ QForecastEvent* QForecast::createEvent(const QSigtor* masterSigtor, QHoraCoords*
 
     mModel->initSigtorPos(sigtor, *earliestTime);
 
-    QAspectObjectList::Siblings siblings = mPrmsorList->find(sigtor->eclPos());
+    QMagItemList::Siblings siblings = mPrmsorList->find(sigtor->eclPos());
     if (siblings.mPrec && siblings.mSucc)
     {
         event = new QForecastEvent(sigtor);
@@ -141,7 +141,7 @@ void QForecast::calc()
     if (mCalcTask && mModel && mModel->hora() && mPeriodBegin && mPeriodEnd)
     {
         // #2. list of promissors
-        mPrmsorList = mModel->hora()->fetchAspectObjects(mAspectList);
+        mPrmsorList = mModel->hora()->fetchAspectItems(mAspectList);
 
         // #3. initial list of events
         QForecastEventBuffer eventBuffer;

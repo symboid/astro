@@ -37,7 +37,7 @@ void QTransitModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoord
 }
 
 QHoraCoords* QTransitModel::calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
-        const QAspectObjectList::Siblings& siblings)
+        const QMagItemList::Siblings& siblings)
 {
     return calcTransitCoords(sigtor, startTime, siblings.mPrec->eclPos(), siblings.mSucc->eclPos());
 }
@@ -63,6 +63,8 @@ void QTransitModel::setTzDiff(double tzDiff)
 QHoraCoords* QTransitModel::calcTransitCoords(QSigtor* sigtor, const QHoraCoords* startTime,
         const QEclPos& precPos, const QEclPos& succPos)
 {
+    Q_ASSERT(precPos <= sigtor->eclPos() && sigtor->eclPos() <= succPos);
+
     QEphTime conjTime = startTime->ephTime();
     const eph::arc_degree geoLatt = startTime->geoLatt();
     const eph::arc_degree geoLont = startTime->geoLont();

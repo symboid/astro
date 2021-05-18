@@ -49,38 +49,3 @@ QColor QAspectObject::drawColor() const
 {
     return mAspect->draw()->lineColor();
 }
-
-void QAspectObjectList::insert(QAspectObject* aspectObject)
-{
-    if (aspectObject)
-    {
-        const QEclLont objectLont = aspectObject->eclPos()._M_lont;
-        iterator insertPos = begin(), oEnd = end();
-        while (insertPos != oEnd && objectLont > (*insertPos)->eclPos()._M_lont)
-        {
-            ++insertPos;
-        }
-        QList<QAspectObject*>::insert(insertPos, aspectObject);
-    }
-}
-
-QAspectObjectList::Siblings QAspectObjectList::find(const QEclPos& eclPos) const
-{
-    Siblings siblings;
-    const_iterator succObject = begin(), endObject = end();
-    while (succObject != endObject && (*succObject)->eclPos()._M_lont < eclPos._M_lont)
-    {
-        succObject++;
-    }
-    if (succObject == begin() || succObject == endObject)
-    {
-        siblings.mPrec = *rbegin();
-        siblings.mSucc = *begin();
-    }
-    else
-    {
-        siblings.mPrec = *(succObject - 1);
-        siblings.mSucc = *succObject;
-    }
-    return siblings;
-}

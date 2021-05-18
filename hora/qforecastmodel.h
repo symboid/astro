@@ -33,7 +33,7 @@ public:
     inline const QVector<QSigtor*>& sigtorList() const { return mMasterSigtors; }
     virtual void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) = 0;
     virtual QHoraCoords* calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
-            const QAspectObjectList::Siblings& siblings) = 0;
+            const QMagItemList::Siblings& siblings) = 0;
 
 public:
     virtual int estimatedEventCount(const QHoraCoords* periodBegin, const QHoraCoords* periodEnd) const = 0;

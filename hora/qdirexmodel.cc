@@ -40,7 +40,7 @@ void QDirexModel::initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords)
 }
 
 QHoraCoords* QDirexModel::calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
-        const QAspectObjectList::Siblings& siblings)
+        const QMagItemList::Siblings& siblings)
 {
     QEphTime conjTime = startTime->ephTime();
     if (sigtor && siblings.mSucc)

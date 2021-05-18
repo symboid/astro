@@ -5,11 +5,11 @@
 #include "astro/hora/defs.h"
 #include <QObject>
 #include "astro/hora/qhoracoords.h"
-#include "astro/hora/qaspectobject.h"
-#include "astro/hora/qmagobject.h"
+#include "astro/hora/qmagitem.h"
+#include "astro/hora/qplanet.h"
 #include "astro/hora/qhousecusp.h"
 
-typedef QAspectObject QPrmsor;
+typedef QMagItem QPrmsor;
 
 class ASTRO_HORA_API QSigtor : public QMagObject
 {

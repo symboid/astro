@@ -20,7 +20,7 @@ private slots:
 public:
     void initSigtorPos(QSigtor* sigtor, const QHoraCoords& eventCoords) override;
     QHoraCoords* calcConj(QSigtor* sigtor, const QHoraCoords* startTime,
-            const QAspectObjectList::Siblings& siblings) override;
+            const QMagItemList::Siblings& siblings) override;
 
 public:
     int estimatedEventCount(const QHoraCoords* periodBegin, const QHoraCoords* periodEnd) const override;
