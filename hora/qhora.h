@@ -17,9 +17,11 @@
 class QHora : public QCalcable
 {
     Q_OBJECT
+public:
+    static constexpr const char* qml_name = "Hora";
 
 public:
-    QHora(QObject* parent);
+    QHora(QObject* parent = Q_NULLPTR);
 
 private:
     arh::main_object<QHoraConfig> mHoraConfig;
@@ -63,6 +65,7 @@ private:
     QSharedPointer<QMagItemList> mRegularAspectItems;
 
 public:
+    Q_PROPERTY(QHoraCoords* coords READ coords WRITE setCoords NOTIFY coordsChanged)
     QHoraCoords* coords() const;
     void setCoords(QHoraCoords* coords);
     QHouseSystem::Type houseSystemType() const;
