@@ -15,32 +15,8 @@ CalcPane {
 
     indeterminateCalc: false
 
-    parameters: Row {
-        id: periodRow
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        DateCoordBox {
-            id: periodBeginDate
-            editable: true
-        }
-        DateCoordBox {
-            id: periodEndDate
-            editable: true
-        }
-    }
-
     ForecastItemModel {
         id: forecastItemModel
-        periodBegin: HoraCoords {
-            year: periodBeginDate.year
-            month: periodBeginDate.month
-            day: periodBeginDate.day
-        }
-        periodEnd: HoraCoords {
-            year: periodEndDate.year
-            month: periodEndDate.month
-            day: periodEndDate.day
-        }
     }
 
     ForecastTableView {
