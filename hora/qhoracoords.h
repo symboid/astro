@@ -76,8 +76,13 @@ signals:
 public:
     QEphTime ephTime() const;
     void setEphTime(const QEphTime& ephTime);
+
+public:
+    Q_PROPERTY(QDateTime dateTime READ dateTime WRITE setDateTime NOTIFY dateTimeChanged)
     QDateTime dateTime() const;
     void setDateTime(const QDateTime& dateTime);
+signals:
+    void dateTimeChanged();
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORACOORDS_H__

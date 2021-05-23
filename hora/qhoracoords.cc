@@ -19,6 +19,7 @@ QHoraCoords::QHoraCoords(QObject *parent)
     connect(this, SIGNAL(geoLontChanged()), this, SIGNAL(changed()));
     connect(this, SIGNAL(geoLattChanged()), this, SIGNAL(changed()));
     connect(this, SIGNAL(withJulianCalendarChanged()), this, SIGNAL(changed()));
+    connect(this, SIGNAL(changed()), this, SIGNAL(dateTimeChanged()));
 }
 
 QHoraCoords::QHoraCoords(const QEphTime& ephTime)
