@@ -17,7 +17,6 @@ QForecast::QForecast(QObject* parent)
 
 QForecast::~QForecast()
 {
-    mModel.reset();
 }
 
 QHoraCoords* QForecast::periodBegin() const
@@ -90,6 +89,7 @@ QForecastModel* QForecast::model() const
 void QForecast::setModel(QForecastModel* model)
 {
     mModel.reset(model);
+    mCalcTask->invoke();
 }
 
 int QForecast::forecastEventCount() const
@@ -136,10 +136,11 @@ void QForecast::calc()
         event->deleteLater();
     }
     mEvents.clear();
-    mEvents.reserve(mModel->estimatedEventCount(mPeriodBegin.get(), mPeriodEnd.get()) * 2);
 
     if (mCalcTask && mModel && mModel->hora() && mPeriodBegin && mPeriodEnd)
     {
+        mEvents.reserve(mModel->estimatedEventCount(mPeriodBegin.get(), mPeriodEnd.get()) * 2);
+
         // #2. list of promissors
         mPrmsorList = mModel->hora()->fetchAspectItems(mAspectList);
 
@@ -174,5 +175,9 @@ void QForecast::calc()
             }
         }
         eventBuffer.clear();
+    }
+    else
+    {
+        mCalcTask->abort();
     }
 }

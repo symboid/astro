@@ -1,9 +1,12 @@
 
 #include "astro/hora/setup.h"
 #include "astro/hora/qforecastitemmodel.h"
+#include "astro/hora/qdirexmodel.h"
+#include "astro/hora/qtransitmodel.h"
 
 QForecastItemModel::QForecastItemModel(QObject* parent)
     : QHoraTableModel(Q_NULLPTR, parent)
+    , mForecastModel(NONE)
     , mForecast(new QForecast(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
 {
@@ -44,15 +47,14 @@ QHash<int, QByteArray> QForecastItemModel::roleNames() const
     return roles;
 }
 
-QHora* QForecastItemModel::hora() const
-{
-    return mForecast->model()->hora();
-}
-
 void QForecastItemModel::setHora(QHora* hora)
 {
-    mForecast->model()->setHora(hora);
-    mForecast->addParam(hora);
+    QHoraTableModel::setHora(hora);
+    if (QForecastModel* forecastModel = mForecast->model())
+    {
+        forecastModel->setHora(hora);
+        mForecast->addParam(hora);
+    }
 }
 
 QStringList QForecastItemModel::headerModel() const
@@ -100,16 +102,29 @@ void QForecastItemModel::onRecalcAborted()
     endResetModel();
 }
 
-QForecastModel* QForecastItemModel::forecastModel() const
+QForecastItemModel::ForecastModel QForecastItemModel::forecastModel() const
 {
-    return mForecast->model();
+    return mForecastModel;
 }
 
-void QForecastItemModel::setForecastModel(QForecastModel* forecastModel)
+void QForecastItemModel::setForecastModel(ForecastModel forecastModel)
 {
-    if (mForecast->model() != forecastModel)
+    if (mForecastModel != forecastModel)
     {
-        mForecast->setModel(forecastModel);
+        QForecastModel* model = nullptr;
+        switch (forecastModel)
+        {
+        case PRI_DIREX: model = new QDirexModel; break;
+        case TRANSIT: model = new QTransitModel; break;
+        default: model = nullptr;
+        }
+        if (model)
+        {
+            model->setHora(hora());
+        }
+        mForecast->setModel(model);
+
+        mForecastModel = forecastModel;
         emit forecastModelChanged();
     }
 }

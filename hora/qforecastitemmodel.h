@@ -33,7 +33,6 @@ public:
     QStringList headerModel() const override;
 
 public:
-    virtual QHora* hora() const override;
     virtual void setHora(QHora* hora) override;
 
     Q_PROPERTY(QHoraCoords* periodBegin READ periodBegin WRITE setPeriodBegin NOTIFY periodBeginChanged)
@@ -48,10 +47,20 @@ signals:
     void periodEndChanged();
 
 public:
-    Q_PROPERTY(QForecastModel* forecastModel READ forecastModel WRITE setForecastModel NOTIFY forecastModelChanged)
+    enum ForecastModel
+    {
+        NONE,
+        PRI_DIREX,
+        SEC_DIREX,
+        TRANSIT,
+    };
+    Q_ENUMS(ForecastModel);
+public:
+    Q_PROPERTY(ForecastModel forecastModel READ forecastModel WRITE setForecastModel NOTIFY forecastModelChanged)
 private:
-    QForecastModel* forecastModel() const;
-    void setForecastModel(QForecastModel* forecastModel);
+    ForecastModel forecastModel() const;
+    void setForecastModel(ForecastModel forecastModel);
+    ForecastModel mForecastModel;
 signals:
     void forecastModelChanged();
 
