@@ -49,12 +49,13 @@ QHash<int, QByteArray> QForecastItemModel::roleNames() const
 
 void QForecastItemModel::setHora(QHora* hora)
 {
+    mForecast->deleteParam(this->hora());
     QHoraTableModel::setHora(hora);
     if (QForecastModel* forecastModel = mForecast->model())
     {
         forecastModel->setHora(hora);
-        mForecast->addParam(hora);
     }
+    mForecast->addParam(hora);
 }
 
 QStringList QForecastItemModel::headerModel() const
