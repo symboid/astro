@@ -2,27 +2,17 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qhoraview.h"
 #include <QPainter>
-#include "astro/hora/qhorastellium.h"
-#include <QFontMetrics>
 
 QHoraView::QHoraView(QQuickItem* parent)
     : QQuickPaintedItem(parent)
-    , mHora(new QHora(this))
+    , mHouseSystemType(QHouseSystem::PLACIDUS)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
-    , mPlanetsModel(new QHoraPlanetsModel(mHora, this))
-    , mHousesModel(new QHoraHousesModel(mHora, this))
+    , mAstroFontMetrics(*mAstroFont)
 {
     setFlag(QQuickItem::ItemHasContents);
     setRenderTarget(QQuickPaintedItem::Image);
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
-
-    connect(mHora, SIGNAL(calcTaskChanged()), this, SLOT(connectHoraSignals()));
-    connect(mHora, SIGNAL(coordsChanged()), this, SIGNAL(coordsChanged()));
-    connect(mHora, SIGNAL(houseSystemTypeChanged()), this, SIGNAL(housesTypeChanged()));
-
-    qRegisterMetaType<QHoraCoords*>();
-    qRegisterMetaType<QHora*>();
 }
 
 void QHoraView::calcMandalaGeometry()
@@ -51,12 +41,6 @@ qreal QHoraView::eclipticRadius() const
 qreal QHoraView::oneDegree() const
 {
     return eclipticRadius() * PLANET_DIST * 2.0 * PI / 360;
-}
-
-eph::ecl_lont QHoraView::mandalaLeft() const
-{
-    const QHouseCusp* firstHouse = *mHora->housesBegin();
-    return firstHouse ? firstHouse->eclPos()._M_lont : eph::ecl_lont(0.0);
 }
 
 QBrush QHoraView::planetBrush(QPlanet::Index planetIndex, qreal alpha)
@@ -144,6 +128,12 @@ QHoraView::Rank QHoraView::planetRank(const QPlanet* planet) const
     return 0 <= planetIndex && planetIndex < PLANET_COUNT && 0 <= zodIndex && zodIndex < 12 ? PLANET_RANK[planetIndex][zodIndex] : Rank::PERG;
 }
 
+void QHoraView::drawCircle(QPainter* painter, qreal radiusRatio)
+{
+    const qreal radius = eclipticRadius() * radiusRatio;
+    painter->drawEllipse(mMandalaCenter, radius, radius);
+}
+
 void QHoraView::drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const eph::ecl_pos& displayPos)
 {
     Rank rank = planetRank(planet);
@@ -220,193 +210,6 @@ void QHoraView::drawRadialText(QPainter* painter, const QString& text, const QEc
     painter->restore();
 }
 
-void QHoraView::paint(QPainter* painter)
-{
-    if (painter) {
-        painter->setRenderHints(QPainter::Antialiasing, true);
-
-        // eclipitic radius
-        painter->setPen(QPen(QColor(0,0,0), 1.5));
-        painter->drawEllipse(mMandalaCenter, eclipticRadius(), eclipticRadius());
-        painter->drawEllipse(mMandalaCenter, eclipticRadius() * 1.15, eclipticRadius() * 1.15);
-
-        // planet aspects radius
-        painter->setPen(QPen(QColor(0x80,0x80,0x80), 1.0));
-        qreal aspectRadius = eclipticRadius() * ASPECT_DIST;
-        painter->drawEllipse(mMandalaCenter, aspectRadius, aspectRadius);
-
-        // earth radius
-        static const qreal EARTH_DIST = 0.25;
-        painter->setPen(QPen(QColor(0,0,0), 1.5));
-        qreal earthRadius = eclipticRadius() * EARTH_DIST;
-        painter->drawEllipse(mMandalaCenter, earthRadius, earthRadius);
-
-        // fixstars
-        if (mHoraConfig->fixstars()->included())
-        {
-            Stellium<eph::basic_fixstar<eph_proxy>>::List fixstarStelliums(4.0);
-    //        qreal fixstarRadius = eclipticRadius() * 1.15;
-    //        painter->drawEllipse(mMandalaCenter, fixstarRadius, fixstarRadius);
-
-            for (QHora::ConjunctingFixstars::ConstIterator fs = mHora->fixstarsBegin(),
-                 fsEnd = mHora->fixstarsEnd(); fs != fsEnd; fs++)
-            {
-                fixstarStelliums.add(*fs);
-            }
-            QFont textFont = painter->font();
-            textFont.setPixelSize(int(oneDegree()*3));
-            painter->setFont(textFont);
-            for (Stellium<eph::basic_fixstar<eph_proxy>> fss : fixstarStelliums)
-            {
-                int p = 0;
-                for (eph::basic_fixstar<eph_proxy> fixstar : fss)
-                {
-                    const bool isEcliptic = fixstar.data()->is_ecliptic();
-
-                    eph::ecl_pos displayPos = fss.displayPos(p++);
-
-                    painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 2.0));
-                    painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, 1.2), 1.0, 1.0);
-
-                    painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 0.5));
-                    painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.2),
-                                      horaPoint(fixstar.pos()._M_lont, 1.25));
-                    painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.25),
-                                      horaPoint(displayPos._M_lont, 1.35));
-
-                    const QString name = QString("%1 (%2)").arg(fixstar.data()->name().c_str()).arg(fixstar.data()->consltn().c_str());
-                    drawRadialText(painter, name, displayPos._M_lont, 1.35);
-                }
-            }
-        }
-
-        // zodiac sign domains
-        painter->setPen(QPen(QColor(0,0,0), 1.5));
-        QFont zodiacFont(*mAstroFont);
-        zodiacFont.setPixelSize(oneDegree() * 4);
-        painter->setFont(zodiacFont);
-        QFontMetrics fontMetrics(*mAstroFont);
-        for (int z = 1; z <= 12; ++z)
-        {
-            eph::ecl_lont zodSignLont = (z - 1)* 30;
-            painter->drawLine(horaPoint(zodSignLont, 1.0),
-                              horaPoint(zodSignLont, 1.15));
-
-            QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.07));
-            QSize textSize = fontMetrics.size(0, mAstroFont->zodLetter(eph::zod(z)));
-            QRectF zodSignRect(zodSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
-                               zodSignPoint + QPointF(textSize.width() / 2, textSize.height() / 2));
-            painter->drawText(zodSignRect, Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextDontClip,
-                              mAstroFont->zodLetter(eph::zod(z)));
-        }
-
-        // houses
-//        painter->setPen(QPen(QColor(0x0,0x0,0x80), 0.5));
-//        qreal housesRadius = eclipticRadius() * (EARTH_DIST + 0.08);
-//        painter->drawEllipse(mMandalaCenter, housesRadius, housesRadius);
-        QFont housesFont;
-        housesFont.setPixelSize(oneDegree() * 3);
-        painter->setFont(housesFont);
-
-        for (std::size_t h = 1; h <= QHouseSystem::HOUSE_COUNT; ++h)
-        {
-            const QHouseCusp* houseCusp = mHora->house(h);
-            bool isAxis = h % 3 == 1;
-            QPen housePen;
-            housePen.setWidthF(isAxis ? 2.5 : 1.0);
-            housePen.setColor(isAxis ? QColor(0x80,0x0,0x00) : QColor(0x0,0x0,0x80));
-            painter->setPen(housePen);
-            painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, isAxis ? 1.20 : 1.0), horaPoint(houseCusp->eclPos()._M_lont, EARTH_DIST));
-            if (h == 1 || h == 10)
-            {
-                painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, 1.20), horaPoint(houseCusp->eclPos()._M_lont - 0.7, 1.10));
-                painter->drawLine(horaPoint(houseCusp->eclPos()._M_lont, 1.20), horaPoint(houseCusp->eclPos()._M_lont + 0.7, 1.10));
-            }
-
-            housePen.setColor(QColor(0x0,0x0,0x00));
-            painter->setPen(housePen);
-            QString houseSign = houseCusp->symbol(mAstroFont.get());
-            eph::ecl_lont houseSignLont = houseCusp->eclPos()._M_lont;
-            QPointF houseSignPoint(horaPoint(houseSignLont + 8.0, EARTH_DIST + 0.04));
-            QSize textSize = fontMetrics.size(0, houseSign);
-            QRectF houseSignRect(houseSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
-                               houseSignPoint + QPointF(textSize.width() / 2, textSize.height() / 2));
-            painter->drawText(houseSignRect, Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextDontClip,
-                              houseSign);
-        }
-
-        QFont planetFont = *mAstroFont;
-        planetFont.setPixelSize(oneDegree() * 5);
-        painter->setFont(planetFont);
-        QFontMetrics planetFontMetrics(planetFont);
-
-
-        // stelliums
-        QHoraStellium::List stelliums(8.0);
-        QHora::Planets::ConstIterator planet = mHora->planetsBegin(), pEnd = mHora->planetsEnd();
-        while (planet != pEnd)
-        {
-            stelliums.add(*planet);
-            ++planet;
-        }
-
-        // planets
-        painter->setPen(QPen(QBrush("black"), 2.0));
-        for (QHoraStellium stellium : stelliums)
-        {
-            int p = 0;
-            for (QPlanet* planet : stellium)
-            {
-                eph::ecl_pos planetPos = stellium.displayPos(p++);
-                drawPlanetSymbol(painter, planet, planetPos);
-
-                painter->setPen(QPen(QBrush(QColor(0x80,0x80,0x80)), 1.0));
-                painter->drawLine(horaPoint(planet->eclPos()._M_lont, ASPECT_DIST), horaPoint(planetPos._M_lont, ASPECT_DIST + 0.05));
-
-                painter->setPen(QPen(QBrush(QColor(0x00,0x00,0x00)), 3.0));
-                painter->drawLine(horaPoint(planet->eclPos()._M_lont, ASPECT_DIST - 0.004), horaPoint(planet->eclPos()._M_lont, ASPECT_DIST + 0.004));
-            }
-        }
-
-        // aspect connections
-        planet = mHora->planetsBegin();
-        pEnd = mHora->planetsEnd();
-        while (planet != pEnd)
-        {
-            QHora::Planets::ConstIterator planet2 = planet;
-            while (++planet2 != pEnd)
-            {
-                if ((*planet)->mIndex != QLunarNode::DRAGON_HEAD || (*planet2)->mIndex != QLunarNode::DRAGON_TAIL)
-                {
-                    drawAspectConnection(painter, *planet, *planet2);
-                }
-            }
-
-            drawAspectConnection(painter, *planet, mHora->house(1));
-            drawAspectConnection(painter, *planet, mHora->house(4));
-            drawAspectConnection(painter, *planet, mHora->house(7));
-            drawAspectConnection(painter, *planet, mHora->house(10));
-
-            ++planet;
-        }
-
-        if (mHoraConfig->basic_aspects())
-        {
-            // basic planet aspects
-            painter->setFont(*mAstroFont);
-            for (QMagItem* aspectItem : *mHora->regularAspectItems())
-            {
-                eph::ecl_lont aspectLont = aspectItem->eclPos()._M_lont;
-                painter->setPen(aspectItem->drawColor());
-                painter->drawLine(horaPoint(aspectLont, 1.15),
-                                  horaPoint(aspectLont, 1.20));
-
-                drawRadialText(painter, aspectItem->symbol(mAstroFont.get()), aspectLont, 1.20);
-            }
-        }
-    }
-}
-
 void QHoraView::drawAspectConnection(QPainter* painter, const QPlanet* planet, const QHoraObject* object)
 {
     const QAspectConfigNode* aspect = mHoraConfig->aspects()->findConnection(planet, object);
@@ -432,27 +235,49 @@ QPointF QHoraView::horaPoint(eph::ecl_lont horaLont, qreal dist) const
     return point;
 }
 
-QHoraCoords* QHoraView::coords() const
+void QHoraView::paintMandala(QPainter* painter)
 {
-    return mHora->coords();
-}
+    if (painter) {
+        painter->setRenderHints(QPainter::Antialiasing, true);
 
-void QHoraView::setCoords(QHoraCoords* coords)
-{
-    if (QHoraCoords* oldCoords = mHora->coords())
-    {
-        disconnect(oldCoords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
-    }
-    mHora->setCoords(coords);
-    if (coords)
-    {
-        connect(coords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
+        // eclipitic radius
+        painter->setPen(QPen(QColor(0,0,0), 1.5));
+        drawCircle(painter, 1.0);
+        drawCircle(painter, 1.15);
+
+        // planet aspects radius
+        painter->setPen(QPen(QColor(0x80,0x80,0x80), 1.0));
+        drawCircle(painter, ASPECT_DIST);
+
+        // earth radius
+        painter->setPen(QPen(QColor(0,0,0), 1.5));
+        drawCircle(painter, EARTH_DIST);
+
+
+        // zodiac sign domains
+        painter->setPen(QPen(QColor(0,0,0), 1.5));
+        QFont zodiacFont(*mAstroFont);
+        zodiacFont.setPixelSize(oneDegree() * 4);
+        painter->setFont(zodiacFont);
+        for (int z = 1; z <= 12; ++z)
+        {
+            eph::ecl_lont zodSignLont = (z - 1)* 30;
+            painter->drawLine(horaPoint(zodSignLont, 1.0),
+                              horaPoint(zodSignLont, 1.15));
+
+            QPointF zodSignPoint(horaPoint(zodSignLont + 15.0, 1.07));
+            QSize textSize = mAstroFontMetrics.size(0, mAstroFont->zodLetter(eph::zod(z)));
+            QRectF zodSignRect(zodSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
+                               zodSignPoint + QPointF(textSize.width() / 2, textSize.height() / 2));
+            painter->drawText(zodSignRect, Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextDontClip,
+                              mAstroFont->zodLetter(eph::zod(z)));
+        }
     }
 }
 
 QString QHoraView::housesType() const
 {
-    switch(mHora->houseSystemType())
+    switch(mHouseSystemType)
     {
     case QHouseSystem::KOCH: return "koch";
     case QHouseSystem::REGIOMONTANUS: return "regiomontanus";
@@ -481,28 +306,9 @@ void QHoraView::setHousesType(const QString& housesType)
     {
         houseSystemType = QHouseSystem::EQUAL;
     }
-    mHora->setHouseSystemType(houseSystemType);
-}
-
-void QHoraView::onRecalcStarted()
-{
-    mPlanetsModel->beginResetModel();
-    mHousesModel->beginResetModel();
-}
-
-void QHoraView::onRecalcFinished()
-{
-    mPlanetsModel->endResetModel();
-    mHousesModel->endResetModel();
-    update();
-}
-
-void QHoraView::connectHoraSignals()
-{
-    if (QCalcTask* horaCalcTask = mHora->calcTask())
+    if (mHouseSystemType != houseSystemType)
     {
-        connect(horaCalcTask, SIGNAL(started()), this, SLOT(onRecalcStarted()));
-        connect(horaCalcTask, SIGNAL(finished()), this, SLOT(onRecalcFinished()));
-        connect(horaCalcTask, SIGNAL(aborted()), this, SLOT(onRecalcFinished()));
+        mHouseSystemType = houseSystemType;
+        emit housesTypeChanged();
     }
 }

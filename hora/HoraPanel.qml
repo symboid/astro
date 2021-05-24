@@ -95,7 +95,7 @@ CalcPane {
             }
         }
 
-        HoraView {
+        SingleHoraView {
             id: horaView
             width: horaSize * Math.max(horaFlickable.width / horaFlickable.height, 1.0)
             height: horaSize * Math.max(horaFlickable.height / horaFlickable.width, 1.0)

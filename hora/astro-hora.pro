@@ -24,6 +24,7 @@ SOURCES += \
     qmagitem.cc \
     qmagobject.cc \
     qplanet.cc \
+    qsinglehoraview.cc \
     qtransitmodel.cc
 
 HEADERS += \
@@ -48,6 +49,7 @@ HEADERS += \
     qmagitem.h \
     qmagobject.h \
     qplanet.h \
+    qsinglehoraview.h \
     qtransitmodel.h \
     setup.h
 
