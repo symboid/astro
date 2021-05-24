@@ -10,6 +10,7 @@
 #include "astro/hora/qhoraconfig.h"
 #include "astro/hora/qhousecusp.h"
 #include <QFontMetrics>
+#include "astro/hora/qhora.h"
 
 class ASTRO_HORA_API QHoraView : public QQuickPaintedItem
 {
@@ -23,6 +24,8 @@ public:
 
 protected:
     static constexpr qreal PI = 3.14159265;
+    static constexpr qreal ZODIAC_WIDTH = 0.15;
+    static constexpr qreal ZODIAC_DIST = 1.0 + ZODIAC_WIDTH;
     static constexpr qreal PLANET_DIST = 0.875;
     static constexpr qreal ASPECT_DIST = 1.0 - 2.0 * (1.0 - PLANET_DIST);
     static constexpr qreal EARTH_DIST = 0.25;
@@ -40,7 +43,7 @@ protected:
     };
     Rank planetRank(const QPlanet* planet) const;
     void drawCircle(QPainter* painter, qreal radiusRatio);
-    void drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const eph::ecl_pos& displayPos);
+    void drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const QEclLont& displayLont, bool outer);
     void drawAspectConnection(QPainter* painter, const QPlanet* planet, const QHoraObject* object);
     void drawRadialText(QPainter* painter, const QString& text, const QEclLont& lont, qreal dist);
     QPointF horaPoint(eph::ecl_lont horaLont, qreal dist) const;
@@ -80,6 +83,11 @@ protected:
     QSharedPointer<QAstroFont> mAstroFont;
     QFontMetrics mAstroFontMetrics;
     arh::main_object<QHoraConfig> mHoraConfig;
+
+protected:
+    void paintHouses(QPainter* painter, const QHora* hora, bool outer = false);
+    void paintPlanets(QPainter* painter, const QHora* hora, bool outer = false);
+    void paintAspectConnections(QPainter* painter, const QHora* hora);
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QHORAVIEW_H__

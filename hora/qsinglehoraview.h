@@ -59,6 +59,7 @@ private slots:
     void connectHoraSignals();
 
 private:
+    void paintFixstars(QPainter* painter);
     void paint(QPainter* painter) override;
 
 private:

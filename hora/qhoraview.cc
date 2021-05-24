@@ -2,6 +2,7 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qhoraview.h"
 #include <QPainter>
+#include "astro/hora/qhorastellium.h"
 
 QHoraView::QHoraView(QQuickItem* parent)
     : QQuickPaintedItem(parent)
@@ -134,7 +135,8 @@ void QHoraView::drawCircle(QPainter* painter, qreal radiusRatio)
     painter->drawEllipse(mMandalaCenter, radius, radius);
 }
 
-void QHoraView::drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const eph::ecl_pos& displayPos)
+void QHoraView::drawPlanetSymbol(QPainter* painter, const QPlanet* planet,
+        const QEclLont& displayLont, bool outer)
 {
     Rank rank = planetRank(planet);
 
@@ -143,8 +145,7 @@ void QHoraView::drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const
     painter->setFont(planetFont);
     QFontMetrics planetFontMetrics(planetFont);
 
-    eph::ecl_lont planetSignLont = displayPos._M_lont;
-    QPointF planetSignPoint(horaPoint(planetSignLont, PLANET_DIST));
+    QPointF planetSignPoint(horaPoint(displayLont, outer ? ZODIAC_DIST + ZODIAC_WIDTH : PLANET_DIST));
 
     // planet sign pen
     QPen planetPen;
@@ -171,7 +172,6 @@ void QHoraView::drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const
     }
 
     // planet sign text
-//    QString planetText = QString(mAstroFont->objectLetter(planet->mIndex));
     QString planetText = planet->symbol(mAstroFont.get());
     QSize textSize = planetFontMetrics.size(0, planetText);
     QRectF planetSignRect(planetSignPoint - QPointF(textSize.width() / 2 - 1, textSize.height() / 2),
@@ -238,7 +238,6 @@ QPointF QHoraView::horaPoint(eph::ecl_lont horaLont, qreal dist) const
 void QHoraView::paintMandala(QPainter* painter)
 {
     if (painter) {
-        painter->setRenderHints(QPainter::Antialiasing, true);
 
         // eclipitic radius
         painter->setPen(QPen(QColor(0,0,0), 1.5));
@@ -310,5 +309,105 @@ void QHoraView::setHousesType(const QString& housesType)
     {
         mHouseSystemType = houseSystemType;
         emit housesTypeChanged();
+    }
+}
+
+void QHoraView::paintHouses(QPainter* painter, const QHora* hora, bool outer)
+{
+    QFont housesFont;
+    housesFont.setPixelSize(oneDegree() * 3);
+    painter->setFont(housesFont);
+
+    for (std::size_t h = 1; h <= QHouseSystem::HOUSE_COUNT; ++h)
+    {
+        const QHouseCusp* houseCusp = hora->house(h);
+        const QEclLont houseCuspLont = houseCusp->eclPos()._M_lont;
+        bool isAxis = h % 3 == 1;
+        QPen housePen;
+        housePen.setWidthF(isAxis ? 2.5 : 1.0);
+        housePen.setColor(isAxis ? QColor(0x80,0x0,0x00) : QColor(0x0,0x0,0x80));
+        painter->setPen(housePen);
+        const qreal ARROW_SIZE = outer ? -0.05 : 0.05;
+        const qreal lineFrom(outer ? ZODIAC_DIST + ZODIAC_WIDTH: EARTH_DIST);
+        const qreal lineTo(isAxis ? ZODIAC_DIST + ARROW_SIZE : outer ? ZODIAC_DIST : 1.0);
+        painter->drawLine(horaPoint(houseCuspLont, lineFrom), horaPoint(houseCuspLont, lineTo));
+        if (h == 1 || h == 10)
+        {
+            painter->drawLine(horaPoint(houseCuspLont, lineTo),
+                              horaPoint(houseCuspLont - 0.7, ZODIAC_DIST - ARROW_SIZE));
+            painter->drawLine(horaPoint(houseCuspLont, lineTo),
+                              horaPoint(houseCuspLont + 0.7, ZODIAC_DIST - ARROW_SIZE));
+        }
+
+        housePen.setColor(QColor(0x0,0x0,0x00));
+        painter->setPen(housePen);
+        QString houseSign = houseCusp->symbol(mAstroFont.get());
+        QPointF houseSignPoint(horaPoint(houseCuspLont + (outer ? 2.0 : 8.0),
+                                         outer ? ZODIAC_DIST + 0.04 : EARTH_DIST + 0.04));
+        QSize textSize = mAstroFontMetrics.size(0, houseSign);
+        QRectF houseSignRect(houseSignPoint - QPointF(textSize.width() / 2, textSize.height() / 2),
+                           houseSignPoint + QPointF(textSize.width() / 2, textSize.height() / 2));
+        painter->drawText(houseSignRect, Qt::AlignHCenter | Qt::AlignVCenter | Qt::TextDontClip,
+                          houseSign);
+    }
+}
+
+void QHoraView::paintPlanets(QPainter* painter, const QHora* hora, bool outer)
+{
+    QHoraStellium::List stelliums(outer ? 5.0 : 8.0);
+    QHora::Planets::ConstIterator planet = hora->planetsBegin(), pEnd = hora->planetsEnd();
+    while (planet != pEnd)
+    {
+        stelliums.add(*planet);
+        ++planet;
+    }
+
+    const qreal planetDist(outer ? ZODIAC_DIST : ASPECT_DIST);
+
+    painter->setPen(QPen(QBrush("black"), 2.0));
+    for (QHoraStellium stellium : stelliums)
+    {
+        int p = 0;
+        for (QPlanet* planet : stellium)
+        {
+            const QEclLont displayLont = stellium.displayPos(p++)._M_lont;
+            const QEclLont realLont = planet->eclPos()._M_lont;
+            drawPlanetSymbol(painter, planet, displayLont, outer);
+
+            painter->setPen(QPen(QBrush(QColor(0x80,0x80,0x80)), 1.0));
+            painter->drawLine(horaPoint(realLont, planetDist), horaPoint(displayLont, planetDist + 0.05));
+            if (outer)
+            {
+                painter->setPen(QPen(QBrush(QColor(0xE0,0xE0,0xE0)), 1.0));
+                painter->drawLine(horaPoint(realLont, ASPECT_DIST), horaPoint(realLont, planetDist));
+            }
+
+            painter->setPen(QPen(QBrush(QColor(0x00,0x00,0x00)), 3.0));
+            painter->drawLine(horaPoint(realLont, ASPECT_DIST - 0.004), horaPoint(realLont, ASPECT_DIST + 0.004));
+        }
+    }
+}
+
+void QHoraView::paintAspectConnections(QPainter* painter, const QHora* hora)
+{
+    QHora::Planets::ConstIterator planet = hora->planetsBegin();
+    QHora::Planets::ConstIterator pEnd = hora->planetsEnd();
+    while (planet != pEnd)
+    {
+        QHora::Planets::ConstIterator planet2 = planet;
+        while (++planet2 != pEnd)
+        {
+            if ((*planet)->mIndex != QLunarNode::DRAGON_HEAD || (*planet2)->mIndex != QLunarNode::DRAGON_TAIL)
+            {
+                drawAspectConnection(painter, *planet, *planet2);
+            }
+        }
+
+        drawAspectConnection(painter, *planet, hora->house(1));
+        drawAspectConnection(painter, *planet, hora->house(4));
+        drawAspectConnection(painter, *planet, hora->house(7));
+        drawAspectConnection(painter, *planet, hora->house(10));
+
+        ++planet;
     }
 }
