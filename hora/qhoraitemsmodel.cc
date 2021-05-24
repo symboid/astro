@@ -34,34 +34,3 @@ void QHoraTableModel::update()
     beginResetModel();
     endResetModel();
 }
-
-QEclipticTableModel::QEclipticTableModel(QHora* hora, QObject* parent)
-    : QHoraTableModel(hora, parent)
-    , mWithSpeed(true)
-{
-}
-
-QHash<int, QByteArray> QEclipticTableModel::roleNames() const
-{
-    QHash<int, QByteArray> roles = QAbstractTableModel::roleNames();
-    roles[SymbolRole] = "symbol";
-    roles[EclLontRole] = "ecl_lont";
-    roles[EclLattRole] = "ecl_latt";
-    if (mWithSpeed)
-    {
-        roles[EclSpeedRole] = "ecl_speed";
-    }
-    return roles;
-}
-
-void QEclipticTableModel::setWithSpeed(bool withSpeed)
-{
-    if (mWithSpeed != withSpeed)
-    {
-        beginResetModel();
-        mWithSpeed = withSpeed;
-        emit withSpeedChanged();
-        emit headerModelChanged();
-        endResetModel();
-    }
-}

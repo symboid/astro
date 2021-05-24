@@ -7,40 +7,10 @@
 #include "astro/eph/ecliptic.h"
 #include "astro/hora/qhora.h"
 #include "astro/controls/qastrofont.h"
-#include "astro/hora/qhoraitemsmodel.h"
+#include "astro/hora/qecliptictablemodel.h"
 #include "astro/eph/constellation.h"
 #include "astro/db/fixstars.h"
 #include "astro/hora/qhoraconfig.h"
-
-class ASTRO_HORA_API QHoraPlanetsModel : public QEclipticTableModel
-{
-    Q_OBJECT
-
-public:
-    QHoraPlanetsModel(QHora* hora, QObject* parent = Q_NULLPTR);
-
-public:
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
-private:
-    QStringList headerModel() const override;
-};
-
-class ASTRO_HORA_API QHoraHousesModel : public QEclipticTableModel
-{
-    Q_OBJECT
-
-public:
-    QHoraHousesModel(QHora* hora, QObject* parent = Q_NULLPTR);
-
-public:
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
-private:
-    QStringList headerModel() const override;
-};
 
 class ASTRO_HORA_API QHoraView : public QQuickPaintedItem
 {

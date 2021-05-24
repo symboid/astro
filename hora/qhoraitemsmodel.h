@@ -44,32 +44,4 @@ public:
     Q_INVOKABLE void update();
 };
 
-class ASTRO_HORA_API QEclipticTableModel : public QHoraTableModel
-{
-    Q_OBJECT
-
-public:
-    QEclipticTableModel(QHora* hora, QObject* parent = Q_NULLPTR);
-
-protected:
-    enum {
-        SymbolRole = Qt::UserRole,
-        EclLontRole,
-        EclLattRole,
-        EclSpeedRole,
-    };
-
-public:
-    QHash<int, QByteArray> roleNames() const override;
-
-public:
-    Q_PROPERTY(bool withSpeed MEMBER mWithSpeed WRITE setWithSpeed NOTIFY withSpeedChanged)
-protected:
-    bool mWithSpeed;
-public:
-    void setWithSpeed(bool withSpeed);
-signals:
-    void withSpeedChanged();
-};
-
 #endif // __SYMBOID_ASTRO_HORA_QHORAITEMSMODEL_H__

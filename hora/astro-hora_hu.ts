@@ -253,13 +253,13 @@
 <context>
     <name>QHoraHousesModel</name>
     <message>
-        <location filename="qhoraviewitem.cc" line="98"/>
-        <location filename="qhoraviewitem.cc" line="102"/>
+        <location filename="qecliptictablemodel.cc" line="126"/>
+        <location filename="qecliptictablemodel.cc" line="130"/>
         <source>Ecl. lng.</source>
         <translation>Ekl. hossz.</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="98"/>
+        <location filename="qecliptictablemodel.cc" line="126"/>
         <source>°/hour</source>
         <translation>°/óra</translation>
     </message>
@@ -267,19 +267,19 @@
 <context>
     <name>QHoraPlanetsModel</name>
     <message>
-        <location filename="qhoraviewitem.cc" line="49"/>
-        <location filename="qhoraviewitem.cc" line="53"/>
+        <location filename="qecliptictablemodel.cc" line="77"/>
+        <location filename="qecliptictablemodel.cc" line="81"/>
         <source>Ecl. lng.</source>
         <translation>Ekl. hossz.</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="49"/>
-        <location filename="qhoraviewitem.cc" line="53"/>
+        <location filename="qecliptictablemodel.cc" line="77"/>
+        <location filename="qecliptictablemodel.cc" line="81"/>
         <source>Ecl. lat.</source>
         <translation>Ekl. szél.</translation>
     </message>
     <message>
-        <location filename="qhoraviewitem.cc" line="49"/>
+        <location filename="qecliptictablemodel.cc" line="77"/>
         <source>°/day</source>
         <translation>°/nap</translation>
     </message>
