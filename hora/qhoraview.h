@@ -1,6 +1,6 @@
 
-#ifndef __SYMBOID_ASTRO_HORA_QHORAVIEWITEM_H__
-#define __SYMBOID_ASTRO_HORA_QHORAVIEWITEM_H__
+#ifndef __SYMBOID_ASTRO_HORA_QHORAVIEW_H__
+#define __SYMBOID_ASTRO_HORA_QHORAVIEW_H__
 
 #include "astro/hora/defs.h"
 #include <QQuickPaintedItem>
@@ -42,7 +42,7 @@ private:
     QStringList headerModel() const override;
 };
 
-class ASTRO_HORA_API QHoraViewItem : public QQuickPaintedItem
+class ASTRO_HORA_API QHoraView : public QQuickPaintedItem
 {
     Q_OBJECT
 
@@ -50,7 +50,7 @@ public:
     static constexpr const char* qml_name = "HoraView";
 
 public:
-    QHoraViewItem(QQuickItem* parent = Q_NULLPTR);
+    QHoraView(QQuickItem* parent = Q_NULLPTR);
 
 private:
     static constexpr qreal PI = 3.14159265;
@@ -140,4 +140,4 @@ private:
 Q_DECLARE_METATYPE(QHoraCoords*)
 Q_DECLARE_METATYPE(QHora*)
 
-#endif // __SYMBOID_ASTRO_HORA_QHORAVIEWITEM_H__
+#endif // __SYMBOID_ASTRO_HORA_QHORAVIEW_H__

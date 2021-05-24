@@ -1,6 +1,6 @@
 
 #include "astro/hora/setup.h"
-#include "astro/hora/qhoraviewitem.h"
+#include "astro/hora/qhoraview.h"
 #include <QPainter>
 #include "astro/hora/qhorastellium.h"
 #include <QFontMetrics>
@@ -103,7 +103,7 @@ QStringList QHoraHousesModel::headerModel() const
     }
 }
 
-QHoraViewItem::QHoraViewItem(QQuickItem* parent)
+QHoraView::QHoraView(QQuickItem* parent)
     : QQuickPaintedItem(parent)
     , mHora(new QHora(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
@@ -123,7 +123,7 @@ QHoraViewItem::QHoraViewItem(QQuickItem* parent)
     qRegisterMetaType<QHora*>();
 }
 
-void QHoraViewItem::calcMandalaGeometry()
+void QHoraView::calcMandalaGeometry()
 {
     // basic attributes of horoscope mandala
     QRectF mandalaRect = boundingRect();
@@ -131,33 +131,33 @@ void QHoraViewItem::calcMandalaGeometry()
     mMandalaCenter = mandalaRect.center();
 }
 
-qreal QHoraViewItem::defaultZoom() const
+qreal QHoraView::defaultZoom() const
 {
     return eclipticRatio() + 0.2;
 }
 
-qreal QHoraViewItem::eclipticRatio() const
+qreal QHoraView::eclipticRatio() const
 {
     return mHoraConfig->fixstars()->included() ? 0.55 : 0.8;
 }
 
-qreal QHoraViewItem::eclipticRadius() const
+qreal QHoraView::eclipticRadius() const
 {
     return mMandalaRadius * eclipticRatio();
 }
 
-qreal QHoraViewItem::oneDegree() const
+qreal QHoraView::oneDegree() const
 {
     return eclipticRadius() * PLANET_DIST * 2.0 * PI / 360;
 }
 
-eph::ecl_lont QHoraViewItem::mandalaLeft() const
+eph::ecl_lont QHoraView::mandalaLeft() const
 {
     const QHouseCusp* firstHouse = *mHora->housesBegin();
     return firstHouse ? firstHouse->eclPos()._M_lont : eph::ecl_lont(0.0);
 }
 
-QBrush QHoraViewItem::planetBrush(QPlanet::Index planetIndex, qreal alpha)
+QBrush QHoraView::planetBrush(QPlanet::Index planetIndex, qreal alpha)
 {
     QBrush brush;
     // style = solid
@@ -190,7 +190,7 @@ QBrush QHoraViewItem::planetBrush(QPlanet::Index planetIndex, qreal alpha)
     return brush;
 }
 
-QHoraViewItem::Rank QHoraViewItem::planetRank(const QPlanet* planet) const
+QHoraView::Rank QHoraView::planetRank(const QPlanet* planet) const
 {
     int planetIndex = int(planet->mIndex - QPlanet::SUN);
     eph::zod zodSign = planet->eclPos().zod_coords()._M_sign;
@@ -242,7 +242,7 @@ QHoraViewItem::Rank QHoraViewItem::planetRank(const QPlanet* planet) const
     return 0 <= planetIndex && planetIndex < PLANET_COUNT && 0 <= zodIndex && zodIndex < 12 ? PLANET_RANK[planetIndex][zodIndex] : Rank::PERG;
 }
 
-void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const eph::ecl_pos& displayPos)
+void QHoraView::drawPlanetSymbol(QPainter* painter, const QPlanet* planet, const eph::ecl_pos& displayPos)
 {
     Rank rank = planetRank(planet);
 
@@ -293,7 +293,7 @@ void QHoraViewItem::drawPlanetSymbol(QPainter* painter, const QPlanet* planet, c
 
 }
 
-void QHoraViewItem::drawRadialText(QPainter* painter, const QString& text, const QEclLont& lont, qreal dist)
+void QHoraView::drawRadialText(QPainter* painter, const QString& text, const QEclLont& lont, qreal dist)
 {
     painter->save();
     painter->translate(boundingRect().center());
@@ -318,7 +318,7 @@ void QHoraViewItem::drawRadialText(QPainter* painter, const QString& text, const
     painter->restore();
 }
 
-void QHoraViewItem::paint(QPainter* painter)
+void QHoraView::paint(QPainter* painter)
 {
     if (painter) {
         painter->setRenderHints(QPainter::Antialiasing, true);
@@ -505,7 +505,7 @@ void QHoraViewItem::paint(QPainter* painter)
     }
 }
 
-void QHoraViewItem::drawAspectConnection(QPainter* painter, const QPlanet* planet, const QHoraObject* object)
+void QHoraView::drawAspectConnection(QPainter* painter, const QPlanet* planet, const QHoraObject* object)
 {
     const QAspectConfigNode* aspect = mHoraConfig->aspects()->findConnection(planet, object);
     if (aspect != nullptr && aspect->enabled())
@@ -521,7 +521,7 @@ void QHoraViewItem::drawAspectConnection(QPainter* painter, const QPlanet* plane
 
 }
 
-QPointF QHoraViewItem::horaPoint(eph::ecl_lont horaLont, qreal dist) const
+QPointF QHoraView::horaPoint(eph::ecl_lont horaLont, qreal dist) const
 {
     horaLont -= mandalaLeft();
     QPointF point;
@@ -530,12 +530,12 @@ QPointF QHoraViewItem::horaPoint(eph::ecl_lont horaLont, qreal dist) const
     return point;
 }
 
-QHoraCoords* QHoraViewItem::coords() const
+QHoraCoords* QHoraView::coords() const
 {
     return mHora->coords();
 }
 
-void QHoraViewItem::setCoords(QHoraCoords* coords)
+void QHoraView::setCoords(QHoraCoords* coords)
 {
     if (QHoraCoords* oldCoords = mHora->coords())
     {
@@ -548,7 +548,7 @@ void QHoraViewItem::setCoords(QHoraCoords* coords)
     }
 }
 
-QString QHoraViewItem::housesType() const
+QString QHoraView::housesType() const
 {
     switch(mHora->houseSystemType())
     {
@@ -560,7 +560,7 @@ QString QHoraViewItem::housesType() const
     }
 }
 
-void QHoraViewItem::setHousesType(const QString& housesType)
+void QHoraView::setHousesType(const QString& housesType)
 {
     QHouseSystem::Type houseSystemType = QHouseSystem::PLACIDUS;
     if (housesType == "koch")
@@ -582,20 +582,20 @@ void QHoraViewItem::setHousesType(const QString& housesType)
     mHora->setHouseSystemType(houseSystemType);
 }
 
-void QHoraViewItem::onRecalcStarted()
+void QHoraView::onRecalcStarted()
 {
     mPlanetsModel->beginResetModel();
     mHousesModel->beginResetModel();
 }
 
-void QHoraViewItem::onRecalcFinished()
+void QHoraView::onRecalcFinished()
 {
     mPlanetsModel->endResetModel();
     mHousesModel->endResetModel();
     update();
 }
 
-void QHoraViewItem::connectHoraSignals()
+void QHoraView::connectHoraSignals()
 {
     if (QCalcTask* horaCalcTask = mHora->calcTask())
     {

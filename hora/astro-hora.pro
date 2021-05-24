@@ -18,7 +18,7 @@ SOURCES += \
     qhoracoords.cc \
     qhoraitemsmodel.cc \
     qhoraobject.cc \
-    qhoraviewitem.cc \
+    qhoraview.cc \
     qhousecusp.cc \
     qmagitem.cc \
     qmagobject.cc \
@@ -41,7 +41,7 @@ HEADERS += \
     qhoraitemsmodel.h \
     qhoraobject.h \
     qhorastellium.h \
-    qhoraviewitem.h \
+    qhoraview.h \
     qhousecusp.h \
     qmagitem.h \
     qmagobject.h \
