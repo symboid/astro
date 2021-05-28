@@ -27,8 +27,9 @@ CalcPane {
         visible: withSeparator && minHoraSize !== horaSize
     }
 
-    property int minHoraSize: 100
-    property int horaSize: minHoraSize
+    readonly property int minHoraSize: Math.min(width,height)
+    property int horaSizeDelta: 0
+    readonly property int horaSize: minHoraSize / horaView.defaultZoom + horaSizeDelta
 
     property alias horaCoords: horaView.coords
     property alias housesType: horaView.housesType
@@ -48,13 +49,13 @@ CalcPane {
 
         function zoomToMinimum()
         {
-            horaSize = minHoraSize
+            horaSizeDelta = minHoraSize * (horaView.defaultZoom - 1) / horaView.defaultZoom
             contentX = 0
             contentY = 0
         }
         function zoomToDefault()
         {
-            horaSize = minHoraSize / horaView.defaultZoom
+            horaSizeDelta = 0
             contentX = (horaSize - minHoraSize) / 2
             contentY = contentX
         }
@@ -63,7 +64,7 @@ CalcPane {
             var zoomRatio = (horaSize + zoomDelta) / horaSize
             if (horaSize + zoomDelta >= minHoraSize)
             {
-                horaSize += zoomDelta
+                horaSizeDelta += zoomDelta
                 var newContentX = contentX + (zoomRatio - 1) * zoomPointX
                 var newContentY = contentY + (zoomRatio - 1) * zoomPointY
                 contentX = newContentX < 0.0 ? 0.0 : newContentX
