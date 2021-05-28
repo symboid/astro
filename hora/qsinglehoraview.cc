@@ -6,61 +6,73 @@
 
 QSingleHoraView::QSingleHoraView(QQuickItem* parent)
     : QHoraView(parent)
-    , mHora(new QHora(this))
-    , mPlanetsModel(new QHoraPlanetsModel(mHora.get(), this))
-    , mHousesModel(new QHoraHousesModel(mHora.get(), this))
+    , mHora(nullptr)
+    , mPlanetsModel(nullptr)
+    , mHousesModel(nullptr)
 {
-    connect(mHora.get(), SIGNAL(calcTaskChanged()), this, SLOT(connectHoraSignals()));
-    connect(mHora.get(), SIGNAL(coordsChanged()), this, SIGNAL(coordsChanged()));
-    connect(mHora.get(), SIGNAL(houseSystemTypeChanged()), this, SIGNAL(housesTypeChanged()));
-
     connect(mHoraConfig->fixstars(), SIGNAL(includedChanged()), this, SLOT(onRecalcFinished()));
 
     qRegisterMetaType<QHora*>();
     qRegisterMetaType<QHoraCoords*>();
 }
 
-QHoraCoords* QSingleHoraView::coords() const
+QHora* QSingleHoraView::hora() const
 {
-    return mHora->coords();
+    return mHora;
 }
 
-void QSingleHoraView::setCoords(QHoraCoords* coords)
+void QSingleHoraView::setHora(QHora* hora)
 {
-    if (QHoraCoords* oldCoords = mHora->coords())
+    if (mHora)
     {
-        disconnect(oldCoords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
+        mPlanetsModel.reset(nullptr);
+        mHousesModel.reset(nullptr);
+        disconnect(mHora, SIGNAL(calcTaskChanged()), this, SLOT(connectHoraSignals()));
+        disconnect(mHora, SIGNAL(houseSystemTypeChanged()), this, SIGNAL(housesTypeChanged()));
     }
-    mHora->setCoords(coords);
-    if (coords)
+    if (mHora != hora)
     {
-        connect(coords, SIGNAL(changed()), this, SIGNAL(coordsChanged()));
+        mHora = hora;
+        if (mHora)
+        {
+            mPlanetsModel.reset(new QHoraPlanetsModel(mHora, this));
+            mHousesModel.reset(new QHoraHousesModel(mHora, this));
+            connect(mHora, SIGNAL(calcTaskChanged()), this, SLOT(connectHoraSignals()));
+            connect(mHora, SIGNAL(houseSystemTypeChanged()), this, SIGNAL(housesTypeChanged()));
+        }
+        emit horaChanged();
     }
 }
 
 eph::ecl_lont QSingleHoraView::mandalaLeft() const
 {
-    const QHouseCusp* firstHouse = *mHora->housesBegin();
+    const QHouseCusp* firstHouse = mHora ? *mHora->housesBegin() : nullptr;
     return firstHouse ? firstHouse->eclPos()._M_lont : eph::ecl_lont(0.0);
 }
 
 void QSingleHoraView::onRecalcStarted()
 {
-    mHora->setHouseSystemType(mHouseSystemType);
-    mPlanetsModel->beginResetModel();
-    mHousesModel->beginResetModel();
+    if (mHora)
+    {
+        mHora->setHouseSystemType(mHouseSystemType);
+        mPlanetsModel->beginResetModel();
+        mHousesModel->beginResetModel();
+    }
 }
 
 void QSingleHoraView::onRecalcFinished()
 {
-    mPlanetsModel->endResetModel();
-    mHousesModel->endResetModel();
-    update();
+    if (mHora)
+    {
+        mPlanetsModel->endResetModel();
+        mHousesModel->endResetModel();
+        update();
+    }
 }
 
 void QSingleHoraView::connectHoraSignals()
 {
-    if (QCalcTask* horaCalcTask = mHora->calcTask())
+    if (QCalcTask* horaCalcTask = (mHora? mHora->calcTask() : nullptr))
     {
         connect(horaCalcTask, SIGNAL(started()), this, SLOT(onRecalcStarted()));
         connect(horaCalcTask, SIGNAL(finished()), this, SLOT(onRecalcFinished()));
@@ -70,43 +82,46 @@ void QSingleHoraView::connectHoraSignals()
 
 void QSingleHoraView::paintFixstars(QPainter* painter)
 {
-    Stellium<eph::basic_fixstar<eph_proxy>>::List fixstarStelliums(4.0);
+    if (mHora)
+    {
+        Stellium<eph::basic_fixstar<eph_proxy>>::List fixstarStelliums(4.0);
 
-    for (QHora::ConjunctingFixstars::ConstIterator fs = mHora->fixstarsBegin(),
-         fsEnd = mHora->fixstarsEnd(); fs != fsEnd; fs++)
-    {
-        fixstarStelliums.add(*fs);
-    }
-    QFont textFont;
-    textFont.setPixelSize(int(oneDegree()*3));
-    painter->setFont(textFont);
-    for (Stellium<eph::basic_fixstar<eph_proxy>> fss : fixstarStelliums)
-    {
-        int p = 0;
-        for (eph::basic_fixstar<eph_proxy> fixstar : fss)
+        for (QHora::ConjunctingFixstars::ConstIterator fs = mHora->fixstarsBegin(),
+             fsEnd = mHora->fixstarsEnd(); fs != fsEnd; fs++)
         {
-            const bool isEcliptic = fixstar.data()->is_ecliptic();
+            fixstarStelliums.add(*fs);
+        }
+        QFont textFont;
+        textFont.setPixelSize(int(oneDegree()*3));
+        painter->setFont(textFont);
+        for (Stellium<eph::basic_fixstar<eph_proxy>> fss : fixstarStelliums)
+        {
+            int p = 0;
+            for (eph::basic_fixstar<eph_proxy> fixstar : fss)
+            {
+                const bool isEcliptic = fixstar.data()->is_ecliptic();
 
-            eph::ecl_pos displayPos = fss.displayPos(p++);
+                eph::ecl_pos displayPos = fss.displayPos(p++);
 
-            painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 2.0));
-            painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, 1.2), 1.0, 1.0);
+                painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 2.0));
+                painter->drawEllipse(horaPoint(fixstar.pos()._M_lont, 1.2), 1.0, 1.0);
 
-            painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 0.5));
-            painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.2),
-                              horaPoint(fixstar.pos()._M_lont, 1.25));
-            painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.25),
-                              horaPoint(displayPos._M_lont, 1.35));
+                painter->setPen(QPen(isEcliptic ? QColor(0x00,0x00,0x00) : QColor(0xC0,0xC0,0xC0), 0.5));
+                painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.2),
+                                  horaPoint(fixstar.pos()._M_lont, 1.25));
+                painter->drawLine(horaPoint(fixstar.pos()._M_lont, 1.25),
+                                  horaPoint(displayPos._M_lont, 1.35));
 
-            const QString name = QString("%1 (%2)").arg(fixstar.data()->name().c_str()).arg(fixstar.data()->consltn().c_str());
-            drawRadialText(painter, name, displayPos._M_lont, 1.35);
+                const QString name = QString("%1 (%2)").arg(fixstar.data()->name().c_str()).arg(fixstar.data()->consltn().c_str());
+                drawRadialText(painter, name, displayPos._M_lont, 1.35);
+            }
         }
     }
 }
 
 void QSingleHoraView::paint(QPainter* painter)
 {
-    if (painter) {
+    if (painter && mHora) {
 
         painter->setRenderHints(QPainter::Antialiasing, true);
 
@@ -117,13 +132,13 @@ void QSingleHoraView::paint(QPainter* painter)
         }
 
         // houses
-        paintHouses(painter, mHora.get());
+        paintHouses(painter, mHora);
 
-        paintPlanets(painter, mHora.get());
+        paintPlanets(painter, mHora);
 
         paintMandala(painter);
 
-        paintAspectConnections(painter, mHora.get());
+        paintAspectConnections(painter, mHora);
 
         if (mHoraConfig->basic_aspects())
         {

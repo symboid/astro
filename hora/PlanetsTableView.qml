@@ -5,7 +5,7 @@ import Symboid.Astro.Controls 1.0
 
 HoraTableView {
     anchors.margins: 20
-    headerModel: tableModel.headerModel
+    headerModel: tableModel !== null ? tableModel.headerModel : null
     property bool showSeconds: false
     columnComponents: [
         Component {

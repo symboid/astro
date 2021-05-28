@@ -20,33 +20,28 @@ public:
     QSingleHoraView(QQuickItem* parent = Q_NULLPTR);
 
 public:
-    Q_PROPERTY(QHoraCoords* coords READ coords WRITE setCoords NOTIFY coordsChanged)
-public:
-    QHoraCoords* coords() const;
-    void setCoords(QHoraCoords* coords);
-signals:
-    void coordsChanged();
-
-public:
-    Q_PROPERTY(QHora* hora READ hora CONSTANT)
+    Q_PROPERTY(QHora* hora READ hora WRITE setHora NOTIFY horaChanged)
 private:
-    QScopedPointer<QHora> mHora;
+    QHora* mHora;
 public:
-    QHora* hora() const { return mHora.get(); }
+    QHora* hora() const;
+    void setHora(QHora* hora);
+signals:
+    void horaChanged();
 
 public:
     Q_PROPERTY(QEclipticTableModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
 private:
-    QHoraPlanetsModel* mPlanetsModel;
-    QEclipticTableModel* planetsModel() const { return mPlanetsModel; }
+    QScopedPointer<QHoraPlanetsModel> mPlanetsModel;
+    QEclipticTableModel* planetsModel() const { return mPlanetsModel.get(); }
 signals:
     void planetsModelChanged();
 
 public:
     Q_PROPERTY(QEclipticTableModel* housesModel READ housesModel NOTIFY housesModelChanged)
 private:
-    QHoraHousesModel* mHousesModel;
-    QEclipticTableModel* housesModel() const { return mHousesModel; }
+    QScopedPointer<QHoraHousesModel> mHousesModel;
+    QEclipticTableModel* housesModel() const { return mHousesModel.get(); }
 signals:
     void housesModelChanged();
 

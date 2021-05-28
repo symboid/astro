@@ -31,7 +31,6 @@ CalcPane {
     property int horaSizeDelta: 0
     readonly property int horaSize: minHoraSize / horaView.defaultZoom + horaSizeDelta
 
-    property alias horaCoords: horaView.coords
     property alias housesType: horaView.housesType
 
     property alias planetsModel: horaView.planetsModel
