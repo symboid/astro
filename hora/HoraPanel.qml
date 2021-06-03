@@ -8,7 +8,6 @@ CalcPane {
     calcable: hora
 
     property bool isLandscape: true
-    property alias view: horaView
     property bool withSeparator: false
 
     Rectangle {
@@ -31,9 +30,7 @@ CalcPane {
     property int horaSizeDelta: 0
     readonly property int horaSize: minHoraSize / horaView.defaultZoom + horaSizeDelta
 
-    property alias housesType: horaView.housesType
-
-    property alias hora: horaView.hora
+    property HoraView horaView: null
 
     Flickable {
         id: horaFlickable
@@ -93,10 +90,10 @@ CalcPane {
             }
         }
 
-        SingleHoraView {
-            id: horaView
+        ItemSlot {
             width: horaSize * Math.max(horaFlickable.width / horaFlickable.height, 1.0)
             height: horaSize * Math.max(horaFlickable.height / horaFlickable.width, 1.0)
+            contentItem: horaView
         }
 
         Connections {
