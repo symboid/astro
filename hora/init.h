@@ -12,6 +12,7 @@
 #include "astro/hora/qhoracoords.h"
 #include "astro/hora/qhoraview.h"
 #include "astro/hora/qsinglehoraview.h"
+#include "astro/hora/qdoublehoraview.h"
 #include "astro/hora/qecliptictablemodel.h"
 #include "astro/hora/qforecastitemmodel.h"
 #include "astro/hora/qforecastmodel.h"
@@ -38,6 +39,7 @@ struct ASTRO_HORA_API mod_astro_hora : arh::mod_qt<mod_astro_hora>
     qml_type_register<QHora> _M_reg_hora;
     qml_domain_register<QHoraView> _M_reg_hora_view;
     qml_type_register<QSingleHoraView> _M_reg_single_hora_view;
+    qml_type_register<QDoubleHoraView> _M_reg_double_hora_view;
     qml_type_register<QHoraPlanetsModel> _M_reg_hora_planets_model;
     qml_type_register<QHoraHousesModel> _M_reg_hora_houses_model;
     qml_singleton_init<QHoraConfig> _M_reg_hora_config;

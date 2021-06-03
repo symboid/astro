@@ -9,6 +9,7 @@ SOURCES += \
     qaspectconfig.cc \
     qaspectobject.cc \
     qdirexmodel.cc \
+    qdoublehoraview.cc \
     qecliptictablemodel.cc \
     qforecast.cc \
     qforecastevent.cc \
@@ -33,6 +34,7 @@ HEADERS += \
     qaspectconfig.h \
     qaspectobject.h \
     qdirexmodel.h \
+    qdoublehoraview.h \
     qecliptictablemodel.h \
     qforecast.h \
     qforecastevent.h \

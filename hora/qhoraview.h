@@ -90,4 +90,7 @@ protected:
     void paintAspectConnections(QPainter* painter, const QHora* hora);
 };
 
+Q_DECLARE_METATYPE(QHoraCoords*)
+Q_DECLARE_METATYPE(QHora*)
+
 #endif // __SYMBOID_ASTRO_HORA_QHORAVIEW_H__

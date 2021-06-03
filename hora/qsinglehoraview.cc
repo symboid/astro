@@ -9,9 +9,6 @@ QSingleHoraView::QSingleHoraView(QQuickItem* parent)
     , mHora(nullptr)
 {
     connect(mHoraConfig->fixstars(), SIGNAL(includedChanged()), this, SLOT(onRecalcFinished()));
-
-    qRegisterMetaType<QHora*>();
-    qRegisterMetaType<QHoraCoords*>();
 }
 
 QHora* QSingleHoraView::hora() const

@@ -45,7 +45,4 @@ private:
     arh::main_object<Fixstars> mFixstars;
 };
 
-Q_DECLARE_METATYPE(QHoraCoords*)
-Q_DECLARE_METATYPE(QHora*)
-
 #endif // __SYMBOID_ASTRO_HORA_QSINGLEHORAVIEW_H__

@@ -14,6 +14,9 @@ QHoraView::QHoraView(QQuickItem* parent)
     setRenderTarget(QQuickPaintedItem::Image);
     connect(this, SIGNAL(widthChanged()), this, SLOT(calcMandalaGeometry()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(calcMandalaGeometry()));
+
+    qRegisterMetaType<QHora*>();
+    qRegisterMetaType<QHoraCoords*>();
 }
 
 void QHoraView::calcMandalaGeometry()
