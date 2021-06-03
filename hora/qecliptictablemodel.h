@@ -10,7 +10,7 @@ class ASTRO_HORA_API QEclipticTableModel : public QHoraTableModel
     Q_OBJECT
 
 public:
-    QEclipticTableModel(QHora* hora, QObject* parent = Q_NULLPTR);
+    QEclipticTableModel(QObject* parent = Q_NULLPTR);
 
 protected:
     enum {
@@ -36,9 +36,11 @@ signals:
 class ASTRO_HORA_API QHoraPlanetsModel : public QEclipticTableModel
 {
     Q_OBJECT
+public:
+    static constexpr const char* qml_name = "HoraPlanetsModel";
 
 public:
-    QHoraPlanetsModel(QHora* hora, QObject* parent = Q_NULLPTR);
+    QHoraPlanetsModel(QObject* parent = Q_NULLPTR);
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -51,9 +53,11 @@ private:
 class ASTRO_HORA_API QHoraHousesModel : public QEclipticTableModel
 {
     Q_OBJECT
+public:
+    static constexpr const char* qml_name = "HoraHousesModel";
 
 public:
-    QHoraHousesModel(QHora* hora, QObject* parent = Q_NULLPTR);
+    QHoraHousesModel(QObject* parent = Q_NULLPTR);
 
 public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

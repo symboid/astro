@@ -5,7 +5,7 @@
 #include "astro/hora/qtransitmodel.h"
 
 QForecastItemModel::QForecastItemModel(QObject* parent)
-    : QHoraTableModel(Q_NULLPTR, parent)
+    : QHoraTableModel(parent)
     , mForecastModel(NONE)
     , mForecast(new QForecast(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())

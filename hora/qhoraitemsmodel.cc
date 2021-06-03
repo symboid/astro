@@ -2,9 +2,9 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qhoraitemsmodel.h"
 
-QHoraTableModel::QHoraTableModel(QHora* hora, QObject* parent)
+QHoraTableModel::QHoraTableModel(QObject* parent)
     : QAbstractTableModel(parent)
-    , mHora(hora)
+    , mHora(nullptr)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
 {
 }
@@ -16,9 +16,16 @@ QHora* QHoraTableModel::hora() const
 
 void QHoraTableModel::setHora(QHora* hora)
 {
+    if (mHora)
+    {
+        disconnect(mHora, SIGNAL(changed()), this, SLOT(update()));
+    }
     if (mHora != hora)
     {
-        mHora = hora;
+        if ((mHora = hora))
+        {
+            connect(mHora, SIGNAL(changed()), this, SLOT(update()));
+        }
         emit horaChanged();
     }
 }

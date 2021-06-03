@@ -33,8 +33,6 @@ CalcPane {
 
     property alias housesType: horaView.housesType
 
-    property alias planetsModel: horaView.planetsModel
-    property alias housesModel: horaView.housesModel
     property alias hora: horaView.hora
 
     Flickable {

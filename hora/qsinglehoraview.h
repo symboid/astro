@@ -29,22 +29,6 @@ public:
 signals:
     void horaChanged();
 
-public:
-    Q_PROPERTY(QEclipticTableModel* planetsModel READ planetsModel NOTIFY planetsModelChanged)
-private:
-    QScopedPointer<QHoraPlanetsModel> mPlanetsModel;
-    QEclipticTableModel* planetsModel() const { return mPlanetsModel.get(); }
-signals:
-    void planetsModelChanged();
-
-public:
-    Q_PROPERTY(QEclipticTableModel* housesModel READ housesModel NOTIFY housesModelChanged)
-private:
-    QScopedPointer<QHoraHousesModel> mHousesModel;
-    QEclipticTableModel* housesModel() const { return mHousesModel.get(); }
-signals:
-    void housesModelChanged();
-
 private:
     eph::ecl_lont mandalaLeft() const override;
 

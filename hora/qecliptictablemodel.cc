@@ -2,8 +2,8 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qecliptictablemodel.h"
 
-QEclipticTableModel::QEclipticTableModel(QHora* hora, QObject* parent)
-    : QHoraTableModel(hora, parent)
+QEclipticTableModel::QEclipticTableModel(QObject* parent)
+    : QHoraTableModel(parent)
     , mWithSpeed(true)
 {
 }
@@ -33,8 +33,8 @@ void QEclipticTableModel::setWithSpeed(bool withSpeed)
     }
 }
 
-QHoraPlanetsModel::QHoraPlanetsModel(QHora* hora, QObject* parent)
-    : QEclipticTableModel(hora, parent)
+QHoraPlanetsModel::QHoraPlanetsModel(QObject* parent)
+    : QEclipticTableModel(parent)
 {
 }
 
@@ -82,8 +82,8 @@ QStringList QHoraPlanetsModel::headerModel() const
     }
 }
 
-QHoraHousesModel::QHoraHousesModel(QHora* hora, QObject* parent)
-    : QEclipticTableModel(hora, parent)
+QHoraHousesModel::QHoraHousesModel(QObject* parent)
+    : QEclipticTableModel(parent)
 {
 }
 

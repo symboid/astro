@@ -7,8 +7,6 @@
 QSingleHoraView::QSingleHoraView(QQuickItem* parent)
     : QHoraView(parent)
     , mHora(nullptr)
-    , mPlanetsModel(nullptr)
-    , mHousesModel(nullptr)
 {
     connect(mHoraConfig->fixstars(), SIGNAL(includedChanged()), this, SLOT(onRecalcFinished()));
 
@@ -25,8 +23,6 @@ void QSingleHoraView::setHora(QHora* hora)
 {
     if (mHora)
     {
-        mPlanetsModel.reset(nullptr);
-        mHousesModel.reset(nullptr);
         disconnect(mHora, SIGNAL(calcTaskChanged()), this, SLOT(connectHoraSignals()));
         disconnect(mHora, SIGNAL(houseSystemTypeChanged()), this, SIGNAL(housesTypeChanged()));
     }
@@ -35,8 +31,6 @@ void QSingleHoraView::setHora(QHora* hora)
         mHora = hora;
         if (mHora)
         {
-            mPlanetsModel.reset(new QHoraPlanetsModel(mHora, this));
-            mHousesModel.reset(new QHoraHousesModel(mHora, this));
             connect(mHora, SIGNAL(calcTaskChanged()), this, SLOT(connectHoraSignals()));
             connect(mHora, SIGNAL(houseSystemTypeChanged()), this, SIGNAL(housesTypeChanged()));
         }
@@ -55,8 +49,6 @@ void QSingleHoraView::onRecalcStarted()
     if (mHora)
     {
         mHora->setHouseSystemType(mHouseSystemType);
-        mPlanetsModel->beginResetModel();
-        mHousesModel->beginResetModel();
     }
 }
 
@@ -64,8 +56,6 @@ void QSingleHoraView::onRecalcFinished()
 {
     if (mHora)
     {
-        mPlanetsModel->endResetModel();
-        mHousesModel->endResetModel();
         update();
     }
 }
