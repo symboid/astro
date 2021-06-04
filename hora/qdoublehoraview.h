@@ -37,6 +37,7 @@ signals:
     void auxHoraChanged();
 
 private:
+    qreal eclipticRatio() const override;
     eph::ecl_lont mandalaLeft() const override;
 
 private slots:

@@ -62,6 +62,11 @@ void QDoubleHoraView::setAuxHora(QHora* hora)
     }
 }
 
+qreal QDoubleHoraView::eclipticRatio() const
+{
+    return 0.85 * QHoraView::eclipticRatio();
+}
+
 eph::ecl_lont QDoubleHoraView::mandalaLeft() const
 {
     const QHouseCusp* firstHouse = mMainHora ? *mMainHora->housesBegin() : nullptr;

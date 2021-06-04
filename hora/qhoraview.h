@@ -54,7 +54,7 @@ private:
     qreal mMandalaRadius;
 protected:
     virtual eph::ecl_lont mandalaLeft() const = 0;
-    qreal eclipticRatio() const;
+    virtual qreal eclipticRatio() const;
     qreal eclipticRadius() const;
     qreal oneDegree() const;
 private slots:

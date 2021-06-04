@@ -34,7 +34,7 @@ qreal QHoraView::defaultZoom() const
 
 qreal QHoraView::eclipticRatio() const
 {
-    return mHoraConfig->fixstars()->included() ? 0.55 : 0.8;
+    return 0.8;
 }
 
 qreal QHoraView::eclipticRadius() const

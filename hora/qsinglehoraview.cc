@@ -35,6 +35,11 @@ void QSingleHoraView::setHora(QHora* hora)
     }
 }
 
+qreal QSingleHoraView::eclipticRatio() const
+{
+    return (mHoraConfig->fixstars()->included() ? 0.7 : 1.0) * QHoraView::eclipticRatio();
+}
+
 eph::ecl_lont QSingleHoraView::mandalaLeft() const
 {
     const QHouseCusp* firstHouse = mHora ? *mHora->housesBegin() : nullptr;
