@@ -44,14 +44,12 @@ CalcPane {
         function zoomToMinimum()
         {
             horaSizeDelta = minHoraSize * (horaView.defaultZoom - 1) / horaView.defaultZoom
-            contentX = 0
-            contentY = 0
         }
         function zoomToDefault()
         {
             horaSizeDelta = 0
-            contentX = (horaSize - minHoraSize) / 2
-            contentY = contentX
+            contentX = Qt.binding(function(){return(horaSize-minHoraSize)/2})
+            contentY = Qt.binding(function(){return(horaSize-minHoraSize)/2})
         }
         function zoomTo(zoomPointX,zoomPointY,zoomDelta)
         {

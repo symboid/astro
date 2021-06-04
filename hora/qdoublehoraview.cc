@@ -64,7 +64,7 @@ void QDoubleHoraView::setAuxHora(QHora* hora)
 
 qreal QDoubleHoraView::eclipticRatio() const
 {
-    return 0.85 * QHoraView::eclipticRatio();
+    return 0.8 * QHoraView::eclipticRatio();
 }
 
 eph::ecl_lont QDoubleHoraView::mandalaLeft() const
