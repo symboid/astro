@@ -1,24 +1,80 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import Symboid.Astro.Controls 1.0
+import Symboid.Sdk.Controls 1.0
+import QtQml.Models 2.12
 
 Item {
 
     property var headerModel: null
     property var tableModel: null
-    property bool withSpeed: true
-    onWithSpeedChanged: {
-        if (headerModel)
-        {
-            headerModel.withSpeed = withSpeed
-        }
-        if (tableModel)
-        {
-            tableModel.withSpeed = withSpeed
-        }
+    property list<Component> columnComponents: [ Component { Item { } } ]
+
+    property ObjectModel columns: ObjectModel {
+
     }
 
+    Frame {
+    contentItem: Grid {
+        columns: 2
+
+        Item {
+            height: 1; width: 1
+        }
+
+        ListView {
+            id: horizontalHeader
+            width: dataView.width
+            height: 50
+            orientation: Qt.Horizontal
+            model: headerModel
+            delegate: Label {
+                text: modelData
+                width: dataView.columnWidthProvider(index)
+                horizontalAlignment: Label.AlignHCenter
+                verticalAlignment: Label.AlignVCenter
+            }
+        }
+        HorizontalLine {
+            width: verticalHeader.width
+        }
+        HorizontalLine {
+            width: horizontalHeader.width
+        }
+
+        ListView {
+            id: verticalHeader
+            width: 100
+            height: dataView.height
+            model: tableModel
+            delegate: Loader {
+                height: dataView.rowHeightProvider(index)
+                property var cellData: display
+                sourceComponent: columnComponents[1]
+            }
+        }
+        TableView {
+            id: dataView
+            model: tableModel
+            flickableDirection: Flickable.VerticalFlick | Flickable.HorizontalFlick
+            width: 400
+            height: 500
+            delegate: Loader {
+                property var cellData: display
+
+                Component {
+                    id: nullItem
+                    Item { implicitWidth:1;implicitHeight:1 }
+                }
+
+
+                sourceComponent: column ? columnComponents[column + 1] : nullItem
+            }
+        }
+    }
+    }
+
+    /*
     property var columnWidths: []
     readonly property int lineWidth: 1
 
@@ -40,8 +96,6 @@ Item {
     readonly property int displayHeight: Math.min(tableHeight, height)
     readonly property int verticalHeaderHeight: displayHeight - horizontalHeader.height - 2 * lineWidth
     readonly property int horizontalHeaderHeight: rowHeight
-
-    property list<Component> columnComponents: [ Component { Item { } } ]
 
     readonly property int colSpacing: 25
 
@@ -164,4 +218,5 @@ Item {
             }
         }
     }
+    */
 }

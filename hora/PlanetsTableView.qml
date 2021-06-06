@@ -18,25 +18,31 @@ HoraTableView {
             }
         },
         Component {
-            ArcCoordLabel {
-                arcDegree: cellData
-                sectionCalc: ZodiacSectionCalc {}
-                sectionFont.family: "Symboid"
-                showSecond: showSeconds
+            Pane {
+                ArcCoordLabel {
+                    arcDegree: cellData
+                    sectionCalc: ZodiacSectionCalc {}
+                    sectionFont.family: "Symboid"
+                    showSecond: showSeconds
+                }
             }
         },
         Component {
-            ArcCoordLabel {
-                arcDegree: cellData
-                sectionCalc: SignumSectionCalc {}
-                showSecond: showSeconds
+            Pane {
+                ArcCoordLabel {
+                    arcDegree: cellData
+                    sectionCalc: SignumSectionCalc {}
+                    showSecond: showSeconds
+                }
             }
         },
         Component {
-            ArcCoordLabel {
-                arcDegree: cellData
-                sectionCalc: SignumSectionCalc {}
-                showSecond: showSeconds
+            Pane {
+                ArcCoordLabel {
+                    arcDegree: cellData
+                    sectionCalc: SignumSectionCalc {}
+                    showSecond: showSeconds
+                }
             }
         }
     ]
