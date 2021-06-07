@@ -2,26 +2,31 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
-import QtQml.Models 2.12
 
 Item {
 
     property var headerModel: null
     property var tableModel: null
     property list<Component> columnComponents: [ Component { Item { } } ]
+    property list<QtObject> columns: [ QtObject { } ]
 
-    property ObjectModel columns: ObjectModel {
 
-    }
+    property alias horizontalHeaderHeight: horizontalHeader.height
+    property alias verticalHeaderWidth: verticalHeader.width
 
     Frame {
+
     contentItem: Grid {
-        columns: 2
+        columns: 3
 
         Item {
             height: 1; width: 1
         }
-
+        Frame {
+            padding: 0
+            height: horizontalHeader.height
+            width: 1
+        }
         ListView {
             id: horizontalHeader
             width: dataView.width
@@ -30,48 +35,70 @@ Item {
             model: headerModel
             delegate: Label {
                 text: modelData
-                width: dataView.columnWidthProvider(index)
+//                width: columns[index + 1].width
+                width: dataView.contentWidth / 3
                 horizontalAlignment: Label.AlignHCenter
                 verticalAlignment: Label.AlignVCenter
             }
         }
-        HorizontalLine {
+
+        Frame {
+            padding: 0
+            height: 1
             width: verticalHeader.width
         }
-        HorizontalLine {
+        Frame {
+            padding: 0
+            height: 1; width: 1
+        }
+        Frame {
+            padding: 0
+            height: 1
             width: horizontalHeader.width
         }
 
         ListView {
             id: verticalHeader
-            width: 100
+            width: columns[1].width
             height: dataView.height
             model: tableModel
-            delegate: Loader {
-                height: dataView.rowHeightProvider(index)
-                property var cellData: display
-                sourceComponent: columnComponents[1]
+            delegate: Item {
+                width: columns[1].width
+                height: dataView.contentHeight / dataView.rows
+                Loader {
+                    anchors.centerIn: parent
+                    property var cellData: display
+                    sourceComponent: columns[1].component
+                }
             }
+        }
+        Frame {
+            padding: 0
+            height: dataView.height
+            width: 1
         }
         TableView {
             id: dataView
             model: tableModel
-            flickableDirection: Flickable.VerticalFlick | Flickable.HorizontalFlick
-            width: 400
+            flickableDirection: Flickable.AutoFlickIfNeeded
+            width: contentWidth
             height: 500
-            delegate: Loader {
-                property var cellData: display
+            delegate: Pane {
+                contentItem: Loader {
+                    property var cellData: display
+                    width: column ? columns[column + 1].width : 1
 
-                Component {
-                    id: nullItem
-                    Item { implicitWidth:1;implicitHeight:1 }
+                    Component {
+                        id: nullItem
+                        Item { implicitWidth:1;implicitHeight:1 }
+                    }
+
+                    sourceComponent: column ? columns[column + 1].component : nullItem
                 }
-
-
-                sourceComponent: column ? columnComponents[column + 1] : nullItem
             }
         }
     }
+
     }
 
     /*

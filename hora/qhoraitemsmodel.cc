@@ -33,7 +33,7 @@ void QHoraTableModel::setHora(QHora* hora)
 int QHoraTableModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    return headerModel().size();
+    return headerModel().size() + 1;
 }
 
 void QHoraTableModel::update()

@@ -74,11 +74,11 @@ QStringList QHoraPlanetsModel::headerModel() const
 {
     if (mWithSpeed)
     {
-        return { "", tr("Ecl. lng."), tr("Ecl. lat."), tr("°/day") };
+        return { tr("Ecl. lng."), tr("Ecl. lat."), tr("°/day") };
     }
     else
     {
-        return { "", tr("Ecl. lng."), tr("Ecl. lat.") };
+        return { tr("Ecl. lng."), tr("Ecl. lat.") };
     }
 }
 
