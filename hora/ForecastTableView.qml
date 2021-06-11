@@ -6,41 +6,27 @@ import Symboid.Astro.Hora 1.0
 
 HoraTableView {
     anchors.margins: 20
-    headerModel: tableModel.headerModel
-    columnComponents: [
+    vertHeaderWidth: 100
+    columns: [
         Component {
-            Pane {
-                Label {
-                    text: Qt.formatDate(cellData)
-                    width: 100
-                }
+            Label {
+                text: cellData
+                font.family: "Symboid"
+//                width: 100
             }
         },
         Component {
-            Pane {
-                Label {
-                    text: cellData
-                    font.family: "Symboid"
-                    width: 100
-                }
+            Label {
+                text: cellData
+                font.family: "Symboid"
+//                width: 100
             }
         },
         Component {
-            Pane {
-                Label {
-                    text: cellData
-                    font.family: "Symboid"
-                    width: 100
-                }
-            }
-        },
-        Component {
-            Pane {
-                Label {
-                    text: cellData
-                    font.family: "Symboid"
-                    width: 100
-                }
+            Label {
+                text: cellData
+                font.family: "Symboid"
+//                width: 100
             }
         }
     ]

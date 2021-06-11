@@ -5,18 +5,30 @@ import Symboid.Sdk.Controls 1.0
 
 Item {
 
-    property var headerModel: null
     property var tableModel: null
-    property list<Component> columnComponents: [ Component { Item { } } ]
-    property list<QtObject> columns: [ QtObject { } ]
 
+    property font horzHeaderFont: Qt.font({bold:true})
 
-    property alias horizontalHeaderHeight: horizontalHeader.height
-    property alias verticalHeaderWidth: verticalHeader.width
+    property list<Component> columns: [
+        Component {
+            Label {
+                text: cellData
+                font: horzHeaderFont
+            }
+        }
+    ]
+
+    readonly property int rowHeight: dataView.contentHeight / dataView.rows
+    property alias horzHeaderHeight: horizontalHeader.height
+    property alias vertHeaderWidth: verticalHeader.width
+
+    readonly property int horzDataSpace: width - vertHeaderWidth - 1 - 2
+    readonly property int vertDataSpace: height - horzHeaderHeight - 1 - 2
 
     Frame {
+        anchors.centerIn: parent
 
-    contentItem: Grid {
+    Grid {
         columns: 3
 
         Item {
@@ -30,13 +42,12 @@ Item {
         ListView {
             id: horizontalHeader
             width: dataView.width
-            height: 50
+            height: rowHeight
             orientation: Qt.Horizontal
-            model: headerModel
+            model: tableModel.horzHeaderModel
+            clip: true
             delegate: Label {
                 text: modelData
-//                width: columns[index + 1].width
-                width: dataView.contentWidth / 3
                 horizontalAlignment: Label.AlignHCenter
                 verticalAlignment: Label.AlignVCenter
             }
@@ -54,21 +65,23 @@ Item {
         Frame {
             padding: 0
             height: 1
-            width: horizontalHeader.width
+            width: dataView.width
         }
 
         ListView {
             id: verticalHeader
-            width: columns[1].width
+            width: 50
             height: dataView.height
-            model: tableModel
-            delegate: Item {
-                width: columns[1].width
-                height: dataView.contentHeight / dataView.rows
+            model: tableModel.vertHeaderModel
+            contentY: dataView.contentY
+            clip: true
+            delegate: Frame {
+                width: verticalHeader.width
+                height: rowHeight
                 Loader {
                     anchors.centerIn: parent
                     property var cellData: display
-                    sourceComponent: columns[1].component
+                    sourceComponent: columns[0]
                 }
             }
         }
@@ -81,24 +94,21 @@ Item {
             id: dataView
             model: tableModel
             flickableDirection: Flickable.AutoFlickIfNeeded
-            width: contentWidth
-            height: 500
-            delegate: Pane {
-                contentItem: Loader {
+            width: Math.min(contentWidth, horzDataSpace)
+            height: Math.min(contentHeight, vertDataSpace)
+            clip: true
+            delegate: Frame {
+                Loader {
+                    anchors.right: column ? parent.right : undefined
+                    anchors.horizontalCenter: column ? undefined : parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
                     property var cellData: display
-                    width: column ? columns[column + 1].width : 1
 
-                    Component {
-                        id: nullItem
-                        Item { implicitWidth:1;implicitHeight:1 }
-                    }
-
-                    sourceComponent: column ? columns[column + 1].component : nullItem
+                    sourceComponent: columns[column + 1]
                 }
             }
         }
     }
-
     }
 
     /*
@@ -144,7 +154,7 @@ Item {
             clip: true
             contentX: tableView.contentX
             contentWidth: tableWidth
-            model: headerModel
+            model: horzHeaderModel
             orientation: Qt.Horizontal
             spacing: colSpacing
             delegate: Label {
