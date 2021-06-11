@@ -30,7 +30,8 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 public:
-    QStringList headerModel() const override;
+    QStringList horzHeaderModel() const override;
+    QString vertHeaderTitle(int rowIndex) const override;
 
 public:
     virtual void setHora(QHora* hora) override;

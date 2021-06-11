@@ -22,15 +22,6 @@ protected:
 
 public:
     QHash<int, QByteArray> roleNames() const override;
-
-public:
-    Q_PROPERTY(bool withSpeed MEMBER mWithSpeed WRITE setWithSpeed NOTIFY withSpeedChanged)
-protected:
-    bool mWithSpeed;
-public:
-    void setWithSpeed(bool withSpeed);
-signals:
-    void withSpeedChanged();
 };
 
 class ASTRO_HORA_API QHoraPlanetsModel : public QEclipticTableModel
@@ -47,7 +38,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
-    QStringList headerModel() const override;
+    QStringList horzHeaderModel() const override;
+    QString vertHeaderTitle(int rowIndex) const override;
 };
 
 class ASTRO_HORA_API QHoraHousesModel : public QEclipticTableModel
@@ -64,7 +56,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
-    QStringList headerModel() const override;
+    QStringList horzHeaderModel() const override;
+    QString vertHeaderTitle(int rowIndex) const override;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QECLIPTICTABLEMODEL_H__

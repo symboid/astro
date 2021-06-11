@@ -4,7 +4,6 @@
 
 QEclipticTableModel::QEclipticTableModel(QObject* parent)
     : QHoraTableModel(parent)
-    , mWithSpeed(true)
 {
 }
 
@@ -14,23 +13,8 @@ QHash<int, QByteArray> QEclipticTableModel::roleNames() const
     roles[SymbolRole] = "symbol";
     roles[EclLontRole] = "ecl_lont";
     roles[EclLattRole] = "ecl_latt";
-    if (mWithSpeed)
-    {
-        roles[EclSpeedRole] = "ecl_speed";
-    }
+    roles[EclSpeedRole] = "ecl_speed";
     return roles;
-}
-
-void QEclipticTableModel::setWithSpeed(bool withSpeed)
-{
-    if (mWithSpeed != withSpeed)
-    {
-        beginResetModel();
-        mWithSpeed = withSpeed;
-        emit withSpeedChanged();
-        emit headerModelChanged();
-        endResetModel();
-    }
 }
 
 QHoraPlanetsModel::QHoraPlanetsModel(QObject* parent)
@@ -53,10 +37,9 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
         {
             switch (index.column())
             {
-            case 0: role = SymbolRole; break;
-            case 1: role = EclLontRole; break;
-            case 2: role = EclLattRole; break;
-            case 3: role = EclSpeedRole; break;
+            case 0: role = EclLontRole; break;
+            case 1: role = EclLattRole; break;
+            case 2: role = EclSpeedRole; break;
             }
         }
         const QPlanet* planet = hora()->planet(index.row());
@@ -70,16 +53,15 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
     return planetData;
 }
 
-QStringList QHoraPlanetsModel::headerModel() const
+QStringList QHoraPlanetsModel::horzHeaderModel() const
 {
-    if (mWithSpeed)
-    {
-        return { tr("Ecl. lng."), tr("Ecl. lat."), tr("°/day") };
-    }
-    else
-    {
-        return { tr("Ecl. lng."), tr("Ecl. lat.") };
-    }
+    return { tr("Ecl. lng."), tr("Ecl. lat."), tr("°/day") };
+}
+
+QString QHoraPlanetsModel::vertHeaderTitle(int rowIndex) const
+{
+    const QPlanet* planet = hora()->planet(rowIndex);
+    return planet ? planet->symbol(mAstroFont.get()) : "";
 }
 
 QHoraHousesModel::QHoraHousesModel(QObject* parent)
@@ -102,9 +84,8 @@ QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
         {
             switch (index.column())
             {
-            case 0: role = SymbolRole; break;
-            case 1: role = EclLontRole; break;
-            case 2: role = EclSpeedRole; break;
+            case 0: role = EclLontRole; break;
+            case 1: role = EclSpeedRole; break;
             }
         }
         int houseIndex = index.row() + 1;
@@ -119,14 +100,13 @@ QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
     return houseData;
 }
 
-QStringList QHoraHousesModel::headerModel() const
+QStringList QHoraHousesModel::horzHeaderModel() const
 {
-    if (mWithSpeed)
-    {
-        return { "", tr("Ecl. lng."), tr("°/hour") };
-    }
-    else
-    {
-        return { "", tr("Ecl. lng.") };
-    }
+    return { tr("Ecl. lng."), tr("°/hour") };
+}
+
+QString QHoraHousesModel::vertHeaderTitle(int rowIndex) const
+{
+    const QHouseCusp* house = hora()->house(rowIndex + 1);
+    return house ? house->symbol(mAstroFont.get()) : "";
 }

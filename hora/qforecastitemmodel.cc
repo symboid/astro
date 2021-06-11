@@ -28,10 +28,9 @@ QVariant QForecastItemModel::data(const QModelIndex& index, int role) const
     const QForecastEvent* forecastEvent = mForecast->forecastEvent(index.row());
     switch (index.column())
     {
-    case 0: return forecastEvent->eventExact()->dateTime();
-    case 1: return forecastEvent->sigtor()->symbol(mAstroFont.get());
-    case 2: return mAstroFont->aspectLetter(int(forecastEvent->prmsor()->aspectDist()));
-    case 3: return forecastEvent->prmsor()->horaObjectSymbol();
+    case 0: return forecastEvent->sigtor()->symbol(mAstroFont.get());
+    case 1: return mAstroFont->aspectLetter(int(forecastEvent->prmsor()->aspectDist()));
+    case 2: return forecastEvent->prmsor()->horaObjectSymbol();
     }
 
     return value;
@@ -58,9 +57,15 @@ void QForecastItemModel::setHora(QHora* hora)
     mForecast->addParam(hora);
 }
 
-QStringList QForecastItemModel::headerModel() const
+QStringList QForecastItemModel::horzHeaderModel() const
 {
-    return { "", "Sigtor", "Aspect", "Prmsor" };
+    return { "Sgt", "Asp", "Pmr" };
+}
+
+QString QForecastItemModel::vertHeaderTitle(int rowIndex) const
+{
+    const QForecastEvent* forecastEvent = mForecast->forecastEvent(rowIndex);
+    return forecastEvent ? QLocale().toString(forecastEvent->eventExact()->dateTime().date(), QLocale::ShortFormat) : "";
 }
 
 QHoraCoords* QForecastItemModel::periodBegin() const
