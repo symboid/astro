@@ -12,21 +12,28 @@ HoraTableView {
             Label {
                 text: cellData
                 font.family: "Symboid"
-//                width: 100
+                height: 20
+                verticalAlignment: Label.AlignVCenter
+                horizontalAlignment: Label.AlignRight
+                width: 30
             }
         },
         Component {
             Label {
                 text: cellData
                 font.family: "Symboid"
-//                width: 100
+                verticalAlignment: Label.AlignVCenter
+                horizontalAlignment: Label.AlignHCenter
+                width: 30
             }
         },
         Component {
             Label {
                 text: cellData
                 font.family: "Symboid"
-//                width: 100
+                verticalAlignment: Label.AlignVCenter
+                horizontalAlignment: Label.AlignLeft
+                width: 30
             }
         }
     ]
