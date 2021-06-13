@@ -38,7 +38,6 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
-    QStringList horzHeaderModel() const override;
     QString vertHeaderTitle(int rowIndex) const override;
 };
 
@@ -56,7 +55,6 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
-    QStringList horzHeaderModel() const override;
     QString vertHeaderTitle(int rowIndex) const override;
 };
 

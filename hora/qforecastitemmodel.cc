@@ -10,6 +10,8 @@ QForecastItemModel::QForecastItemModel(QObject* parent)
     , mForecast(new QForecast(this))
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
 {
+    setHorzHeaderTitles({ "Sgtr", "Asp", "Pmr" });
+
     connect(mForecast.get(), SIGNAL(calcTaskChanged()), this, SLOT(connectForecastSignals()));
     connect(mForecast.get(), SIGNAL(periodBeginChanged()), this, SIGNAL(periodBeginChanged()));
     connect(mForecast.get(), SIGNAL(periodEndChanged()), this, SIGNAL(periodEndChanged()));
@@ -55,11 +57,6 @@ void QForecastItemModel::setHora(QHora* hora)
         forecastModel->setHora(hora);
     }
     mForecast->addParam(hora);
-}
-
-QStringList QForecastItemModel::horzHeaderModel() const
-{
-    return { "Sgt", "Asp", "Pmr" };
 }
 
 QString QForecastItemModel::vertHeaderTitle(int rowIndex) const

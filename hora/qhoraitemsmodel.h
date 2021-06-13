@@ -33,17 +33,40 @@ public:
 public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-public:
-    Q_PROPERTY(QStringList horzHeaderModel READ horzHeaderModel CONSTANT)
-private:
-    virtual QStringList horzHeaderModel() const = 0;
-
 private slots:
     void update();
 
+public:
+    Q_PROPERTY(QStringList horzHeaderTitles READ horzHeaderTitles WRITE setHorzHeaderTitles NOTIFY horzHeaderTitlesChanged)
+    const QStringList& horzHeaderTitles() const;
+    void setHorzHeaderTitles(const QStringList& horzHeaderTitles);
+private:
+    QStringList mHorzHeaderTitles;
+signals:
+    void horzHeaderTitlesChanged();
+
+private:
+    class HorzHeaderModel : public QAbstractTableModel
+    {
+    public:
+        HorzHeaderModel(QHoraTableModel* parent);
+    private:
+        QHoraTableModel* mParentModel;
+
+    public:
+        int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+        int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+        QVariant data(const QModelIndex& index, int role) const override;
+    };
+public:
+    Q_PROPERTY(QAbstractTableModel* horzHeaderModel MEMBER mHorzHeaderModel NOTIFY horzHeaderModelChanged)
+signals:
+    void horzHeaderModelChanged();
+private:
+    QAbstractTableModel* mHorzHeaderModel;
+
 private:
     virtual QString vertHeaderTitle(int rowIndex) const = 0;
-public:
     class VertHeaderModel : public QAbstractListModel
     {
     public:

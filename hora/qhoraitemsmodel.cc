@@ -6,6 +6,7 @@ QHoraTableModel::QHoraTableModel(QObject* parent)
     : QAbstractTableModel(parent)
     , mHora(nullptr)
     , mAstroFont(QAstroFontRepo::mo()->defaultFont())
+    , mHorzHeaderModel(new HorzHeaderModel(this))
     , mVertHeaderModel(new VertHeaderModel(this))
 {
 }
@@ -34,13 +35,49 @@ void QHoraTableModel::setHora(QHora* hora)
 int QHoraTableModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    return horzHeaderModel().size();
+    return horzHeaderTitles().length();
+}
+
+const QStringList& QHoraTableModel::horzHeaderTitles() const
+{
+    return mHorzHeaderTitles;
+}
+
+void QHoraTableModel::setHorzHeaderTitles(const QStringList& horzHeaderTitles)
+{
+    mHorzHeaderTitles = horzHeaderTitles;
+    emit horzHeaderTitlesChanged();
 }
 
 void QHoraTableModel::update()
 {
     beginResetModel();
     endResetModel();
+}
+
+QHoraTableModel::HorzHeaderModel::HorzHeaderModel(QHoraTableModel* parentModel)
+    : QAbstractTableModel(parentModel)
+    , mParentModel(parentModel)
+{
+    connect(mParentModel, SIGNAL(horzHeaderTitlesChanged()), this, SIGNAL(modelReset()));
+}
+
+int QHoraTableModel::HorzHeaderModel::rowCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+    return 1;
+}
+
+int QHoraTableModel::HorzHeaderModel::columnCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+    return mParentModel->horzHeaderTitles().length();
+}
+
+QVariant QHoraTableModel::HorzHeaderModel::data(const QModelIndex& index, int role) const
+{
+    Q_UNUSED(role);
+    return mParentModel->horzHeaderTitles()[index.column()];
 }
 
 QHoraTableModel::VertHeaderModel::VertHeaderModel(QHoraTableModel* parentModel)

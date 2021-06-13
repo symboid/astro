@@ -20,6 +20,7 @@ QHash<int, QByteArray> QEclipticTableModel::roleNames() const
 QHoraPlanetsModel::QHoraPlanetsModel(QObject* parent)
     : QEclipticTableModel(parent)
 {
+    setHorzHeaderTitles({ tr("Ecl. lng."), tr("Ecl. lat."), tr("°/day") });
 }
 
 int QHoraPlanetsModel::rowCount(const QModelIndex& parent) const
@@ -53,11 +54,6 @@ QVariant QHoraPlanetsModel::data(const QModelIndex& index, int role) const
     return planetData;
 }
 
-QStringList QHoraPlanetsModel::horzHeaderModel() const
-{
-    return { tr("Ecl. lng."), tr("Ecl. lat."), tr("°/day") };
-}
-
 QString QHoraPlanetsModel::vertHeaderTitle(int rowIndex) const
 {
     const QPlanet* planet = hora()->planet(rowIndex);
@@ -67,6 +63,7 @@ QString QHoraPlanetsModel::vertHeaderTitle(int rowIndex) const
 QHoraHousesModel::QHoraHousesModel(QObject* parent)
     : QEclipticTableModel(parent)
 {
+    setHorzHeaderTitles({ tr("Ecl. lng."), tr("°/hour") });
 }
 
 int QHoraHousesModel::rowCount(const QModelIndex& parent) const
@@ -98,11 +95,6 @@ QVariant QHoraHousesModel::data(const QModelIndex& index, int role) const
         }
     }
     return houseData;
-}
-
-QStringList QHoraHousesModel::horzHeaderModel() const
-{
-    return { tr("Ecl. lng."), tr("°/hour") };
 }
 
 QString QHoraHousesModel::vertHeaderTitle(int rowIndex) const

@@ -30,7 +30,6 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 public:
-    QStringList horzHeaderModel() const override;
     QString vertHeaderTitle(int rowIndex) const override;
 
 public:
