@@ -1,9 +1,10 @@
 
-import QtQuick 2.12
+import QtQuick 2.15
 import QtQuick.Controls 2.5
 import Symboid.Sdk.Controls 1.0
 
 Item {
+    anchors.margins: 20
 
     property var tableModel: null
 
@@ -18,18 +19,17 @@ Item {
         }
     ]
 
-    readonly property int rowHeight: dataView.contentHeight / dataView.rows
-    property alias horzHeaderHeight: horizontalHeader.height
-    property alias vertHeaderWidth: verticalHeader.width
-
-    readonly property int horzDataSpace: width - vertHeaderWidth - 1 - 2
-    readonly property int vertDataSpace: height - horzHeaderHeight - 1 - 2
+    readonly property int horzDataSpace: width - verticalHeader.width - 1 - 2
+    readonly property int vertDataSpace: height - horizontalHeader.height - 1 - 2
 
     Frame {
         anchors.centerIn: parent
 
     Grid {
         columns: 3
+
+        onWidthChanged: dataView.forceLayout()
+        onHeightChanged: dataView.forceLayout()
 
         Item {
             height: 1; width: 1
@@ -39,18 +39,20 @@ Item {
             height: horizontalHeader.height
             width: 1
         }
-        ListView {
+        TableView {
             id: horizontalHeader
             width: dataView.width
-            height: rowHeight
-            orientation: Qt.Horizontal
+            height: contentHeight
             model: tableModel.horzHeaderModel
             clip: true
-            delegate: Label {
-                text: modelData
-                horizontalAlignment: Label.AlignHCenter
-                verticalAlignment: Label.AlignVCenter
+            delegate: Pane {
+                Label {
+                    text: model.display
+                    anchors.right: parent.right
+                }
             }
+            syncView: dataView
+            syncDirection: Qt.Horizontal
         }
 
         Frame {
@@ -68,22 +70,20 @@ Item {
             width: dataView.width
         }
 
-        ListView {
+        TableView {
             id: verticalHeader
-            width: 50
+            width: contentWidth
             height: dataView.height
             model: tableModel.vertHeaderModel
-            contentY: dataView.contentY
             clip: true
-            delegate: Frame {
-                width: verticalHeader.width
-                height: rowHeight
+            delegate: Pane {
                 Loader {
-                    anchors.centerIn: parent
                     property var cellData: display
                     sourceComponent: columns[0]
                 }
             }
+            syncView: dataView
+            syncDirection: Qt.Vertical
         }
         Frame {
             padding: 0
@@ -97,13 +97,11 @@ Item {
             width: Math.min(contentWidth, horzDataSpace)
             height: Math.min(contentHeight, vertDataSpace)
             clip: true
-            delegate: Frame {
+            boundsBehavior: Flickable.StopAtBounds
+            delegate: Pane {
                 Loader {
-                    anchors.right: column ? parent.right : undefined
-                    anchors.horizontalCenter: column ? undefined : parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
                     property var cellData: display
-
                     sourceComponent: columns[column + 1]
                 }
             }
