@@ -281,4 +281,51 @@
         <translation>°/nap</translation>
     </message>
 </context>
+<context>
+    <name>QRevolution</name>
+    <message>
+        <location filename="qrevolution.cc" line="57"/>
+        <source>Sun</source>
+        <translation type="unfinished">Nap</translation>
+    </message>
+    <message>
+        <location filename="qrevolution.cc" line="57"/>
+        <source>Moon</source>
+        <translation type="unfinished">Hold</translation>
+    </message>
+    <message>
+        <location filename="qrevolution.cc" line="57"/>
+        <source>Mercury</source>
+        <translation type="unfinished">Merkúr</translation>
+    </message>
+    <message>
+        <location filename="qrevolution.cc" line="57"/>
+        <source>Venus</source>
+        <translation type="unfinished">Vénusz</translation>
+    </message>
+    <message>
+        <location filename="qrevolution.cc" line="57"/>
+        <source>Mars</source>
+        <translation type="unfinished">Mars</translation>
+    </message>
+    <message>
+        <location filename="qrevolution.cc" line="57"/>
+        <source>Jupiter</source>
+        <translation type="unfinished">Jupiter</translation>
+    </message>
+    <message>
+        <location filename="qrevolution.cc" line="57"/>
+        <source>Saturn</source>
+        <translation type="unfinished">Szaturnusz</translation>
+    </message>
+</context>
+<context>
+    <name>RevolutionParamsPane</name>
+    <message>
+        <location filename="RevolutionParamsPane.qml" line="8"/>
+        <source>Revolution of %1</source>
+        <oldsource>Revolutions of %1</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>
