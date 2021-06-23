@@ -61,7 +61,6 @@ QRevolution::QRevolution(QObject* parent)
     : QCalcable(parent)
     , mHora(nullptr)
     , mPlanetModel({ tr("Sun"), tr("Moon"), tr("Mercury"), tr("Venus"), tr("Mars"), tr("Jupiter"), tr("Saturn") })
-    , mPlanetIndex(0)
     , mList(new QRevolutionListModel(this))
 {
     connect(this, SIGNAL(planetIndexChanged()), this, SIGNAL(planetLontChanged()));
@@ -108,36 +107,25 @@ const QStringList& QRevolution::planetModel() const
     return mPlanetModel;
 }
 
-int QRevolution::planetIndex() const
-{
-    return mPlanetIndex;
-}
-
 QString QRevolution::planetName() const
 {
-    return 0 <= mPlanetIndex && mPlanetIndex < mPlanetModel.length() ? mPlanetModel.at(mPlanetIndex) : "";
-}
-
-void QRevolution::setPlanetIndex(int planetIndex)
-{
-    if (mPlanetIndex != planetIndex)
-    {
-        mPlanetIndex = planetIndex;
-        emit planetIndexChanged();
-    }
+    int planetIndex = planetIndexGet();
+    return 0 <= planetIndex && planetIndex < mPlanetModel.length() ? mPlanetModel.at(planetIndex) : "";
 }
 
 qreal QRevolution::planetLont() const
 {
-    return mHora && 0 <= mPlanetIndex && mPlanetIndex < mPlanetModel.length() ?
-            mHora->planet(mPlanetIndex)->eclPos()._M_lont.to_arc_degree() : 0.0;
+    int planetIndex = planetIndexGet();
+    return mHora && 0 <= planetIndex && planetIndex < mPlanetModel.length() ?
+            mHora->planet(planetIndex)->eclPos()._M_lont.to_arc_degree() : 0.0;
 }
 
 int QRevolution::defaultRevCount() const
 {
-    return mPlanetIndex == 0 ? 1 :
-           mPlanetIndex == 1 ? 13 :
-                               3;
+    int planetIndex = planetIndexGet();
+    return planetIndex == 0 ? 1 :
+           planetIndex == 1 ? 13 :
+                              3;
 }
 
 QAbstractListModel* QRevolution::list() const

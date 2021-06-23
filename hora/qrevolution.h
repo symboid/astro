@@ -8,7 +8,7 @@
 #include <QSharedPointer>
 #include "astro/hora/qhoracoords.h"
 #include "astro/hora/qhora.h"
-#include "sdk/controls/qcalcparaminteger.h"
+#include "sdk/controls/qcalcproperty.h"
 
 class ASTRO_HORA_API QRevolutionListModel : public QAbstractListModel
 {
@@ -62,8 +62,9 @@ private:
 signals:
     void horaChanged();
 
-    Q_CALC_PARAM_INTEGER(year)
-    Q_CALC_PARAM_INTEGER(revCount)
+    Q_CALC_PROPERTY(int, planetIndex)
+    Q_CALC_PROPERTY(int, year)
+    Q_CALC_PROPERTY(int, revCount)
 
 public:
     Q_PROPERTY(QStringList planetModel READ planetModel CONSTANT)
@@ -72,17 +73,10 @@ private:
     QStringList mPlanetModel;
 
 public:
-    Q_PROPERTY(int planetIndex READ planetIndex WRITE setPlanetIndex NOTIFY planetIndexChanged)
     Q_PROPERTY(QString planetName READ planetName NOTIFY planetIndexChanged)
     Q_PROPERTY(int defaultRevCount READ defaultRevCount NOTIFY planetIndexChanged)
-    int planetIndex() const;
-    void setPlanetIndex(int planetIndex);
     QString planetName() const;
     int defaultRevCount() const;
-private:
-    int mPlanetIndex;
-signals:
-    void planetIndexChanged();
 
 public:
     Q_PROPERTY(qreal planetLont READ planetLont NOTIFY planetLontChanged)
