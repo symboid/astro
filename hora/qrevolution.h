@@ -8,6 +8,7 @@
 #include <QSharedPointer>
 #include "astro/hora/qhoracoords.h"
 #include "astro/hora/qhora.h"
+#include "sdk/controls/qcalcparaminteger.h"
 
 class ASTRO_HORA_API QRevolutionListModel : public QAbstractListModel
 {
@@ -34,8 +35,9 @@ private:
     };
     QVector<RevolutionData> mRevolutions;
 public:
-    void clear();
+    void startUpdate();
     void append(const QSharedPointer<QHoraCoords>& coords, bool isRetrograd);
+    void finishUpdate();
 };
 
 class ASTRO_HORA_API QRevolution : public QCalcable
@@ -59,6 +61,9 @@ private:
     QHora* mHora;
 signals:
     void horaChanged();
+
+    Q_CALC_PARAM_INTEGER(year)
+    Q_CALC_PARAM_INTEGER(revCount)
 
 public:
     Q_PROPERTY(QStringList planetModel READ planetModel CONSTANT)

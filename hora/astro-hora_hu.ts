@@ -284,37 +284,37 @@
 <context>
     <name>QRevolution</name>
     <message>
-        <location filename="qrevolution.cc" line="57"/>
+        <location filename="qrevolution.cc" line="63"/>
         <source>Sun</source>
         <translation type="unfinished">Nap</translation>
     </message>
     <message>
-        <location filename="qrevolution.cc" line="57"/>
+        <location filename="qrevolution.cc" line="63"/>
         <source>Moon</source>
         <translation type="unfinished">Hold</translation>
     </message>
     <message>
-        <location filename="qrevolution.cc" line="57"/>
+        <location filename="qrevolution.cc" line="63"/>
         <source>Mercury</source>
         <translation type="unfinished">Merkúr</translation>
     </message>
     <message>
-        <location filename="qrevolution.cc" line="57"/>
+        <location filename="qrevolution.cc" line="63"/>
         <source>Venus</source>
         <translation type="unfinished">Vénusz</translation>
     </message>
     <message>
-        <location filename="qrevolution.cc" line="57"/>
+        <location filename="qrevolution.cc" line="63"/>
         <source>Mars</source>
         <translation type="unfinished">Mars</translation>
     </message>
     <message>
-        <location filename="qrevolution.cc" line="57"/>
+        <location filename="qrevolution.cc" line="63"/>
         <source>Jupiter</source>
         <translation type="unfinished">Jupiter</translation>
     </message>
     <message>
-        <location filename="qrevolution.cc" line="57"/>
+        <location filename="qrevolution.cc" line="63"/>
         <source>Saturn</source>
         <translation type="unfinished">Szaturnusz</translation>
     </message>

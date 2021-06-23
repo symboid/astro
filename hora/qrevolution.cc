@@ -38,8 +38,9 @@ QVariant QRevolutionListModel::data(const QModelIndex& index, int role) const
     return revData;
 }
 
-void QRevolutionListModel::clear()
+void QRevolutionListModel::startUpdate()
 {
+    beginResetModel();
     mRevolutions.clear();
 }
 
@@ -49,6 +50,11 @@ void QRevolutionListModel::append(const QSharedPointer<QHoraCoords>& coords, boo
     revData.mCoords = coords;
     revData.mIsRetrograd = isRetrograd;
     mRevolutions.push_back(revData);
+}
+
+void QRevolutionListModel::finishUpdate()
+{
+    endResetModel();
 }
 
 QRevolution::QRevolution(QObject* parent)
@@ -73,16 +79,28 @@ QHora* QRevolution::hora() const
 
 void QRevolution::setHora(QHora* hora)
 {
+    if (mHora)
+    {
+        disconnect(mHora, SIGNAL(changed()), this, SIGNAL(planetLontChanged()));
+        deleteParam(mHora);
+    }
     if ((mHora = hora))
     {
         connect(mHora, SIGNAL(changed()), this, SIGNAL(planetLontChanged()));
+        addParam(mHora);
     }
     emit horaChanged();
 }
 
 void QRevolution::calc()
 {
-    mList->clear();
+    mList->startUpdate();
+    mList->append(QSharedPointer<QHoraCoords>(new QHoraCoords(QDateTime::currentDateTime().addMonths(1), 2.0)), true);
+    mList->append(QSharedPointer<QHoraCoords>(new QHoraCoords(QDateTime::currentDateTime().addMonths(2), 2.0)), true);
+    mList->append(QSharedPointer<QHoraCoords>(new QHoraCoords(QDateTime::currentDateTime().addMonths(3), 2.0)), true);
+    mList->append(QSharedPointer<QHoraCoords>(new QHoraCoords(QDateTime::currentDateTime().addMonths(4), 2.0)), true);
+    mList->append(QSharedPointer<QHoraCoords>(new QHoraCoords(QDateTime::currentDateTime().addMonths(5), 2.0)), true);
+    mList->finishUpdate();
 }
 
 const QStringList& QRevolution::planetModel() const
