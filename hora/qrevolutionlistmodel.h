@@ -6,7 +6,26 @@
 #include <QAbstractListModel>
 #include "astro/hora/qrevolution.h"
 
-class ASTRO_HORA_API QRevolutionListModel : public QAbstractListModel
+class SDK_CONTROLS_API QCalcListModel : public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    QCalcListModel(QObject* parent = Q_NULLPTR);
+
+public:
+    QCalcable* calcable() const;
+    void setCalcable(QCalcable* calcable);
+private:
+    QCalcable* mCalcable;
+
+private slots:
+    void connectCalcSignals();
+    void onRecalcStarted();
+    void onRecalcFinished();
+    void onRecalcAborted();
+};
+
+class ASTRO_HORA_API QRevolutionListModel : public QCalcListModel
 {
     Q_OBJECT
 public:
@@ -23,11 +42,6 @@ private:
     QRevolution* mRevolutionCalc;
 signals:
     void revolutionCalcChanged();
-private slots:
-    void connectForecastSignals();
-    void onRecalcStarted();
-    void onRecalcFinished();
-    void onRecalcAborted();
 
 private:
     enum Roles

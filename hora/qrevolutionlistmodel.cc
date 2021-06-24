@@ -2,8 +2,60 @@
 #include "astro/hora/setup.h"
 #include "astro/hora/qrevolutionlistmodel.h"
 
-QRevolutionListModel::QRevolutionListModel(QObject* parent)
+QCalcListModel::QCalcListModel(QObject* parent)
     : QAbstractListModel(parent)
+    , mCalcable(nullptr)
+{
+}
+
+QCalcable* QCalcListModel::calcable() const
+{
+    return mCalcable;
+}
+
+void QCalcListModel::setCalcable(QCalcable* calcable)
+{
+    if (mCalcable != calcable)
+    {
+        if (mCalcable)
+        {
+            disconnect(mCalcable, SIGNAL(calcTaskChanged()), this, SLOT(connectCalcSignals()));
+        }
+        if ((mCalcable = calcable))
+        {
+            connect(mCalcable, SIGNAL(calcTaskChanged()), this, SLOT(connectCalcSignals()));
+            connectCalcSignals();
+        }
+    }
+}
+
+void QCalcListModel::connectCalcSignals()
+{
+    if (QCalcTask* calcTask = mCalcable->calcTask())
+    {
+        connect(calcTask, SIGNAL(started()), this, SLOT(onRecalcStarted()));
+        connect(calcTask, SIGNAL(finished()), this, SLOT(onRecalcFinished()));
+        connect(calcTask, SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
+    }
+}
+
+void QCalcListModel::onRecalcStarted()
+{
+    beginResetModel();
+}
+
+void QCalcListModel::onRecalcFinished()
+{
+    endResetModel();
+}
+
+void QCalcListModel::onRecalcAborted()
+{
+    endResetModel();
+}
+
+QRevolutionListModel::QRevolutionListModel(QObject* parent)
+    : QCalcListModel(parent)
     , mRevolutionCalc(nullptr)
 {
 }
@@ -17,42 +69,10 @@ void QRevolutionListModel::setRevolutionCalc(QRevolution* revolutionCalc)
 {
     if (mRevolutionCalc != revolutionCalc)
     {
-        if (mRevolutionCalc)
-        {
-            disconnect(mRevolutionCalc, SIGNAL(calcTaskChanged()), this, SLOT(connectForecastSignals()));
-        }
-        if ((mRevolutionCalc = revolutionCalc))
-        {
-            connect(mRevolutionCalc, SIGNAL(calcTaskChanged()), this, SLOT(connectForecastSignals()));
-            connectForecastSignals();
-        }
+        mRevolutionCalc = revolutionCalc;
+        setCalcable(revolutionCalc);
         emit revolutionCalcChanged();
     }
-}
-
-void QRevolutionListModel::connectForecastSignals()
-{
-    if (QCalcTask* forecastCalcTask = mRevolutionCalc->calcTask())
-    {
-        connect(forecastCalcTask, SIGNAL(started()), this, SLOT(onRecalcStarted()));
-        connect(forecastCalcTask, SIGNAL(finished()), this, SLOT(onRecalcFinished()));
-        connect(forecastCalcTask, SIGNAL(aborted()), this, SLOT(onRecalcAborted()));
-    }
-}
-
-void QRevolutionListModel::onRecalcStarted()
-{
-    beginResetModel();
-}
-
-void QRevolutionListModel::onRecalcFinished()
-{
-    endResetModel();
-}
-
-void QRevolutionListModel::onRecalcAborted()
-{
-    endResetModel();
 }
 
 QHash<int, QByteArray> QRevolutionListModel::roleNames() const
