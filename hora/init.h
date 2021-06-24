@@ -19,6 +19,7 @@
 #include "astro/hora/qtransitmodel.h"
 #include "astro/hora/qdirexmodel.h"
 #include "astro/hora/qrevolution.h"
+#include "astro/hora/qrevolutionlistmodel.h"
 
 struct ASTRO_HORA_API mod_astro_hora : arh::mod_qt<mod_astro_hora>
 {
@@ -50,6 +51,7 @@ struct ASTRO_HORA_API mod_astro_hora : arh::mod_qt<mod_astro_hora>
     qml_type_register<QDirexModel> _M_reg_direx_model;
 
     qml_type_register<QRevolution> _M_reg_revolution;
+    qml_type_register<QRevolutionListModel> _M_reg_revolution_list_model;
 };
 
 

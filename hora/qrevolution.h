@@ -3,42 +3,8 @@
 #define __SYMBOID_ASTRO_HORA_QREVOLUTION_H__
 
 #include "astro/hora/defs.h"
-#include "sdk/controls/qcalctask.h"
-#include <QAbstractListModel>
-#include <QSharedPointer>
-#include "astro/hora/qhoracoords.h"
 #include "astro/hora/qhora.h"
 #include "sdk/controls/qcalcproperty.h"
-
-class ASTRO_HORA_API QRevolutionListModel : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    QRevolutionListModel(QObject* parent);
-
-private:
-    enum Roles
-    {
-        DateTimeRole = Qt::UserRole,
-        RetrogradRole
-    };
-public:
-    QHash<int, QByteArray> roleNames() const override;
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-
-private:
-    struct RevolutionData
-    {
-        QSharedPointer<QHoraCoords> mCoords;
-        bool mIsRetrograd = false;
-    };
-    QVector<RevolutionData> mRevolutions;
-public:
-    void startUpdate();
-    void append(const QSharedPointer<QHoraCoords>& coords, bool isRetrograd);
-    void finishUpdate();
-};
 
 class ASTRO_HORA_API QRevolution : public QCalcable
 {
@@ -85,10 +51,16 @@ signals:
     void planetLontChanged();
 
 public:
-    Q_PROPERTY(QAbstractListModel* list READ list CONSTANT)
-    QAbstractListModel* list() const;
-private:
-    QRevolutionListModel* mList;
+    struct Data
+    {
+        Data(QHoraCoords* coords, bool isRetrograd) : mCoords(coords), mIsRetrograd(isRetrograd) {}
+        QSharedPointer<QHoraCoords> mCoords;
+        bool mIsRetrograd = false;
+    };
+    QVector<Data> mRevolutions;
+public:
+    int revolutionsCount() const;
+    const Data& revolutionData(int index) const;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QREVOLUTION_H__

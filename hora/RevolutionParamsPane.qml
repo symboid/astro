@@ -28,7 +28,9 @@ MainScreenParamCalcPane {
                 id: revolutionList
                 anchors.verticalCenter: parent.verticalCenter
                 width: metrics.paramSectionWidth - 5*pane.padding - placeHolder.width
-                model: revolution.list
+                model: RevolutionListModel {
+                    revolutionCalc: revolution
+                }
                 textRole: "display"
             }
             // placeholder for "recalc" button
