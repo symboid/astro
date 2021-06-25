@@ -28,6 +28,8 @@ private:
 signals:
     void horaChanged();
 
+    Q_CALC_PROPERTY(qreal, revTzDiff)
+
     Q_CALC_PROPERTY(int, planetIndex)
     Q_CALC_PROPERTY(int, year)
     Q_CALC_PROPERTY(int, revCount)

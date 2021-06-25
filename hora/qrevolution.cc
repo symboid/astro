@@ -1,6 +1,8 @@
 
 #include "astro/hora/setup.h"
 #include "astro/hora/qrevolution.h"
+#include "astro/hora/qrevolutioncalcmodel.h"
+#include "astro/hora/qhoraconfig.h"
 
 QRevolution::QRevolution(QObject* parent)
     : QCalcable(parent)
@@ -37,11 +39,29 @@ void QRevolution::setHora(QHora* hora)
 void QRevolution::calc()
 {
     mRevolutions.clear();
-    mRevolutions.append(Data(new QHoraCoords(mHora->coords()->dateTime().addMonths(1), 2.0), false));
-    mRevolutions.append(Data(new QHoraCoords(mHora->coords()->dateTime().addMonths(2), 2.0), false));
-    mRevolutions.append(Data(new QHoraCoords(mHora->coords()->dateTime().addMonths(3), 2.0), false));
-    mRevolutions.append(Data(new QHoraCoords(mHora->coords()->dateTime().addMonths(4), 2.0), false));
-    mRevolutions.append(Data(new QHoraCoords(mHora->coords()->dateTime().addMonths(5), 2.0), false));
+
+    static const QOrbisConfigNodeGetter planetConfigs[10] =
+    {
+        &QOrbisConfigNode::sunNode, &QOrbisConfigNode::monNode, &QOrbisConfigNode::merNode,
+        &QOrbisConfigNode::venNode, &QOrbisConfigNode::marNode, &QOrbisConfigNode::jupNode,
+        &QOrbisConfigNode::satNode, &QOrbisConfigNode::uraNode, &QOrbisConfigNode::nepNode,
+        &QOrbisConfigNode::pluNode
+    };
+
+    QHoraConfig::mo horaConfig;
+    QScopedPointer<QRevolutionCalcModel> calcModel(new QRevolutionCalcModel(planetConfigs[*m_planetIndex], planetLont()));
+
+    QSharedPointer<QHoraCoords> targetCoords(new QHoraCoords(QDateTime(QDate(*m_year, 1, 1), QTime(0,0)), *m_revTzDiff));
+    targetCoords = calcModel->approx(targetCoords.get());
+    mRevolutions.append(Data(new QHoraCoords(targetCoords->dateTime(), *m_revTzDiff), false));
+
+    for (int revIndex = 1; revIndex < *m_revCount; ++revIndex)
+    {
+        targetCoords->setDateTime(targetCoords->dateTime().addDays(1));
+
+        targetCoords = calcModel->approx(targetCoords.get());
+        mRevolutions.append(Data(new QHoraCoords(targetCoords->dateTime(), *m_revTzDiff), false));
+    }
 }
 
 const QStringList& QRevolution::planetModel() const
@@ -66,7 +86,7 @@ int QRevolution::defaultRevCount() const
 {
     int planetIndex = planetIndexGet();
     return planetIndex == 0 ? 1 :
-           planetIndex == 1 ? 13 :
+           planetIndex == 1 ? 14 :
                               3;
 }
 

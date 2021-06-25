@@ -1,6 +1,6 @@
 
-import QtQuick 2.12
-import QtQuick.Controls 2.5
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import Symboid.Sdk.Controls 1.0
 import Symboid.Astro.Hora 1.0
 
@@ -17,6 +17,8 @@ MainScreenParamCalcPane {
     property alias year: revolution.year
     property alias revCount: revolution.revCount
 
+    property HoraCoords revCoords: revolutionList.currentValue
+
     calcable: Revolution {
         id: revolution
     }
@@ -32,6 +34,7 @@ MainScreenParamCalcPane {
                     revolutionCalc: revolution
                 }
                 textRole: "display"
+                valueRole: "datetime"
             }
             // placeholder for "recalc" button
             RoundButton {
