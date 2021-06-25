@@ -3,27 +3,8 @@
 #define __SYMBOID_ASTRO_HORA_QREVOLUTIONLISTMODEL_H__
 
 #include "astro/hora/defs.h"
-#include <QAbstractListModel>
+#include "sdk/controls/qcalclistmodel.h"
 #include "astro/hora/qrevolution.h"
-
-class SDK_CONTROLS_API QCalcListModel : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    QCalcListModel(QObject* parent = Q_NULLPTR);
-
-public:
-    QCalcable* calcable() const;
-    void setCalcable(QCalcable* calcable);
-private:
-    QCalcable* mCalcable;
-
-private slots:
-    void connectCalcSignals();
-    void onRecalcStarted();
-    void onRecalcFinished();
-    void onRecalcAborted();
-};
 
 class ASTRO_HORA_API QRevolutionListModel : public QCalcListModel
 {
