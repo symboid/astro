@@ -72,6 +72,7 @@ QString QSymboidFont::aspectLetter(int aspectDist) const
     case 150: return QChar('}');
     case 45: return QChar('z');
     case 135: return QChar('y');
+    default: return QChar(' ');
     }
 }
 
