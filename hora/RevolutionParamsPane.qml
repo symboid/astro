@@ -10,6 +10,8 @@ MainScreenParamCalcPane {
 //    autocalc: true
 
     property alias planetIndex: revolution.planetIndex
+    onPlanetIndexChanged: revolutionList.currentIndex = -1
+
     property alias planetModel: revolution.planetModel
     property alias planetLont: revolution.planetLont
     property alias hora: revolution.hora
@@ -17,7 +19,12 @@ MainScreenParamCalcPane {
     property alias year: revolution.year
     property alias revCount: revolution.revCount
 
-    property HoraCoords revCoords: revolutionList.currentValue
+    property HoraCoords nullCoords: HoraCoords {
+        year: 0; month: 0; day: 0
+    }
+    property HoraCoords revCoords: revolutionList.currentValue === undefined ? nullCoords : revolutionList.currentValue
+
+    onCalcTaskFinished: revolutionList.currentIndex = 0
 
     calcable: Revolution {
         id: revolution
