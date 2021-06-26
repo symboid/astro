@@ -39,5 +39,5 @@ QSharedPointer<QHoraCoords> QRevolutionCalcModel::approxLinear(const QHoraCoords
         distTo = mPlanet.eclPos().dist_to(mTargetLont);
     }
 
-    return QSharedPointer<QHoraCoords>(new QHoraCoords(targetTime));
+    return QSharedPointer<QHoraCoords>(new QHoraCoords(targetTime, startCoords->tzDiff()));
 }

@@ -22,9 +22,10 @@ QHoraCoords::QHoraCoords(QObject *parent)
     connect(this, SIGNAL(changed()), this, SIGNAL(dateTimeChanged()));
 }
 
-QHoraCoords::QHoraCoords(const QEphTime& ephTime)
+QHoraCoords::QHoraCoords(const QEphTime& ephTime, double tzDiffHours)
     : QHoraCoords(nullptr)
 {
+    setTzDiff(tzDiffHours);
     setEphTime(ephTime);
 }
 
@@ -34,6 +35,12 @@ QHoraCoords::QHoraCoords(const QDateTime& dateTime, double tzDiffHours)
     setDateTime(dateTime);
     setCalendarIsJulian(false);
     setTzDiff(tzDiffHours);
+}
+
+QHoraCoords::QHoraCoords(const QHoraCoords& src)
+    : QHoraCoords(nullptr)
+{
+    *this = src;
 }
 
 QHoraCoords& QHoraCoords::operator=(const QHoraCoords& src)

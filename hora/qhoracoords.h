@@ -19,8 +19,9 @@ public:
 
 public:
     explicit QHoraCoords(QObject *parent = nullptr);
-    explicit QHoraCoords(const QEphTime& ephTime);
+    explicit QHoraCoords(const QEphTime& ephTime, double tzDiffHours);
     explicit QHoraCoords(const QDateTime& dateTime, double tzDiffHours);
+    explicit QHoraCoords(const QHoraCoords& src);
     QHoraCoords& operator=(const QHoraCoords& src);
 
 public:

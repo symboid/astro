@@ -47,7 +47,7 @@ int QTransitModel::estimatedEventCount(const QHoraCoords* periodBegin, const QHo
     static constexpr double AVG_DIREX_COUNT_PER_MONTH = 2.0;
     double lengthInDays = (periodEnd->ephTime()-periodBegin->ephTime()).count();
     double lengthInMonths = lengthInDays < 30.0 ? 1.0 : lengthInDays / 30.0;
-    return lengthInMonths * AVG_DIREX_COUNT_PER_MONTH;
+    return int(lengthInMonths * AVG_DIREX_COUNT_PER_MONTH);
 }
 
 bool QTransitModel::planetIsSigtor(const QPlanet* planet) const
@@ -134,7 +134,7 @@ QHoraCoords* QTransitModel::calcTransitCoords(QSigtor* sigtor, const QHoraCoords
         }
     }
 
-    QHoraCoords* conjCoords = new QHoraCoords(conjTime);
+    QHoraCoords* conjCoords = new QHoraCoords(conjTime, startTime->tzDiff());
     conjCoords->setGeoLatt(geoLatt);
     conjCoords->setGeoLont(geoLont);
     conjCoords->setTzDiff(tzDiff);

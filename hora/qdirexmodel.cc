@@ -49,7 +49,7 @@ QHoraCoords* QDirexModel::calcConj(QSigtor* sigtor, const QHoraCoords* startTime
         conjTime += eph::basic_calendar<eph_proxy>::days(yearDist * 365.35);
         sigtor->setEclPos(siblings.mSucc->eclPos());
     }
-    QHoraCoords* conjCoords = new QHoraCoords(conjTime);
+    QHoraCoords* conjCoords = new QHoraCoords(conjTime, startTime->tzDiff());
     conjCoords->setGeoLatt(startTime->geoLatt());
     conjCoords->setGeoLont(startTime->geoLont());
     conjCoords->setTzDiff(startTime->tzDiff());

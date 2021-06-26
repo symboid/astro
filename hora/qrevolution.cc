@@ -53,14 +53,14 @@ void QRevolution::calc()
 
     QSharedPointer<QHoraCoords> targetCoords(new QHoraCoords(QDateTime(QDate(*m_year, 1, 1), QTime(0,0)), *m_revTzDiff));
     targetCoords = calcModel->approx(targetCoords.get());
-    mRevolutions.append(Data(new QHoraCoords(targetCoords->dateTime(), *m_revTzDiff), false));
+    mRevolutions.append(Data(new QHoraCoords(*targetCoords), false));
 
     for (int revIndex = 1; revIndex < *m_revCount; ++revIndex)
     {
         targetCoords->setDateTime(targetCoords->dateTime().addDays(1));
 
         targetCoords = calcModel->approx(targetCoords.get());
-        mRevolutions.append(Data(new QHoraCoords(targetCoords->dateTime(), *m_revTzDiff), false));
+        mRevolutions.append(Data(new QHoraCoords(*targetCoords), false));
     }
 }
 
