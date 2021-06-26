@@ -7,10 +7,10 @@ import Symboid.Astro.Hora 1.0
 MainScreenParamCalcPane {
     title: qsTr("Revolution of %1").arg(revolution.planetName)
 
-//    autocalc: true
+    autocalc: true
+    buttonVisible: false
 
     property alias planetIndex: revolution.planetIndex
-    onPlanetIndexChanged: revolutionList.currentIndex = -1
 
     property alias planetModel: revolution.planetModel
     property alias planetLont: revolution.planetLont
@@ -25,8 +25,6 @@ MainScreenParamCalcPane {
     }
     property HoraCoords revCoords: revolutionList.currentValue === undefined ? nullCoords : revolutionList.currentValue
 
-    onCalcTaskFinished: revolutionList.currentIndex = 0
-
     calcable: Revolution {
         id: revolution
     }
@@ -37,9 +35,14 @@ MainScreenParamCalcPane {
             ComboBox {
                 id: revolutionList
                 anchors.verticalCenter: parent.verticalCenter
-                width: metrics.paramSectionWidth - 5*pane.padding - placeHolder.width
+                width: metrics.paramSectionWidth - 5*pane.padding - (buttonVisible ? placeHolder.width : 0)
                 model: RevolutionListModel {
                     revolutionCalc: revolution
+                    onModelReset: {
+                        // emitting change of currentValue
+                        revolutionList.currentIndex = -1
+                        revolutionList.currentIndex = 0
+                    }
                 }
                 textRole: "display"
                 valueRole: "datetime"
@@ -47,6 +50,7 @@ MainScreenParamCalcPane {
             // placeholder for "recalc" button
             RoundButton {
                 id: placeHolder
+                visible: buttonVisible
                 anchors.verticalCenter: parent.verticalCenter
                 opacity: 0.0
                 enabled: false
