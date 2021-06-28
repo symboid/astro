@@ -19,11 +19,7 @@ MainScreenParamCalcPane {
     property alias year: revolution.year
     property alias revCount: revolution.revCount
     property alias tzDiff: revolution.revTzDiff
-
-    property HoraCoords nullCoords: HoraCoords {
-        year: 0; month: 0; day: 0
-    }
-    property HoraCoords revCoords: revolutionList.currentValue === undefined ? nullCoords : revolutionList.currentValue
+    property alias revCoords: revolutionList.currentValue
 
     calcable: Revolution {
         id: revolution
