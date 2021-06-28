@@ -17,6 +17,12 @@ QHash<int, QByteArray> QEclipticTableModel::roleNames() const
     return roles;
 }
 
+void QEclipticTableModel::update()
+{
+    beginResetModel();
+    endResetModel();
+}
+
 QHoraPlanetsModel::QHoraPlanetsModel(QObject* parent)
     : QEclipticTableModel(parent)
 {

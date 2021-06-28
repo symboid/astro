@@ -33,7 +33,7 @@ public:
 public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-private slots:
+public slots:
     void update();
 
 public:

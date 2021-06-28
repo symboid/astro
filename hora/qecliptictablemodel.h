@@ -22,6 +22,9 @@ protected:
 
 public:
     QHash<int, QByteArray> roleNames() const override;
+
+public slots:
+    void update();
 };
 
 class ASTRO_HORA_API QHoraPlanetsModel : public QEclipticTableModel
