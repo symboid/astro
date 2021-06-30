@@ -18,6 +18,11 @@ private:
     static constexpr double APPROX_DIST = 1.0 / 3600.0;
 
 public:
+    void setCalcTask(QCalcTask* calcTask);
+private:
+    QCalcTask* mCalcTask;
+
+public:
     QSharedPointer<QHoraCoords> approx(const QHoraCoords* startCoords);
 private:
     QSharedPointer<QHoraCoords> approxLinear(const QHoraCoords* startCoords);
