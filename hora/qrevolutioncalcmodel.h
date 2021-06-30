@@ -21,6 +21,7 @@ public:
     QSharedPointer<QHoraCoords> approx(const QHoraCoords* startCoords);
 private:
     QSharedPointer<QHoraCoords> approxLinear(const QHoraCoords* startCoords);
+    QSharedPointer<QHoraCoords> approxSlowPlanet(const QHoraCoords* startCoords);
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QREVOLUTIONCALCMODEL_H__
