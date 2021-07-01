@@ -4,11 +4,8 @@ import QtQuick.Controls 2.15
 import Symboid.Sdk.Controls 1.0
 import Symboid.Astro.Hora 1.0
 
-MainScreenParamCalcPane {
+MainScreenParamBox {
     title: qsTr("Revolution of %1").arg(revolution.planetName)
-
-    autocalc: true
-    buttonVisible: false
 
     property alias planetIndex: revolution.planetIndex
 
@@ -21,17 +18,28 @@ MainScreenParamCalcPane {
     property alias tzDiff: revolution.revTzDiff
     property alias revCoords: revolutionList.currentValue
 
-    calcable: Revolution {
-        id: revolution
-    }
+    CalcPane {
+        id: calcPane
 
-    Pane {
-        id: pane
-        Row {
+        autocalc: true
+        showButton: false
+
+        calcable: Revolution {
+            id: revolution
+        }
+
+        width: metrics.paramSectionWidth - 3*pane.padding
+        height: pane.height
+
+        Pane {
+            id: pane
+            background: null
+            rightPadding: leftPadding + (calcPane.buttonVisible ? padding + calcPane.buttonSize : 0)
+            height: calcPane.buttonSize + topPadding + bottomPadding
             ComboBox {
                 id: revolutionList
                 anchors.verticalCenter: parent.verticalCenter
-                width: metrics.paramSectionWidth - 5*pane.padding - (buttonVisible ? placeHolder.width : 0)
+                width: metrics.paramSectionWidth - 3*pane.padding - (pane.leftPadding + pane.rightPadding)
                 model: RevolutionListModel {
                     revolutionCalc: revolution
                     onModelReset: {
@@ -42,14 +50,6 @@ MainScreenParamCalcPane {
                 }
                 textRole: "display"
                 valueRole: "datetime"
-            }
-            // placeholder for "recalc" button
-            RoundButton {
-                id: placeHolder
-                visible: buttonVisible
-                anchors.verticalCenter: parent.verticalCenter
-                opacity: 0.0
-                enabled: false
             }
         }
     }
