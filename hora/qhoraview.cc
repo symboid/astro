@@ -71,7 +71,6 @@ QBrush QHoraView::planetBrush(QPlanet::Index planetIndex, qreal alpha)
     case QLunarNode::DRAGON_HEAD: objectColor = Qt::black; break;
     case QLunarNode::DRAGON_TAIL: objectColor = Qt::black; break;
     case QPlanet::LILITH: objectColor = Qt::black; break;
-    case QPlanet::CHIRON: objectColor = Qt::black; break;
 
     case QPlanet::UNDEF: objectColor = Qt::black; break;
     }

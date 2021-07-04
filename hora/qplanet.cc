@@ -69,7 +69,6 @@ QPlanet::QPlanet(QObject* parent, QOrbisConfigNodeGetter orbisGetter)
     : QHoraObject(parent, resolveId(orbisGetter), orbisGetter)
     , mIndex(resolveIndex(id()))
 {
-
 }
 
 QEclPos QPlanet::eclPos() const
@@ -100,6 +99,28 @@ bool QPlanet::isRetrograd() const
     return eclSpeed()._M_lont < 0.0;
 }
 
+QEclSpeed::lont QPlanet::maxLontSpeed() const
+{
+    if (0 <= mIndex && mIndex <= PLUTO)
+    {
+        static const qreal MAX_SPEEDS[] = { 1.1, 16.0, 2.5, 2.5, 1.0, 1.0/4.0,
+                                            1.0/8.0, 1.0/16.0, 1.0/20.0, 1.0/20.0 };
+        return MAX_SPEEDS[mIndex];
+    }
+    else if (mIndex == MEAN_NODE)
+    {
+        return 1.0 / 18.0;
+    }
+    else if (mIndex == LILITH)
+    {
+        return 1.0 / 9.0;
+    }
+    else
+    {
+        return 0.0;
+    }
+}
+
 QString QPlanet::abbrName() const
 {
     switch (mIndex)
@@ -114,7 +135,6 @@ QString QPlanet::abbrName() const
     case URANUS:    return "Ura";
     case NEPTUNE:   return "Nep";
     case PLUTO:     return "Plu";
-    case CHIRON:    return "Chi";
     case MEAN_NODE: return "Nod";
     case LILITH:    return "Lil";
     case UNDEF:     return "???";

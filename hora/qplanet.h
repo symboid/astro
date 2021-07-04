@@ -31,8 +31,6 @@ public:
     static constexpr const Index NEPTUNE = eph_proxy::object::neptune;
     static constexpr const Index PLUTO = eph_proxy::object::pluto;
 
-    static constexpr const Index CHIRON = eph_proxy::object::chiron;
-
     static constexpr const Index MEAN_NODE = eph_proxy::object::mean_node;
     static constexpr const Index LILITH = eph_proxy::object::lilith;
 
@@ -51,6 +49,7 @@ protected:
 
 public:
     bool isRetrograd() const;
+    QEclSpeed::lont maxLontSpeed() const;
 
 public:
     virtual QString abbrName() const override;
