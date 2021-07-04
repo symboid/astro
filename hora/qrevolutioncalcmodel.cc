@@ -69,7 +69,7 @@ QRevolutionData QRevolutionCalcModel::approxNext(const QHoraCoords *startCoords)
             qreal prevDist = dist;
             calcOk = mPlanet.calc(targetTime);
             dist = mPlanet.eclPos().dist_to(mTargetLont);
-            isCrossing = qAbs(dist) < TARGET_SPACE && ((prevDist > 0.0 && dist <= 0.0) || (prevDist < 0.0 && dist >= 0.0));
+            isCrossing = qAbs(dist) < TARGET_SPACE && ((prevDist > 0.0 && dist < 0.0) || (prevDist < 0.0 && dist > 0.0));
         }
 
         targetTime = approxFineTune(targetTime);

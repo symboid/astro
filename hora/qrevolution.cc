@@ -58,7 +58,6 @@ void QRevolution::calc()
 
     for (int revIndex = 1; !mCalcTask->isAborted() && !mCalcTask->restarted() && revIndex < *m_revCount; ++revIndex)
     {
-        targetCoords->setDateTime(mRevolutions.back().mCoords->dateTime().addDays(1));
         mRevolutions.append(calcModel->approxNext(targetCoords.get()));
     }
 }
