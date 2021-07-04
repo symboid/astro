@@ -7,7 +7,8 @@
 QRevolution::QRevolution(QObject* parent)
     : QCalcable(parent)
     , mHora(nullptr)
-    , mPlanetModel({ tr("Sun"), tr("Moon"), tr("Mercury"), tr("Venus"), tr("Mars"), tr("Jupiter"), tr("Saturn") })
+    , mPlanetModel({ tr("Sun"), tr("Moon"), tr("Mercury"), tr("Venus"), tr("Mars"),
+                     tr("Jupiter"), tr("Saturn"), tr("Uranus"), tr("Neptune"), tr("Pluto") })
 {
     connect(this, SIGNAL(planetIndexChanged()), this, SIGNAL(planetLontChanged()));
 }
@@ -53,14 +54,14 @@ void QRevolution::calc()
     calcModel->setCalcTask(mCalcTask);
 
     QSharedPointer<QHoraCoords> targetCoords(new QHoraCoords(QDateTime(QDate(*m_year, 1, 1), QTime(0,0)), *m_revTzDiff));
-    targetCoords = calcModel->approx(targetCoords.get());
+    targetCoords = calcModel->approxNext(targetCoords.get());
     mRevolutions.append(Data(new QHoraCoords(*targetCoords), false));
 
     for (int revIndex = 1; !mCalcTask->isAborted() && !mCalcTask->restarted() && revIndex < *m_revCount; ++revIndex)
     {
         targetCoords->setDateTime(targetCoords->dateTime().addDays(1));
 
-        targetCoords = calcModel->approx(targetCoords.get());
+        targetCoords = calcModel->approxNext(targetCoords.get());
         mRevolutions.append(Data(new QHoraCoords(*targetCoords), false));
     }
 }

@@ -309,14 +309,29 @@
         <translation type="unfinished">Mars</translation>
     </message>
     <message>
-        <location filename="qrevolution.cc" line="10"/>
+        <location filename="qrevolution.cc" line="11"/>
         <source>Jupiter</source>
         <translation type="unfinished">Jupiter</translation>
     </message>
     <message>
-        <location filename="qrevolution.cc" line="10"/>
+        <location filename="qrevolution.cc" line="11"/>
         <source>Saturn</source>
         <translation type="unfinished">Szaturnusz</translation>
+    </message>
+    <message>
+        <location filename="qrevolution.cc" line="11"/>
+        <source>Uranus</source>
+        <translation type="unfinished">Uránusz</translation>
+    </message>
+    <message>
+        <location filename="qrevolution.cc" line="11"/>
+        <source>Neptune</source>
+        <translation type="unfinished">Neptunusz</translation>
+    </message>
+    <message>
+        <location filename="qrevolution.cc" line="11"/>
+        <source>Pluto</source>
+        <translation type="unfinished">Plútó</translation>
     </message>
 </context>
 <context>

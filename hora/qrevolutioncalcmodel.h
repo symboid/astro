@@ -14,8 +14,9 @@ public:
     QRevolutionCalcModel(QOrbisConfigNodeGetter planetConfig, const QEclLont& targetLont);
 private:
     QPlanet mPlanet;
+    const qreal mMaxLontSpeed;
     const QEclLont mTargetLont;
-    static constexpr double APPROX_DIST = 1.0 / 3600.0;
+    static constexpr double APPROX_DIST = 1.0 / 36000.0;
 
 public:
     void setCalcTask(QCalcTask* calcTask);
@@ -23,10 +24,10 @@ private:
     QCalcTask* mCalcTask;
 
 public:
-    QSharedPointer<QHoraCoords> approx(const QHoraCoords* startCoords);
+    QSharedPointer<QHoraCoords> approxNext(const QHoraCoords* startCoords);
 private:
     QSharedPointer<QHoraCoords> approxLinear(const QHoraCoords* startCoords);
-    QSharedPointer<QHoraCoords> approxSlowPlanet(const QHoraCoords* startCoords);
+    QEphTime approxFineTune(QEphTime conjTime);
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QREVOLUTIONCALCMODEL_H__
