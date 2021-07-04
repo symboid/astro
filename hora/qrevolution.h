@@ -5,6 +5,7 @@
 #include "astro/hora/defs.h"
 #include "astro/hora/qhora.h"
 #include "sdk/controls/qcalcproperty.h"
+#include "astro/hora/qrevolutioncalcmodel.h"
 
 class ASTRO_HORA_API QRevolution : public QCalcable
 {
@@ -53,16 +54,10 @@ signals:
     void planetLontChanged();
 
 public:
-    struct Data
-    {
-        Data(QHoraCoords* coords, bool isRetrograd) : mCoords(coords), mIsRetrograd(isRetrograd) {}
-        QSharedPointer<QHoraCoords> mCoords;
-        bool mIsRetrograd = false;
-    };
-    QVector<Data> mRevolutions;
+    QVector<QRevolutionData> mRevolutions;
 public:
     int revolutionsCount() const;
-    const Data& revolutionData(int index) const;
+    const QRevolutionData& revolutionData(int index) const;
 };
 
 #endif // __SYMBOID_ASTRO_HORA_QREVOLUTION_H__

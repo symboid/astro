@@ -8,6 +8,13 @@
 #include <QSharedPointer>
 #include "astro/hora/qplanet.h"
 
+struct QRevolutionData
+{
+    QRevolutionData(QHoraCoords* coords, bool isRetrograd) : mCoords(coords), mIsRetrograd(isRetrograd) {}
+    QSharedPointer<QHoraCoords> mCoords;
+    bool mIsRetrograd = false;
+};
+
 class QRevolutionCalcModel : public QObject
 {
 public:
@@ -24,9 +31,9 @@ private:
     QCalcTask* mCalcTask;
 
 public:
-    QSharedPointer<QHoraCoords> approxNext(const QHoraCoords* startCoords);
+    QRevolutionData approxNext(const QHoraCoords* startCoords);
 private:
-    QSharedPointer<QHoraCoords> approxLinear(const QHoraCoords* startCoords);
+    QRevolutionData approxLinear(const QHoraCoords* startCoords);
     QEphTime approxFineTune(QEphTime conjTime);
 };
 

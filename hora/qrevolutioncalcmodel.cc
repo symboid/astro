@@ -16,7 +16,7 @@ void QRevolutionCalcModel::setCalcTask(QCalcTask *calcTask)
     mCalcTask = calcTask;
 }
 
-QSharedPointer<QHoraCoords> QRevolutionCalcModel::approxLinear(const QHoraCoords* startCoords)
+QRevolutionData QRevolutionCalcModel::approxLinear(const QHoraCoords* startCoords)
 {
     QEphTime targetTime(startCoords->ephTime());
 
@@ -41,10 +41,11 @@ QSharedPointer<QHoraCoords> QRevolutionCalcModel::approxLinear(const QHoraCoords
         }
     }
 
-    return QSharedPointer<QHoraCoords>(new QHoraCoords(targetTime, startCoords->tzDiff()));
+    // TODO: timezone diff value depends on target time itself (not on start time)
+    return QRevolutionData(new QHoraCoords(targetTime, startCoords->tzDiff()),  mPlanet.isRetrograd());
 }
 
-QSharedPointer<QHoraCoords> QRevolutionCalcModel::approxNext(const QHoraCoords *startCoords)
+QRevolutionData QRevolutionCalcModel::approxNext(const QHoraCoords *startCoords)
 {
     QEphTime targetTime(startCoords->ephTime());
 
@@ -74,7 +75,8 @@ QSharedPointer<QHoraCoords> QRevolutionCalcModel::approxNext(const QHoraCoords *
         targetTime = approxFineTune(targetTime);
     }
 
-    return QSharedPointer<QHoraCoords>(new QHoraCoords(targetTime, startCoords->tzDiff()));
+    // TODO: timezone diff value depends on target time itself (not on start time)
+    return QRevolutionData(new QHoraCoords(targetTime, startCoords->tzDiff()), mPlanet.isRetrograd());
 }
 
 QEphTime QRevolutionCalcModel::approxFineTune(QEphTime conjTime)

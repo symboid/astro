@@ -43,12 +43,14 @@ QVariant QRevolutionListModel::data(const QModelIndex& index, int role) const
     QVariant revData;
     if (mRevolutionCalc && 0 <= rIndex && rIndex < mRevolutionCalc->revolutionsCount())
     {
-        const QRevolution::Data& data = mRevolutionCalc->revolutionData(rIndex);
+        const QRevolutionData& data = mRevolutionCalc->revolutionData(rIndex);
         switch (role)
         {
         case DateTimeRole: revData = QVariant::fromValue(data.mCoords.get()); break;
         case RetrogradRole: revData = data.mIsRetrograd; break;
-        default: revData = data.mCoords->dateTime().toString(QLocale().dateFormat(QLocale::ShortFormat)); break;
+        default: revData = data.mCoords->dateTime().toString(QLocale().dateFormat(QLocale::ShortFormat)) +
+            (data.mIsRetrograd ? " (R)" : "");
+            break;
         }
     }
     return revData;

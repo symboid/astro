@@ -54,15 +54,12 @@ void QRevolution::calc()
     calcModel->setCalcTask(mCalcTask);
 
     QSharedPointer<QHoraCoords> targetCoords(new QHoraCoords(QDateTime(QDate(*m_year, 1, 1), QTime(0,0)), *m_revTzDiff));
-    targetCoords = calcModel->approxNext(targetCoords.get());
-    mRevolutions.append(Data(new QHoraCoords(*targetCoords), false));
+    mRevolutions.append(calcModel->approxNext(targetCoords.get()));
 
     for (int revIndex = 1; !mCalcTask->isAborted() && !mCalcTask->restarted() && revIndex < *m_revCount; ++revIndex)
     {
-        targetCoords->setDateTime(targetCoords->dateTime().addDays(1));
-
-        targetCoords = calcModel->approxNext(targetCoords.get());
-        mRevolutions.append(Data(new QHoraCoords(*targetCoords), false));
+        targetCoords->setDateTime(mRevolutions.back().mCoords->dateTime().addDays(1));
+        mRevolutions.append(calcModel->approxNext(targetCoords.get()));
     }
 }
 
@@ -97,7 +94,7 @@ int QRevolution::revolutionsCount() const
     return mRevolutions.count();
 }
 
-const QRevolution::Data& QRevolution::revolutionData(int index) const
+const QRevolutionData& QRevolution::revolutionData(int index) const
 {
     return mRevolutions.at(index);
 }
