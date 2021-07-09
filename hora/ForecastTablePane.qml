@@ -15,14 +15,12 @@ CalcPane {
 
     indeterminateCalc: false
 
-    ForecastItemModel {
-        id: forecastItemModel
-    }
-
     ForecastTableView {
         id: forecastTableView
         anchors.fill: parent
-        tableModel: forecastItemModel
+        tableModel: ForecastItemModel {
+            id: forecastItemModel
+        }
     }
     Component.onCompleted: {
         periodBeginDate.setCurrent()
